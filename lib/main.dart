@@ -1,3 +1,4 @@
+import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/analysis/analysis.dart';
 import 'package:app_frontend/screens/journal/journal.dart';
 import 'package:app_frontend/screens/profile/profile.dart';
@@ -38,7 +39,7 @@ class _TrekkoAppState extends State<TrekkoApp> {
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'Trekko',
-      theme: CupertinoThemeData(),
+      theme: AppTheme.lightTheme,
       home: CupertinoTabScaffold(
         controller: controller,
         tabBar: CupertinoTabBar(
