@@ -15,6 +15,7 @@ class _JournalState extends State<Journal> {
     return CupertinoPageScaffold(
       child: Center(
         child: Text('Journal'),
+
       ),
     );
   }
