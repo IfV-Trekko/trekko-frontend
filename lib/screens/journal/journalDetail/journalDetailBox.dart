@@ -2,8 +2,8 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 
 class journalDetailBox extends StatelessWidget {
-  String _title;
-  Color _color;
+  final String _title;
+  final Color _color;
 
   @override
   Widget build(BuildContext context) {
