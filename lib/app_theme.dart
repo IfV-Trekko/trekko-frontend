@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static CupertinoThemeData get lightTheme {
@@ -8,10 +10,6 @@ class AppTheme {
       ),
       primaryColor: AppThemeColors.blue,
     );
-  }
-
-  static AppThemeColors get colors {
-    return AppThemeColors();
   }
 }
 
@@ -36,5 +34,45 @@ class AppThemeColors {
 }
 
 class AppThemeTextStyles {
+  static TextStyle get headline => GoogleFonts.inter(
+    fontSize: 34,
+    fontWeight: FontWeight.w800,
+    height: 40,
+    color: AppThemeColors.contrast900,
+  );
 
+  static TextStyle get largeTitle => GoogleFonts.inter(
+    fontSize: 32,
+    fontWeight: FontWeight.w500,
+    height: 40,
+    color: AppThemeColors.contrast900,
+  );
+
+  static TextStyle get title => GoogleFonts.inter(
+    fontSize: 24,
+    fontWeight: FontWeight.w500,
+    height: 29,
+    color: AppThemeColors.contrast900,
+  );
+
+  static TextStyle get normal => GoogleFonts.inter(
+    fontSize: 17,
+    fontWeight: FontWeight.w400,
+    height: 22,
+    color: AppThemeColors.contrast900,
+  );
+
+  static TextStyle get small => GoogleFonts.inter(
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    height: 18,
+    color: AppThemeColors.contrast900,
+  );
+
+  static TextStyle get tiny => GoogleFonts.inter(
+    fontSize: 11,
+    fontWeight: FontWeight.w400,
+    height: 13,
+    color: AppThemeColors.contrast700,
+  );
 }
