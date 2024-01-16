@@ -1,7 +1,8 @@
+import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 
 class journalSubtitle extends StatelessWidget {
-  String _title;
+  final String _title;
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class journalSubtitle extends StatelessWidget {
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: CupertinoColors.systemGrey, //TODO: Farbe zu Trekko grau ändern
+            color: AppThemeColors.contrast500,
             width: 1.0,
           ),
         ),
@@ -20,7 +21,7 @@ class journalSubtitle extends StatelessWidget {
       child: Text(
         _title,
         style: const TextStyle(
-          color: CupertinoColors.systemGrey, //TODO farbe zu Trekko grau ändern
+          color: AppThemeColors.contrast500,
           fontFamily: 'SF Pro',
           fontSize: 17.0,
           fontWeight: FontWeight.bold,
