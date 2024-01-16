@@ -35,7 +35,7 @@ class Profile extends StatelessWidget {
                    ),
                    CupertinoListTile.notched(
                      padding: EdgeInsets.only(left: 16, right: 16),
-                     title: const Text('Name'),
+                     title: Text('Name', style: AppThemeTextStyles.normal),
                      additionalInfo: const Text('Dein Name'),
                    ),
                  ],
