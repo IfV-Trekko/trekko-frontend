@@ -13,12 +13,12 @@ import 'package:heroicons/heroicons.dart';
 
 void main() async {
   try {
-    Trekko trekko = await LoginBuilder("http://localhost:8080", "test", "test").build();
+    Trekko trekko = await LoginBuilder("http://localhost:8080", "test@test.de", "test").build();
     runApp(TrekkoApp(trekko: trekko));
   } catch (e) {
     if (e is BuildException) {
       if (e.reason == LoginResult.failedNoSuchEmail) {
-        runApp(TrekkoApp(trekko: await RegistrationBuilder("http://localhost:8080", "test", "test", "test", "").build()));
+        runApp(TrekkoApp(trekko: await RegistrationBuilder("http://localhost:8080", "test@test.de", "test", "test", "").build()));
       }
     }
     rethrow;
@@ -56,7 +56,7 @@ class _TrekkoAppState extends State<TrekkoApp> {
       Screen('Erhebung', HeroIcons.play, Tracking()),
       Screen('Tagebuch', HeroIcons.queueList, Journal()),
       Screen('Statistik', HeroIcons.chartPie, Analysis()),
-      Screen('Profil', HeroIcons.userCircle, Profile(super.widget.trekko)),
+      Screen('Profil', HeroIcons.userCircle, ProfileScreen(super.widget.trekko)),
     ];
     return CupertinoApp(
       title: 'Trekko',
