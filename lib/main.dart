@@ -1,3 +1,8 @@
+import 'package:app_backend/controller/builder/build_exception.dart';
+import 'package:app_backend/controller/builder/login_builder.dart';
+import 'package:app_backend/controller/builder/login_result.dart';
+import 'package:app_backend/controller/builder/registration_builder.dart';
+import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/analysis/analysis.dart';
 import 'package:app_frontend/screens/journal/journal.dart';
@@ -6,8 +11,18 @@ import 'package:app_frontend/screens/tracking/tracking.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
-void main() {
-  runApp(TrekkoApp());
+void main() async {
+  try {
+    Trekko trekko = await LoginBuilder("http://localhost:8080", "test", "test").build();
+    runApp(TrekkoApp(trekko: trekko));
+  } catch (e) {
+    if (e is BuildException) {
+      if (e.reason == LoginResult.failedNoSuchEmail) {
+        runApp(TrekkoApp(trekko: await RegistrationBuilder("http://localhost:8080", "test", "test", "test", "").build()));
+      }
+    }
+    rethrow;
+  }
 }
 
 class Screen {
@@ -19,12 +34,10 @@ class Screen {
 }
 
 class TrekkoApp extends StatefulWidget {
-  final List<Screen> screens = [
-    Screen('Erhebung', HeroIcons.play, Tracking()),
-    Screen('Tagebuch', HeroIcons.queueList, Journal()),
-    Screen('Statistik', HeroIcons.chartPie, Analysis()),
-    Screen('Profil', HeroIcons.userCircle, Profile()),
-  ];
+
+  final Trekko trekko;
+
+  const TrekkoApp({super.key, required this.trekko});
 
   @override
   _TrekkoAppState createState() => _TrekkoAppState();
@@ -33,10 +46,18 @@ class TrekkoApp extends StatefulWidget {
 class _TrekkoAppState extends State<TrekkoApp> {
   final CupertinoTabController controller = CupertinoTabController();
 
-  Screen get currentScreen => super.widget.screens[controller.index];
+  late List<Screen> screens;
+
+  Screen get currentScreen => screens[controller.index];
 
   @override
   Widget build(BuildContext context) {
+    screens = [
+      Screen('Erhebung', HeroIcons.play, Tracking()),
+      Screen('Tagebuch', HeroIcons.queueList, Journal()),
+      Screen('Statistik', HeroIcons.chartPie, Analysis()),
+      Screen('Profil', HeroIcons.userCircle, Profile(super.widget.trekko)),
+    ];
     return CupertinoApp(
       title: 'Trekko',
       theme: AppTheme.lightTheme,
@@ -46,9 +67,7 @@ class _TrekkoAppState extends State<TrekkoApp> {
           onTap: (index) {
             setState(() {});
           },
-          items: super
-              .widget
-              .screens
+          items: screens
               .map((e) => BottomNavigationBarItem(
             icon: HeroIcon(
               e.icon,

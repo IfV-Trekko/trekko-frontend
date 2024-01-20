@@ -1,6 +1,10 @@
+import 'package:app_backend/controller/builder/login_builder.dart';
+import 'package:app_backend/controller/trekko.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../../app_theme.dart';
+import 'package:app_backend/model/profile/profile.dart';
+import 'package:app_backend/controller/profiled_trekko.dart';
+
 
 //class Profile extends StatefulWidget {
 //  const Profile({super.key});
@@ -12,6 +16,10 @@ import '../../app_theme.dart';
 // }
 
 class Profile extends StatelessWidget {
+  final Trekko trekko;
+
+  const Profile(this.trekko);
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
