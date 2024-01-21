@@ -13,12 +13,16 @@ import 'package:heroicons/heroicons.dart';
 
 void main() async {
   try {
-    Trekko trekko = await LoginBuilder("http://localhost:8080", "test@test.de", "test").build();
+    Trekko trekko = await LoginBuilder("http://10.0.2.2:8080", "realAccount1@web.de", "1aA!hklj32r4hkjl324ra").build();
     runApp(TrekkoApp(trekko: trekko));
   } catch (e) {
     if (e is BuildException) {
-      if (e.reason == LoginResult.failedNoSuchEmail) {
-        runApp(TrekkoApp(trekko: await RegistrationBuilder("http://localhost:8080", "test@test.de", "test", "test", "").build()));
+      if (e.reason == LoginResult.failedNoSuchUser) {
+        try {
+          runApp(TrekkoApp(trekko: await RegistrationBuilder("http://10.0.2.2:8080", "realAccount1@web.de", "1aA!hklj32r4hkjl324ra", "1aA!hklj32r4hkjl324ra", "12345").build()));
+        } catch (e) {
+          print((e as BuildException).reason);
+        }
       }
     }
     rethrow;
