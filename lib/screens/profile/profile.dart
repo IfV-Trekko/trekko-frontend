@@ -3,15 +3,6 @@ import 'package:flutter/cupertino.dart';
 import '../../app_theme.dart';
 import 'package:app_backend/model/profile/profile.dart';
 
-//class Profile extends StatefulWidget {
-//  const Profile({super.key});
-
-//   @override
-//   State<StatefulWidget> createState() {
-//     return _ProfileState();
-//   }
-// }
-
 class ProfileScreen extends StatelessWidget {
   final Trekko trekko;
 
@@ -42,6 +33,13 @@ class ProfileScreen extends StatelessWidget {
                           additionalInfo: Text(question.value!),
                         ));
                       }
+                    }
+                    if (questionTiles == null || questionTiles.isEmpty) {
+                      questionTiles.add(CupertinoListTile.notched(
+                        padding: EdgeInsets.only(left: 16, right: 16),
+                        title: Text('Keine Fragen beantwortet',
+                            style: AppThemeTextStyles.normal),
+                      ));
                     }
                 return Column(
                   children: [
