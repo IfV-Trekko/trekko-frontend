@@ -45,7 +45,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CupertinoListSection.insetGrouped(
                       margin: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                      additionalDividerMargin: 4,
+                      additionalDividerMargin: 2,
                       backgroundColor: AppThemeColors.contrast100,
                       children: [
                         CupertinoListTile.notched(
@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     CupertinoListSection.insetGrouped(
                       margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
-                      additionalDividerMargin: 4,
+                      additionalDividerMargin: 2,
                       backgroundColor: AppThemeColors.contrast100,
                       children: questionTiles,
                     ),
