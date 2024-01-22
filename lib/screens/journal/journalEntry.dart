@@ -22,8 +22,8 @@ class journalEntry extends StatelessWidget {
               width: 1.0,
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
+          child: const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Column(), //TODO Children einfügen (Labels)
           ),
         ),
@@ -31,6 +31,7 @@ class journalEntry extends StatelessWidget {
     );
   }
 
+  journalEntry(this.trip);
 
   void onPressed(){
   }
