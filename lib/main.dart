@@ -107,8 +107,11 @@ class _TrekkoAppState extends State<TrekkoApp> {
               .toList(),
         ),
         tabBuilder: (context, index) {
-          return currentScreen.screen;
-        },
+          return IndexedStack(
+            index: index,
+            children: screens.map((e) => e.screen).toList(),
+          );
+        }
     ));
   }
 }
