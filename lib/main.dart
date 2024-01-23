@@ -5,8 +5,6 @@ import 'package:app_backend/controller/builder/login_builder.dart';
 import 'package:app_backend/controller/builder/login_result.dart';
 import 'package:app_backend/controller/builder/registration_builder.dart';
 import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/profile/onboarding_question.dart';
-import 'package:app_backend/model/profile/profile.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/analysis/analysis.dart';
 import 'package:app_frontend/screens/journal/journal.dart';
@@ -18,37 +16,6 @@ import 'package:heroicons/heroicons.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Trekko trekko = await buildTrekko();
-  List<OnboardingQuestion> questions = [
-    OnboardingQuestion.withData("hometown", "Stadt", true, null, null, "Hesel"),
-    OnboardingQuestion.withData("age", "Alter", true, null, null, "102"),
-    OnboardingQuestion.withData(
-        "bodycount",
-        "Bodycount",
-        true,
-        null,
-        [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "Matthias stinkt",
-          "Julian ist faul",
-          "8",
-          "9",
-          "10+"
-        ],
-        "Matthias stinkt")
-  ];
-  Profile profile = await trekko.getProfile().first;
-  if (profile.preferences.onboardingQuestions.isEmpty) {
-    profile.preferences.onboardingQuestions.addAll(questions);
-    try {
-      await trekko.savePreferences(profile.preferences);
-    } catch (e) {
-      print(e);
-    }
-  }
   runApp(TrekkoApp(trekko: trekko));
 }
 
@@ -128,6 +95,10 @@ class _TrekkoAppState extends State<TrekkoApp> {
       home: CupertinoTabScaffold(
         controller: controller,
         tabBar: CupertinoTabBar(
+          onTap: (index) {
+            // This is to make the widget refresh to update the icon state
+            setState(() {});
+          },
           items: screens
               .map((e) => BottomNavigationBarItem(
                     icon: HeroIcon(
