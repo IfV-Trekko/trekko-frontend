@@ -2,8 +2,10 @@ import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 
-class journalEntry extends StatelessWidget {
+class JournalEntry extends StatelessWidget {
   final Stream<Trip> trip;
+
+  JournalEntry(this.trip);
 
   @override
   Widget build(BuildContext context) {
@@ -21,24 +23,29 @@ class journalEntry extends StatelessWidget {
               width: 1.0,
             ),
           ),
-          child: const Padding(
+          child: Padding(
             padding: EdgeInsets.all(16.0),
-            child: Column(), //TODO Children einfügen (Labels)
+            child: Column(
+              children: [
+                TripRow(trip),
+                VehicleRow(trip),
+                LabelRow(trip),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  journalEntry(this.trip);
-
   void onPressed() {}
 }
 
-class tripRow extends StatelessWidget {
+//TODO: CupertinoActivityIndicator durch festen text ersetzen?
+class TripRow extends StatelessWidget {
   final Stream<Trip> trip;
 
-  tripRow(this.trip);
+  TripRow(this.trip);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +54,7 @@ class tripRow extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<Trip> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CupertinoActivityIndicator(
-              radius: 20, color: AppThemeColors.contrast500); //TODO durch Text ersetzen?
+              radius: 20, color: AppThemeColors.contrast500);
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
@@ -76,21 +83,21 @@ class VehicleRow extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<Trip> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CupertinoActivityIndicator(
-              radius: 20, color: AppThemeColors.contrast500); //TODO durch Text ersetzen?
+              radius: 20, color: AppThemeColors.contrast500);
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return Container();
+          return Container(); //TODO Linie implementieren
         }
       },
     );
   }
 }
 
-class labelRow extends StatelessWidget{
+class LabelRow extends StatelessWidget {
   final Stream<Trip> trip;
 
-  labelRow(this.trip);
+  LabelRow(this.trip);
 
   @override
   Widget build(BuildContext context) {
@@ -99,11 +106,11 @@ class labelRow extends StatelessWidget{
       builder: (BuildContext context, AsyncSnapshot<Trip> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CupertinoActivityIndicator(
-              radius: 20, color: AppThemeColors.contrast500); //TODO durch Text ersetzen?
+              radius: 20, color: AppThemeColors.contrast500);
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return Row(
+          return Row( //TODO Label implementieren
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(),
