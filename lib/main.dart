@@ -51,39 +51,41 @@ class _TrekkoAppState extends State<TrekkoApp> {
   Screen get currentScreen => screens[controller.index];
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     screens = [
       Screen('Erhebung', HeroIcons.play, Tracking()),
       Screen('Tagebuch', HeroIcons.queueList, Journal()),
       Screen('Statistik', HeroIcons.chartPie, Analysis()),
       Screen('Profil', HeroIcons.userCircle, ProfileScreen(super.widget.trekko)),
     ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'Trekko',
       theme: AppTheme.lightTheme,
       home: CupertinoTabScaffold(
         controller: controller,
         tabBar: CupertinoTabBar(
-          onTap: (index) {
-            setState(() {});
-          },
           items: screens
-              .map((e) => BottomNavigationBarItem(
-            icon: HeroIcon(
-              e.icon,
-              size: 24,
-              style: currentScreen == e
+            .map((e) => BottomNavigationBarItem(
+              icon: HeroIcon(
+                e.icon,
+                size: 24,
+                style: currentScreen == e
                   ? HeroIconStyle.solid
                   : HeroIconStyle.outline,
-            ),
-            label: e.title,
-          ))
-              .toList(),
+              ),
+              label: e.title,
+            ))
+          .toList(),
         ),
         tabBuilder: (context, index) {
           return currentScreen.screen;
         },
-    ));
+      ),
+    );
   }
 }
-
