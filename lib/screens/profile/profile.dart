@@ -1,4 +1,6 @@
 import 'package:app_backend/controller/trekko.dart';
+import 'package:app_backend/model/profile/onboarding_question.dart';
+import 'package:app_backend/model/profile/question_answer.dart';
 import 'package:flutter/cupertino.dart';
 import '../../app_theme.dart';
 import 'package:app_backend/model/profile/profile.dart';
@@ -13,26 +15,31 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveClientMixin {
-
+class _ProfileScreenState extends State<ProfileScreen>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
   final double defaultDividerMargin = 2;
-  final EdgeInsetsGeometry listTilePadding = const EdgeInsets.only(left: 16, right: 16);
-  final EdgeInsetsGeometry firstListSectionMargin = const EdgeInsets.fromLTRB(16, 16, 16, 16);
-  final EdgeInsetsGeometry listSectionMargin = const EdgeInsets.fromLTRB(16, 0, 16, 16);
+  final EdgeInsetsGeometry listTilePadding =
+      const EdgeInsets.only(left: 16, right: 16);
+  final EdgeInsetsGeometry firstListSectionMargin =
+      const EdgeInsets.fromLTRB(16, 16, 16, 16);
+  final EdgeInsetsGeometry listSectionMargin =
+      const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
-  Future<void> _navigateAndEditText(Profile profile, String title, String currentText, Function(String) onChange) async {
+  Future<void> _navigateAndEditText(Profile profile, String title,
+      String currentText, Function(String) onChange) async {
     final result = await Navigator.of(context).push(
       CupertinoPageRoute<String>(
-        builder: (BuildContext context) => TextInputPage(title: title, currentText: currentText),
+        builder: (BuildContext context) =>
+            TextInputPage(title: title, currentText: currentText),
       ),
     );
     if (result != null) {
-        onChange.call(result);
-        widget.trekko.savePreferences(profile.preferences);
-      }
+      onChange.call(result);
+      widget.trekko.savePreferences(profile.preferences);
+    }
   }
 
   @override
@@ -51,28 +58,36 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
             stream: widget.trekko.getProfile(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-
                 Profile profile = snapshot.data!;
                 List<CupertinoListTile> questionTiles = [];
 
-                for (var question in profile.preferences.onboardingQuestions) {
-                  if (question.value != null && question.value!.isNotEmpty) { // Only add a ListTile for answered questions
-
-                    questionTiles.add(CupertinoListTile.notched(
+                for (OnboardingQuestion question
+                    in profile.onboardingQuestions) {
+                  QuestionAnswer? answer =
+                      profile.preferences.getQuestionAnswer(question.key);
+                  if (answer == null) {
+                    // TODO: do something with unanswered questions
+                    continue;
+                  }
+                  questionTiles.add(CupertinoListTile.notched(
                       padding: listTilePadding,
                       title: Text(question.title,
                           style: AppThemeTextStyles.normal),
-                      additionalInfo: Text(question.value!),
-                        trailing: const CupertinoListTileChevron(),
-                        onTap: ()=> _navigateAndEditText(profile, question.title, question.value!,
-                          (String value) => question.value = value),
-                    ));
-                  }
+                      additionalInfo: Text(answer.answer),
+                      trailing: const CupertinoListTileChevron(),
+                      onTap: () => _navigateAndEditText(
+                            profile,
+                            question.title,
+                            answer.answer,
+                            (String value) => profile.preferences
+                                .setQuestionAnswer(question.key, value),
+                          )));
                 }
                 if (questionTiles == null || questionTiles.isEmpty) {
                   questionTiles.add(CupertinoListTile.notched(
                     padding: listTilePadding,
-                    title: Text('Keine Fragen beantwortet', style: AppThemeTextStyles.normal),
+                    title: Text('Keine Fragen beantwortet',
+                        style: AppThemeTextStyles.normal),
                   ));
                 }
 
@@ -90,46 +105,45 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
                         ),
                         CupertinoListTile.notched(
                           padding: listTilePadding,
-                          title: Text('Projekt-URL', style: AppThemeTextStyles.normal),
+                          title: Text('Projekt-URL',
+                              style: AppThemeTextStyles.normal),
                           additionalInfo: Text(profile.projectUrl),
                         ),
                       ],
                     ),
-
                     CupertinoListSection.insetGrouped(
                       margin: listSectionMargin,
                       additionalDividerMargin: defaultDividerMargin,
                       children: questionTiles,
                     ),
-
                     CupertinoListSection.insetGrouped(
                       margin: listSectionMargin,
                       additionalDividerMargin: defaultDividerMargin,
                       children: [
                         CupertinoListTile.notched(
                           padding: listTilePadding,
-                          title: Text('Akkunutzung', style: AppThemeTextStyles.normal),
-                          additionalInfo: Text(profile.preferences.batteryUsageSetting.name),
+                          title: Text('Akkunutzung',
+                              style: AppThemeTextStyles.normal),
+                          additionalInfo: Text(
+                              profile.preferences.batteryUsageSetting.name),
                         ),
                       ],
                     ),
-
                     CupertinoListSection.insetGrouped(
                       margin: listSectionMargin,
                       additionalDividerMargin: defaultDividerMargin,
                       children: [
                         CupertinoListTile.notched(
-                          padding: listTilePadding,
-                          title: Text('Profil & Daten löschen',style: AppThemeTextStyles.normal.copyWith(
-                            color: AppThemeColors.red,
-                          )),
-                          onTap: () {
-                            //TODO: implement
-                          }
-                        ),
+                            padding: listTilePadding,
+                            title: Text('Profil & Daten löschen',
+                                style: AppThemeTextStyles.normal.copyWith(
+                                  color: AppThemeColors.red,
+                                )),
+                            onTap: () {
+                              //TODO: implement
+                            }),
                       ],
                     ),
-
                   ],
                 );
               }
@@ -141,4 +155,3 @@ class _ProfileScreenState extends State<ProfileScreen> with AutomaticKeepAliveCl
     );
   }
 }
-
