@@ -1,9 +1,9 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/tracking_state.dart';
 import 'package:app_frontend/components/button.dart';
-import 'package:app_frontend/components/constants/buttonSize.dart';
-import 'package:app_frontend/components/constants/buttonStyle.dart';
-import 'package:app_frontend/screens/journal/journalEntryDetailView/journalEntryDetailView.dart';
+import 'package:app_frontend/components/constants/button_size.dart';
+import 'package:app_frontend/components/constants/button_style.dart';
+import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
@@ -39,7 +39,7 @@ class _TrackingScreenState extends State<TrackingScreen>
             onPressed: () {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) =>
-                      journalEntryDetailView(Stream.empty())));
+                      JournalEntryDetailView(Stream.empty())));
             },
           ),
           StreamBuilder(
