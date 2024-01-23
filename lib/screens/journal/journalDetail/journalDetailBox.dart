@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 
 class journalDetailBox extends StatelessWidget {
   final String _title;
-  final Color _color;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +11,7 @@ class journalDetailBox extends StatelessWidget {
       height: 24,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4.0),
-        border: Border.all(color: _color),
+        border: Border.all(color: AppThemeColors.contrast200),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 6),
       child: Row(
@@ -27,5 +26,5 @@ class journalDetailBox extends StatelessWidget {
     );
   }
 
-  journalDetailBox(this._title, this._color);
+  journalDetailBox(this._title);
 }
