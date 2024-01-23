@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
 import '../../../app_theme.dart';
+
 //TODO: change from Pink and Cake to correct colors and icons
 class TransportDesign {
   static final Map<TransportType, Color> _colors = {
