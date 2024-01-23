@@ -1,13 +1,11 @@
+import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 
 enum ButtonStyle {
-  primary(CupertinoColors.activeBlue, CupertinoColors.white),
-  secondary(CupertinoColors.white, CupertinoColors.activeBlue);
+  primary(AppThemeColors.blue, AppThemeColors.contrast0),
+  secondary(AppThemeColors.contrast150, AppThemeColors.blue);
 
   const ButtonStyle(this.backgroundColor, this.textColor);
   final Color backgroundColor;
   final Color textColor;
-
-  get BackroundColor => backgroundColor;
-  get TextColor => textColor;
 }
