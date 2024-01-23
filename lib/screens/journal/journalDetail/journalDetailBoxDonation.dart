@@ -3,10 +3,10 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
-class journalDetailBoxDonation extends StatelessWidget {
+class JournalDetailBoxDonation extends StatelessWidget {
   final DonationState state;
 
-  journalDetailBoxDonation(this.state);
+  JournalDetailBoxDonation(this.state);
 
   @override
   Widget build(BuildContext context) {
