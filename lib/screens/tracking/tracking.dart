@@ -1,7 +1,9 @@
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/buttonSize.dart';
 import 'package:app_frontend/components/constants/buttonStyle.dart';
+import 'package:app_frontend/screens/journal/journalEntryDetailView/journalEntryDetailView.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
 
 class Tracking extends StatefulWidget {
@@ -20,7 +22,10 @@ class _TrackingState extends State<Tracking> {
       child: Center(
         child: Button(
           title: 'Tracking',
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push(CupertinoPageRoute(
+                builder: (context) => journalEntryDetailView(Stream.empty())));
+          },
         ),
       ),
     );
