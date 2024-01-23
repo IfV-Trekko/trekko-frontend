@@ -5,6 +5,7 @@ class AppTheme {
   static CupertinoThemeData get lightTheme {
     return CupertinoThemeData(
       textTheme: CupertinoTextThemeData(
+        tabLabelTextStyle: AppThemeTextStyles.tabBarLabel,
         navLargeTitleTextStyle: AppThemeTextStyles.headline,
       ),
       primaryColor: AppThemeColors.blue,
@@ -24,7 +25,7 @@ class AppThemeColors {
   static const Color contrast900 = Color(0xFF000000);
   static const Color contrast800 = Color(0xFF454545);
   static const Color contrast700 = Color(0xFF868782);
-  static const Color contrast500 = Color(0xFF868782);
+  static const Color contrast500 = Color(0xFF999999);
   static const Color contrast400 = Color(0xFFBDBDBD);
   static const Color contrast200 = Color(0xFFE0E0E0);
   static const Color contrast150 = Color(0xFFE7E7E7);
@@ -77,5 +78,12 @@ class AppThemeTextStyles {
     fontWeight: FontWeight.w400,
     height: 1.18,
     color: AppThemeColors.contrast700,
+  );
+
+  static TextStyle get tabBarLabel => GoogleFonts.inter(
+    fontSize: 10,
+    fontWeight: FontWeight.w400,
+    height: 1.2,
+    color: AppThemeColors.contrast500,
   );
 }
