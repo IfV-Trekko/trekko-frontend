@@ -1,6 +1,5 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/onboarding_question.dart';
-import 'package:app_backend/model/profile/question_answer.dart';
 import 'package:flutter/cupertino.dart';
 import '../../app_theme.dart';
 import 'package:app_backend/model/profile/profile.dart';
@@ -63,27 +62,24 @@ class _ProfileScreenState extends State<ProfileScreen>
 
                 for (OnboardingQuestion question
                     in profile.onboardingQuestions) {
-                  QuestionAnswer? answer =
+                  String? answer =
                       profile.preferences.getQuestionAnswer(question.key);
-                  if (answer == null) {
-                    // TODO: do something with unanswered questions
-                    continue;
-                  }
+                  answer ??= 'Nicht beantwortet';
                   questionTiles.add(CupertinoListTile.notched(
                       padding: listTilePadding,
                       title: Text(question.title,
                           style: AppThemeTextStyles.normal),
-                      additionalInfo: Text(answer.answer),
+                      additionalInfo: Text(answer),
                       trailing: const CupertinoListTileChevron(),
                       onTap: () => _navigateAndEditText(
                             profile,
                             question.title,
-                            answer.answer,
+                            answer!,
                             (String value) => profile.preferences
                                 .setQuestionAnswer(question.key, value),
                           )));
                 }
-                if (questionTiles == null || questionTiles.isEmpty) {
+                if (questionTiles.isEmpty) {
                   questionTiles.add(CupertinoListTile.notched(
                     padding: listTilePadding,
                     title: Text('Keine Fragen beantwortet',
