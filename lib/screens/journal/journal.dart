@@ -18,28 +18,36 @@ class Journal extends StatefulWidget {
 }
 
 class _JournalState extends State<Journal> {
-
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Trip>>(
-      stream: widget.trekko.getTripQuery().build().watch(),
+      stream: widget.trekko.getTripQuery().build().watch(fireImmediately: true),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return CupertinoActivityIndicator(
-              radius: 20, color: AppThemeColors.contrast500);;
+          return const Center(
+              child: CupertinoActivityIndicator(
+                  radius: 20, color: AppThemeColors.contrast500));
         } else {
           final trips = snapshot.data ?? [];
-          return ListView.builder(
-            itemCount: trips.length,
-            itemBuilder: (context, index) {
-              final trip = trips[index];
-              return JournalEntry(trip: trip); // Replace with your JournalEntry widget
-            },
-          );
+          if (trips.isEmpty) {
+            return Center(
+                child: Text(
+              'Noch keine Wege verfügbar',
+              style: AppThemeTextStyles.title,
+            ));
+          } else {
+            return ListView.builder(
+              itemCount: trips.length,
+              itemBuilder: (context, index) {
+                final trip = trips[index];
+                return JournalEntry(trip);
+              },
+            );
+          }
         }
       },
     );
-
+  }
+}

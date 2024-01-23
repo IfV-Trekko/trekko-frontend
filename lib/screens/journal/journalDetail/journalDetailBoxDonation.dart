@@ -17,19 +17,22 @@ class JournalDetailBoxDonation extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.0),
           color: AppThemeColors.green,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Gespendet",
-                style: AppThemeTextStyles.small.copyWith(
-                  color: AppThemeColors.contrast0,
-                )),
-            const HeroIcon(
-              HeroIcons.checkCircle,
-              size: 20,
-              color: AppThemeColors.contrast0,
-            ),
-          ],
+        child: Padding(
+          padding: EdgeInsets.only(right: 2.0, left: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Gespendet",
+                  style: AppThemeTextStyles.small.copyWith(
+                    color: AppThemeColors.contrast0,
+                  )),
+              const HeroIcon(
+                HeroIcons.checkCircle,
+                size: 20,
+                color: AppThemeColors.contrast0,
+              ),
+            ],
+          ),
         ),
       );
     } else if (state == DonationState.notDonated) {
@@ -39,20 +42,22 @@ class JournalDetailBoxDonation extends StatelessWidget {
             borderRadius: BorderRadius.circular(12.0),
             color: AppThemeColors.contrast150,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Nicht gespendet",
-                  style: AppThemeTextStyles.small.copyWith(
-                    color: AppThemeColors.contrast800,
-                  )),
-              const HeroIcon(
-                HeroIcons.checkCircle,
-                size: 20,
-                color: AppThemeColors.contrast700,
-              ),
-            ],
-          ));
+          child: Padding(
+              padding: EdgeInsets.only(right: 2.0, left: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Nicht gespendet",
+                      style: AppThemeTextStyles.small.copyWith(
+                        color: AppThemeColors.contrast800,
+                      )),
+                  const HeroIcon(
+                    HeroIcons.checkCircle,
+                    size: 20,
+                    color: AppThemeColors.contrast700,
+                  ),
+                ],
+              )));
     } else {
       return Container();
     }

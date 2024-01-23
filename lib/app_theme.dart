@@ -30,7 +30,7 @@ class AppThemeColors {
   static const Color contrast200 = Color(0xFFE0E0E0);
   static const Color contrast150 = Color(0xFFE7E7E7);
   static const Color contrast100 = Color(0xFFF2F2F2);
-  static const Color contrast0 = Color(0xFFEDEDED);
+  static const Color contrast0 = Color(0xFFFFFFFF);
 }
 
 class AppThemeTextStyles {
