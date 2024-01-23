@@ -1,6 +1,6 @@
 import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/components/constants/buttonSize.dart';
-import 'package:app_frontend/components/constants/buttonStyle.dart';
+import 'package:app_frontend/components/constants/button_size.dart';
+import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
@@ -27,7 +27,7 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
-        padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
+        padding: EdgeInsets.all(0),
         onPressed: () {
           onPressed();
         },
@@ -42,6 +42,7 @@ class Button extends StatelessWidget {
                 child: Row(
                   mainAxisSize: stretch ? MainAxisSize.max : MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (loading) ...[
                       SizedBox(width: 10),
@@ -59,11 +60,14 @@ class Button extends StatelessWidget {
                           size: size.iconSize,
                           color: style.textColor,
                         ),
-                        SizedBox(width: size.sizedBoxWidth),
+                        if (title.isNotEmpty) ...[
+                          SizedBox(width: size.sizedBoxWidth),
+                        ]
                       ],
                       Text(
                         title,
                         style: GoogleFonts.inter(
+                          height: size.lineHeight,
                           color: style.textColor,
                           fontSize: size.fontSize,
                           fontWeight: size.fontWeight,
