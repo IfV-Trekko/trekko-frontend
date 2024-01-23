@@ -127,6 +127,10 @@ class _TrekkoAppState extends State<TrekkoApp> {
       home: CupertinoTabScaffold(
         controller: controller,
         tabBar: CupertinoTabBar(
+          onTap: (index) {
+            // This is to make the widget refresh to update the icon state
+            setState(() {});
+          },
           items: screens
             .map((e) => BottomNavigationBarItem(
               icon: HeroIcon(
