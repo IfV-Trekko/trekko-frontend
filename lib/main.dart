@@ -60,8 +60,8 @@ Future<Trekko> buildTrekko() async {
     ip = "localhost";
   }
   try {
-    return await LoginBuilder("http://$ip:8080", "realAccount1@web.de",
-            "1aA!hklj32r4hkjl324ra")
+    return await LoginBuilder(
+            "http://$ip:8080", "realAccount1@web.de", "1aA!hklj32r4hkjl324ra")
         .build();
   } catch (e) {
     if (e is BuildException) {
@@ -111,7 +111,8 @@ class _TrekkoAppState extends State<TrekkoApp> {
   void initState() {
     super.initState();
     screens = [
-      Screen('Erhebung', HeroIcons.play, Tracking()),
+      Screen('Erhebung', HeroIcons.play,
+          TrackingScreen(trekko: super.widget.trekko)),
       Screen('Tagebuch', HeroIcons.queueList, Journal()),
       Screen('Statistik', HeroIcons.chartPie, Analysis()),
       Screen(
@@ -128,17 +129,17 @@ class _TrekkoAppState extends State<TrekkoApp> {
         controller: controller,
         tabBar: CupertinoTabBar(
           items: screens
-            .map((e) => BottomNavigationBarItem(
-              icon: HeroIcon(
-                e.icon,
-                size: 24,
-                style: currentScreen == e
-                  ? HeroIconStyle.solid
-                  : HeroIconStyle.outline,
-              ),
-              label: e.title,
-            ))
-          .toList(),
+              .map((e) => BottomNavigationBarItem(
+                    icon: HeroIcon(
+                      e.icon,
+                      size: 24,
+                      style: currentScreen == e
+                          ? HeroIconStyle.solid
+                          : HeroIconStyle.outline,
+                    ),
+                    label: e.title,
+                  ))
+              .toList(),
         ),
         tabBuilder: (context, index) {
           return IndexedStack(

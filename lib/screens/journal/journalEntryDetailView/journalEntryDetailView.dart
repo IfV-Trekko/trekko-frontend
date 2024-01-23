@@ -22,10 +22,8 @@ class journalEntryDetailView extends StatelessWidget {
           middle: Text('Wege'),
           trailing: Button(
             stretch: false,
-            title: 'SPENDEN',
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            title: 'Spenden',
+            onPressed: () {},
             size: ButtonSize.small,
           )),
       child: Center(
