@@ -59,7 +59,8 @@ class InformationRow extends StatelessWidget {
           DateFormat('HH:mm').format(trip.getStartTime()),
           style: AppThemeTextStyles.largeTitle,
         ),
-        Text(""), //TODO Dauer und Distanz berechnen
+        Text("${trip.getDuration().inMinutes} min"),
+        Text("${trip.getSpeedInKmh().floor()} kmh"),
         Text(
           DateFormat('HH:mm').format(trip.getEndTime()),
           style: AppThemeTextStyles.largeTitle,
