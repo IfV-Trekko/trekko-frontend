@@ -2,7 +2,7 @@ import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/journal/journalDetail/journalDetailBoxVehicle.dart';
 import 'package:flutter/cupertino.dart';
-import 'journalDetail/journalDetailBoxDonation.dart';
+import 'journalDetail/journalDetailBox.dart';
 import 'package:intl/intl.dart';
 
 class JournalEntry extends StatelessWidget {
@@ -16,7 +16,7 @@ class JournalEntry extends StatelessWidget {
       onTap: onPressed,
       child: Padding(
         padding: const EdgeInsets.only(
-            top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
+            top: 4.0, bottom: 4.0, left: 16.0, right: 16.0),
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -59,8 +59,15 @@ class InformationRow extends StatelessWidget {
           DateFormat('HH:mm').format(trip.getStartTime()),
           style: AppThemeTextStyles.largeTitle,
         ),
-        Text("${trip.getDuration().inMinutes} min"),
-        Text("${trip.getSpeedInKmh().round()} kmh"),
+        Container(
+          child: Row(
+            children: [
+              Text("${trip.getDuration().inMinutes} min"),
+              const SizedBox(width: 4.0),
+              Text("- ${trip.getDistanceInKm()} km"),
+            ],
+          ),
+        ),
         Text(
           DateFormat('HH:mm').format(trip.getEndTime()),
           style: AppThemeTextStyles.largeTitle,
@@ -88,15 +95,25 @@ class LabelRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Erstellen Sie ein Set aus den Fahrzeugtypen in der legs-Liste
+    final uniqueVehicleTypes =
+        trip.legs.map((leg) => leg.transportType).toSet();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
-          children: [
-            JournalDetailBoxVehicle(trip.legs[0].transportType), //TODO Label implementieren
-            const SizedBox(width: 6.0),
-            JournalDetailBoxDonation(trip.donationState),
-          ],
+          children: uniqueVehicleTypes.map((vehicleType) {
+            return Row(
+              children: [
+                JournalDetailBoxVehicle(vehicleType),
+                const SizedBox(width: 6.0),
+              ],
+            );
+          }).toList()
+            ..add(Row(children: [
+              JournalDetailBox(trip.purpose.toString())
+            ])), // Add JournalDetailBox for purpose at the end
         ),
         Container(
             child: const Icon(CupertinoIcons.ellipsis,

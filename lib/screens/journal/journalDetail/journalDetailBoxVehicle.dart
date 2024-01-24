@@ -12,7 +12,7 @@ class JournalDetailBoxVehicle extends StatelessWidget {
   final HeroIcons _icon;
 
   JournalDetailBoxVehicle(TransportType transportType)
-      : _title = transportType.name,
+      : _title = TransportDesign.getName(transportType),
         _color = TransportDesign.getColor(transportType),
         _icon = TransportDesign.getIcon(transportType);
 
@@ -30,7 +30,7 @@ class JournalDetailBoxVehicle extends StatelessWidget {
         children: [
           Text(
             _title,
-            style: AppThemeTextStyles.tiny,
+            style: AppThemeTextStyles.tiny.copyWith(color: _color),
           ),
           HeroIcon(
             _icon,

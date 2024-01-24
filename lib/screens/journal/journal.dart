@@ -49,8 +49,8 @@ class _JournalState extends State<Journal> {
     return Trip(
         donationState:
             DonationState.values[Random().nextInt(DonationState.values.length)],
-        comment: '',
-        purpose: '',
+        comment: 'test',
+        purpose: 'test',
         legs: legs);
   }
 
@@ -65,7 +65,7 @@ class _JournalState extends State<Journal> {
     );
 
     return CupertinoPageScaffold(
-      backgroundColor: AppThemeColors.contrast100,
+      backgroundColor: AppThemeColors.contrast0,
       child: CustomScrollView(slivers: [
         CupertinoSliverNavigationBar(
           largeTitle: const Text('Tagebuch'),

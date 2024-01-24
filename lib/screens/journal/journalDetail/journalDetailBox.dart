@@ -1,7 +1,7 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 
-class journalDetailBox extends StatelessWidget {
+class JournalDetailBox extends StatelessWidget {
   final String _title;
 
   @override
@@ -26,5 +26,5 @@ class journalDetailBox extends StatelessWidget {
     );
   }
 
-  journalDetailBox(this._title);
+  JournalDetailBox(this._title);
 }
