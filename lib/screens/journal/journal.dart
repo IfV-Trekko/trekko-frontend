@@ -11,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 
 import '../../app_theme.dart';
-import 'journalEntry.dart';
+import 'journal_entry.dart';
 
 class Journal extends StatefulWidget {
   final Trekko trekko;
