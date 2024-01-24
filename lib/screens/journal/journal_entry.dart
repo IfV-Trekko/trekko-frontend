@@ -60,7 +60,7 @@ class InformationRow extends StatelessWidget {
           style: AppThemeTextStyles.largeTitle,
         ),
         Text("${trip.getDuration().inMinutes} min"),
-        Text("${trip.getSpeedInKmh().floor()} kmh"),
+        Text("${trip.getSpeedInKmh().round()} kmh"),
         Text(
           DateFormat('HH:mm').format(trip.getEndTime()),
           style: AppThemeTextStyles.largeTitle,
