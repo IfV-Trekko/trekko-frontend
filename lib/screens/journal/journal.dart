@@ -8,8 +8,8 @@ import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:isar/isar.dart';
-
 import '../../app_theme.dart';
 import 'journal_entry.dart';
 
@@ -69,7 +69,24 @@ class _JournalState extends State<Journal> {
       child: CustomScrollView(slivers: [
         CupertinoSliverNavigationBar(
           largeTitle: const Text('Tagebuch'),
-          trailing: addTripDebugButton,
+          leading: GestureDetector(
+            onTap: () {},
+            child: Text("Bearbeiten",
+                style: AppThemeTextStyles.normal
+                    .copyWith(color: AppThemeColors.blue)),
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              addTripDebugButton,
+              const SizedBox(width: 32.0),
+              const HeroIcon(
+                HeroIcons.plus,
+                size: 16,
+                color: AppThemeColors.blue,
+              )
+            ],
+          ),
         ),
         SliverFillRemaining(
           child: StreamBuilder<List<Trip>>(
