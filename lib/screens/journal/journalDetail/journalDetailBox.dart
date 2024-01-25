@@ -16,10 +16,13 @@ class JournalDetailBox extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             _title,
-            style: AppThemeTextStyles.tiny,
+            style: AppThemeTextStyles.small.copyWith(
+              color: AppThemeColors.contrast900,
+            )
           ),
         ],
       ),

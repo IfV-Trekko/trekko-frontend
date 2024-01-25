@@ -19,7 +19,7 @@ class TransportDesign {
 
   //TODO change to correct icons from CupertinoIcons package
   static final Map<TransportType, HeroIcons> _icons = {
-    TransportType.by_foot: HeroIcons.hashtag,
+    TransportType.by_foot: HeroIcons.heart,
     TransportType.bicycle: HeroIcons.hashtag,
     TransportType.car: HeroIcons.hashtag,
     TransportType.publicTransport: HeroIcons.hashtag,

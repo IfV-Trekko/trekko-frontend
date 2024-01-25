@@ -19,23 +19,25 @@ class JournalDetailBoxVehicle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 24,
-      decoration: BoxDecoration(
-        color: _color.withOpacity(0.16), // Background color with opacity 0.16
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 6),
+        height: 24,
+        decoration: BoxDecoration(
+          color: _color.withOpacity(0.16), // Background color with opacity 0.16
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            _title,
-            style: AppThemeTextStyles.tiny.copyWith(color: _color),
-          ),
           HeroIcon(
             _icon,
-            size: 20,
+            size: 18,
             color: _color.withOpacity(0.8), // Icon color with opacity 0.8
+          ),
+          SizedBox(width: 6),
+          Text(
+            _title,
+            style: AppThemeTextStyles.small.copyWith(color: _color),
           ),
         ],
       ),

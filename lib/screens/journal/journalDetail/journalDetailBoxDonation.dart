@@ -21,11 +21,13 @@ class JournalDetailBoxDonation extends StatelessWidget {
           padding: EdgeInsets.only(right: 2.0, left: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text("Gespendet",
                   style: AppThemeTextStyles.small.copyWith(
                     color: AppThemeColors.contrast0,
                   )),
+              SizedBox(width: 2),
               const HeroIcon(
                 HeroIcons.checkCircle,
                 size: 20,
@@ -46,11 +48,13 @@ class JournalDetailBoxDonation extends StatelessWidget {
               padding: EdgeInsets.only(right: 2.0, left: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text("Nicht gespendet",
                       style: AppThemeTextStyles.small.copyWith(
                         color: AppThemeColors.contrast800,
                       )),
+                  SizedBox(width: 2),
                   const HeroIcon(
                     HeroIcons.checkCircle,
                     size: 20,
