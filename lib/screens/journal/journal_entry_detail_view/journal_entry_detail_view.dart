@@ -34,7 +34,7 @@ class JournalEntryDetailView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
+              Container(
                 child: SingleChildScrollView(
                     child: Column(
                   children: [
@@ -46,8 +46,23 @@ class JournalEntryDetailView extends StatelessWidget {
                               'Kinder: kleine Energiebündel 🏃💫, Meister der Kreativität 🎨✨ und Experten im Herzen-Erwärmen 💖🌟'),
                         )),
                     Container(
-                      padding: EdgeInsets.all(16),
-                      color: AppThemeColors.orange,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CupertinoDatePicker(
+                                onDateTimeChanged: (value) {},
+                                initialDateTime: null,
+                              ), //TODO auslagern und implementieren
+                            ],
+                          ),
+                          //TODO implement PathShowcase
+                          // JournalEntryDetailViewDescription(
+                          //     //TODO implement
+                        ],
+                      ),
                     ),
                     Container(
                         child: Column(
@@ -56,19 +71,44 @@ class JournalEntryDetailView extends StatelessWidget {
                           CupertinoListTile.notched(
                             title: Text('Anlass / Zweck',
                                 style: AppThemeTextStyles.normal),
-                            additionalInfo: Text('Arbeit'),
+                            trailing: const CupertinoListTileChevron(),
+                            additionalInfo: CupertinoPicker(
+                              itemExtent: 32,
+                              children: [
+                                Text('Arbeit'),
+                                Text('Einkaufen'),
+                                Text('Freizeit'),
+                                Text('Sonstiges')
+                              ],
+                              onSelectedItemChanged: (value) {},
+                            ),
                           ),
                           CupertinoListTile.notched(
                             title: Text('Verkehrsmittel',
                                 style: AppThemeTextStyles.normal),
-                            additionalInfo: Text('Auto'),
+                            trailing:
+                                const CupertinoListTileChevron(), //TODO change icons and implement heroicons
+                            additionalInfo: CupertinoPicker(
+                              itemExtent: 32,
+                              children: [
+                                Text('Zu Fuß'),
+                                Text('Fahrrad'),
+                                Text('ÖPNV'),
+                                Text('Auto'),
+                                Text('Sonstiges')
+                              ], //TODO add icons
+                              onSelectedItemChanged: (value) {},
+                            ),
                           ),
                         ]),
                         CupertinoListSection.insetGrouped(children: [
                           CupertinoListTile.notched(
                             title: Text('Kommentar',
                                 style: AppThemeTextStyles.normal),
-                            additionalInfo: Text('AHHHHHHHHH'),
+                            additionalInfo: CupertinoTextField(
+                              placeholder: 'Kommentar',
+                              maxLines: 10,
+                            ),
                           ),
                         ])
                       ],
@@ -92,13 +132,34 @@ class JournalEntryDetailView extends StatelessWidget {
                     Expanded(child: Button(title: 'Spenden', onPressed: () {})),
                     SizedBox(width: 8),
                     Container(
-                      width: 48,
-                      child: Button(
-                          style: ButtonStyle.secondary,
-                          title: '',
-                          icon: HeroIcons.squares2x2, //TODO change icons
-                          onPressed: () {}),
-                    )
+                        width: 48,
+                        child: CupertinoContextMenu(
+                          actions: <Widget>[
+                            CupertinoContextMenuAction(
+                              onPressed: () {
+                                Navigator.pop(context); //TODO implement Backend
+                              },
+                              isDefaultAction: true,
+                              trailingIcon: CupertinoIcons
+                                  .doc_on_clipboard_fill, //TODO change icons
+                              child: const Text('Spende zurückziehen'),
+                            ),
+                            CupertinoContextMenuAction(
+                              onPressed: () {
+                                Navigator.pop(context); //TODO implement Backend
+                              },
+                              isDestructiveAction: true,
+                              trailingIcon: CupertinoIcons
+                                  .delete, //TODO change icons and implement heroicons
+                              child: const Text('Unwideruflich löschen'),
+                            ),
+                          ],
+                          child: Button(
+                              style: ButtonStyle.secondary,
+                              title: '',
+                              icon: HeroIcons.squares2x2, //TODO change icons
+                              onPressed: () {}),
+                        ))
                   ],
                 ),
               ),
