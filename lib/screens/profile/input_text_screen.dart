@@ -46,7 +46,7 @@ class _TextInputPageState extends State<TextInputPage> {
         return CupertinoTextField(
           placeholder: widget.question.title,
           autofocus: true,
-          controller: TextEditingController(text: widget.question.key),
+          //controller: TextEditingController(text: widget.question.title), //TODO: Textfeld mit Frage vorbelegen nötig???
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
           ),

@@ -144,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       padding: listTilePadding,
                       title: Text(question.title,
                           style: AppThemeTextStyles.normal),
-                      additionalInfo: Text(question.type.toString()),//Text(answer),
+                      additionalInfo: Text(answer),
                       trailing: const CupertinoListTileChevron(),
                       onTap: () => _navigateAndEditText(profile, question,
                         (String value) => profile.preferences
