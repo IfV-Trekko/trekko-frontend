@@ -80,7 +80,7 @@ class _TrekkoAppState extends State<TrekkoApp> {
     screens = [
       Screen('Erhebung', HeroIcons.play, Tracking()),
       Screen('Tagebuch', HeroIcons.queueList, Journal()),
-      Screen('Statistik', HeroIcons.chartPie, Analysis()),
+      Screen('Statistik', HeroIcons.chartPie, Analysis(super.widget.trekko)),
       Screen(
           'Profil', HeroIcons.userCircle, ProfileScreen(super.widget.trekko)),
     ];
