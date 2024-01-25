@@ -16,7 +16,7 @@ import 'journal_entry.dart';
 class Journal extends StatefulWidget {
   final Trekko trekko;
 
-  const Journal({super.key, required this.trekko});
+  Journal({super.key, required this.trekko});
 
   @override
   State<StatefulWidget> createState() {
@@ -25,6 +25,9 @@ class Journal extends StatefulWidget {
 }
 
 class _JournalState extends State<Journal> {
+  bool selectionMode = false;
+  List<int> selectedTrips = [];
+
   Leg generateLeg() {
     List<TrackedPoint> trackedPoints = [];
     for (int i = 0; i < 10; i++) {
@@ -55,12 +58,19 @@ class _JournalState extends State<Journal> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Widget addTripDebugButton = Button(
       title: "Debug",
       stretch: false,
       onPressed: () async {
-        await widget.trekko.saveTrip(generateTrip());
+        setState(() {
+          selectionMode = !selectionMode;
+        });
       },
     );
 
@@ -97,7 +107,8 @@ class _JournalState extends State<Journal> {
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
+              } else if (snapshot.connectionState == ConnectionState.waiting &&
+                  snapshot.data == null) {
                 return const Center(
                     child: CupertinoActivityIndicator(
                         radius: 20, color: AppThemeColors.contrast500));
@@ -111,10 +122,28 @@ class _JournalState extends State<Journal> {
                   ));
                 } else {
                   return ListView.builder(
+                    padding: const EdgeInsets.all(16.0),
                     itemCount: trips.length,
                     itemBuilder: (context, index) {
                       final trip = trips[index];
-                      return JournalEntry(trip);
+                      return Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: JournalEntry(
+                            key: ValueKey(trips[index].id),
+                            trip,
+                            selectionMode,
+                            isSelected: selectedTrips.contains(trip.id),
+                            onSelectionChanged: (Trip trip, bool isSelected) {
+                              setState(() {
+                                print(selectedTrips.length);
+                                if (isSelected) {
+                                  selectedTrips.add(trip.id);
+                                } else {
+                                  selectedTrips.remove(trip.id);
+                                }
+                              });
+                            },
+                          ));
                     },
                   );
                 }
