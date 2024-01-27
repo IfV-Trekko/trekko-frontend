@@ -4,6 +4,7 @@ import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_description.dart';
+import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_edit_context.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
@@ -59,8 +60,12 @@ class JournalEntryDetailView extends StatelessWidget {
               height: 1,
               width: double.infinity,
               color: AppThemeColors.contrast700, //TODO: Farbe anpassen
-            )
+            ),
+            Container(
+              child: SingleChildScrollView(),
+            ),
           ])),
+          JournalEntryDetailViewEditContext(),
         ],
       )),
     );

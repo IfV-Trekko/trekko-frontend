@@ -41,7 +41,8 @@ class JournalEntryDetailViewDescription extends StatelessWidget {
                     initialValue: 15), //TODO get from Backend
                 Spacer(),
                 JournalEntryDetailViewTimePicker(
-                  initialDateTime: DateTime(2021, 11, 9, 10, 26),
+                  initialDateTime: DateTime(2021, 11, 9, 10,
+                      26), //TODO muss irgednwie geprüft werden ob nicht davor liegt
                 ),
               ],
             ),
