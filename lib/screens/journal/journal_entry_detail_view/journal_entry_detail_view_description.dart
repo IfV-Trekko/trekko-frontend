@@ -1,6 +1,9 @@
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_kilometer_picker.dart';
+import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
+import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_time_picker.dart';
+
 import 'package:flutter/cupertino.dart';
 
 class JournalEntryDetailViewDescription extends StatelessWidget {
@@ -30,11 +33,16 @@ class JournalEntryDetailViewDescription extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text('Start'), //TODO: add date picker
+                JournalEntryDetailViewTimePicker(
+                  initialDateTime: DateTime(2021, 11, 9, 10, 5),
+                ), //TODO: add date picker
                 Spacer(),
-                JournalEntryDetailKilometerPicker(),
+                JournalEntryDetailKilometerPicker(
+                    initialValue: 15), //TODO get from Backend
                 Spacer(),
-                Text('Ende'),
+                JournalEntryDetailViewTimePicker(
+                  initialDateTime: DateTime(2021, 11, 9, 10, 26),
+                ),
               ],
             ),
             SizedBox(height: 16),
