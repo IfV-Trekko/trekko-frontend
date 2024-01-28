@@ -14,7 +14,11 @@ class JournalEntryDetailViewEditContext extends StatelessWidget {
         color: AppThemeColors.contrast0,
         border: Border(
           top: BorderSide(
-            color: AppThemeColors.contrast150,
+            color: AppThemeColors.contrast400,
+            width: 1,
+          ),
+          bottom: BorderSide(
+            color: AppThemeColors.contrast400,
             width: 1,
           ),
         ),

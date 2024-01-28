@@ -4,6 +4,7 @@ import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_description.dart';
+import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_details.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_edit_context.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
@@ -34,37 +35,41 @@ class JournalEntryDetailView extends StatelessWidget {
       child: SafeArea(
           child: Column(
         children: [
-          SingleChildScrollView(
-              child: Column(children: [
-            //
-            //
-            //
-            //TODO Placeholder for Map
-            Container(
-              height: 234,
-              color: AppThemeColors.blue,
-              child: Center(
-                child: Text(
-                    'Kinder: kleine Energiebündel 🏃💫, Meister der Kreativität 🎨✨ und Experten im Herzen-Erwärmen 💖🌟'),
-              ),
-              //
-              //
-              //
-            ),
-            JournalEntryDetailViewDescription(
-                startingPoint: 'Europaplatz', //TODO: Daten aus Trip holen
-                endpoint: 'Ettlingen',
-                startDate: 'Fr., 09 Nov 2023',
-                endDate: 'Fr., 09 Nov 2023'),
-            Container(
-              height: 1,
-              width: double.infinity,
-              color: AppThemeColors.contrast700, //TODO: Farbe anpassen
-            ),
-            Container(
-              child: SingleChildScrollView(),
-            ),
-          ])),
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 261, //TODO nicht clean
+            child: SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                  //
+                  //
+                  //
+                  //TODO Placeholder for Map
+                  Container(
+                    height: 234,
+                    color: AppThemeColors.blue,
+                    child: Center(
+                      child: Text(
+                          'Kinder: kleine Energiebündel 🏃💫, Meister der Kreativität 🎨✨ und Experten im Herzen-Erwärmen 💖🌟'),
+                    ),
+                    //
+                    //
+                    //
+                  ),
+                  JournalEntryDetailViewDescription(
+                      startingPoint: 'Europaplatz', //TODO: Daten aus Trip holen
+                      endpoint: 'Ettlingen',
+                      startDate: 'Fr., 09 Nov 2023',
+                      endDate: 'Fr., 09 Nov 2023'),
+                  Container(
+                    height: 1,
+                    width: double.infinity,
+                    color: AppThemeColors.contrast700, //TODO: Farbe anpassen
+                  ),
+                  JournalEntryDetailViewDetails(),
+                  // Expanded(child: JournalEntryDetailViewDetails())
+                ])),
+          ),
           JournalEntryDetailViewEditContext(),
         ],
       )),
