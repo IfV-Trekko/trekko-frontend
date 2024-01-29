@@ -1,6 +1,6 @@
 import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/components/constants/buttonSize.dart';
-import 'package:app_frontend/components/constants/buttonStyle.dart';
+import 'package:app_frontend/components/constants/button_size.dart';
+import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
