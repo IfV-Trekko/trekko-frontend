@@ -94,7 +94,7 @@ class InformationRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            DateFormat('HH:mm').format(trip.getStartTime()),
+            DateFormat('HH:mm').format(trip.calculateStartTime()),
             style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
           ),
           Container(
@@ -108,7 +108,7 @@ class InformationRow extends StatelessWidget {
             ),
           ),
           Text(
-            DateFormat('HH:mm').format(trip.getEndTime()),
+            DateFormat('HH:mm').format(trip.calculateEndTime()),
             style: AppThemeTextStyles.largeTitle,
           ),
         ],
