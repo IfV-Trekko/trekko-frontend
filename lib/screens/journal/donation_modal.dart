@@ -131,7 +131,6 @@ class DonationModalState extends State<DonationModal>
     setState(() {
       isLoading = true;
     });
-    await Future.delayed(const Duration(seconds: 2));
     int donatedTrips = 0;
     for (var element in selectedTrips) {
       try {
@@ -139,7 +138,23 @@ class DonationModalState extends State<DonationModal>
             widget.trekko.getTripQuery().filter().idEqualTo(element).build());
         donatedTrips++;
       } catch (error) {
-        print('Error donating trip: $error');
+        donatedTrips++;
+        showCupertinoDialog(
+            context: context,
+            builder: (BuildContext context) => CupertinoAlertDialog(
+              title: Text('Fehler'),
+              content: Text('Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten'),
+              actions: [
+                CupertinoDialogAction(
+                  child: Text('Schließen'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            )
+        );
+        return;
       }
     }
     Navigator.pop(context);
