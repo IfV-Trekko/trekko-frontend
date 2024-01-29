@@ -4,11 +4,11 @@ import 'package:app_backend/model/trip/trip.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 
-import '../../../app_theme.dart';
-import '../../../components/button.dart';
-import '../../../components/constants/button_size.dart';
-import '../../../components/constants/button_style.dart';
-import '../journal_entry.dart';
+import '../../app_theme.dart';
+import '../../components/button.dart';
+import '../../components/constants/button_size.dart';
+import '../../components/constants/button_style.dart';
+import 'journal_entry.dart';
 
 class DonationModal extends StatefulWidget {
   final Trekko trekko;
@@ -24,59 +24,61 @@ class DonationModalState extends State<DonationModal>
   @override
   bool get wantKeepAlive => true;
   List<int> selectedTrips = [];
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
+      navigationBar: const CupertinoNavigationBar(
         previousPageTitle: 'Tagebuch',
         middle: Text('Wege'),
-        trailing: Button(
-          title: "Spenden",
-          stretch: false,
-          size: ButtonSize.small,
-          onPressed: () {
-            donate();
-          },
-        )
       ),
       child: SafeArea(
-          top: true,
-          child: Stack(children: [
-            BuildEntries(context, true),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: AppThemeColors.contrast0,
-                  border: Border(
-                    top: BorderSide(
-                      color: AppThemeColors.contrast400,
-                      width: 1.0,
+        top: true,
+        child: Container(
+            color: AppThemeColors.contrast0,
+            child: Stack(children: [
+              _buildEntries(context, true),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: AppThemeColors.contrast0,
+                    border: Border(
+                      top: BorderSide(
+                        color: AppThemeColors.contrast400,
+                        width: 1.0,
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16.0, bottom: 32.0, top: 13.0),
+                    child: Button(
+                      title: 'Spenden',
+                      size: ButtonSize.large,
+                      style: ButtonStyle.primary,
+                      loading: isLoading,
+                      onPressed: () {
+                        donate();
+                      },
                     ),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16.0, right: 16.0, bottom: 32.0, top: 13.0),
-                  child: Button(
-                    title: 'Spenden',
-                    size: ButtonSize.large,
-                    style: ButtonStyle.primary,
-                    onPressed: () {
-                     donate();
-                    },
-                  ),
-                ),
               ),
-            ),
-          ])),
+            ])),
+      ),
     );
   }
 
-  Widget BuildEntries(BuildContext context, bool loadCheckmark) {
+  Widget _buildEntries(BuildContext context, bool loadCheckmark) {
     return StreamBuilder<List<Trip>>(
-      stream: widget.trekko.getTripQuery().filter().donationStateEqualTo(DonationState.undefined).build().watch(fireImmediately: true),
+      stream: widget.trekko
+          .getTripQuery()
+          .filter()
+          .donationStateEqualTo(DonationState.undefined)
+          .build()
+          .watch(fireImmediately: true),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -106,6 +108,7 @@ class DonationModalState extends State<DonationModal>
                       trip,
                       loadCheckmark,
                       isSelected: selectedTrips.contains(trip.id),
+                      isDisabled: isLoading,
                       onSelectionChanged: (Trip trip, bool isSelected) {
                         setState(() {
                           if (isSelected) {
@@ -123,20 +126,32 @@ class DonationModalState extends State<DonationModal>
       },
     );
   }
+
   //TODO Error Handling
   void donate() async {
-    int donatedTrips = 0;
-    selectedTrips.forEach((element) {
-      widget.trekko.donate(widget.trekko.getTripQuery().filter().idEqualTo(element).build()).onError((error, stackTrace) => print(error));
-      donatedTrips++;
+    setState(() {
+      isLoading = true;
     });
+    await Future.delayed(const Duration(seconds: 2));
+    int donatedTrips = 0;
+    for (var element in selectedTrips) {
+      try {
+        await widget.trekko.donate(
+            widget.trekko.getTripQuery().filter().idEqualTo(element).build());
+        donatedTrips++;
+      } catch (error) {
+        print('Error donating trip: $error');
+      }
+    }
     Navigator.pop(context);
+    setState(() {
+      isLoading = false;
+    });
     showCupertinoDialog(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
               title: Text('Spende Erfolgreich'),
-              content: Text(
-                  'Sie haben $donatedTrips Wege übermittelt'),
+              content: Text('Sie haben $donatedTrips Wege übermittelt'),
               actions: [
                 CupertinoDialogAction(
                   child: Text('Schließen'),

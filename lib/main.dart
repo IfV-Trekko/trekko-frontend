@@ -7,7 +7,7 @@ import 'package:app_backend/controller/builder/registration_builder.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/analysis/analysis.dart';
-import 'package:app_frontend/screens/journal/donationModal/donation_modal.dart';
+import 'package:app_frontend/screens/journal/donation_modal.dart';
 import 'package:app_frontend/screens/journal/journal.dart';
 import 'package:app_frontend/screens/profile/profile.dart';
 import 'package:app_frontend/screens/tracking/tracking.dart';
