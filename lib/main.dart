@@ -12,8 +12,12 @@ import 'package:app_frontend/screens/profile/profile.dart';
 import 'package:app_frontend/screens/tracking/tracking.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:isar/isar.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
+  await initializeDateFormatting('de', null);
   WidgetsFlutterBinding.ensureInitialized();
   Trekko trekko = await buildTrekko();
   runApp(TrekkoApp(trekko: trekko));
@@ -78,9 +82,9 @@ class _TrekkoAppState extends State<TrekkoApp> {
   void initState() {
     super.initState();
     screens = [
-      Screen('Erhebung', HeroIcons.play, Tracking()),
-      Screen('Tagebuch', HeroIcons.queueList,
-          Journal(trekko: super.widget.trekko)),
+      Screen('Erhebung', HeroIcons.play,
+          TrackingScreen(trekko: super.widget.trekko)),
+      Screen('Tagebuch', HeroIcons.queueList, Journal()),
       Screen('Statistik', HeroIcons.chartPie, Analysis()),
       Screen(
           'Profil', HeroIcons.userCircle, ProfileScreen(super.widget.trekko)),
@@ -113,10 +117,12 @@ class _TrekkoAppState extends State<TrekkoApp> {
               .toList(),
         ),
         tabBuilder: (context, index) {
-          return IndexedStack(
-            index: index,
-            children: screens.map((e) => e.screen).toList(),
-          );
+          return CupertinoTabView(builder: (context) {
+            return IndexedStack(
+              index: index,
+              children: screens.map((e) => e.screen).toList(),
+            );
+          });
         },
       ),
     );
