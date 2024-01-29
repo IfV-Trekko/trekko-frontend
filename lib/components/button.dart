@@ -27,7 +27,7 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
-      padding: EdgeInsets.zero,
+        padding: EdgeInsets.all(0),
         onPressed: () {
           onPressed();
         },
@@ -42,6 +42,7 @@ class Button extends StatelessWidget {
                 child: Row(
                   mainAxisSize: stretch ? MainAxisSize.max : MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (loading) ...[
                       SizedBox(width: 10),
@@ -59,11 +60,14 @@ class Button extends StatelessWidget {
                           size: size.iconSize,
                           color: style.textColor,
                         ),
-                        SizedBox(width: size.sizedBoxWidth),
+                        if (title.isNotEmpty) ...[
+                          SizedBox(width: size.sizedBoxWidth),
+                        ]
                       ],
                       Text(
                         title,
                         style: GoogleFonts.inter(
+                          height: size.lineHeight,
                           color: style.textColor,
                           fontSize: size.fontSize,
                           fontWeight: size.fontWeight,

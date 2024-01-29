@@ -1,3 +1,4 @@
+import 'package:app_backend/controller/request/request_exception.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/battery_usage_setting.dart';
 import 'package:app_backend/model/profile/onboarding_question.dart';
@@ -29,11 +30,11 @@ class _ProfileScreenState extends State<ProfileScreen>
   final EdgeInsetsGeometry listSectionMargin =
       const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
-  Future<void> _navigateAndEditText(Profile profile, OnboardingQuestion question, Function(String) onChange) async {
+  Future<void> _navigateAndEditText(Profile profile,
+      OnboardingQuestion question, Function(String) onChange) async {
     final result = await Navigator.of(context).push(
       CupertinoPageRoute<String>(
-        builder: (BuildContext context) =>
-            TextInputPage(question: question),
+        builder: (BuildContext context) => TextInputPage(question: question),
       ),
     );
     if (result != null) {
@@ -42,11 +43,13 @@ class _ProfileScreenState extends State<ProfileScreen>
     }
   }
 
-  Future<void> _showBatteryUsageSettingPicker(BuildContext context, Profile profile) async {
+  Future<void> _showBatteryUsageSettingPicker(
+      BuildContext context, Profile profile) async {
     await showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
-        int selectedIndex = BatteryUsageSetting.values.indexOf(profile.preferences.batteryUsageSetting);
+        int selectedIndex = BatteryUsageSetting.values
+            .indexOf(profile.preferences.batteryUsageSetting);
         return CupertinoActionSheet(
           actions: <Widget>[
             SizedBox(
@@ -61,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 },
                 children: List<Widget>.generate(
                   BatteryUsageSetting.values.length,
-                      (int index) {
+                  (int index) {
                     return Center(
                       child: Text(BatteryUsageSetting.values[index].name),
                     );
@@ -74,7 +77,8 @@ class _ProfileScreenState extends State<ProfileScreen>
             child: const Text('Fertig'),
             onPressed: () {
               Navigator.pop(context);
-              _updateBatteryUsageSetting(profile, BatteryUsageSetting.values[selectedIndex]);
+              _updateBatteryUsageSetting(
+                  profile, BatteryUsageSetting.values[selectedIndex]);
             },
           ),
         );
@@ -82,15 +86,13 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  void _updateBatteryUsageSetting(Profile profile, BatteryUsageSetting setting) {
-    // Aktualisieren Sie hier die Einstellung und speichern Sie die Änderungen
+  void _updateBatteryUsageSetting(
+      Profile profile, BatteryUsageSetting setting) {
     profile.preferences.batteryUsageSetting = setting;
-    // Optional: Aktualisieren Sie den State, um die Änderung im UI anzuzeigen
-    setState(() {});
-    widget.trekko.savePreferences(profile.preferences); //TODO: saving of settings
+    widget.trekko
+        .savePreferences(profile.preferences); //TODO: saving of settings
+    widget.trekko.savePreferences(profile.preferences);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -111,31 +113,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                 Profile profile = snapshot.data!;
                 List<CupertinoListTile> questionTiles = [];
 
-               for (OnboardingQuestion question
+                for (OnboardingQuestion question
                     in profile.preferences.onboardingQuestions) {
-                  String? answer =
+                  dynamic answer =
                       profile.preferences.getQuestionAnswer(question.key);
-                  answer ??= 'Nicht beantwortet';
 
                   CupertinoListTile questionTile;
-
                   if (question.type == QuestionType.boolean) {
                     // CupertinoSwitch für boolean Fragen
-                    bool switchValue = answer.toLowerCase() == 'true';
                     questionTile = CupertinoListTile.notched(
                       padding: listTilePadding,
                       title: Text(question.title,
                           style: AppThemeTextStyles.normal),
                       trailing: CupertinoSwitch(
-                        value: switchValue,
+                        value: answer == null ? false : answer as bool,
+                        // TODO: Fallback falls Wert nicht existiert
                         activeColor: AppThemeColors.green,
                         onChanged: (bool? newValue) {
                           if (newValue != null) {
-                            setState(() {
-                              switchValue = newValue; // Aktualisiere den lokalen Zustand des Schalters
-                            });
-                            profile.preferences.setQuestionAnswer(
-                                question.key, newValue.toString()); //TODO: implement change of answer
+                            profile.preferences.setQuestionAnswer(question.key,
+                                newValue); //TODO: implement change of answer
+                            widget.trekko.savePreferences(profile.preferences);
                           }
                         },
                       ),
@@ -146,11 +144,18 @@ class _ProfileScreenState extends State<ProfileScreen>
                       padding: listTilePadding,
                       title: Text(question.title,
                           style: AppThemeTextStyles.normal),
-                      additionalInfo: Text(answer),
+                      additionalInfo: Text(answer == null
+                          ? "Nicht beantwortet"
+                          : answer.toString()),
                       trailing: const CupertinoListTileChevron(),
-                      onTap: () => _navigateAndEditText(profile, question,
-                        (String value) => profile.preferences
-                            .setQuestionAnswer(question.key, value),
+                      onTap: () => _navigateAndEditText(
+                        profile,
+                        question,
+                        (String value) {
+                          profile.preferences
+                              .setQuestionAnswer(question.key, value);
+                          widget.trekko.savePreferences(profile.preferences);
+                        },
                       ),
                     );
                   }
@@ -197,9 +202,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                           padding: listTilePadding,
                           title: Text('Akkunutzung',
                               style: AppThemeTextStyles.normal),
-                          additionalInfo: Text(profile.preferences.batteryUsageSetting.name), //TODO: implement change of usage setting
+                          additionalInfo: Text(
+                              profile.preferences.batteryUsageSetting.name),
+                          //TODO: implement change of usage setting
                           onTap: () async {
-                            await _showBatteryUsageSettingPicker(context, profile);
+                            await _showBatteryUsageSettingPicker(
+                                context, profile);
                           },
                         ),
                       ],

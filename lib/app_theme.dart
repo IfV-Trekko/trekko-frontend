@@ -35,55 +35,55 @@ class AppThemeColors {
 
 class AppThemeTextStyles {
   static TextStyle get headline => GoogleFonts.inter(
-    textStyle: const TextStyle(inherit: false),
-    fontSize: 34,
-    fontWeight: FontWeight.w700,
-    height: 1.76,
-    letterSpacing: -0.6,
-    color: AppThemeColors.contrast900,
-  );
+        textStyle: const TextStyle(inherit: false),
+        fontSize: 34,
+        fontWeight: FontWeight.w700,
+        height: 1.76,
+        letterSpacing: -0.6,
+        color: AppThemeColors.contrast900,
+      );
 
   static TextStyle get largeTitle => GoogleFonts.inter(
-    fontSize: 32,
-    fontWeight: FontWeight.w500,
-    height: 1.25,
-    letterSpacing: -0.6,
-    color: AppThemeColors.contrast900,
-  );
+        fontSize: 32,
+        fontWeight: FontWeight.w500,
+        height: 1.25,
+        letterSpacing: -0.6,
+        color: AppThemeColors.contrast900,
+      );
 
   static TextStyle get title => GoogleFonts.inter(
-    fontSize: 24,
-    fontWeight: FontWeight.w500,
-    height: 1.21,
-    letterSpacing: -0.6,
-    color: AppThemeColors.contrast900,
-  );
+        fontSize: 24,
+        fontWeight: FontWeight.w500,
+        height: 1.21,
+        letterSpacing: -0.6,
+        color: AppThemeColors.contrast900,
+      );
 
   static TextStyle get normal => GoogleFonts.inter(
-    fontSize: 17,
-    fontWeight: FontWeight.w400,
-    height: 1.29,
-    color: AppThemeColors.contrast900,
-  );
+        fontSize: 17,
+        fontWeight: FontWeight.w400,
+        height: 1.29,
+        color: AppThemeColors.contrast900,
+      );
 
   static TextStyle get small => GoogleFonts.inter(
-    fontSize: 15,
-    fontWeight: FontWeight.w400,
-    height: 1.2,
-    color: AppThemeColors.contrast900,
-  );
+        fontSize: 15,
+        fontWeight: FontWeight.w400,
+        height: 1.2,
+        color: AppThemeColors.contrast900,
+      );
 
   static TextStyle get tiny => GoogleFonts.inter(
-    fontSize: 11,
-    fontWeight: FontWeight.w400,
-    height: 1.18,
-    color: AppThemeColors.contrast700,
-  );
+        fontSize: 11,
+        fontWeight: FontWeight.w400,
+        height: 1.18,
+        color: AppThemeColors.contrast700,
+      );
 
   static TextStyle get tabBarLabel => GoogleFonts.inter(
-    fontSize: 10,
-    fontWeight: FontWeight.w400,
-    height: 1.2,
-    color: AppThemeColors.contrast500,
-  );
+        fontSize: 10,
+        fontWeight: FontWeight.w400,
+        height: 1.2,
+        color: AppThemeColors.contrast500,
+      );
 }
