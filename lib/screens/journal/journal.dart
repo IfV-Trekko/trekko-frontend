@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/leg.dart';
 import 'package:app_backend/model/trip/tracked_point.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
@@ -49,12 +48,7 @@ class _JournalState extends State<Journal> {
       legs.add(generateLeg());
     }
 
-    return Trip(
-        donationState:
-            DonationState.values[Random().nextInt(DonationState.values.length)],
-        comment: 'test',
-        purpose: 'test',
-        legs: legs);
+    return Trip.withData(legs);
   }
 
   @override
