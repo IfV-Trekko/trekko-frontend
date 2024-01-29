@@ -3,7 +3,6 @@ import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
-
 import '../../app_theme.dart';
 import '../../components/button.dart';
 import '../../components/constants/button_size.dart';
