@@ -12,17 +12,20 @@ class JournalEntry extends StatelessWidget {
   final Trip trip;
   final bool selectionMode;
   final bool isSelected;
+  final bool isDisabled;
   final Function(Trip, bool)?
       onSelectionChanged; // Callback for selection change
 
   JournalEntry(this.trip, this.selectionMode,
-      {this.onSelectionChanged, this.isSelected = false, Key? key})
+      {this.onSelectionChanged, this.isSelected = false, this.isDisabled = false, Key? key})
       : super(key: key ?? ValueKey(trip.id));
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if (isDisabled) return;
+
         if (selectionMode) {
           if (onSelectionChanged != null) {
             onSelectionChanged!(trip, !isSelected);
@@ -153,7 +156,7 @@ class LabelRow extends StatelessWidget {
               ],
             ),
           // Add JournalDetailBox for purpose and donation
-          if (trip.purpose!.isNotEmpty && trip.purpose != null)
+          if (trip.purpose != null && trip.purpose!.isNotEmpty)
             JournalDetailBox(trip.purpose.toString()),
           JournalDetailBoxDonation(trip.donationState),
           // Icon at the end
