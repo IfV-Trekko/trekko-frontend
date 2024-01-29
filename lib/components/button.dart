@@ -27,6 +27,7 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
+      padding: EdgeInsets.zero,
         onPressed: () {
           onPressed();
         },
