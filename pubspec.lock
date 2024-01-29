@@ -22,7 +22,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: bf6386c32a3249f2e2808aaec56100d87135131d
+      resolved-ref: "9480d29f4c0041fae2025265bc2b958e78d8b019"
       url: "https://github.com/KIT-PSE-2023-24/app-backend"
     source: git
     version: "1.0.0+1"
@@ -114,6 +114,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -146,6 +154,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  fl_chart:
+    dependency: "direct main"
+    description:
+      name: fl_chart
+      sha256: "0cc8f51e421f2a2113ea437a3c9c618e2dfec1c261fb177d433cc3573ba9bb91"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.40.6"
+  fling_units:
+    dependency: transitive
+    description:
+      name: fling_units
+      sha256: "2bf10acf2eb519e666df036881ef64c073e826225b00ce2663aa9d7547449312"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.6"
   fluster:
     dependency: transitive
     description:
@@ -421,10 +445,10 @@ packages:
     dependency: transitive
     description:
       name: mime
-      sha256: e4ff8e8564c03f255408decd16e7899da1733852a9110a58fe6d1b817684a63e
+      sha256: "2e123074287cc9fd6c09de8336dae606d1ddb88d9ac47358826db698c176a1f2"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.5"
   node_preamble:
     dependency: transitive
     description:

@@ -60,25 +60,26 @@ class _ProfileScreenState extends State<ProfileScreen>
                 Profile profile = snapshot.data!;
                 List<CupertinoListTile> questionTiles = [];
 
-                for (OnboardingQuestion question
-                    in profile.onboardingQuestions) {
-                  String? answer =
-                      profile.preferences.getQuestionAnswer(question.key);
-                  answer ??= 'Nicht beantwortet';
-                  questionTiles.add(CupertinoListTile.notched(
-                      padding: listTilePadding,
-                      title: Text(question.title,
-                          style: AppThemeTextStyles.normal),
-                      additionalInfo: Text(answer),
-                      trailing: const CupertinoListTileChevron(),
-                      onTap: () => _navigateAndEditText(
-                            profile,
-                            question.title,
-                            answer!,
-                            (String value) => profile.preferences
-                                .setQuestionAnswer(question.key, value),
-                          )));
-                }
+                // for (OnboardingQuestion question
+                //     in profile.onboardingQuestions) {
+                //   String? answer =
+                //       profile.preferences.getQuestionAnswer(question.key);
+                //   answer ??= 'Nicht beantwortet';
+                //   questionTiles.add(CupertinoListTile.notched(
+                //       padding: listTilePadding,
+                //       title: Text(question.title,
+                //           style: AppThemeTextStyles.normal),
+                //       additionalInfo: Text(answer),
+                //       trailing: const CupertinoListTileChevron(),
+                //       onTap: () => _navigateAndEditText(
+                //             profile,
+                //             question.title,
+                //             answer!,
+                //             (String value) => profile.preferences
+                //                 .setQuestionAnswer(question.key, value),
+                //           )));
+                // }
+
                 if (questionTiles.isEmpty) {
                   questionTiles.add(CupertinoListTile.notched(
                     padding: listTilePadding,
