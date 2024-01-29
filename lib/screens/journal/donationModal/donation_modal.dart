@@ -108,7 +108,6 @@ class DonationModalState extends State<DonationModal>
                       isSelected: selectedTrips.contains(trip.id),
                       onSelectionChanged: (Trip trip, bool isSelected) {
                         setState(() {
-                          print(selectedTrips.length);
                           if (isSelected) {
                             selectedTrips.add(trip.id);
                           } else {
