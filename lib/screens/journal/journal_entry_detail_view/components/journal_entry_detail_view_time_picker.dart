@@ -3,15 +3,19 @@ import 'package:flutter/cupertino.dart';
 
 class JournalEntryDetailViewTimePicker extends StatefulWidget {
   final DateTime initialDateTime;
-  late DateTime minimumDateTime;
-  late DateTime maximumDateTime; //TODO so ok?
+  final Function(DateTime) onChange;
+  DateTime? minimumDateTime;
+  DateTime? maximumDateTime;
 
   JournalEntryDetailViewTimePicker({
     Key? key,
     required this.initialDateTime,
+    required this.onChange,
+    this.minimumDateTime,
+    this.maximumDateTime,
   }) : super(key: key) {
-    minimumDateTime = initialDateTime.add(Duration(days: -1));
-    maximumDateTime = initialDateTime.add(Duration(days: 1));
+    minimumDateTime ??= initialDateTime.add(Duration(days: -1));
+    maximumDateTime ??= initialDateTime.add(Duration(days: 1));
   }
 
   @override
@@ -47,7 +51,6 @@ class _JournalEntryDetailViewTimePickerState
                   initialDateTime: selectedDateTime,
                   onDateTimeChanged: (val) {
                     setState(() {
-                      //TODO set to backend
                       selectedDateTime = val;
                     });
                   },
@@ -59,7 +62,10 @@ class _JournalEntryDetailViewTimePickerState
             ),
             CupertinoButton(
               child: Text('OK'),
-              onPressed: () {}, //TODO schick ans Backend
+              onPressed: () {
+                widget.onChange(selectedDateTime);
+                Navigator.of(context).pop();
+              },
             )
           ],
         ),
@@ -74,9 +80,11 @@ class _JournalEntryDetailViewTimePickerState
       child: CupertinoButton(
         padding: EdgeInsets.symmetric(horizontal: 11),
         color: AppThemeColors.contrast150,
-        onPressed: () => _showCupertinoDateTimePicker(context),
+        onPressed: () => _showCupertinoDateTimePicker(
+          context,
+        ),
         child: Text(
-          "${selectedDateTime.hour.toString().padLeft(2, '0')}:${selectedDateTime.minute.toString().padLeft(2, '0')}",
+          "${widget.initialDateTime.hour.toString().padLeft(2, '0')}:${widget.initialDateTime.minute.toString().padLeft(2, '0')}",
           style: AppThemeTextStyles.small.copyWith(fontWeight: FontWeight.w600),
         ),
       ),

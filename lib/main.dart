@@ -12,8 +12,12 @@ import 'package:app_frontend/screens/profile/profile.dart';
 import 'package:app_frontend/screens/tracking/tracking.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:isar/isar.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
+  await initializeDateFormatting('de', null);
   WidgetsFlutterBinding.ensureInitialized();
   Trekko trekko = await buildTrekko();
   runApp(TrekkoApp(trekko: trekko));

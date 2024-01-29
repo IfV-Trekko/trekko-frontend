@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
 class JournalEntryDetailViewEditContext extends StatelessWidget {
-  const JournalEntryDetailViewEditContext({super.key});
-  //TODO eigentlich falscher stil vom ContextMenu
+  final bool donated;
+  const JournalEntryDetailViewEditContext({required this.donated, super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,9 +26,12 @@ class JournalEntryDetailViewEditContext extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       child: Row(
         children: [
-          Expanded(child: Button(title: 'Spenden', onPressed: () {})),
+          Expanded(
+              child: Button(
+                  title: donated ? 'Aktualisieren' : 'Spenden',
+                  onPressed: () {})),
           SizedBox(width: 8),
-          EditContext()
+          EditContext(donated: donated) // TODO abhängigkeit einfügen
         ],
       ),
     );
@@ -36,17 +39,49 @@ class JournalEntryDetailViewEditContext extends StatelessWidget {
 }
 
 class EditContext extends StatelessWidget {
-  const EditContext({super.key});
+  final bool donated;
+
+  const EditContext({required this.donated, super.key});
 
   // This shows a CupertinoModalPopup which hosts a CupertinoActionSheet.
-  void _showEditContext(BuildContext context) {
+  void _showEditContextDonated(BuildContext context) {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
             onPressed: () {},
+            child: const Text('Zurücksetzen'),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {},
             child: const Text('Spende zurückziehen'),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {},
+            child: const Text('Unwideruflich Löschen'),
+            isDestructiveAction: true,
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: const Text('Cancel'),
+          isDefaultAction: true,
+          onPressed: () {
+            Navigator.pop(context, 'Cancel');
+          },
+        ),
+      ),
+    );
+  }
+
+  void _showEditContextNotDonated(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            onPressed: () {},
+            child: const Text('Zurücksetzen'),
           ),
           CupertinoActionSheetAction(
             onPressed: () {},
@@ -72,8 +107,11 @@ class EditContext extends StatelessWidget {
       child: Button(
           style: ButtonStyle.secondary,
           title: '',
-          icon: HeroIcons.squares2x2, //TODO change icons
-          onPressed: () => _showEditContext(context)),
+          icon: HeroIcons.ellipsisHorizontal,
+          onPressed: donated
+              ? () => _showEditContextDonated(context)
+              : () =>
+                  _showEditContextNotDonated(context)), //TODO abhängig machen
     );
   }
 }

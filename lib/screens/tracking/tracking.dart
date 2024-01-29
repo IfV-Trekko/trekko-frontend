@@ -1,5 +1,13 @@
+import 'dart:math';
+
 import 'package:app_backend/controller/trekko.dart';
+import 'package:app_backend/controller/utils/trip_builder.dart';
 import 'package:app_backend/model/tracking_state.dart';
+import 'package:app_backend/model/trip/donation_state.dart';
+import 'package:app_backend/model/trip/leg.dart';
+import 'package:app_backend/model/trip/tracked_point.dart';
+import 'package:app_backend/model/trip/transport_type.dart';
+import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
@@ -7,6 +15,8 @@ import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_e
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:isar/isar.dart';
+import 'package:fling_units/fling_units.dart';
 
 class TrackingScreen extends StatefulWidget {
   final Trekko trekko;
@@ -24,6 +34,16 @@ class _TrackingScreenState extends State<TrackingScreen>
   @override
   bool get wantKeepAlive => true;
 
+  void generateTrip() {
+    Trip trip =
+        TripBuilder().move_r(Duration(minutes: 20), 2.kilo.meters).build();
+
+    Navigator.of(context).push(CupertinoPageRoute(
+        builder: (context) => JournalEntryDetailView(
+              Stream.value(trip),
+            )));
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -40,6 +60,13 @@ class _TrackingScreenState extends State<TrackingScreen>
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) =>
                       JournalEntryDetailView(Stream.empty())));
+            },
+          ),
+          Button(
+            title: 'Generate trip',
+            style: ButtonStyle.secondary,
+            onPressed: () {
+              generateTrip();
             },
           ),
           StreamBuilder(
