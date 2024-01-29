@@ -76,7 +76,7 @@ class DonationModalState extends State<DonationModal>
 
   Widget BuildEntries(BuildContext context, bool loadCheckmark) {
     return StreamBuilder<List<Trip>>(
-      stream: widget.trekko.getTripQuery().build().watch(fireImmediately: true),
+      stream: widget.trekko.getTripQuery().filter().donationStateEqualTo(DonationState.undefined).build().watch(fireImmediately: true),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -123,10 +123,28 @@ class DonationModalState extends State<DonationModal>
       },
     );
   }
-
+  //TODO Error Handling
   void donate() async {
+    int donatedTrips = 0;
     selectedTrips.forEach((element) {
-      widget.trekko.donate(widget.trekko.getTripQuery().filter().idEqualTo(element).build());
+      widget.trekko.donate(widget.trekko.getTripQuery().filter().idEqualTo(element).build()).onError((error, stackTrace) => print(error));
+      donatedTrips++;
     });
+    Navigator.pop(context);
+    showCupertinoDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+              title: Text('Spende Erfolgreich'),
+              content: Text(
+                  'Sie haben $donatedTrips Wege übermittelt'),
+              actions: [
+                CupertinoDialogAction(
+                  child: Text('Schließen'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            ));
   }
 }
