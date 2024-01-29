@@ -111,8 +111,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                 Profile profile = snapshot.data!;
                 List<CupertinoListTile> questionTiles = [];
 
-                for (OnboardingQuestion question in profile.preferences.onboardingQuestions) {
-                  String? answer = profile.preferences.getQuestionAnswer(question.key);
+               for (OnboardingQuestion question
+                    in profile.preferences.onboardingQuestions) {
+                  String? answer =
+                      profile.preferences.getQuestionAnswer(question.key);
                   answer ??= 'Nicht beantwortet';
 
                   CupertinoListTile questionTile;
