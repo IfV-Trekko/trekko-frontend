@@ -1,3 +1,5 @@
+import 'package:app_backend/controller/request/bodies/response/error_response.dart';
+import 'package:app_backend/controller/request/request_exception.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/trip.dart';
@@ -126,7 +128,6 @@ class DonationModalState extends State<DonationModal>
     );
   }
 
-  //TODO Error Handling
   void donate() async {
     setState(() {
       isLoading = true;
@@ -136,25 +137,30 @@ class DonationModalState extends State<DonationModal>
       try {
         await widget.trekko.donate(
             widget.trekko.getTripQuery().filter().idEqualTo(element).build());
-        donatedTrips++;
+            donatedTrips++;
       } catch (error) {
         donatedTrips++;
+        Navigator.pop(context); // Close the modal
+        setState(() {
+          isLoading = false; // Set isLoading to false
+        });
         showCupertinoDialog(
             context: context,
             builder: (BuildContext context) => CupertinoAlertDialog(
-              title: Text('Fehler'),
-              content: Text('Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten'),
-              actions: [
-                CupertinoDialogAction(
-                  child: Text('Schließen'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              ],
-            )
-        );
+                  title: Text('Fehler'),
+                  content: Text(
+                      'Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten'),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: Text('Schließen'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ));
         return;
+
       }
     }
     Navigator.pop(context);
@@ -175,5 +181,6 @@ class DonationModalState extends State<DonationModal>
                 )
               ],
             ));
+    selectedTrips.clear();
   }
 }
