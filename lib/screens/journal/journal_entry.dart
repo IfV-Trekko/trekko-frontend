@@ -17,7 +17,10 @@ class JournalEntry extends StatelessWidget {
       onSelectionChanged; // Callback for selection change
 
   JournalEntry(this.trip, this.selectionMode,
-      {this.onSelectionChanged, this.isSelected = false, this.isDisabled = false, Key? key})
+      {this.onSelectionChanged,
+      this.isSelected = false,
+      this.isDisabled = false,
+      Key? key})
       : super(key: key ?? ValueKey(trip.id));
 
   @override
@@ -25,7 +28,6 @@ class JournalEntry extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (isDisabled) return;
-
         if (selectionMode) {
           if (onSelectionChanged != null) {
             onSelectionChanged!(trip, !isSelected);
@@ -43,35 +45,74 @@ class JournalEntry extends StatelessWidget {
                   width: 24,
                   height: 24,
                   child: CupertinoCheckbox(
-                shape: const CircleBorder(),
-                activeColor: AppThemeColors.blue,
-                value: isSelected,
-                onChanged: (value) {
-                  if (onSelectionChanged != null) {
-                    onSelectionChanged!(trip, !isSelected);
-                  }
-                },
-              )),
+                    shape: const CircleBorder(),
+                    activeColor: AppThemeColors.blue,
+                    value: isSelected,
+                    onChanged: (value) {
+                      if (onSelectionChanged != null) {
+                        onSelectionChanged!(trip, !isSelected);
+                      }
+                    },
+                  )),
             ),
           if (selectionMode) const SizedBox(width: 16.0),
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppThemeColors.contrast0,
-                borderRadius: BorderRadius.circular(6.0),
-                border: Border.all(
-                  color: AppThemeColors.contrast400,
-                  width: 1.0,
+            child: CupertinoContextMenu(
+              enableHapticFeedback: true,
+              actions: <Widget>[
+                CupertinoContextMenuAction(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  isDefaultAction: true,
+                  trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
+                  child: Text(
+                    'Spenden',
+                    style: AppThemeTextStyles.normal
+                        .copyWith(color: AppThemeColors.contrast900),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    InformationRow(trip),
-                    VehicleLine(trip),
-                    FooterRow(trip, selectionMode),
-                  ],
+                CupertinoContextMenuAction(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  trailingIcon: CupertinoIcons.share,
+                  child: Text(
+                    'Bearbeiten',
+                    style: AppThemeTextStyles.normal
+                        .copyWith(color: AppThemeColors.contrast900),
+                  ),
+                ),
+                CupertinoContextMenuAction(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  trailingIcon: CupertinoIcons.share,
+                  child: Text(
+                    'Unwiderruflich löschen',
+                    style: AppThemeTextStyles.normal
+                        .copyWith(color: AppThemeColors.red),
+                  ),
+                ),
+              ],
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppThemeColors.contrast0,
+                  borderRadius: BorderRadius.circular(6.0),
+                  border: Border.all(
+                    color: AppThemeColors.contrast400,
+                    width: 1.0,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      InformationRow(trip),
+                      VehicleLine(trip),
+                      FooterRow(trip, selectionMode),
+                    ],
+                  ),
                 ),
               ),
             ),
