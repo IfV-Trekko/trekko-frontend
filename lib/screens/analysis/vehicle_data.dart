@@ -3,17 +3,18 @@ import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/leg.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
+import 'package:app_frontend/screens/journal/journalDetail/transportDesign.dart';
 import 'package:flutter/cupertino.dart';
 import '../../app_theme.dart';
 import 'attribute_row.dart';
 import 'package:isar/isar.dart';
+import 'package:fling_units/fling_units.dart';
 
 class VehicleDataBox extends StatelessWidget {
   Trekko trekko;
   TransportType vehicle;
 
-  VehicleDataBox({required this.trekko, required this.vehicle}); // Konstruktor
-  //
+  VehicleDataBox({required this.trekko, required this.vehicle});
   Stream<T?> getData<T>(T Function(Trip) apply, Reduction<T> reduction) {
     return trekko.analyze(
         trekko
@@ -56,17 +57,17 @@ class VehicleDataBox extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppThemeColors.contrast0, // Hintergrundfarbe
           border: Border.all(
-            color: AppThemeColors.purple.withOpacity(0.27),
+            color: TransportDesign.getColor(vehicle).withOpacity(0.27), // Rahmenfarbe
           ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              AppThemeColors.purple
+              TransportDesign.getColor(vehicle)
                   .withOpacity(0.08), // Anfangsfarbe des Verlaufs
-              AppThemeColors.purple
+              TransportDesign.getColor(vehicle)
                   .withOpacity(0.00), // Mittelfarbe des Verlaufs
-              AppThemeColors.purple
+              TransportDesign.getColor(vehicle)
                   .withOpacity(0.00),
             ],
             stops: [0.0, 0.1875, 1], // Definieren Sie hier die Stop-Positionen
@@ -79,11 +80,16 @@ class VehicleDataBox extends StatelessWidget {
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: [  //TODO: Icon einfügen
+                /*Icon(
+                  TransportDesign.getIcon(vehicle),
+                  color: TransportDesign.getColor(vehicle),
+                  size: 32,
+                ),*/
                 Text(
-                  vehicle.toString(), // Verwendung des Parameters title
+                  TransportDesign.getName(vehicle), // Verwendung des Parameters title
                   style: AppThemeTextStyles.title.copyWith(
-                    color: AppThemeColors.purple,
+                    color: TransportDesign.getColor(vehicle),
                   ),
                 ),
               ],
@@ -93,22 +99,25 @@ class VehicleDataBox extends StatelessWidget {
             AttributeRow(
                 title: 'Gesamtstrecke',
                 value: getDataFormatted((t) => t.getDistance(),
-                    DistanceReduction.SUM, (d) => d.toString())),
+                    DistanceReduction.SUM, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
+
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Strecke pro Weg',
                 value: getDataFormatted((t) => t.getDistance(),
-                    DistanceReduction.AVERAGE, (d) => d.toString())),
+                    DistanceReduction.AVERAGE, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
+
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Geschwindigkeit',
                 value: getDataFormatted((t) => t.getSpeed(),
-                    SpeedReduction.AVERAGE, (d) => d.toString())),
+                    SpeedReduction.AVERAGE, (d) => d.as(kilo.meters, hours).roundToDouble().toString() + " km/h")),
+
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Wegzeit',
                 value: getDataFormatted((t) => t.getDuration(),
-                    DurationReduction.AVERAGE, (d) => d.toString())),
+                    DurationReduction.AVERAGE, (d) => d.inMinutes.roundToDouble().toString() + " min")),
           ],
         ),
       )

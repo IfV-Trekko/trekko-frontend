@@ -1,25 +1,67 @@
+import 'package:async/async.dart';
+
+import 'package:app_backend/controller/analysis/reductions.dart';
+import 'package:app_backend/controller/trekko.dart';
+import 'package:app_backend/model/trip/leg.dart';
+import 'package:app_backend/model/trip/transport_type.dart';
+import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
+import 'package:fling_units/fling_units.dart';
+
+import '../journal/journalDetail/transportDesign.dart';
 
 class PieChartWidget extends StatefulWidget {
-  const PieChartWidget({super.key});
-
   @override
   State<StatefulWidget> createState() => PieChartWidgetState();
+
+  Trekko trekko;
+
+  PieChartWidget({required this.trekko});
 }
 
-class PieChartWidgetState extends State {
-  @override
-  Widget build(BuildContext context) {
+class PieChartWidgetState extends State<PieChartWidget> {
+  Stream<Distance?> getData(TransportType vehicle) {
+    return widget.trekko.analyze(
+        widget.trekko
+            .getTripQuery()
+            .filter()
+            .legsElement((l) => l.transportTypeEqualTo(vehicle))
+            .build(),
+        (t) => t.getDistance(),
+        DistanceReduction.SUM);
+  }
+
+  Widget buildPieChart(Distance sum) {
+    List<Stream<PieChartSectionData>> pieCharts = List.empty(growable: true);
+    for (TransportType type in TransportType.values) {
+      pieCharts.add(getData(type).map((Distance? value) {
+        return PieChartSectionData(
+          color: TransportDesign.getColor(type),
+          value: value == null ? 0 : value.as(meters),
+          title: value == null
+              ? '0%'
+              : (value.as(meters) / sum.as(meters) * 100).round().toString() +
+                  '%',
+          radius: 55,
+          titleStyle: AppThemeTextStyles.normal.copyWith(
+            color: AppThemeColors.contrast0,
+            fontWeight: FontWeight.bold,
+          ),
+        );
+      }));
+    }
+
     return Column(
       children: [
         Row(
           children: [
             Container(
               margin: EdgeInsets.only(bottom: 14.0, left: 12.0, top: 12.0),
-              child: Text('Gesamtstrecke',
-                  style: AppThemeTextStyles.title),
+              child: Text('Gesamtstrecke', style: AppThemeTextStyles.title),
             ),
           ],
         ),
@@ -28,16 +70,28 @@ class PieChartWidgetState extends State {
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              PieChart(
-                PieChartData(
-                  sectionsSpace: 5,
-                  centerSpaceRadius: 50,
-                  sections: showingSections(),
-                  startDegreeOffset: 20,
-                ),
+              StreamBuilder<List<PieChartSectionData>>(
+                stream: StreamZip(pieCharts),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return PieChart(
+                      PieChartData(
+                        sectionsSpace: 5,
+                        centerSpaceRadius: 50,
+                        sections: snapshot.data!,
+                        startDegreeOffset: 20,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    throw snapshot.error!;
+                    return Text("${snapshot.error}");
+                  } else {
+                    return CupertinoActivityIndicator();
+                  }
+                },
               ),
               Text(
-                '1234km',
+                sum.as(kilo.meters).roundToDouble().toString() + " km",
                 style: AppThemeTextStyles.normal
                     .copyWith(fontWeight: FontWeight.bold),
               ),
@@ -50,15 +104,15 @@ class PieChartWidgetState extends State {
             borderRadius: BorderRadius.circular(8),
           ),
           padding: EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
-          child:
-          Wrap(
-            spacing: 12, // Horizontaler Abstand zwischen den Legenden-Indikatoren
+          child: Wrap(
+            spacing:
+                12, // Horizontaler Abstand zwischen den Legenden-Indikatoren
             runSpacing: 12, // Vertikaler Abstand zwischen den Zeilen
             children: [
-              LegendIndicator(color: AppThemeColors.purple, text: 'Fahrrad'),
-              LegendIndicator(color: AppThemeColors.orange, text: 'Auto'),
-              LegendIndicator(color: AppThemeColors.blue, text: 'zu Fuß'),
-              LegendIndicator(color: AppThemeColors.turquoise, text: 'ÖPNV'),
+              for (TransportType type in TransportType.values)
+                LegendIndicator(
+                    color: TransportDesign.getColor(type),
+                    text: TransportDesign.getName(type)),
             ],
           ),
         )
@@ -66,58 +120,21 @@ class PieChartWidgetState extends State {
     );
   }
 
-  List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final radius = 50.0;
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: AppThemeColors.purple,
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: AppThemeTextStyles.normal.copyWith(
-                color: AppThemeColors.contrast0,
-                fontWeight: FontWeight.bold,
-            ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: AppThemeColors.orange,
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: AppThemeTextStyles.normal.copyWith(
-                color: AppThemeColors.contrast0,
-              fontWeight: FontWeight.bold,
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: AppThemeColors.blue,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: AppThemeTextStyles.normal.copyWith(
-                color: AppThemeColors.contrast0,
-              fontWeight: FontWeight.bold,
-            ),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: AppThemeColors.turquoise,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: AppThemeTextStyles.normal.copyWith(
-                color: AppThemeColors.contrast0,
-              fontWeight: FontWeight.bold,
-            ),
-          );
-        default:
-          throw Error();
-      }
-    });
+  @override
+  Widget build(BuildContext context) {
+    var stream = widget.trekko.analyze(widget.trekko.getTripQuery().build(),
+        (p0) => p0.getDistance(), DistanceReduction.SUM);
+    return StreamBuilder(
+        stream: stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return buildPieChart(snapshot.data!);
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          } else {
+            return CupertinoActivityIndicator();
+          }
+        });
   }
 }
 
@@ -142,9 +159,10 @@ class LegendIndicator extends StatelessWidget {
           ),
         ),
         SizedBox(width: 8),
-        Text(text, style: AppThemeTextStyles.normal.copyWith(
-          color: color,
-        )),
+        Text(text,
+            style: AppThemeTextStyles.normal.copyWith(
+              color: color,
+            )),
       ],
     );
   }

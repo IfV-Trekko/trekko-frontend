@@ -1,8 +1,6 @@
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
-
-
 import '../../../app_theme.dart';
 
 //TODO: change from red and Hashtag to correct colors and icons

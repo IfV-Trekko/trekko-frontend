@@ -1,92 +1,119 @@
+import 'package:app_backend/controller/analysis/reductions.dart';
+import 'package:app_backend/controller/trekko.dart';
+import 'package:app_backend/model/trip/leg.dart';
+import 'package:app_backend/model/trip/transport_type.dart';
+import 'package:app_backend/model/trip/trip.dart';
+import 'package:app_frontend/screens/journal/journalDetail/transportDesign.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../../app_theme.dart';
+import 'package:isar/isar.dart';
+import 'package:fling_units/fling_units.dart';
 
 class BarChartWidget extends StatefulWidget {
-  const BarChartWidget({super.key});
-
   @override
   State<StatefulWidget> createState() => BarChartWidgetState();
+
+  Trekko trekko;
+
+  BarChartWidget({required this.trekko});
 }
 
-class BarChartWidgetState extends State {
+class BarChartWidgetState extends State<BarChartWidget> {
+  Stream<Duration?> getData(TransportType vehicle) {
+    return widget.trekko.analyze(
+        widget.trekko
+            .getTripQuery()
+            .filter()
+            .legsElement((l) => l.transportTypeEqualTo(vehicle))
+            .build(),
+        (t) => t.getDuration(),
+        DurationReduction.AVERAGE);
+  }
 
   @override
   Widget build(BuildContext context) {
+    double maxDuration = 0;
+    for (TransportType type in TransportType.values) {
+      getData(type).map((Duration? value) {
+        if (value!.inMinutes > maxDuration) {
+          maxDuration = value.inMinutes.toDouble();
+        }
+      });
+    }
+
+    List<BarChartGroupData> barGroups = List.empty(growable: true);
+    for (TransportType type in TransportType.values) {
+      barGroups.add(BarChartGroupData(
+        x: TransportType.values.indexOf(type),
+        barRods: [
+          BarChartRodData(
+            toY: 5, //TODO: Wert anpassen
+            color: TransportDesign.getColor(type),
+            width: 14,
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ],
+      ));
+    }
+
     return Column(
       children: [
         Row(
           children: [
             Container(
               margin: EdgeInsets.only(bottom: 14.0, left: 12.0, top: 12.0),
-              child: Text('Gesamtstrecke',
-                  style: AppThemeTextStyles.title),
+              child: Text('Durch. Wegzeit', style: AppThemeTextStyles.title),
             ),
           ],
         ),
         SizedBox(height: 10.0),
-        AspectRatio(
-            aspectRatio: 1.6,
-          child: BarChart(
-            BarChartData(
-              //alignment: BarChartAlignment.spaceAround,
-              maxY: 15,
-              barTouchData: BarTouchData(
-                enabled: false,
+        Container(
+            margin: EdgeInsets.only(right: 12.0, bottom: 12.0, top: 12.0),
+            child: AspectRatio(
+              aspectRatio: 1.6,
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.values[4],
+                  maxY: maxDuration, //TODO: Maximalwert anpassen
+                  extraLinesData: ExtraLinesData(
+                    horizontalLines: [
+                      HorizontalLine(
+                        y: 11, //TODO: Wert anpassen, kann den Durchschnittswert darstellen
+                        color: AppThemeColors.purple, //TODO: Farbe anpassen
+                        strokeWidth: 2,
+                      ),
+                    ],
+                  ),
+                  gridData: FlGridData(
+                    show: true,
+                    drawHorizontalLine: true,
+                    drawVerticalLine: false,
+                    horizontalInterval: 5,
+                    getDrawingHorizontalLine: (value) {
+                      return FlLine(
+                        color: AppThemeColors.contrast200,
+                        strokeWidth: 1.5,
+                      );
+                    },
+                  ),
+                  borderData: FlBorderData(
+                    show: false,
+                  ),
+                  titlesData: const FlTitlesData(
+                    show: true,
+                    rightTitles: AxisTitles(
+                      drawBelowEverything: false,
+                    ),
+                    topTitles: AxisTitles(
+                      drawBelowEverything: false,
+                    ),
+                  ),
+                  barGroups: barGroups,
+                ),
               ),
-              gridData: FlGridData(
-                show: false,
-              ),
-              titlesData: FlTitlesData(
-                show: true,
-                // bottomTitles: SideTitles(
-                //   showTitles: true,
-                //   getTextStyles: (context, value) => const TextStyle(color: Colors.black, fontSize: 13),
-                //   margin: 10,
-                //   getTitles: (double value) {
-                //     switch (value.toInt()) {
-                //       case 0:
-                //         return 'Mon';
-                //       case 1:
-                //         return 'Tue';
-                //       case 2:
-                //         return 'Wed';
-                //       case 3:
-                //         return 'Thu';
-                //       case 4:
-                //         return 'Fri';
-                //       case 5:
-                //         return 'Sat';
-                //       case 6:
-                //         return 'Sun';
-                //       default:
-                //         return '';
-                //     }
-                //   },
-                // ),
-                // leftTitles: SideTitles(
-                //   showTitles: true,
-                // ),
-                // rightTitles: SideTitles(
-                //   showTitles: false,
-                // ),
-                // topTitles: SideTitles(
-                //   showTitles: false,
-                // ),
-              ),
-              borderData: FlBorderData(
-                show: false,
-              ),
-              barGroups: [
-                // BarChartGroupData(x: 0, barRods: [BarChartRodData(y: 8, colors: [Colors.lightBlueAccent])]),
-                // BarChartGroupData(x: 1, barRods: [BarChartRodData(y: 10, colors: [Colors.lightBlueAccent])]),
-                // BarChartGroupData(x: 5, barRods: [BarChartRodData(y: 14, colors: [Colors.lightBlueAccent])]),
-                // // Fügen Sie weitere BarChartGroupData für andere Balken hinzu
-              ],
-            ),
-          ),
-        )
+            ))
       ],
     );
   }
-  }
+}
