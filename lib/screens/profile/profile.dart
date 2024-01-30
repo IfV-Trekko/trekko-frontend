@@ -1,5 +1,8 @@
+import 'package:app_backend/controller/request/request_exception.dart';
 import 'package:app_backend/controller/trekko.dart';
+import 'package:app_backend/model/profile/battery_usage_setting.dart';
 import 'package:app_backend/model/profile/onboarding_question.dart';
+import 'package:app_backend/model/profile/question_type.dart';
 import 'package:flutter/cupertino.dart';
 import '../../app_theme.dart';
 import 'package:app_backend/model/profile/profile.dart';
@@ -27,18 +30,68 @@ class _ProfileScreenState extends State<ProfileScreen>
   final EdgeInsetsGeometry listSectionMargin =
       const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
-  Future<void> _navigateAndEditText(Profile profile, String title,
-      String currentText, Function(String) onChange) async {
+  Future<void> _navigateAndEditText(Profile profile,
+      OnboardingQuestion question, Function(String) onChange) async {
     final result = await Navigator.of(context).push(
       CupertinoPageRoute<String>(
-        builder: (BuildContext context) =>
-            TextInputPage(title: title, currentText: currentText),
+        builder: (BuildContext context) => TextInputPage(question: question),
       ),
     );
     if (result != null) {
       onChange.call(result);
       widget.trekko.savePreferences(profile.preferences);
     }
+  }
+
+  Future<void> _showBatteryUsageSettingPicker(
+      BuildContext context, Profile profile) async {
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) {
+        int selectedIndex = BatteryUsageSetting.values
+            .indexOf(profile.preferences.batteryUsageSetting);
+        return CupertinoActionSheet(
+          actions: <Widget>[
+            SizedBox(
+              height: 200,
+              child: CupertinoPicker(
+                magnification: 1.22,
+                squeeze: 1.2,
+                useMagnifier: true,
+                itemExtent: 32,
+                onSelectedItemChanged: (int index) {
+                  selectedIndex = index;
+                },
+                children: List<Widget>.generate(
+                  BatteryUsageSetting.values.length,
+                  (int index) {
+                    return Center(
+                      child: Text(BatteryUsageSetting.values[index].name),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Fertig'),
+            onPressed: () {
+              Navigator.pop(context);
+              _updateBatteryUsageSetting(
+                  profile, BatteryUsageSetting.values[selectedIndex]);
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  void _updateBatteryUsageSetting(
+      Profile profile, BatteryUsageSetting setting) {
+    profile.preferences.batteryUsageSetting = setting;
+    widget.trekko
+        .savePreferences(profile.preferences); //TODO: saving of settings
+    widget.trekko.savePreferences(profile.preferences);
   }
 
   @override
@@ -62,22 +115,51 @@ class _ProfileScreenState extends State<ProfileScreen>
 
                 for (OnboardingQuestion question
                     in profile.preferences.onboardingQuestions) {
-                  String? answer =
+                  dynamic answer =
                       profile.preferences.getQuestionAnswer(question.key);
-                  answer ??= 'Nicht beantwortet';
-                  questionTiles.add(CupertinoListTile.notched(
+
+                  CupertinoListTile questionTile;
+                  if (question.type == QuestionType.boolean) {
+                    // CupertinoSwitch für boolean Fragen
+                    questionTile = CupertinoListTile.notched(
                       padding: listTilePadding,
                       title: Text(question.title,
                           style: AppThemeTextStyles.normal),
-                      additionalInfo: Text(answer),
+                      trailing: CupertinoSwitch(
+                        value: answer == null ? false : answer as bool,
+                        // TODO: Fallback falls Wert nicht existiert
+                        activeColor: AppThemeColors.green,
+                        onChanged: (bool? newValue) {
+                          if (newValue != null) {
+                            profile.preferences.setQuestionAnswer(question.key,
+                                newValue); //TODO: implement change of answer
+                            widget.trekko.savePreferences(profile.preferences);
+                          }
+                        },
+                      ),
+                    );
+                  } else {
+                    // Standard-CupertinoListTile mit Chevron und onTap-Navigation
+                    questionTile = CupertinoListTile.notched(
+                      padding: listTilePadding,
+                      title: Text(question.title,
+                          style: AppThemeTextStyles.normal),
+                      additionalInfo: Text(answer == null
+                          ? "Nicht beantwortet"
+                          : answer.toString()),
                       trailing: const CupertinoListTileChevron(),
                       onTap: () => _navigateAndEditText(
-                            profile,
-                            question.title,
-                            answer!,
-                            (String value) => profile.preferences
-                                .setQuestionAnswer(question.key, value),
-                          )));
+                        profile,
+                        question,
+                        (String value) {
+                          profile.preferences
+                              .setQuestionAnswer(question.key, value);
+                          widget.trekko.savePreferences(profile.preferences);
+                        },
+                      ),
+                    );
+                  }
+                  questionTiles.add(questionTile);
                 }
                 if (questionTiles.isEmpty) {
                   questionTiles.add(CupertinoListTile.notched(
@@ -122,6 +204,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                               style: AppThemeTextStyles.normal),
                           additionalInfo: Text(
                               profile.preferences.batteryUsageSetting.name),
+                          //TODO: implement change of usage setting
+                          onTap: () async {
+                            await _showBatteryUsageSettingPicker(
+                                context, profile);
+                          },
                         ),
                       ],
                     ),
@@ -136,7 +223,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   color: AppThemeColors.red,
                                 )),
                             onTap: () {
-                              //TODO: implement
+                              //TODO: implement delete profile
                             }),
                       ],
                     ),

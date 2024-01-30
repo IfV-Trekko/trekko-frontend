@@ -13,8 +13,6 @@ import 'package:app_frontend/screens/tracking/tracking.dart';
 import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:isar/isar.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
@@ -85,8 +83,8 @@ class _TrekkoAppState extends State<TrekkoApp> {
     screens = [
       Screen('Erhebung', HeroIcons.play,
           TrackingScreen(trekko: super.widget.trekko)),
-      Screen('Tagebuch', HeroIcons.queueList, Journal()),
-      Screen('Statistik', HeroIcons.chartPie, Analysis()),
+      Screen('Tagebuch', HeroIcons.queueList, Journal(trekko: super.widget.trekko)),
+      Screen('Statistik', HeroIcons.chartPie, Analysis(super.widget.trekko)),
       Screen(
           'Profil', HeroIcons.userCircle, ProfileScreen(super.widget.trekko)),
     ];
