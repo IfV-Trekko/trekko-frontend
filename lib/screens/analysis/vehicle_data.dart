@@ -6,7 +6,7 @@ import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:flutter/cupertino.dart';
 import '../../app_theme.dart';
-import 'attribute_row.dart'; // Importieren Sie die AttributeRow Klasse
+import 'attribute_row.dart';
 import 'package:isar/isar.dart';
 
 class VehicleDataBox extends StatelessWidget {
@@ -94,22 +94,22 @@ class VehicleDataBox extends StatelessWidget {
             AttributeRow(
                 title: 'Gesamtstrecke',
                 value: getDataFormatted((t) => t.getDistance(),
-                    DistanceReduction.SUM, (d) => d.toString())),
+                    DefaultReduction.SUM, (d) => d.toString())),
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Strecke pro Weg',
                 value: getDataFormatted((t) => t.getDistance(),
-                    DistanceReduction.AVERAGE, (d) => d.toString())),
+                    DefaultReduction.AVERAGE, (d) => d.toString())),
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Geschwindigkeit',
                 value: getDataFormatted((t) => t.getSpeed(),
-                    SpeedReduction.AVERAGE, (d) => d.toString())),
+                    DefaultReduction.AVERAGE, (d) => d.toString())),
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Wegzeit',
                 value: getDataFormatted((t) => t.getDuration(),
-                    DurationReduction.AVERAGE, (d) => d.toString())),
+                    DefaultReduction.AVERAGE, (d) => d.toString())),
           ],
         ),
       )
