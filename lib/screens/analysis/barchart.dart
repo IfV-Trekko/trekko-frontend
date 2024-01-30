@@ -39,49 +39,49 @@ class BarChartWidgetState extends State {
               ),
               titlesData: FlTitlesData(
                 show: true,
-                bottomTitles: SideTitles(
-                  showTitles: true,
-                  getTextStyles: (context, value) => const TextStyle(color: Colors.black, fontSize: 13),
-                  margin: 10,
-                  getTitles: (double value) {
-                    switch (value.toInt()) {
-                      case 0:
-                        return 'Mon';
-                      case 1:
-                        return 'Tue';
-                      case 2:
-                        return 'Wed';
-                      case 3:
-                        return 'Thu';
-                      case 4:
-                        return 'Fri';
-                      case 5:
-                        return 'Sat';
-                      case 6:
-                        return 'Sun';
-                      default:
-                        return '';
-                    }
-                  },
-                ),
-                leftTitles: SideTitles(
-                  showTitles: true,
-                ),
-                rightTitles: SideTitles(
-                  showTitles: false,
-                ),
-                topTitles: SideTitles(
-                  showTitles: false,
-                ),
+                // bottomTitles: SideTitles(
+                //   showTitles: true,
+                //   getTextStyles: (context, value) => const TextStyle(color: Colors.black, fontSize: 13),
+                //   margin: 10,
+                //   getTitles: (double value) {
+                //     switch (value.toInt()) {
+                //       case 0:
+                //         return 'Mon';
+                //       case 1:
+                //         return 'Tue';
+                //       case 2:
+                //         return 'Wed';
+                //       case 3:
+                //         return 'Thu';
+                //       case 4:
+                //         return 'Fri';
+                //       case 5:
+                //         return 'Sat';
+                //       case 6:
+                //         return 'Sun';
+                //       default:
+                //         return '';
+                //     }
+                //   },
+                // ),
+                // leftTitles: SideTitles(
+                //   showTitles: true,
+                // ),
+                // rightTitles: SideTitles(
+                //   showTitles: false,
+                // ),
+                // topTitles: SideTitles(
+                //   showTitles: false,
+                // ),
               ),
               borderData: FlBorderData(
                 show: false,
               ),
               barGroups: [
-                BarChartGroupData(x: 0, barRods: [BarChartRodData(y: 8, colors: [Colors.lightBlueAccent])]),
-                BarChartGroupData(x: 1, barRods: [BarChartRodData(y: 10, colors: [Colors.lightBlueAccent])]),
-                BarChartGroupData(x: 5, barRods: [BarChartRodData(y: 14, colors: [Colors.lightBlueAccent])]),
-                // Fügen Sie weitere BarChartGroupData für andere Balken hinzu
+                // BarChartGroupData(x: 0, barRods: [BarChartRodData(y: 8, colors: [Colors.lightBlueAccent])]),
+                // BarChartGroupData(x: 1, barRods: [BarChartRodData(y: 10, colors: [Colors.lightBlueAccent])]),
+                // BarChartGroupData(x: 5, barRods: [BarChartRodData(y: 14, colors: [Colors.lightBlueAccent])]),
+                // // Fügen Sie weitere BarChartGroupData für andere Balken hinzu
               ],
             ),
           ),
