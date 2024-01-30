@@ -93,22 +93,22 @@ class VehicleDataBox extends StatelessWidget {
             AttributeRow(
                 title: 'Gesamtstrecke',
                 value: getDataFormatted((t) => t.getDistance(),
-                    DefaultReduction.SUM, (d) => d.toString())),
+                    DistanceReduction.SUM, (d) => d.toString())),
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Strecke pro Weg',
                 value: getDataFormatted((t) => t.getDistance(),
-                    DefaultReduction.AVERAGE, (d) => d.toString())),
+                    DistanceReduction.AVERAGE, (d) => d.toString())),
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Geschwindigkeit',
                 value: getDataFormatted((t) => t.getSpeed(),
-                    DefaultReduction.AVERAGE, (d) => d.toString())),
+                    SpeedReduction.AVERAGE, (d) => d.toString())),
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Wegzeit',
                 value: getDataFormatted((t) => t.getDuration(),
-                    DefaultReduction.AVERAGE, (d) => d.toString())),
+                    DurationReduction.AVERAGE, (d) => d.toString())),
           ],
         ),
       )
