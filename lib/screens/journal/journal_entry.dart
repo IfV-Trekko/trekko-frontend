@@ -25,6 +25,7 @@ class JournalEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double maxWidth = MediaQuery.of(context).size.width-32;
     return GestureDetector(
       onTap: () {
         if (isDisabled) return;
@@ -95,26 +96,29 @@ class JournalEntry extends StatelessWidget {
                   ),
                 ),
               ],
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppThemeColors.contrast0,
-                  borderRadius: BorderRadius.circular(6.0),
-                  border: Border.all(
-                    color: AppThemeColors.contrast400,
-                    width: 1.0,
+              child: LayoutBuilder(builder: (context, constraints) {
+                return Container(
+                  width: constraints.constrainWidth(maxWidth),
+                  decoration: BoxDecoration(
+                    color: AppThemeColors.contrast0,
+                    borderRadius: BorderRadius.circular(6.0),
+                    border: Border.all(
+                      color: AppThemeColors.contrast400,
+                      width: 1.0,
+                    ),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      InformationRow(trip),
-                      VehicleLine(trip),
-                      FooterRow(trip, selectionMode),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        InformationRow(trip),
+                        VehicleLine(trip),
+                        FooterRow(trip, selectionMode),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              }),
             ),
           ),
         ],
