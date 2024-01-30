@@ -37,11 +37,26 @@ class _TrackingScreenState extends State<TrackingScreen>
   void generateTrip() {
     Trip trip =
         TripBuilder().move_r(Duration(minutes: 20), 2.kilo.meters).build();
+    widget.trekko.saveTrip(trip);
+  }
 
-    Navigator.of(context).push(CupertinoPageRoute(
-        builder: (context) => JournalEntryDetailView(
-              Stream.value(trip),
-            )));
+  void openTripModal() {
+    // Trip trip =
+    //     TripBuilder().move_r(Duration(minutes: 40), 2.kilo.meters).build();
+    widget.trekko.getTripQuery().findFirst().then((trip) => {
+          // widget.trekko.deleteTrip(
+          //     widget.trekko.getTripQuery().idEqualTo(trip!.id).build())
+
+          Navigator.of(context).push(CupertinoPageRoute(
+              builder: (context) => JournalEntryDetailView(Stream.value(trip!)
+                  // widget.trekko
+                  //     .getTripQuery()
+                  //     .idEqualTo(trip!.id)
+                  //     .watch(fireImmediately: true)
+                  //     .map((event) => event.first),
+                  )))
+        });
+    // });
   }
 
   @override
@@ -54,19 +69,17 @@ class _TrackingScreenState extends State<TrackingScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Button(
-            title: 'Open detail view',
-            style: ButtonStyle.secondary,
-            onPressed: () {
-              Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) =>
-                      JournalEntryDetailView(Stream.empty())));
-            },
-          ),
-          Button(
-            title: 'Generate trip',
+            title: 'Generate new trip for modal',
             style: ButtonStyle.secondary,
             onPressed: () {
               generateTrip();
+            },
+          ),
+          Button(
+            title: 'Open Detail View',
+            style: ButtonStyle.secondary,
+            onPressed: () {
+              openTripModal();
             },
           ),
           StreamBuilder(
