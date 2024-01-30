@@ -12,6 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:fling_units/fling_units.dart';
 import 'package:isar/isar.dart';
 
+import 'basic_chart.dart';
+
 class Analysis extends StatefulWidget {
   final Trekko trekko;
 
@@ -77,8 +79,9 @@ class _AnalysisState extends State<Analysis> with AutomaticKeepAliveClientMixin{
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
-                child: PieChartWidget(),
-                //BarChartWidget(),
+                child: PieChartWidget(trekko: widget.trekko),
+                //BarChartWidget(trekko: widget.trekko),
+                //BasicChart(trekko: widget.trekko),
               ),
             )
           ],
