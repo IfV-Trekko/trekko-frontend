@@ -100,16 +100,19 @@ class VehicleDataBox extends StatelessWidget {
                 title: 'Gesamtstrecke',
                 value: getDataFormatted((t) => t.getDistance(),
                     DistanceReduction.SUM, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
+
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Strecke pro Weg',
                 value: getDataFormatted((t) => t.getDistance(),
                     DistanceReduction.AVERAGE, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
+
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Geschwindigkeit',
                 value: getDataFormatted((t) => t.getSpeed(),
                     SpeedReduction.AVERAGE, (d) => d.as(kilo.meters, hours).roundToDouble().toString() + " km/h")),
+
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Durch. Wegzeit',
