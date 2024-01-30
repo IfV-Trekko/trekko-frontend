@@ -10,6 +10,7 @@ import 'package:app_frontend/screens/analysis/analysis.dart';
 import 'package:app_frontend/screens/journal/journal.dart';
 import 'package:app_frontend/screens/profile/profile.dart';
 import 'package:app_frontend/screens/tracking/tracking.dart';
+import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -94,35 +95,37 @@ class _TrekkoAppState extends State<TrekkoApp> {
     return CupertinoApp(
       title: 'Trekko',
       theme: AppTheme.lightTheme,
-      home: CupertinoTabScaffold(
-        controller: controller,
-        tabBar: CupertinoTabBar(
-          onTap: (index) {
-            // This is to make the widget refresh to update the icon state
-            setState(() {});
-          },
-          items: screens
-              .map((e) => BottomNavigationBarItem(
-                    icon: HeroIcon(
-                      e.icon,
-                      size: 24,
-                      style: currentScreen == e
-                          ? HeroIconStyle.solid
-                          : HeroIconStyle.outline,
-                    ),
-                    label: e.title,
-                  ))
-              .toList(),
-        ),
-        tabBuilder: (context, index) {
-          return CupertinoTabView(builder: (context) {
-            return IndexedStack(
-              index: index,
-              children: screens.map((e) => e.screen).toList(),
-            );
-          });
-        },
-      ),
+      home: TrekkoProvider(
+          trekko: widget.trekko,
+          child: CupertinoTabScaffold(
+            controller: controller,
+            tabBar: CupertinoTabBar(
+              onTap: (index) {
+                // This is to make the widget refresh to update the icon state
+                setState(() {});
+              },
+              items: screens
+                  .map((e) => BottomNavigationBarItem(
+                        icon: HeroIcon(
+                          e.icon,
+                          size: 24,
+                          style: currentScreen == e
+                              ? HeroIconStyle.solid
+                              : HeroIconStyle.outline,
+                        ),
+                        label: e.title,
+                      ))
+                  .toList(),
+            ),
+            tabBuilder: (context, index) {
+              return CupertinoTabView(builder: (context) {
+                return IndexedStack(
+                  index: index,
+                  children: screens.map((e) => e.screen).toList(),
+                );
+              });
+            },
+          )),
     );
   }
 }

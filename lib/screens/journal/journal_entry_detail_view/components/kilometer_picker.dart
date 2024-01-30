@@ -2,11 +2,13 @@ import 'dart:ui';
 
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class JournalEntryDetailKilometerPicker extends StatefulWidget {
   final double initialValue;
+  final Function(double) onChange;
   const JournalEntryDetailKilometerPicker(
-      {super.key, required this.initialValue});
+      {super.key, required this.initialValue, required this.onChange});
 
   @override
   _JournalEntryDetailKilometerPickerState createState() =>
@@ -26,11 +28,14 @@ class _JournalEntryDetailKilometerPickerState
   }
 
   void _onEditingComplete() {
-    final newValue = double.tryParse(_controller.text.replaceAll(',', '.')) ??
-        widget.initialValue;
+    final parsedValue = double.tryParse(_controller.text.replaceAll(',', '.'));
+    final updatedValue = parsedValue != null && parsedValue > 0
+        ? parsedValue
+        : widget.initialValue;
     setState(() {
-      _kilometers = newValue; //TODO set to backend
+      _kilometers = updatedValue;
       _controller.text = _kilometers.toStringAsFixed(1);
+      widget.onChange(_kilometers);
     });
   }
 

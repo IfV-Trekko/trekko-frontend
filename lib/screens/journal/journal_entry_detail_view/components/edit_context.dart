@@ -1,12 +1,26 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
+import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
 class JournalEntryDetailViewEditContext extends StatelessWidget {
   final bool donated;
-  const JournalEntryDetailViewEditContext({required this.donated, super.key});
+  final Function() onDonate;
+  final Function() onUpdate;
+  final Function() onDelete;
+  final Function() onReset;
+  final Function() onRevoke;
+
+  const JournalEntryDetailViewEditContext(
+      {required this.donated,
+      required this.onDonate,
+      required this.onUpdate,
+      required this.onDelete,
+      required this.onReset,
+      required this.onRevoke,
+      super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,20 +42,41 @@ class JournalEntryDetailViewEditContext extends StatelessWidget {
         children: [
           Expanded(
               child: Button(
-                  title: donated ? 'Aktualisieren' : 'Spenden',
-                  onPressed: () {})),
+            title: donated
+                ? 'Aktualisieren'
+                : (JournalEntryDetailViewProvider.of(context)
+                    ? 'Aktualisieren'
+                    : 'Spenden'),
+            onPressed: donated
+                ? onUpdate
+                : (JournalEntryDetailViewProvider.of(context)
+                    ? onUpdate
+                    : onDonate),
+          )),
           SizedBox(width: 8),
-          EditContext(donated: donated) // TODO abhängigkeit einfügen
+          EditContextMenu(
+              onDelete: onDelete,
+              donated: donated,
+              onReset: onReset,
+              onRevoke: onRevoke)
         ],
       ),
     );
   }
 }
 
-class EditContext extends StatelessWidget {
+class EditContextMenu extends StatelessWidget {
   final bool donated;
+  final Function() onDelete;
+  final Function() onReset;
+  final Function() onRevoke;
 
-  const EditContext({required this.donated, super.key});
+  const EditContextMenu(
+      {required this.onDelete,
+      required this.donated,
+      required this.onReset,
+      required this.onRevoke,
+      super.key});
 
   // This shows a CupertinoModalPopup which hosts a CupertinoActionSheet.
   void _showEditContextDonated(BuildContext context) {
@@ -50,16 +85,16 @@ class EditContext extends StatelessWidget {
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
-            onPressed: () {},
+            onPressed: onReset,
             child: const Text('Zurücksetzen'),
           ),
           CupertinoActionSheetAction(
-            onPressed: () {},
+            onPressed: onRevoke,
             child: const Text('Spende zurückziehen'),
           ),
           CupertinoActionSheetAction(
-            onPressed: () {},
-            child: const Text('Unwideruflich Löschen'),
+            onPressed: onDelete,
+            child: const Text('Unwideruflich löschen'),
             isDestructiveAction: true,
           ),
         ],
@@ -80,11 +115,11 @@ class EditContext extends StatelessWidget {
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
-            onPressed: () {},
+            onPressed: onReset,
             child: const Text('Zurücksetzen'),
           ),
           CupertinoActionSheetAction(
-            onPressed: () {},
+            onPressed: onDelete,
             child: const Text('Unwideruflich Löschen'),
             isDestructiveAction: true,
           ),

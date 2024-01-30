@@ -14,8 +14,8 @@ class JournalEntryDetailViewTimePicker extends StatefulWidget {
     this.minimumDateTime,
     this.maximumDateTime,
   }) : super(key: key) {
-    minimumDateTime ??= initialDateTime.add(Duration(days: -1));
-    maximumDateTime ??= initialDateTime.add(Duration(days: 1));
+    minimumDateTime ??= initialDateTime.subtract(const Duration(days: 7));
+    maximumDateTime ??= initialDateTime.add(const Duration(days: 7));
   }
 
   @override
@@ -26,17 +26,19 @@ class JournalEntryDetailViewTimePicker extends StatefulWidget {
 class _JournalEntryDetailViewTimePickerState
     extends State<JournalEntryDetailViewTimePicker> {
   late DateTime selectedDateTime;
+  late DateTime setDateTime;
 
   @override
   void initState() {
     super.initState();
     selectedDateTime = widget.initialDateTime;
+    setDateTime = widget.initialDateTime;
   }
 
   void _showCupertinoDateTimePicker(BuildContext context) {
     showCupertinoModalPopup(
       context: context,
-      builder: (_) => Container(
+      builder: (context) => Container(
         height: 270,
         color: AppThemeColors.contrast0,
         child: Column(
@@ -45,7 +47,7 @@ class _JournalEntryDetailViewTimePickerState
               height: 200,
               child: Container(
                 height: 34,
-                padding: EdgeInsets.symmetric(horizontal: 11),
+                padding: const EdgeInsets.symmetric(horizontal: 11),
                 child: CupertinoDatePicker(
                   use24hFormat: true,
                   initialDateTime: selectedDateTime,
@@ -61,8 +63,11 @@ class _JournalEntryDetailViewTimePickerState
               ),
             ),
             CupertinoButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
+                setState(() {
+                  setDateTime = selectedDateTime;
+                });
                 widget.onChange(selectedDateTime);
                 Navigator.of(context).pop();
               },
@@ -84,7 +89,7 @@ class _JournalEntryDetailViewTimePickerState
           context,
         ),
         child: Text(
-          "${widget.initialDateTime.hour.toString().padLeft(2, '0')}:${widget.initialDateTime.minute.toString().padLeft(2, '0')}",
+          "${setDateTime.hour.toString().padLeft(2, '0')}:${setDateTime.minute.toString().padLeft(2, '0')}",
           style: AppThemeTextStyles.small.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
