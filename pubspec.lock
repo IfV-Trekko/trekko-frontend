@@ -22,7 +22,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "3b4ee6dfe96311b21d9c1048a225d7ef5bec604f"
+      resolved-ref: "323de078a47d4dc995e0513395569e8a33b28d2e"
       url: "https://github.com/KIT-PSE-2023-24/app-backend"
     source: git
     version: "1.0.0+1"
@@ -114,6 +114,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -146,6 +154,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  fl_chart:
+    dependency: "direct main"
+    description:
+      name: fl_chart
+      sha256: b5e2b0f13d93f8c532b5a2786bfb44580de1f50b927bf95813fa1af617e9caf8
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.66.1"
   fling_units:
     dependency: transitive
     description:
@@ -277,10 +293,10 @@ packages:
     dependency: transitive
     description:
       name: geolocator_android
-      sha256: "30ff8fa384ab6d35965aecc15dfc980e5ebc5f823352c1adfc87dc3d000e8e24"
+      sha256: afe2393715372e3901f789422a8a527fd78cfd423783e721c7e9ae826b081ece
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.0"
+    version: "4.5.1"
   geolocator_apple:
     dependency: transitive
     description:
