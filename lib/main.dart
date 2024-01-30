@@ -7,14 +7,11 @@ import 'package:app_backend/controller/builder/registration_builder.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/analysis/analysis.dart';
-import 'package:app_frontend/screens/journal/donation_modal.dart';
 import 'package:app_frontend/screens/journal/journal.dart';
 import 'package:app_frontend/screens/profile/profile.dart';
 import 'package:app_frontend/screens/tracking/tracking.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:isar/isar.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
@@ -86,7 +83,7 @@ class _TrekkoAppState extends State<TrekkoApp> {
       Screen('Erhebung', HeroIcons.play,
           TrackingScreen(trekko: super.widget.trekko)),
       Screen('Tagebuch', HeroIcons.queueList, Journal(trekko: super.widget.trekko)),
-      Screen('Statistik', HeroIcons.chartPie, Analysis()),
+      Screen('Statistik', HeroIcons.chartPie, Analysis(super.widget.trekko)),
       Screen(
           'Profil', HeroIcons.userCircle, ProfileScreen(super.widget.trekko)),
     ];
