@@ -7,13 +7,18 @@ import 'package:app_backend/controller/builder/registration_builder.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/analysis/analysis.dart';
+import 'package:app_frontend/screens/journal/donation_modal.dart';
 import 'package:app_frontend/screens/journal/journal.dart';
 import 'package:app_frontend/screens/profile/profile.dart';
 import 'package:app_frontend/screens/tracking/tracking.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:isar/isar.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
+  await initializeDateFormatting('de', null);
   WidgetsFlutterBinding.ensureInitialized();
   Trekko trekko = await buildTrekko();
   runApp(TrekkoApp(trekko: trekko));
@@ -27,8 +32,8 @@ Future<Trekko> buildTrekko() async {
     ip = "localhost";
   }
   try {
-    return await LoginBuilder("http://$ip:8080", "realAccount1@web.de",
-            "1aA!hklj32r4hkjl324ra")
+    return await LoginBuilder(
+            "http://$ip:8080", "realAccount1@web.de", "1aA!hklj32r4hkjl324ra")
         .build();
   } catch (e) {
     if (e is BuildException) {
@@ -78,9 +83,10 @@ class _TrekkoAppState extends State<TrekkoApp> {
   void initState() {
     super.initState();
     screens = [
-      Screen('Erhebung', HeroIcons.play, Tracking()),
-      Screen('Tagebuch', HeroIcons.queueList, Journal()),
-      Screen('Statistik', HeroIcons.chartPie, Analysis(super.widget.trekko)),
+      Screen('Erhebung', HeroIcons.play,
+          TrackingScreen(trekko: super.widget.trekko)),
+      Screen('Tagebuch', HeroIcons.queueList, Journal(trekko: super.widget.trekko)),
+      Screen('Statistik', HeroIcons.chartPie, Analysis()),
       Screen(
           'Profil', HeroIcons.userCircle, ProfileScreen(super.widget.trekko)),
     ];
@@ -99,23 +105,25 @@ class _TrekkoAppState extends State<TrekkoApp> {
             setState(() {});
           },
           items: screens
-            .map((e) => BottomNavigationBarItem(
-              icon: HeroIcon(
-                e.icon,
-                size: 24,
-                style: currentScreen == e
-                  ? HeroIconStyle.solid
-                  : HeroIconStyle.outline,
-              ),
-              label: e.title,
-            ))
-          .toList(),
+              .map((e) => BottomNavigationBarItem(
+                    icon: HeroIcon(
+                      e.icon,
+                      size: 24,
+                      style: currentScreen == e
+                          ? HeroIconStyle.solid
+                          : HeroIconStyle.outline,
+                    ),
+                    label: e.title,
+                  ))
+              .toList(),
         ),
         tabBuilder: (context, index) {
-          return IndexedStack(
-            index: index,
-            children: screens.map((e) => e.screen).toList(),
-          );
+          return CupertinoTabView(builder: (context) {
+            return IndexedStack(
+              index: index,
+              children: screens.map((e) => e.screen).toList(),
+            );
+          });
         },
       ),
     );
