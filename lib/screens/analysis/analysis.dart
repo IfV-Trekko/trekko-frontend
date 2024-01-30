@@ -1,4 +1,3 @@
-import 'package:app_backend/controller/analysis/calculation_reductor.dart';
 import 'package:app_backend/controller/analysis/reductions.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/leg.dart';
