@@ -76,7 +76,7 @@ class JournalEntry extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     isDefaultAction: true,
-                    trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
+                    trailingIcon: trip.donationState == DonationState.donated ? CupertinoIcons.xmark : CupertinoIcons.share,
                     child: Text(
                       trip.donationState == DonationState.donated
                           ? 'Spende zurückziehen'
@@ -89,9 +89,10 @@ class JournalEntry extends StatelessWidget {
                 Builder(
                   builder: (context) => CupertinoContextMenuAction(
                     onPressed: () {
+                      //TODO: Deatilseite öffnen;
                       Navigator.pop(context);
                     },
-                    trailingIcon: CupertinoIcons.share,
+                    trailingIcon: CupertinoIcons.pen,
                     child: Text(
                       'Bearbeiten',
                       style: AppThemeTextStyles.normal
@@ -102,9 +103,10 @@ class JournalEntry extends StatelessWidget {
                 Builder(
                   builder: (context) => CupertinoContextMenuAction(
                     onPressed: () {
+                      trekko.deleteTrip(createQuery().build());
                       Navigator.pop(context);
                     },
-                    trailingIcon: CupertinoIcons.share,
+                    trailingIcon: CupertinoIcons.trash,//TODO: Die Hunde von cuperinoIcons unterstützen keine farben
                     child: Text(
                       'Unwiderruflich löschen',
                       style: AppThemeTextStyles.normal
