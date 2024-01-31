@@ -144,43 +144,36 @@ class DonationModalState extends State<DonationModal>
         setState(() {
           isLoading = false; // Set isLoading to false
         });
-        showCupertinoDialog(
-            context: context,
-            builder: (BuildContext context) => CupertinoAlertDialog(
-                  title: Text('Fehler'),
-                  content: Text(
-                      'Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten'),
-                  actions: [
-                    CupertinoDialogAction(
-                      child: Text('Schließen'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
-                ));
+        finishedAction('Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten', true);
         return;
-
       }
     }
     Navigator.pop(context);
     setState(() {
       isLoading = false;
     });
+    finishedAction('Sie haben $donatedTrips Wege übermittelt', false);
+    selectedTrips.clear();
+  }
+
+  void finishedAction(String message, bool error) {
+    selectedTrips.clear();
+    setState(() {
+      isLoading = false;
+    });
     showCupertinoDialog(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
-              title: Text('Spende Erfolgreich'),
-              content: Text('Sie haben $donatedTrips Wege übermittelt'),
-              actions: [
-                CupertinoDialogAction(
-                  child: Text('Schließen'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              ],
-            ));
-    selectedTrips.clear();
+          title: Text(error ? 'Fehler' : 'Spende Erfolgreich'),
+          content: Text(message),
+          actions: [
+            CupertinoDialogAction(
+              child: Text('Schließen'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ));
   }
 }
