@@ -25,7 +25,7 @@ class JournalEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double maxWidth = MediaQuery.of(context).size.width-32;
+    double maxWidth = MediaQuery.of(context).size.width - 32;
     return GestureDetector(
       onTap: () {
         if (isDisabled) return;
@@ -113,7 +113,7 @@ class JournalEntry extends StatelessWidget {
                       children: [
                         InformationRow(trip),
                         VehicleLine(trip),
-                        FooterRow(trip, selectionMode),
+                        LabelRow(trip),
                       ],
                     ),
                   ),
@@ -189,52 +189,28 @@ class LabelRow extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
-      child: Wrap(
-        spacing: 6.0, // Horizontal space between children
-        runSpacing: 6.0, // Vertical space between lines
-        children: [
-          // Generate vehicle type boxes
-          for (var vehicleType in uniqueVehicleTypes)
-            Wrap(
-              children: [
-                JournalDetailBoxVehicle(vehicleType),
-              ],
-            ),
-          // Add JournalDetailBox for purpose and donation
-          if (trip.purpose != null && trip.purpose!.isNotEmpty)
-            JournalDetailBox(trip.purpose.toString()),
-          JournalDetailBoxDonation(trip.donationState),
-          // Icon at the end
-        ],
-      ),
-    );
-  }
-}
-
-class FooterRow extends StatelessWidget {
-  final Trip trip;
-  final bool selectionMode;
-
-  FooterRow(this.trip, this.selectionMode);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Expanded(
-          child: LabelRow(trip),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Wrap(
+          alignment: WrapAlignment.start,
+          spacing: 6.0, // Horizontal space between children
+          runSpacing: 6.0, // Vertical space between lines
+          children: [
+            // Generate vehicle type boxes
+            for (var vehicleType in uniqueVehicleTypes)
+              Wrap(
+                children: [
+                  JournalDetailBoxVehicle(vehicleType),
+                ],
+              ),
+            // Add JournalDetailBox for purpose and donation
+            if (trip.purpose != null && trip.purpose!.isNotEmpty)
+              JournalDetailBox(trip.purpose.toString()),
+            JournalDetailBoxDonation(trip.donationState),
+            // Icon at the end
+          ],
         ),
-        if (!selectionMode)
-          Container(
-            child: const Icon(
-              CupertinoIcons.ellipsis,
-              color: AppThemeColors.contrast500,
-              size: 24,
-            ),
-          ),
-        //TODO implement Popup Menu
-      ],
+      ),
     );
   }
 }
