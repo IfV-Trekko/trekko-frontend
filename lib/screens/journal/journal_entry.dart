@@ -17,19 +17,23 @@ class JournalEntry extends StatelessWidget {
   final bool isSelected;
   final bool isDisabled;
   final Function(Trip, bool)?
-      onSelectionChanged; // Callback for selection change
+  onSelectionChanged; // Callback for selection change
   final Trekko trekko;
+  double maxWidth = 0;
 
-  JournalEntry(this.trip, this.selectionMode, this.trekko, // Modify this line
-      {this.onSelectionChanged,
-      this.isSelected = false,
-      this.isDisabled = false,
-      Key? key})
+  JournalEntry(this.trip, this.selectionMode, this.trekko,
+          {this.onSelectionChanged,
+        this.isSelected = false,
+        this.isDisabled = false,
+        Key? key})
       : super(key: key ?? ValueKey(trip.id));
 
   @override
   Widget build(BuildContext context) {
-    double maxWidth = MediaQuery.of(context).size.width - 32;
+    maxWidth = MediaQuery
+        .of(context)
+        .size
+        .width - 32;
     return GestureDetector(
       onTap: () {
         if (isDisabled) return;
@@ -37,9 +41,7 @@ class JournalEntry extends StatelessWidget {
           if (onSelectionChanged != null) {
             onSelectionChanged!(trip, !isSelected);
           }
-        } else {
-          onPressed();
-        }
+        } else {}
       },
       child: Row(
         children: [
@@ -62,82 +64,69 @@ class JournalEntry extends StatelessWidget {
             ),
           if (selectionMode) const SizedBox(width: 16.0),
           Expanded(
-            child: CupertinoContextMenu(
-              enableHapticFeedback: true,
-              actions: <Widget>[
-                Builder(
-                  builder: (context) => CupertinoContextMenuAction(
-                    onPressed: () {
-                      if (trip.donationState == DonationState.donated) {
-                        trekko.revoke(createQuery().build());
-                      } else {
-                        trekko.donate(createQuery().build());
-                      }
-                      Navigator.pop(context);
-                    },
-                    isDefaultAction: true,
-                    trailingIcon: trip.donationState == DonationState.donated ? CupertinoIcons.xmark : CupertinoIcons.share,
-                    child: Text(
-                      trip.donationState == DonationState.donated
-                          ? 'Spende zurückziehen'
-                          : 'Spenden',
-                      style: AppThemeTextStyles.normal
-                          .copyWith(color: AppThemeColors.contrast900),
-                    ),
+            child: selectionMode
+                ? _buildEntry()
+                : CupertinoContextMenu(
+                enableHapticFeedback: true,
+                actions: <Widget>[
+                  Builder(
+                    builder: (context) =>
+                        CupertinoContextMenuAction(
+                          onPressed: () {
+                            if (trip.donationState == DonationState.donated) {
+                              trekko.revoke(createQuery().build());
+                            } else {
+                              trekko.donate(createQuery().build());
+                            }
+                            Navigator.pop(context);
+                          },
+                          isDefaultAction: true,
+                          trailingIcon: trip.donationState ==
+                              DonationState.donated
+                              ? CupertinoIcons.xmark
+                              : CupertinoIcons.share,
+                          child: Text(
+                            trip.donationState == DonationState.donated
+                                ? 'Spende zurückziehen'
+                                : 'Spenden',
+                            style: AppThemeTextStyles.normal
+                                .copyWith(color: AppThemeColors.contrast900),
+                          ),
+                        ),
                   ),
-                ),
-                Builder(
-                  builder: (context) => CupertinoContextMenuAction(
-                    onPressed: () {
-                      //TODO: Deatilseite öffnen;
-                      Navigator.pop(context);
-                    },
-                    trailingIcon: CupertinoIcons.pen,
-                    child: Text(
-                      'Bearbeiten',
-                      style: AppThemeTextStyles.normal
-                          .copyWith(color: AppThemeColors.contrast900),
-                    ),
+                  Builder(
+                    builder: (context) =>
+                        CupertinoContextMenuAction(
+                          onPressed: () {
+                            //TODO: Deatilseite öffnen;
+                            Navigator.pop(context);
+                          },
+                          trailingIcon: CupertinoIcons.pen,
+                          child: Text(
+                            'Bearbeiten',
+                            style: AppThemeTextStyles.normal
+                                .copyWith(color: AppThemeColors.contrast900),
+                          ),
+                        ),
                   ),
-                ),
-                Builder(
-                  builder: (context) => CupertinoContextMenuAction(
-                    onPressed: () {
-                      trekko.deleteTrip(createQuery().build());
-                      Navigator.pop(context);
-                    },
-                    trailingIcon: CupertinoIcons.trash,//TODO: Die Hunde von cuperinoIcons unterstützen keine farben
-                    child: Text(
-                      'Unwiderruflich löschen',
-                      style: AppThemeTextStyles.normal
-                          .copyWith(color: AppThemeColors.red),
-                    ),
+                  Builder(
+                    builder: (context) =>
+                        CupertinoContextMenuAction(
+                          onPressed: () {
+                            trekko.deleteTrip(createQuery().build());
+                            Navigator.pop(context);
+                          },
+                          trailingIcon: CupertinoIcons.trash,
+                          //TODO: Die Hunde von cuperinoIcons unterstützen keine farben
+                          child: Text(
+                            'Unwiderruflich löschen',
+                            style: AppThemeTextStyles.normal
+                                .copyWith(color: AppThemeColors.red),
+                          ),
+                        ),
                   ),
-                ),
-              ],
-              child: LayoutBuilder(builder: (context, constraints) {
-                return Container(
-                  width: constraints.constrainWidth(maxWidth),
-                  decoration: BoxDecoration(
-                    color: AppThemeColors.contrast0,
-                    borderRadius: BorderRadius.circular(6.0),
-                    border: Border.all(
-                      color: AppThemeColors.contrast400,
-                      width: 1.0,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        _InformationRow(trip),
-                        _VehicleLine(trip),
-                        _LabelRow(trip),
-                      ],
-                    ),
-                  ),
-                );
-              }),
+                ],
+                child: _buildEntry(),
             ),
           ),
         ],
@@ -145,10 +134,45 @@ class JournalEntry extends StatelessWidget {
     );
   }
 
-  void onPressed() {}
 
   QueryBuilder<Trip, Trip, QAfterFilterCondition> createQuery() {
     return trekko.getTripQuery().filter().idEqualTo(trip.id);
+  }
+
+  Widget _buildEntry() {
+    return LayoutBuilder(builder: (context, constraints) {
+      return GestureDetector(
+        onTap: () {
+          if (isDisabled) return;
+          if (selectionMode) {
+            if (onSelectionChanged != null) {
+              onSelectionChanged!(trip, !isSelected);
+            }
+          }
+        },
+        child: Container(
+          width: constraints.constrainWidth(maxWidth),
+          decoration: BoxDecoration(
+            color: AppThemeColors.contrast0,
+            borderRadius: BorderRadius.circular(6.0),
+            border: Border.all(
+              color: AppThemeColors.contrast400,
+              width: 1.0,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                _InformationRow(trip),
+                _VehicleLine(trip),
+                _LabelRow(trip),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
 
@@ -170,10 +194,13 @@ class _InformationRow extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("${trip.getDuration().inMinutes} min"),
+              Text("${trip
+                  .getDuration()
+                  .inMinutes} min"),
               const SizedBox(width: 4.0),
               Text(
-                  "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km"),
+                  "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(
+                      1)} km"),
             ],
           ),
           Text(
@@ -205,7 +232,7 @@ class _LabelRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final uniqueVehicleTypes =
-        trip.legs.map((leg) => leg.transportType).toSet();
+    trip.legs.map((leg) => leg.transportType).toSet();
 
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
