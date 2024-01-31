@@ -1,5 +1,4 @@
-import 'package:app_backend/controller/request/bodies/response/error_response.dart';
-import 'package:app_backend/controller/request/request_exception.dart';
+
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/trip.dart';
@@ -108,6 +107,7 @@ class DonationModalState extends State<DonationModal>
                       key: ValueKey(trips[index].id),
                       trip,
                       loadCheckmark,
+                      widget.trekko,
                       isSelected: selectedTrips.contains(trip.id),
                       isDisabled: isLoading,
                       onSelectionChanged: (Trip trip, bool isSelected) {

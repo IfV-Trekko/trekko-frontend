@@ -1,3 +1,5 @@
+import 'package:app_backend/controller/trekko.dart';
+import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/journal/journalDetail/journalDetailBoxVehicle.dart';
@@ -5,6 +7,7 @@ import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
 import 'journalDetail/journalDetailBox.dart';
 import 'package:intl/intl.dart';
+import 'package:isar/isar.dart';
 
 import 'journalDetail/journalDetailBoxDonation.dart';
 
@@ -15,8 +18,9 @@ class JournalEntry extends StatelessWidget {
   final bool isDisabled;
   final Function(Trip, bool)?
       onSelectionChanged; // Callback for selection change
+  final Trekko trekko;
 
-  JournalEntry(this.trip, this.selectionMode,
+  JournalEntry(this.trip, this.selectionMode, this.trekko, // Modify this line
       {this.onSelectionChanged,
       this.isSelected = false,
       this.isDisabled = false,
@@ -61,38 +65,51 @@ class JournalEntry extends StatelessWidget {
             child: CupertinoContextMenu(
               enableHapticFeedback: true,
               actions: <Widget>[
-                CupertinoContextMenuAction(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  isDefaultAction: true,
-                  trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
-                  child: Text(
-                    'Spenden',
-                    style: AppThemeTextStyles.normal
-                        .copyWith(color: AppThemeColors.contrast900),
+                Builder(
+                  builder: (context) => CupertinoContextMenuAction(
+                    onPressed: () {
+                      if (trip.donationState == DonationState.donated) {
+                        trekko.revoke(createQuery().build());
+                      } else {
+                        trekko.donate(createQuery().build());
+                      }
+                      Navigator.pop(context);
+                    },
+                    isDefaultAction: true,
+                    trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
+                    child: Text(
+                      trip.donationState == DonationState.donated
+                          ? 'Spende zurückziehen'
+                          : 'Spenden',
+                      style: AppThemeTextStyles.normal
+                          .copyWith(color: AppThemeColors.contrast900),
+                    ),
                   ),
                 ),
-                CupertinoContextMenuAction(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  trailingIcon: CupertinoIcons.share,
-                  child: Text(
-                    'Bearbeiten',
-                    style: AppThemeTextStyles.normal
-                        .copyWith(color: AppThemeColors.contrast900),
+                Builder(
+                  builder: (context) => CupertinoContextMenuAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    trailingIcon: CupertinoIcons.share,
+                    child: Text(
+                      'Bearbeiten',
+                      style: AppThemeTextStyles.normal
+                          .copyWith(color: AppThemeColors.contrast900),
+                    ),
                   ),
                 ),
-                CupertinoContextMenuAction(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  trailingIcon: CupertinoIcons.share,
-                  child: Text(
-                    'Unwiderruflich löschen',
-                    style: AppThemeTextStyles.normal
-                        .copyWith(color: AppThemeColors.red),
+                Builder(
+                  builder: (context) => CupertinoContextMenuAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    trailingIcon: CupertinoIcons.share,
+                    child: Text(
+                      'Unwiderruflich löschen',
+                      style: AppThemeTextStyles.normal
+                          .copyWith(color: AppThemeColors.red),
+                    ),
                   ),
                 ),
               ],
@@ -111,9 +128,9 @@ class JournalEntry extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        InformationRow(trip),
-                        VehicleLine(trip),
-                        LabelRow(trip),
+                        _InformationRow(trip),
+                        _VehicleLine(trip),
+                        _LabelRow(trip),
                       ],
                     ),
                   ),
@@ -127,12 +144,16 @@ class JournalEntry extends StatelessWidget {
   }
 
   void onPressed() {}
+
+  QueryBuilder<Trip, Trip, QAfterFilterCondition> createQuery() {
+    return trekko.getTripQuery().filter().idEqualTo(trip.id);
+  }
 }
 
-class InformationRow extends StatelessWidget {
+class _InformationRow extends StatelessWidget {
   final Trip trip;
 
-  InformationRow(this.trip);
+  const _InformationRow(this.trip);
 
   @override
   Widget build(BuildContext context) {
@@ -145,15 +166,13 @@ class InformationRow extends StatelessWidget {
             DateFormat('HH:mm').format(trip.calculateStartTime()),
             style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
           ),
-          Container(
-            child: Row(
-              children: [
-                Text("${trip.getDuration().inMinutes} min"),
-                const SizedBox(width: 4.0),
-                Text(
-                    "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km"),
-              ],
-            ),
+          Row(
+            children: [
+              Text("${trip.getDuration().inMinutes} min"),
+              const SizedBox(width: 4.0),
+              Text(
+                  "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km"),
+            ],
           ),
           Text(
             DateFormat('HH:mm').format(trip.calculateEndTime()),
@@ -165,10 +184,10 @@ class InformationRow extends StatelessWidget {
   }
 }
 
-class VehicleLine extends StatelessWidget {
+class _VehicleLine extends StatelessWidget {
   final Trip trip;
 
-  VehicleLine(this.trip);
+  const _VehicleLine(this.trip);
 
   @override
   Widget build(BuildContext context) {
@@ -176,14 +195,13 @@ class VehicleLine extends StatelessWidget {
   }
 }
 
-class LabelRow extends StatelessWidget {
+class _LabelRow extends StatelessWidget {
   final Trip trip;
 
-  LabelRow(this.trip);
+  const _LabelRow(this.trip);
 
   @override
   Widget build(BuildContext context) {
-    // Erstellen Sie ein Set aus den Fahrzeugtypen in der legs-Liste
     final uniqueVehicleTypes =
         trip.legs.map((leg) => leg.transportType).toSet();
 
