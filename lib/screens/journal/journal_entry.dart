@@ -17,23 +17,20 @@ class JournalEntry extends StatelessWidget {
   final bool isSelected;
   final bool isDisabled;
   final Function(Trip, bool)?
-  onSelectionChanged; // Callback for selection change
+      onSelectionChanged; // Callback for selection change
   final Trekko trekko;
   double maxWidth = 0;
 
   JournalEntry(this.trip, this.selectionMode, this.trekko,
-          {this.onSelectionChanged,
-        this.isSelected = false,
-        this.isDisabled = false,
-        Key? key})
+      {this.onSelectionChanged,
+      this.isSelected = false,
+      this.isDisabled = false,
+      Key? key})
       : super(key: key ?? ValueKey(trip.id));
 
   @override
   Widget build(BuildContext context) {
-    maxWidth = MediaQuery
-        .of(context)
-        .size
-        .width - 32;
+    maxWidth = MediaQuery.of(context).size.width - 32;
     return GestureDetector(
       onTap: () {
         if (isDisabled) return;
@@ -67,11 +64,10 @@ class JournalEntry extends StatelessWidget {
             child: selectionMode
                 ? _buildEntry()
                 : CupertinoContextMenu(
-                enableHapticFeedback: true,
-                actions: <Widget>[
-                  Builder(
-                    builder: (context) =>
-                        CupertinoContextMenuAction(
+                    enableHapticFeedback: true,
+                    actions: <Widget>[
+                      Builder(
+                        builder: (context) => CupertinoContextMenuAction(
                           onPressed: () {
                             if (trip.donationState == DonationState.donated) {
                               trekko.revoke(createQuery().build());
@@ -81,10 +77,10 @@ class JournalEntry extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           isDefaultAction: true,
-                          trailingIcon: trip.donationState ==
-                              DonationState.donated
-                              ? CupertinoIcons.xmark
-                              : CupertinoIcons.share,
+                          trailingIcon:
+                              trip.donationState == DonationState.donated
+                                  ? CupertinoIcons.xmark
+                                  : CupertinoIcons.share,
                           child: Text(
                             trip.donationState == DonationState.donated
                                 ? 'Spende zurückziehen'
@@ -93,10 +89,9 @@ class JournalEntry extends StatelessWidget {
                                 .copyWith(color: AppThemeColors.contrast900),
                           ),
                         ),
-                  ),
-                  Builder(
-                    builder: (context) =>
-                        CupertinoContextMenuAction(
+                      ),
+                      Builder(
+                        builder: (context) => CupertinoContextMenuAction(
                           onPressed: () {
                             //TODO: Deatilseite öffnen;
                             Navigator.pop(context);
@@ -108,10 +103,9 @@ class JournalEntry extends StatelessWidget {
                                 .copyWith(color: AppThemeColors.contrast900),
                           ),
                         ),
-                  ),
-                  Builder(
-                    builder: (context) =>
-                        CupertinoContextMenuAction(
+                      ),
+                      Builder(
+                        builder: (context) => CupertinoContextMenuAction(
                           onPressed: () {
                             trekko.deleteTrip(createQuery().build());
                             Navigator.pop(context);
@@ -124,16 +118,15 @@ class JournalEntry extends StatelessWidget {
                                 .copyWith(color: AppThemeColors.red),
                           ),
                         ),
+                      ),
+                    ],
+                    child: _buildEntry(),
                   ),
-                ],
-                child: _buildEntry(),
-            ),
           ),
         ],
       ),
     );
   }
-
 
   QueryBuilder<Trip, Trip, QAfterFilterCondition> createQuery() {
     return trekko.getTripQuery().filter().idEqualTo(trip.id);
@@ -194,13 +187,10 @@ class _InformationRow extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("${trip
-                  .getDuration()
-                  .inMinutes} min"),
+              Text("${trip.getDuration().inMinutes} min"),
               const SizedBox(width: 4.0),
               Text(
-                  "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(
-                      1)} km"),
+                  "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km"),
             ],
           ),
           Text(
@@ -232,7 +222,7 @@ class _LabelRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final uniqueVehicleTypes =
-    trip.legs.map((leg) => leg.transportType).toSet();
+        trip.legs.map((leg) => leg.transportType).toSet();
 
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
