@@ -1,7 +1,9 @@
 import 'package:app_backend/model/trip/tracked_point.dart';
 import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/journal_entry_detail_kilometer_picker.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/journal_entry_detail_view_time_picker.dart';
+import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/kilometer_picker.dart';
+import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/time_picker.dart';
+import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_provider.dart';
+import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:app_backend/model/trip/trip.dart';
@@ -13,7 +15,7 @@ class JournalEntryDetailViewDescription extends StatefulWidget {
   final DateTime startDate;
   final DateTime endDate;
 
-  const JournalEntryDetailViewDescription({
+  JournalEntryDetailViewDescription({
     //TODO Klasse sehr lang
     required this.trip,
     required this.startDate,
@@ -69,16 +71,22 @@ class _JournalEntryDetailViewDescriptionState
                   maximumDateTime: widget.trip.calculateEndTime(),
                   onChange: (val) {
                     widget.trip.startTime = val;
+                    JournalEntryDetailViewProvider.updateOf(context, true);
                   },
                 ),
                 Spacer(),
                 JournalEntryDetailKilometerPicker(
-                    initialValue: widget.trip.getDistance().as(kilo.meters)),
+                    initialValue: widget.trip.getDistance().as(kilo.meters),
+                    onChange: (val) {
+                      widget.trip.setDistance(val.kilo.meters);
+                    }),
                 Spacer(),
                 JournalEntryDetailViewTimePicker(
-                  onChange: (val) {},
+                  onChange: (val) {
+                    widget.trip.endTime = val;
+                  },
                   initialDateTime: widget.trip.calculateEndTime(),
-                  minimumDateTime: widget.trip.calculateEndTime(),
+                  minimumDateTime: widget.trip.calculateStartTime(),
                 ),
               ],
             ),

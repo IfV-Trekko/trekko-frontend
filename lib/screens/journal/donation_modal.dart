@@ -1,3 +1,4 @@
+
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/trip.dart';
@@ -52,7 +53,7 @@ class DonationModalState extends State<DonationModal>
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        left: 16.0, right: 16.0, bottom: 32.0, top: 13.0),
+                        left: 16.0, right: 16.0, bottom: 12.0, top: 12.0),
                     child: Button(
                       title: 'Spenden',
                       size: ButtonSize.large,
@@ -91,7 +92,7 @@ class DonationModalState extends State<DonationModal>
           if (trips.isEmpty) {
             return Center(
                 child: Text(
-              'Noch keine Wege verfügbar',
+              'Keine Wege zum Spenden gefunden',
               style: AppThemeTextStyles.title,
             ));
           } else {
@@ -106,6 +107,7 @@ class DonationModalState extends State<DonationModal>
                       key: ValueKey(trips[index].id),
                       trip,
                       loadCheckmark,
+                      widget.trekko,
                       isSelected: selectedTrips.contains(trip.id),
                       isDisabled: isLoading,
                       onSelectionChanged: (Trip trip, bool isSelected) {
@@ -126,7 +128,6 @@ class DonationModalState extends State<DonationModal>
     );
   }
 
-  //TODO Error Handling
   void donate() async {
     setState(() {
       isLoading = true;
@@ -136,24 +137,14 @@ class DonationModalState extends State<DonationModal>
       try {
         await widget.trekko.donate(
             widget.trekko.getTripQuery().filter().idEqualTo(element).build());
-        donatedTrips++;
+            donatedTrips++;
       } catch (error) {
         donatedTrips++;
-        showCupertinoDialog(
-            context: context,
-            builder: (BuildContext context) => CupertinoAlertDialog(
-              title: Text('Fehler'),
-              content: Text('Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten'),
-              actions: [
-                CupertinoDialogAction(
-                  child: Text('Schließen'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              ],
-            )
-        );
+        Navigator.pop(context); // Close the modal
+        setState(() {
+          isLoading = false; // Set isLoading to false
+        });
+        finishedAction('Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten', true);
         return;
       }
     }
@@ -161,19 +152,28 @@ class DonationModalState extends State<DonationModal>
     setState(() {
       isLoading = false;
     });
+    finishedAction('Sie haben $donatedTrips Wege übermittelt', false);
+    selectedTrips.clear();
+  }
+
+  void finishedAction(String message, bool error) {
+    selectedTrips.clear();
+    setState(() {
+      isLoading = false;
+    });
     showCupertinoDialog(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
-              title: Text('Spende Erfolgreich'),
-              content: Text('Sie haben $donatedTrips Wege übermittelt'),
-              actions: [
-                CupertinoDialogAction(
-                  child: Text('Schließen'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              ],
-            ));
+          title: Text(error ? 'Fehler' : 'Spende Erfolgreich'),
+          content: Text(message),
+          actions: [
+            CupertinoDialogAction(
+              child: Text('Schließen'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ));
   }
 }
