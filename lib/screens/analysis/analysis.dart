@@ -1,9 +1,12 @@
+
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/page_control.dart';
+import 'package:app_frontend/screens/analysis/piechart.dart';
 import 'package:app_frontend/screens/analysis/vehicle_data.dart';
 import 'package:flutter/cupertino.dart';
+import 'barchart.dart';
 import 'basic_chart.dart';
 
 class Analysis extends StatefulWidget {
@@ -19,7 +22,7 @@ class _AnalysisState extends State<Analysis> with AutomaticKeepAliveClientMixin{
 
   @override
   bool get wantKeepAlive => true;
-  
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -38,22 +41,22 @@ class _AnalysisState extends State<Analysis> with AutomaticKeepAliveClientMixin{
             SliverToBoxAdapter(
             child: CustomPageControl(
               pages: vehicleData,
+              pageHeights: 288,
             ),
             ),
             SliverToBoxAdapter(
-              child: Container(
-                margin: EdgeInsets.only(top: 14.0, left: 16.0, right: 16.0),
-                decoration: BoxDecoration(
-                  color: AppThemeColors.contrast0,
-                  border: Border.all(color: AppThemeColors.contrast400),
-                  borderRadius: BorderRadius.circular(8),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 100.0),
+                child: CustomPageControl(
+                  pages: [
+                    PieChartWidget(trekko: widget.trekko),
+                    BarChartWidget(trekko: widget.trekko),
+                    BasicChart(trekko: widget.trekko),
+                  ],
+                  pageHeights: 440,
                 ),
-                padding: EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
-                child: //PieChartWidget(trekko: widget.trekko),
-                //BarChartWidget(trekko: widget.trekko),
-                BasicChart(trekko: widget.trekko),
               ),
-            )
+            ),
           ],
         )
     );

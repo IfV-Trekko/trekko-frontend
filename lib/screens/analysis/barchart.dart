@@ -127,7 +127,7 @@ class BarChartWidgetState extends State<BarChartWidget> {
       leftTitles: const AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
-          interval: 2,
+          //interval: 2,
           reservedSize: 34,
         ),
       ),
@@ -142,14 +142,24 @@ class BarChartWidgetState extends State<BarChartWidget> {
       ),
     );
 
-    return Column(
+    return Container(
+    decoration: BoxDecoration(
+    color: AppThemeColors.contrast0,
+    border: Border.all(color: AppThemeColors.contrast400),
+    borderRadius: BorderRadius.circular(8),
+    ),
+    padding: EdgeInsets.only(top: 9, bottom: 16, left: 12, right: 12),
+    child:
+    Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
             Container(
               margin:
-                  const EdgeInsets.only(bottom: 14.0, left: 12.0, top: 12.0),
-              child: Text('Durch. Wegzeit', style: AppThemeTextStyles.title),
+              const EdgeInsets.only(bottom: 14.0, left: 12.0, top: 7.0),
+              child: Text('Ø Wegzeit', style: AppThemeTextStyles.title),
             ),
           ],
         ),
@@ -157,7 +167,7 @@ class BarChartWidgetState extends State<BarChartWidget> {
         Container(
             margin: const EdgeInsets.only(right: 12.0, bottom: 12.0, top: 12.0),
             child: AspectRatio(
-              aspectRatio: 1.6,
+              aspectRatio: 1.2,
               child: StreamBuilder<List<Tuple<TransportType, double>>>(
                 stream: buildData(),
                 builder: (context, snapshot) {
@@ -214,6 +224,7 @@ class BarChartWidgetState extends State<BarChartWidget> {
               ),
             ))
       ],
+    ),
     );
   }
 }
