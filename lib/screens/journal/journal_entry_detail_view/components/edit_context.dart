@@ -1,7 +1,6 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
@@ -42,16 +41,9 @@ class JournalEntryDetailViewEditContext extends StatelessWidget {
         children: [
           Expanded(
               child: Button(
-            title: donated
-                ? 'Aktualisieren'
-                : (JournalEntryDetailViewProvider.of(context)
-                    ? 'Aktualisieren'
-                    : 'Spenden'),
-            onPressed: donated
-                ? onUpdate
-                : (JournalEntryDetailViewProvider.of(context)
-                    ? onUpdate
-                    : onDonate),
+            style: donated ? ButtonStyle.secondary : ButtonStyle.primary,
+            title: donated ? 'Spende zurückziehen' : 'Spenden',
+            onPressed: donated ? onUpdate : onDonate,
           )),
           SizedBox(width: 8),
           EditContextMenu(
@@ -74,7 +66,7 @@ class EditContextMenu extends StatelessWidget {
   const EditContextMenu(
       {required this.onDelete,
       required this.donated,
-      required this.onReset,
+      required this.onReset, //TODO funktioniert nicht
       required this.onRevoke,
       super.key});
 
@@ -85,15 +77,24 @@ class EditContextMenu extends StatelessWidget {
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
-            onPressed: onReset,
+            onPressed: () {
+              onReset();
+              Navigator.pop(context);
+            },
             child: const Text('Zurücksetzen'),
           ),
           CupertinoActionSheetAction(
-            onPressed: onRevoke,
+            onPressed: () {
+              onRevoke();
+              Navigator.pop(context);
+            },
             child: const Text('Spende zurückziehen'),
           ),
           CupertinoActionSheetAction(
-            onPressed: onDelete,
+            onPressed: () {
+              onDelete();
+              Navigator.pop(context);
+            },
             child: const Text('Unwideruflich löschen'),
             isDestructiveAction: true,
           ),
@@ -115,11 +116,17 @@ class EditContextMenu extends StatelessWidget {
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
-            onPressed: onReset,
+            onPressed: () {
+              onReset();
+              Navigator.pop(context);
+            },
             child: const Text('Zurücksetzen'),
           ),
           CupertinoActionSheetAction(
-            onPressed: onDelete,
+            onPressed: () {
+              onDelete();
+              Navigator.pop(context);
+            },
             child: const Text('Unwideruflich Löschen'),
             isDestructiveAction: true,
           ),

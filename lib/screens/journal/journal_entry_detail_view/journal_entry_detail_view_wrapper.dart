@@ -8,7 +8,6 @@ import 'package:app_frontend/components/map.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/description.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/details.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/edit_context.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_provider.dart';
 import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
@@ -36,10 +35,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
   Widget build(BuildContext context) {
     final trekko = TrekkoProvider.of(context);
 
-    return JournalEntryDetailViewProvider(
-      hasUnsafedChanges: hasUnsafedChanges,
-      onSetUnsafedChanges: setUnsafedChanges,
-      child: CupertinoPageScaffold(
+    return CupertinoPageScaffold(
         backgroundColor: AppThemeColors.contrast150,
         navigationBar: CupertinoNavigationBar(
             leading: CupertinoNavigationBarBackButton(
@@ -52,8 +48,8 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                 ? Button(
                     stretch: false,
                     title: 'Zurückziehen',
-                    onPressed: () {
-                      trekko.revoke(trekko
+                    onPressed: () async {
+                      await trekko.revoke(trekko
                           .getTripQuery()
                           .idEqualTo(widget.trip.id)
                           .build());
@@ -64,8 +60,8 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                 : Button(
                     stretch: false,
                     title: 'Spenden',
-                    onPressed: () {
-                      trekko.donate(trekko
+                    onPressed: () async {
+                      await trekko.donate(trekko
                           .getTripQuery()
                           .idEqualTo(widget.trip.id)
                           .build());
@@ -102,6 +98,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                     widget.trip.reset();
                   },
                   onUpdate: () {
+                    print(widget.trip.startTime);
                     trekko.saveTrip(widget.trip);
                   },
                   onDonate: () async {
@@ -113,8 +110,6 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                   },
                   onDelete: () {
                     Navigator.of(context).pop();
-                    Future.delayed(const Duration(
-                        seconds: 1)); //TODO warum schmiert trotzdem ab?
                     trekko.deleteTrip(trekko
                         .getTripQuery()
                         .idEqualTo(widget.trip.id)
@@ -125,11 +120,10 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                         .getTripQuery()
                         .idEqualTo(widget.trip.id)
                         .build());
+                    trekko.saveTrip(widget.trip); //TODO funktioniert nicht
                   }),
             ),
           ],
-        )),
-      ),
-    );
+        )));
   }
 }

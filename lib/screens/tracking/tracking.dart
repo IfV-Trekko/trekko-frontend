@@ -48,14 +48,9 @@ class _TrackingScreenState extends State<TrackingScreen>
           //     widget.trekko.getTripQuery().idEqualTo(trip!.id).build())
 
           Navigator.of(context).push(CupertinoPageRoute(
-              builder: (context) => JournalEntryDetailView(Stream.value(trip!)
-                  // widget.trekko
-                  //     .getTripQuery()
-                  //     .idEqualTo(trip!.id)
-                  //     .watch(fireImmediately: true)
-                  //     .map((event) => event.first),
-                  )))
+              builder: (context) => JournalEntryDetailView(trip!)))
         });
+
     // });
   }
 
