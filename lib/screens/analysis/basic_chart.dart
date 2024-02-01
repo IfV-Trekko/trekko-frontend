@@ -3,22 +3,20 @@ import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/leg.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
-import 'package:app_frontend/screens/analysis/attribute_row.dart';
-import 'package:app_frontend/screens/journal/journalDetail/transportDesign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
 
 import '../../app_theme.dart';
+import 'basicchart_row.dart';
 
 class BasicChart extends StatelessWidget{
 
   Trekko trekko;
-  //TransportType vehicle;
 
   BasicChart({required this.trekko});
 
-/*  Stream<SpeedReduction?> getData(TransportType vehicle) {
+  Stream<DerivedMeasurement<Measurement<Distance>, Measurement<Time>>?> getData(TransportType vehicle) {
     return trekko.analyze(
         trekko
             .getTripQuery()
@@ -26,14 +24,15 @@ class BasicChart extends StatelessWidget{
             .legsElement((l) => l.transportTypeEqualTo(vehicle))
             .build(),
             (t) => t.getSpeed(),
-        SpeedReduction.AVERAGE
-    );
-  }*/
+        SpeedReduction.AVERAGE);
+  }
+
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
-        margin: EdgeInsets.only( top: 3, left: 4),
+        margin: EdgeInsets.only( top: 3, left: 4, right: 4),
         child:
         Column(
           children: [
@@ -45,9 +44,21 @@ class BasicChart extends StatelessWidget{
               ]
             ),
             SizedBox(height: 16),
-            // AttributeRow(title: TransportDesign.getName(vehicle),
-            //     value: getDataFormatted((t) => t.getDistance(),
-            //         DistanceReduction.AVERAGE, (d) => d.as(kilo.meters).roundToDouble().toString() + " km"))
+            ...TransportType.values.map((type) {
+              return StreamBuilder<DerivedMeasurement<Measurement<Distance>, Measurement<Time>>?>(
+                stream: getData(type),
+                builder: (context, snapshot) {
+                  Widget dataWidget;
+                  if (snapshot.hasData) {
+                    var speed = snapshot.data?.as(kilo.meters, hours).roundToDouble().toString(); // Ersetzen Sie dies durch die richtige Berechnung
+                    dataWidget = Text('${speed.toString()} km/h');
+                  } else {
+                    dataWidget = Text('Keine Daten');
+                  }
+                  return BasicChartRow(type: type, value: dataWidget);
+                },
+              );
+            }).toList(),
           ],
         )
     );

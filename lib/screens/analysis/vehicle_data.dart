@@ -15,6 +15,7 @@ class VehicleDataBox extends StatelessWidget {
   TransportType vehicle;
 
   VehicleDataBox({required this.trekko, required this.vehicle});
+
   Stream<T?> getData<T>(T Function(Trip) apply, Reduction<T> reduction) {
     return trekko.analyze(
         trekko

@@ -1,4 +1,3 @@
-import 'package:app_backend/controller/request/request_exception.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/battery_usage_setting.dart';
 import 'package:app_backend/model/profile/onboarding_question.dart';

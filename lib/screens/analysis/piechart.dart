@@ -60,7 +60,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
         Row(
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 14.0, left: 12.0, top: 12.0),
+              margin: EdgeInsets.only(bottom: 14.0, left: 4.0, top: 7.0),
               child: Text('Gesamtstrecke', style: AppThemeTextStyles.title),
             ),
           ],
