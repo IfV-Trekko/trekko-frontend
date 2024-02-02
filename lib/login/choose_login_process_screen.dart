@@ -22,7 +22,7 @@ class ChooseLoginProcessScreen extends StatelessWidget {
             Button(
                 title: "Registrieren",
                 onPressed: () {
-                  Navigator.pushNamed(context, "/login/signIn/");
+                  Navigator.pushNamed(context, "/login/signUp/");
                 }),
             Button(
                 title: "Anmelden",

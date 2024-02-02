@@ -4,18 +4,18 @@ import 'package:app_frontend/login/login_app.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignInScreen extends StatefulWidget {
   final LoginApp app;
 
-  const LoginScreen(this.app, {super.key});
+  const SignInScreen(this.app, {super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  String? email;
-  String? password;
+class _SignInScreenState extends State<SignInScreen> {
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,20 +25,20 @@ class _LoginScreenState extends State<LoginScreen> {
           TextInput(
             title: "E-Mail",
             hiddenTitle: "E-Mail Adresse",
-            onComplete: (s) => email = s,
+            controller: email,
           ),
           TextInput(
             title: "Passwort",
             hiddenTitle: "Passwort",
-            onComplete: (s) => password = s,
+            controller: password,
           ),
         ]),
         title: "Anmelden",
         buttonTitle: "Anmelden",
         onButtonPress: () async {
-          widget.app.trekkoCallBack.call(
-              await LoginBuilder(widget.app.projectUrl!, email!, password!)
-                  .build());
+          widget.app.use(await LoginBuilder(widget.app.projectUrl!,
+                  email.value.text, password.value.text)
+              .build());
         });
   }
 }
