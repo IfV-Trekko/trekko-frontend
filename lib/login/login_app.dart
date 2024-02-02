@@ -1,5 +1,7 @@
 import 'package:app_backend/controller/trekko.dart';
+import 'package:app_frontend/login/choose_login_process_screen.dart';
 import 'package:app_frontend/login/join_project_screen.dart';
+import 'package:app_frontend/login/login_screen.dart';
 import 'package:app_frontend/login/welcome_screen.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -15,6 +17,8 @@ class LoginApp extends StatelessWidget {
     Map<String, Widget Function(BuildContext)> routes = {
       "/login/welcome/": (b) => WelcomeScreen(this),
       "/login/project/": (b) => JoinProjectScreen(this),
+      "/login/how/": (b) => ChooseLoginProcessScreen(this),
+      "/login/signIn": (b) => LoginScreen(this),
     };
 
     return CupertinoApp(
