@@ -1,7 +1,8 @@
 import 'package:app_backend/model/trip/tracked_point.dart';
 import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/kilometer_picker.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/time_picker.dart';
+import 'package:app_frontend/components/picker/kilometer_picker.dart';
+import 'package:app_frontend/components/picker/time_picker.dart';
+import 'package:app_frontend/components/picker/time_picker.dart';
 import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart';
@@ -65,7 +66,7 @@ class _JournalEntryDetailViewDescriptionState
           children: [
             Row(
               children: [
-                JournalEntryDetailViewTimePicker(
+                TimePicker(
                   initialDateTime: widget.trip.calculateStartTime(),
                   maximumDateTime: widget.trip.calculateEndTime(),
                   onChange: (val) {
@@ -74,14 +75,14 @@ class _JournalEntryDetailViewDescriptionState
                   },
                 ),
                 Spacer(),
-                JournalEntryDetailKilometerPicker(
+                KilometerPicker(
                     initialValue: widget.trip.getDistance().as(kilo.meters),
                     onChange: (val) {
                       widget.trip.setDistance(val.kilo.meters);
                       TrekkoProvider.of(context).saveTrip(widget.trip);
                     }),
                 Spacer(),
-                JournalEntryDetailViewTimePicker(
+                TimePicker(
                   onChange: (val) {
                     widget.trip.endTime = val;
                     TrekkoProvider.of(context).saveTrip(widget.trip);

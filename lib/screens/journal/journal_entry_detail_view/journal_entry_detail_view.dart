@@ -26,7 +26,6 @@ class _JournalEntryDetailViewState extends State<JournalEntryDetailView> {
             .watch(fireImmediately: true)
             .map((event) => event.first),
         builder: (context, snapshot) {
-          print("snapshot");
           if (snapshot.hasData) {
             Trip trip = snapshot.data!;
             return JournalEntryDetailViewWrapper(trip: trip);

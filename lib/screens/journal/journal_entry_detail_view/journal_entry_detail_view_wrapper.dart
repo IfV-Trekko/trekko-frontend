@@ -4,7 +4,7 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
-import 'package:app_frontend/components/map.dart';
+import 'package:app_frontend/components/tripMap.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/description.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/details.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/edit_context.dart';
@@ -77,7 +77,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
               SizedBox(
                   height: 234,
                   child: Center(
-                    child: MainMap(),
+                    child: TripMap(),
                   )),
               JournalEntryDetailViewDescription(
                   trip: widget.trip,
@@ -88,7 +88,13 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                 width: double.infinity,
                 color: AppThemeColors.contrast700,
               ),
-              const JournalEntryDetailViewDetails(),
+              JournalEntryDetailViewDetails(
+                detailPurpose: widget.trip.purpose ?? '',
+                onSavedPurpose: (value) {
+                  widget.trip.purpose = value;
+                  trekko.saveTrip(widget.trip);
+                },
+              ),
             ])),
             Align(
               alignment: Alignment.bottomCenter,

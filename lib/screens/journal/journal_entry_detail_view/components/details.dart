@@ -1,21 +1,52 @@
 import 'package:app_frontend/app_theme.dart';
+import 'package:app_frontend/components/button.dart';
+import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:flutter/cupertino.dart';
 
-class JournalEntryDetailViewDetails extends StatelessWidget {
-  const JournalEntryDetailViewDetails();
+class JournalEntryDetailViewDetails extends StatefulWidget {
+  final String detailPurpose;
+  final Function(String) onSavedPurpose;
 
+  const JournalEntryDetailViewDetails(
+      {required this.detailPurpose, required this.onSavedPurpose, super.key});
+
+  @override
+  State<JournalEntryDetailViewDetails> createState() =>
+      _JournalEntryDetailViewDetailsState();
+}
+
+class _JournalEntryDetailViewDetailsState
+    extends State<JournalEntryDetailViewDetails> {
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Column(children: [
       CupertinoListSection.insetGrouped(
+        //TODO Strich ist nicht lang genug
         backgroundColor: AppThemeColors.contrast150,
+        additionalDividerMargin: 2,
         children: [
           CupertinoListTile(
             title: Text('Anlass / Zweck', style: AppThemeTextStyles.normal),
             trailing: Container(child: CupertinoListTileChevron()),
-            additionalInfo:
-                Container(child: Text('Arbeit')), //TODO implementieren
+            additionalInfo: widget.detailPurpose.isEmpty
+                ? Container(child: Text('Arbeit, Freizeit, etc.'))
+                : Container(
+                    child: Text(
+                      widget.detailPurpose, //TODO richtig angezeigt?
+                      overflow: TextOverflow.ellipsis, textAlign: TextAlign.end,
+                    ),
+                    width: 150,
+                  ),
+            onTap: () {
+              Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => Response(
+                      maxLength: 350,
+                      onSaved: widget.onSavedPurpose,
+                      title: 'Anlass / Zweck',
+                      placeholder: 'Arbeit, Freizeit, etc.',
+                      initialValue: widget.detailPurpose)));
+            },
           ),
           CupertinoListTile(
             title: Text('Verkehrsmittel', style: AppThemeTextStyles.normal),
@@ -35,5 +66,77 @@ class JournalEntryDetailViewDetails extends StatelessWidget {
         ],
       ),
     ]));
+  }
+}
+
+class Response extends StatefulWidget {
+  final int maxLength;
+  final String title;
+  final String initialValue;
+  final String placeholder;
+  final Function(String) onSaved;
+  late TextEditingController _controller;
+
+  Response(
+      {super.key,
+      required this.maxLength,
+      required this.onSaved,
+      required this.title,
+      required this.placeholder,
+      required this.initialValue}) {
+    _controller = TextEditingController(text: initialValue);
+    _controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: _controller.text.length));
+  }
+  @override
+  State<Response> createState() => _ResponseState();
+}
+
+class _ResponseState extends State<Response> {
+  late String _newResponse;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        leading: CupertinoNavigationBarBackButton(
+          previousPageTitle: 'Zurück',
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        middle: Text(widget.title),
+        trailing: Button(
+          title: 'Speichern',
+          size: ButtonSize.small,
+          stretch: false,
+          onPressed: () {
+            widget.onSaved(_newResponse);
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      child: SafeArea(
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: CupertinoTextField(
+            controller: widget._controller,
+            scrollPadding: const EdgeInsets.all(2),
+            maxLength: widget.maxLength,
+            maxLines: null,
+            placeholder: widget.placeholder,
+            autofocus: true,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            onChanged: (String value) {
+              setState(() {
+                _newResponse = value;
+              });
+            },
+          ),
+        ),
+      ),
+    );
   }
 }

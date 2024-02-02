@@ -4,19 +4,17 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
-class JournalEntryDetailKilometerPicker extends StatefulWidget {
+class KilometerPicker extends StatefulWidget {
   final double initialValue;
   final Function(double) onChange;
-  const JournalEntryDetailKilometerPicker(
+  const KilometerPicker(
       {super.key, required this.initialValue, required this.onChange});
 
   @override
-  _JournalEntryDetailKilometerPickerState createState() =>
-      _JournalEntryDetailKilometerPickerState();
+  _KilometerPickerState createState() => _KilometerPickerState();
 }
 
-class _JournalEntryDetailKilometerPickerState
-    extends State<JournalEntryDetailKilometerPicker> {
+class _KilometerPickerState extends State<KilometerPicker> {
   late double _kilometers;
   late TextEditingController _controller;
 
