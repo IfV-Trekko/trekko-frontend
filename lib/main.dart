@@ -1,25 +1,38 @@
 import 'dart:io';
 
 import 'package:app_backend/controller/builder/build_exception.dart';
+import 'package:app_backend/controller/builder/last_login_builder.dart';
 import 'package:app_backend/controller/builder/login_builder.dart';
 import 'package:app_backend/controller/builder/login_result.dart';
 import 'package:app_backend/controller/builder/registration_builder.dart';
 import 'package:app_backend/controller/trekko.dart';
-import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/screens/analysis/analysis.dart';
-import 'package:app_frontend/screens/journal/journal.dart';
-import 'package:app_frontend/screens/profile/profile.dart';
-import 'package:app_frontend/screens/tracking/tracking.dart';
-import 'package:app_frontend/trekko_provider.dart';
+import 'package:app_frontend/login/login_app.dart';
+import 'package:app_frontend/screens/trekko_app.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:heroicons/heroicons.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   await initializeDateFormatting('de', null);
   WidgetsFlutterBinding.ensureInitialized();
-  Trekko trekko = await buildTrekko();
+
+  LastLoginBuilder lastLoginBuilder = LastLoginBuilder();
+  if (await lastLoginBuilder.hasData()) {
+    try {
+      runTrekkoApp(await lastLoginBuilder.build());
+      return;
+    } catch (e) {
+      // Do nothing
+    }
+  }
+  runLoginApp();
+}
+
+void runTrekkoApp(Trekko trekko) {
   runApp(TrekkoApp(trekko: trekko));
+}
+
+void runLoginApp() {
+  runApp(LoginApp((trekko) => runTrekkoApp(trekko)));
 }
 
 Future<Trekko> buildTrekko() async {
@@ -50,82 +63,5 @@ Future<Trekko> buildTrekko() async {
       }
     }
     rethrow;
-  }
-}
-
-class Screen {
-  final String title;
-  final HeroIcons icon;
-  final Widget screen;
-
-  Screen(this.title, this.icon, this.screen);
-}
-
-class TrekkoApp extends StatefulWidget {
-  final Trekko trekko;
-
-  const TrekkoApp({super.key, required this.trekko});
-
-  @override
-  _TrekkoAppState createState() => _TrekkoAppState();
-}
-
-class _TrekkoAppState extends State<TrekkoApp> {
-  final CupertinoTabController controller = CupertinoTabController();
-
-  late List<Screen> screens;
-
-  Screen get currentScreen => screens[controller.index];
-
-  @override
-  void initState() {
-    super.initState();
-    screens = [
-      Screen('Erhebung', HeroIcons.play,
-          TrackingScreen(trekko: super.widget.trekko)),
-      Screen('Tagebuch', HeroIcons.queueList, Journal(trekko: super.widget.trekko)),
-      Screen('Statistik', HeroIcons.chartPie, Analysis(super.widget.trekko)),
-      Screen(
-          'Profil', HeroIcons.userCircle, ProfileScreen(super.widget.trekko)),
-    ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoApp(
-      title: 'Trekko',
-      theme: AppTheme.lightTheme,
-      home: TrekkoProvider(
-          trekko: widget.trekko,
-          child: CupertinoTabScaffold(
-            controller: controller,
-            tabBar: CupertinoTabBar(
-              onTap: (index) {
-                // This is to make the widget refresh to update the icon state
-                setState(() {});
-              },
-              items: screens
-                  .map((e) => BottomNavigationBarItem(
-                        icon: HeroIcon(
-                          e.icon,
-                          size: 24,
-                          style: currentScreen == e
-                              ? HeroIconStyle.solid
-                              : HeroIconStyle.outline,
-                        ),
-                        label: e.title,
-                      ))
-                  .toList(),
-            ),
-            tabBuilder: (context, index) {
-              return CupertinoTabView(builder: (context) {
-                return IndexedStack(
-                  index: index,
-                  children: screens.map((e) => e.screen).toList(),
-                );
-              });
-            },
-          )),
-    );
   }
 }
