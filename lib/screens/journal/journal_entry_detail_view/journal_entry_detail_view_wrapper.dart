@@ -10,6 +10,7 @@ import 'package:app_frontend/screens/journal/journal_entry_detail_view/component
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/edit_context.dart';
 import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:isar/isar.dart';
 
 class JournalEntryDetailViewWrapper extends StatefulWidget {
@@ -34,6 +35,15 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
   @override
   Widget build(BuildContext context) {
     final trekko = TrekkoProvider.of(context);
+    final pathGeoPoints = <GeoPoint>[];
+
+    for (var leg in widget.trip.legs) {
+      pathGeoPoints.insert(
+          pathGeoPoints.length,
+          GeoPoint(
+              latitude: leg.trackedPoints.first.latitude,
+              longitude: leg.trackedPoints.first.longitude));
+    }
 
     return CupertinoPageScaffold(
         backgroundColor: AppThemeColors.contrast150,
@@ -92,6 +102,11 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                 detailPurpose: widget.trip.purpose ?? '',
                 onSavedPurpose: (value) {
                   widget.trip.purpose = value;
+                  trekko.saveTrip(widget.trip);
+                },
+                detailComment: widget.trip.comment ?? '',
+                onSavedComment: (value) {
+                  widget.trip.comment = value;
                   trekko.saveTrip(widget.trip);
                 },
               ),
