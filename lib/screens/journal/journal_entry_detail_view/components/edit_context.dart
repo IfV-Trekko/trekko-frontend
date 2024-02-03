@@ -43,7 +43,7 @@ class JournalEntryDetailViewEditContext extends StatelessWidget {
               child: Button(
             style: donated ? ButtonStyle.secondary : ButtonStyle.primary,
             title: donated ? 'Spende zurückziehen' : 'Spenden',
-            onPressed: donated ? onUpdate : onDonate,
+            onPressed: donated ? onRevoke : onDonate,
           )),
           SizedBox(width: 8),
           EditContextMenu(

@@ -4,7 +4,7 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
-import 'package:app_frontend/components/tripMap.dart';
+import 'package:app_frontend/components/trip_map.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/description.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/details.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/edit_context.dart';
@@ -24,14 +24,6 @@ class JournalEntryDetailViewWrapper extends StatefulWidget {
 }
 
 class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
-  bool hasUnsafedChanges = false;
-
-  void setUnsafedChanges(bool hasUnsafedChanges) {
-    setState(() {
-      this.hasUnsafedChanges = hasUnsafedChanges;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final trekko = TrekkoProvider.of(context);
@@ -87,7 +79,9 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
               SizedBox(
                   height: 234,
                   child: Center(
-                    child: TripMap(),
+                    child: TripMap(
+                      pathGeoPoints: pathGeoPoints,
+                    ),
                   )),
               JournalEntryDetailViewDescription(
                   trip: widget.trip,
@@ -119,7 +113,6 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                     widget.trip.reset();
                   },
                   onUpdate: () {
-                    print(widget.trip.startTime);
                     trekko.saveTrip(widget.trip);
                   },
                   onDonate: () async {

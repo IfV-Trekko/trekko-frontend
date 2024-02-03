@@ -2,8 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class TripMap extends StatefulWidget {
+  final List<GeoPoint> pathGeoPoints;
+  late BoundingBox tripBoundingBox;
   //TODO bisher nur aus Prototypen übernommen
-  const TripMap({Key? key}) : super(key: key);
+  TripMap({required this.pathGeoPoints, Key? key}) : super(key: key) {
+    tripBoundingBox = BoundingBox.fromGeoPoints(pathGeoPoints);
+  }
 
   @override
   _TripMapState createState() => _TripMapState();
@@ -13,13 +17,15 @@ class _TripMapState extends State<TripMap>
     with AutomaticKeepAliveClientMixin<TripMap> {
   MapController controller = MapController.withPosition(
       initPosition: // Karlsruhe
-          GeoPoint(latitude: 48.981847914665394, longitude: 8.404279436383945));
+          GeoPoint(latitude: 49.013379, longitude: 8.404393));
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     controller.init();
+    controller.zoomToBoundingBox(widget.tripBoundingBox);
     controller.listenerMapLongTapping.addListener(() {
+      //TODO check nicht was da passiert
       if (controller.listenerMapLongTapping.value != null) {
         GeoPoint point = controller.listenerMapLongTapping.value!;
         print(point);
@@ -37,16 +43,18 @@ class _TripMapState extends State<TripMap>
           ),
         ));
     Future.delayed(Duration(seconds: 5), () {
-      controller.drawRoad(
-        GeoPoint(latitude: 49.00956, longitude: 8.41526),
-        GeoPoint(latitude: 48.99333, longitude: 8.38521),
-        roadType: RoadType.foot,
-        roadOption: const RoadOption(
-          roadWidth: 10,
-          roadColor: CupertinoColors.systemBlue,
-          zoomInto: true,
-        ),
-      );
+      for (var i = 0; i < widget.pathGeoPoints.length - 2; i++) {
+        controller.drawRoad(
+            widget.pathGeoPoints[i], widget.pathGeoPoints[i + 1],
+            roadType: RoadType.foot,
+            roadOption: const RoadOption(
+              roadWidth: 5,
+              roadColor: CupertinoColors.systemBlue,
+              zoomInto: true,
+            ));
+        //TODO sollte funktionieren, brauche nur ein Testobjekt
+        //TODO wird erst bei Save ausgeführt warum?
+      }
     });
     return osm;
   }
