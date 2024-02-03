@@ -83,7 +83,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                       pathGeoPoints: pathGeoPoints,
                     ),
                   )),
-              JournalEntryDetailViewDescription(
+              Description(
                   trip: widget.trip,
                   startDate: widget.trip.calculateStartTime(),
                   endDate: widget.trip.calculateEndTime()),
@@ -92,7 +92,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                 width: double.infinity,
                 color: AppThemeColors.contrast700,
               ),
-              JournalEntryDetailViewDetails(
+              Details(
                 detailPurpose: widget.trip.purpose ?? '',
                 onSavedPurpose: (value) {
                   widget.trip.purpose = value;
@@ -107,7 +107,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
             ])),
             Align(
               alignment: Alignment.bottomCenter,
-              child: JournalEntryDetailViewEditContext(
+              child: EditContext(
                   donated: widget.trip.donationState == DonationState.donated,
                   onReset: () {
                     widget.trip.reset();

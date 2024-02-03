@@ -10,12 +10,12 @@ import 'package:app_backend/model/trip/trip.dart';
 import 'package:intl/intl.dart';
 import 'package:fling_units/fling_units.dart';
 
-class JournalEntryDetailViewDescription extends StatefulWidget {
+class Description extends StatefulWidget {
   final Trip trip;
   final DateTime startDate;
   final DateTime endDate;
 
-  JournalEntryDetailViewDescription({
+  Description({
     //TODO Klasse sehr lang
     required this.trip,
     required this.startDate,
@@ -24,12 +24,10 @@ class JournalEntryDetailViewDescription extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _JournalEntryDetailViewDescriptionState createState() =>
-      _JournalEntryDetailViewDescriptionState();
+  _DescriptionState createState() => _DescriptionState();
 }
 
-class _JournalEntryDetailViewDescriptionState
-    extends State<JournalEntryDetailViewDescription> {
+class _DescriptionState extends State<Description> {
   Future<String> _getStreet(TrackedPoint where) async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(where.latitude, where.longitude);

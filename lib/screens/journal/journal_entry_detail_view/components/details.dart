@@ -4,13 +4,13 @@ import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
-class JournalEntryDetailViewDetails extends StatefulWidget {
+class Details extends StatefulWidget {
   final String detailPurpose;
   final String detailComment;
   final Function(String) onSavedPurpose;
   final Function(String) onSavedComment;
 
-  const JournalEntryDetailViewDetails(
+  const Details(
       {required this.detailPurpose,
       required this.onSavedPurpose,
       required this.detailComment,
@@ -18,18 +18,15 @@ class JournalEntryDetailViewDetails extends StatefulWidget {
       super.key});
 
   @override
-  State<JournalEntryDetailViewDetails> createState() =>
-      _JournalEntryDetailViewDetailsState();
+  State<Details> createState() => _DetailsState();
 }
 
-class _JournalEntryDetailViewDetailsState
-    extends State<JournalEntryDetailViewDetails> {
+class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Column(children: [
       CupertinoListSection.insetGrouped(
-        //TODO Strich ist nicht lang genug
         backgroundColor: AppThemeColors.contrast150,
         additionalDividerMargin: 2,
         children: [

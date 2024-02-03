@@ -4,7 +4,7 @@ import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
-class JournalEntryDetailViewEditContext extends StatelessWidget {
+class EditContext extends StatelessWidget {
   final bool donated;
   final Function() onDonate;
   final Function() onUpdate;
@@ -12,7 +12,7 @@ class JournalEntryDetailViewEditContext extends StatelessWidget {
   final Function() onReset;
   final Function() onRevoke;
 
-  const JournalEntryDetailViewEditContext(
+  const EditContext(
       {required this.donated,
       required this.onDonate,
       required this.onUpdate,
@@ -152,8 +152,7 @@ class EditContextMenu extends StatelessWidget {
           icon: HeroIcons.ellipsisHorizontal,
           onPressed: donated
               ? () => _showEditContextDonated(context)
-              : () =>
-                  _showEditContextNotDonated(context)), //TODO abhängig machen
+              : () => _showEditContextNotDonated(context)),
     );
   }
 }

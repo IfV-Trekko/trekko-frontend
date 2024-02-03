@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/controller/utils/trip_builder.dart';
 import 'package:app_backend/model/tracking_state.dart';
@@ -126,12 +124,14 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                     'Automatisch erfasst seit 2 Tagen', //TODO dynamisch machen
+                                    // 'Automatisch erfasst seit ${super.widget.trekko} Tagen',
                                     style: AppThemeTextStyles.normal),
                               );
                             } else if (snapshot.data! == TrackingState.paused) {
                               return Container(
                                 alignment: Alignment.centerLeft,
-                                child: Text('Letzte Erhebung vor 1 Woche',
+                                child: Text('Letzte Erhebung vor 5 Tagen',
+                                    // 'Letzte Erhebung vor ${super.widget.trekko} Tagen',
                                     style: AppThemeTextStyles.normal),
                               );
                             }
