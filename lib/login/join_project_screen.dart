@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_backend/controller/builder/authentification_utils.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:app_frontend/components/text_input.dart';
@@ -26,11 +27,12 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
         title: "Projekt\nbeitreten",
         buttonTitle: "Weiter",
         onButtonPress: () async {
-          if (projectUrl.value.text.isEmpty) {
+          if (!await AuthentificationUtils.isServerValid(projectUrl.text)) {
             showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
-                      title: Text("Bitte geben Sie eine gültige URL ein"),
+                      title: Text(
+                          "Das angegebene Projekt konnte nicht gefunden werden"),
                       actions: [
                         CupertinoDialogAction(
                           child: Text('Verstanden'),
@@ -70,7 +72,7 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
             hiddenTitle: "Project-URL",
             controller: projectUrl,
           ),
-          SizedBox(
+          const SizedBox(
             height: 300,
           ),
           Button(
