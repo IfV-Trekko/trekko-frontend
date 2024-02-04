@@ -1,3 +1,4 @@
+import 'package:app_backend/controller/builder/build_exception.dart';
 import 'package:app_backend/controller/builder/login_builder.dart';
 import 'package:app_frontend/components/text_input.dart';
 import 'package:app_frontend/login/item_divider.dart';
@@ -25,10 +26,30 @@ class _SignInScreenState extends State<SignInScreen> {
         title: "Anmeldung",
         buttonTitle: "Anmelden",
         onButtonPress: () async {
-          widget.app.trekko = await LoginBuilder(widget.app.projectUrl!,
-              email.value.text, password.value.text)
-              .build(); // TODO: Error handling
-          widget.app.launchApp();
+          try {
+            widget.app.trekko = await LoginBuilder(
+                widget.app.projectUrl!, email.value.text, password.value.text)
+                .build();
+            widget.app.launchApp();
+          } catch(e) {
+            String reason = "Unbekannt";
+            if (e is BuildException) {
+              reason = e.reason.toString();
+            }
+            showCupertinoDialog(
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                  title: Text("Fehler: " + reason), // TODO: Better information text
+                  actions: [
+                    CupertinoDialogAction(
+                      child: Text('Ok'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ));
+          }
         },
         child: Column(children: [
           TextInput(
@@ -41,6 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
             title: "Passwort",
             hiddenTitle: "Passwort",
             controller: password,
+            obscured: true,
           ),
         ]));
   }
