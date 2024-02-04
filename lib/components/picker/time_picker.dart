@@ -78,10 +78,10 @@ class _TimePickerState extends State<TimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 34,
       child: CupertinoButton(
-        padding: EdgeInsets.symmetric(horizontal: 11),
+        padding: const EdgeInsets.symmetric(horizontal: 11),
         color: AppThemeColors.contrast150,
         onPressed: () => _showCupertinoDateTimePicker(
           context,

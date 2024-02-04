@@ -22,8 +22,9 @@ class MapOptionSheet extends StatefulWidget {
 
 class _MapOptionSheetState extends State<MapOptionSheet> {
   void generateTrip() {
-    Trip trip =
-        TripBuilder().move_r(Duration(minutes: 20), 2.kilo.meters).build();
+    Trip trip = TripBuilder()
+        .move_r(const Duration(minutes: 20), 2.kilo.meters)
+        .build();
     widget.trekko.saveTrip(trip);
   }
 
@@ -45,24 +46,26 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
   Widget build(BuildContext context) {
     //TODO eventutell auslagern
     return DraggableScrollableSheet(
+        snap: true,
         minChildSize: 0.265,
         maxChildSize: 0.5,
         initialChildSize: 0.265,
         builder: (context, scrollController) {
           return Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppThemeColors.contrast100,
                 borderRadius: BorderRadius.all(
                   Radius.circular(16),
                 ),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
                 controller: scrollController,
                 child: Column(
                   children: <Widget>[
-                    PullTab(),
-                    SizedBox(height: 8),
+                    const PullTab(),
+                    const SizedBox(height: 8),
                     Container(
                         padding: EdgeInsets.zero,
                         alignment: Alignment.centerLeft,
@@ -95,9 +98,9 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                           }
                           return Container(
                               alignment: Alignment.centerLeft,
-                              child: CupertinoActivityIndicator());
+                              child: const CupertinoActivityIndicator());
                         }),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     StreamBuilder(
                         stream: super
                             .widget
@@ -131,13 +134,19 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                               );
                             }
                           }
-                          return CupertinoActivityIndicator();
+                          return const CupertinoActivityIndicator();
                         }),
-                    SizedBox(height: 16),
-                    Idea(),
-                    SizedBox(height: 16),
+                    // const SizedBox(height: 15.7), TODO cool?
+                    // Container(
+                    //   height: 1,
+                    //   width: double.infinity,
+                    //   color: AppThemeColors.contrast700,
+                    // ),
+                    const SizedBox(height: 16),
+                    const Idea(),
+                    const SizedBox(height: 16),
                     Button(title: 'Generate Trip', onPressed: generateTrip),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Button(title: 'Open detailView', onPressed: openTripModal),
                   ],
                 ),

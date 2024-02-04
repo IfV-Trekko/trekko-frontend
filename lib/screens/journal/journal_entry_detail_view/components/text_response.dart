@@ -32,11 +32,14 @@ class _TextResponseState extends State<TextResponse> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        leading: CupertinoNavigationBarBackButton(
-          previousPageTitle: 'Zurück',
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+        leading: Transform.translate(
+          offset: const Offset(-16, 0),
+          child: CupertinoNavigationBarBackButton(
+            previousPageTitle: 'Zurück',
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         middle: Text(widget.title),
         trailing: Button(

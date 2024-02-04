@@ -40,11 +40,14 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
     return CupertinoPageScaffold(
         backgroundColor: AppThemeColors.contrast150,
         navigationBar: CupertinoNavigationBar(
-            leading: CupertinoNavigationBarBackButton(
-                previousPageTitle: 'Tagebuch', //TODO off center
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
+            leading: Transform.translate(
+              offset: const Offset(-16, 0), //TODO überprüfen
+              child: CupertinoNavigationBarBackButton(
+                  previousPageTitle: 'Tagebuch',
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }),
+            ),
             middle: const Text('Wege'),
             trailing: widget.trip.donationState == DonationState.donated
                 ? Button(
@@ -72,7 +75,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                     style: ButtonStyle.primary,
                   )),
         child: SafeArea(
-            child: Column(
+            child: Stack(
           children: [
             Expanded(
                 child: ListView(children: [

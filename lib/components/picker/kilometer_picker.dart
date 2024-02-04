@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class KilometerPicker extends StatefulWidget {
   final double initialValue;
@@ -15,6 +12,7 @@ class KilometerPicker extends StatefulWidget {
 }
 
 class _KilometerPickerState extends State<KilometerPicker> {
+  //TODO ok button hinzufügen?
   late double _kilometers;
   late TextEditingController _controller;
 
@@ -57,7 +55,7 @@ class _KilometerPickerState extends State<KilometerPicker> {
     final textWidth = textPainter.size.width;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 11),
+      padding: const EdgeInsets.symmetric(horizontal: 11),
       height: 34,
       decoration: BoxDecoration(
         color: AppThemeColors.contrast0,
@@ -69,10 +67,11 @@ class _KilometerPickerState extends State<KilometerPicker> {
           SizedBox(
             width: textWidth + 24, // Dynamic width based on text width
             child: CupertinoTextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType: //TODO fixen
+                  const TextInputType.numberWithOptions(decimal: true),
               textAlign: TextAlign.center,
               controller: _controller,
-              padding: EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
               onEditingComplete: _onEditingComplete,
               style: AppThemeTextStyles.small,
               decoration: BoxDecoration(

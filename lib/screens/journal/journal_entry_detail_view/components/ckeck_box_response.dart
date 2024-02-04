@@ -16,11 +16,14 @@ class _CheckBoxResponseState extends State<CheckBoxResponse> {
     return CupertinoPageScaffold(
         //TODO auslagern?
         navigationBar: CupertinoNavigationBar(
-          leading: CupertinoNavigationBarBackButton(
-            previousPageTitle: 'Zurück',
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+          leading: Transform.translate(
+            offset: const Offset(-16, 0),
+            child: CupertinoNavigationBarBackButton(
+              previousPageTitle: 'Zurück',
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ),
           middle: const Text('Verkehrsmittel'),
           trailing: Button(
