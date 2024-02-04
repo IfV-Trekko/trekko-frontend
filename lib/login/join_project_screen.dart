@@ -19,7 +19,7 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
   Widget build(BuildContext context) {
     return SimpleOnboardingScreen(
         app: widget.app,
-        title: "Projekt beitreten",
+        title: "Projekt\nbeitreten",
         buttonTitle: "Weiter",
         onButtonPress: () async {
           widget.app.projectUrl = projectUrl.value.text;

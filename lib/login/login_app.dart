@@ -9,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 class LoginApp extends StatelessWidget {
   final Function(Trekko) trekkoCallBack;
   String? projectUrl;
-  String? email;
 
   LoginApp(this.trekkoCallBack, {super.key});
 

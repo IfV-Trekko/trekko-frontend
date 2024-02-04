@@ -15,11 +15,12 @@ void main() async {
   await initializeDateFormatting('de', null);
   WidgetsFlutterBinding.ensureInitialized();
 
-  try {
-    runTrekkoApp(await LastLoginBuilder().build());
-  } catch (e) {
-    runLoginApp();
-  }
+  // try {
+  //   runTrekkoApp(await LastLoginBuilder().build());
+  // } catch (e) {
+  //   runLoginApp();
+  // }
+  runLoginApp();
 }
 
 void runTrekkoApp(Trekko trekko) {

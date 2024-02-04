@@ -1,5 +1,6 @@
 import 'package:app_backend/controller/builder/registration_builder.dart';
 import 'package:app_frontend/components/text_input.dart';
+import 'package:app_frontend/login/item_divider.dart';
 import 'package:app_frontend/login/login_app.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,24 +23,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return SimpleOnboardingScreen(
         app: widget.app,
-        child: Column(children: [
-          TextInput(
-            title: "E-Mail",
-            hiddenTitle: "E-Mail Adresse",
-            controller: email,
-          ),
-          TextInput(
-            title: "Passwort",
-            hiddenTitle: "Passwort",
-            controller: password,
-          ),
-          TextInput(
-            title: "Passwort Wiederholen",
-            hiddenTitle: "Passwort Wiederholen",
-            controller: passwordRepeat,
-          ),
-        ]),
-        title: "Registrieren",
+        title: "Registrierung",
         buttonTitle: "Registrieren",
         onButtonPress: () async {
           widget.app.use(await RegistrationBuilder(
@@ -49,6 +33,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   passwordRepeat.value.text,
                   "12345")
               .build());
-        });
+        },
+        child: Column(children: [
+          TextInput(
+            title: "E-Mail",
+            hiddenTitle: "E-Mail Adresse",
+            controller: email,
+          ),
+          const ItemDivider(),
+          TextInput(
+            title: "Passwort",
+            hiddenTitle: "Passwort",
+            controller: password,
+          ),
+          const ItemDivider(),
+          TextInput(
+            title: "Passwort Wiederholen",
+            hiddenTitle: "Passwort Wiederholen",
+            controller: passwordRepeat,
+          ),
+        ]));
   }
 }

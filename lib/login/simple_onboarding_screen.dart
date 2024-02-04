@@ -41,16 +41,16 @@ class _SimpleOnboardingScreenState extends State<SimpleOnboardingScreen> {
         heightFactor: 0.9,
         alignment: Alignment.center,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(widget.title,
                 textAlign: TextAlign.center,
                 style: AppThemeTextStyles.headline),
             Expanded(
                 child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 20),
+                const SizedBox(height: 100),
                 widget.child,
               ],
             )),
@@ -62,7 +62,7 @@ class _SimpleOnboardingScreenState extends State<SimpleOnboardingScreen> {
                   loading: _isLoading,
                   onPressed: () async {
                     setLoading(true);
-                    await widget.onButtonPress!.call();
+                    await widget.onButtonPress! .call();
                     setLoading(false);
                   });
             }),

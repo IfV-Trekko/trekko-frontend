@@ -11,14 +11,14 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SimpleOnboardingScreen(
       app: app,
-      title: 'Willkommen bei TREKKO',
+      title: 'Willkommen\nbei\n TREKKO',
       buttonTitle: 'Beginnen',
       onButtonPress: () async {
         Navigator.pushNamed(context, "/login/project/");
       },
-      child: Column(
+      child: const Column(
         children: [
-          Text("Eine App des Institut für Verkehrswesen am KIT",
+          Text("Eine App des Institut für\nVerkehrswesen am KIT",
               textAlign: TextAlign.center),
           Text("TODO: LOGO"),
         ],
