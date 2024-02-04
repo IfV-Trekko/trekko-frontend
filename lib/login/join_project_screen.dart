@@ -27,6 +27,25 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
         title: "Projekt\nbeitreten",
         buttonTitle: "Weiter",
         onButtonPress: () async {
+          if (projectUrl.value.text.toLowerCase() ==
+              "flammkuchen isst man hier auch gar nicht so oft") {
+            // https://www.youtube.com/watch?v=UCL-eKVpfWk
+            showCupertinoDialog(
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                  title: Text("Naaahhh unterschätz das mal nicht hier"),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: Text('Werd ich nicht'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ));
+            return;
+          }
+
           if (!await AuthentificationUtils.isServerValid(projectUrl.text)) {
             showCupertinoDialog(
                 context: context,
@@ -36,24 +55,6 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
                       actions: [
                         CupertinoDialogAction(
                           child: Text('Verstanden'),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
-                    ));
-            return;
-          }
-
-          if (projectUrl.value.text.toLowerCase() ==
-              "flammkuchen isst man hier auch gar nicht so oft") {
-            showCupertinoDialog(
-                context: context,
-                builder: (context) => CupertinoAlertDialog(
-                      title: Text("Naaahhh unterschätz das mal nicht hier"),
-                      actions: [
-                        CupertinoDialogAction(
-                          child: Text('Werd ich nicht'),
                           onPressed: () {
                             Navigator.pop(context);
                           },
