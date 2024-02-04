@@ -101,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       backgroundColor: AppThemeColors.contrast100,
       child: CustomScrollView(
         slivers: [
-          CupertinoSliverNavigationBar(
+          const CupertinoSliverNavigationBar(
             largeTitle: Text('Profil'),
           ),
           SliverFillRemaining(
