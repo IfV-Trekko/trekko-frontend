@@ -27,7 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
         onButtonPress: () async {
           widget.app.use(await LoginBuilder(widget.app.projectUrl!,
                   email.value.text, password.value.text)
-              .build());
+              .build()); // TODO: Error handling
         },
         child: Column(children: [
           TextInput(

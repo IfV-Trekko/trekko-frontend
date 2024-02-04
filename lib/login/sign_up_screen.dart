@@ -26,13 +26,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         title: "Registrierung",
         buttonTitle: "Registrieren",
         onButtonPress: () async {
-          widget.app.use(await RegistrationBuilder(
-                  widget.app.projectUrl!,
-                  email.value.text,
-                  password.value.text,
-                  passwordRepeat.value.text,
-                  "12345")
-              .build());
+          widget.app.trekko = await RegistrationBuilder(
+              widget.app.projectUrl!,
+              email.value.text,
+              password.value.text,
+              passwordRepeat.value.text,
+              "12345")
+              .build(); // TODO: Error handling
+          Navigator.pushNamed(context, "/login/enterCode/");
         },
         child: Column(children: [
           TextInput(
