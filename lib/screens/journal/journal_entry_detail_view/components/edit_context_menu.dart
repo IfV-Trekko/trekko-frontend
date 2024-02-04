@@ -16,76 +16,101 @@ class EditContextMenu extends StatelessWidget {
       required this.onRevoke,
       super.key});
 
-  // This shows a CupertinoModalPopup which hosts a CupertinoActionSheet.
-  void _showEditContextDonated(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        actions: <CupertinoActionSheetAction>[
-          CupertinoActionSheetAction(
-            onPressed: () {
-              onReset();
-              Navigator.pop(context);
-            },
-            child: const Text('Zurücksetzen'),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              onRevoke();
-              Navigator.pop(context);
-            },
-            child: const Text('Spende zurückziehen'),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              onDelete();
-              Navigator.pop(context);
-            },
-            isDestructiveAction: true,
-            child: const Text('Unwideruflich löschen'),
-          ),
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          isDefaultAction: true,
-          onPressed: () {
-            Navigator.pop(context, 'Cancel');
-          },
-          child: const Text('Cancel'),
-        ),
-      ),
-    );
-  }
+  // void _showEditContextDonated(BuildContext context) {
+  //   showCupertinoModalPopup<void>(
+  //     context: context,
+  //     builder: (BuildContext context) => CupertinoActionSheet(
+  //       actions: <CupertinoActionSheetAction>[
+  //         CupertinoActionSheetAction(
+  //           onPressed: () {
+  //             onReset();
+  //             Navigator.pop(context);
+  //           },
+  //           child: const Text('Zurücksetzen'),
+  //         ),
+  //         CupertinoActionSheetAction(
+  //           onPressed: () {
+  //             onRevoke();
+  //             Navigator.pop(context);
+  //           },
+  //           child: const Text('Spende zurückziehen'),
+  //         ),
+  //         CupertinoActionSheetAction(
+  //           onPressed: () {
+  //             onDelete();
+  //             Navigator.pop(context);
+  //           },
+  //           isDestructiveAction: true,
+  //           child: const Text('Unwideruflich löschen'),
+  //         ),
+  //       ],
+  //       cancelButton: CupertinoActionSheetAction(
+  //         isDefaultAction: true,
+  //         onPressed: () {
+  //           Navigator.pop(context, 'Cancel');
+  //         },
+  //         child: const Text('Cancel'),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  void _showEditContextNotDonated(BuildContext context) {
+  // void _showEditContextNotDonated(BuildContext context) {
+  //   showCupertinoModalPopup<void>(
+  //     context: context,
+  //     builder: (BuildContext context) => CupertinoActionSheet(
+  //       actions: <CupertinoActionSheetAction>[
+  //         CupertinoActionSheetAction(
+  //           onPressed: () {
+  //             onReset();
+  //             Navigator.pop(context);
+  //           },
+  //           child: const Text('Zurücksetzen'),
+  //         ),
+  //         CupertinoActionSheetAction(
+  //           onPressed: () {
+  //             onDelete();
+  //             Navigator.pop(context);
+  //           },
+  //           isDestructiveAction: true,
+  //           child: const Text('Unwideruflich Löschen'),
+  //         ),
+  //       ],
+  //       cancelButton: CupertinoActionSheetAction(
+  //         isDefaultAction: true,
+  //         onPressed: () {
+  //           Navigator.pop(context, 'Cancel');
+  //         },
+  //         child: const Text('Cancel'),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  void _askForPermission(BuildContext context) {
+    //TODO was sagt iht dazu?
     showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        actions: <CupertinoActionSheetAction>[
-          CupertinoActionSheetAction(
-            onPressed: () {
-              onReset();
-              Navigator.pop(context);
-            },
-            child: const Text('Zurücksetzen'),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              onDelete();
-              Navigator.pop(context);
-            },
-            isDestructiveAction: true,
-            child: const Text('Unwideruflich Löschen'),
-          ),
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          isDefaultAction: true,
-          onPressed: () {
-            Navigator.pop(context, 'Cancel');
-          },
-          child: const Text('Cancel'),
-        ),
-      ),
-    );
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+              title: const Text('Unwideruflich Löschen?'),
+              content: const Text(
+                  'Möchtest du die Spende wirklich unwiderruflich löschen?'),
+              actions: <CupertinoDialogAction>[
+                CupertinoDialogAction(
+                  child: const Text('Abbrechen'),
+                  onPressed: () {
+                    Navigator.pop(context); //TODO implement
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: const Text('Löschen'),
+                  onPressed: () {
+                    onDelete();
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ));
   }
 
   @override
@@ -93,12 +118,16 @@ class EditContextMenu extends StatelessWidget {
     return SizedBox(
       width: 48,
       child: Button(
-          style: ButtonStyle.secondary,
+          style: ButtonStyle.destructive,
           title: '',
-          icon: HeroIcons.ellipsisHorizontal,
-          onPressed: donated
-              ? () => _showEditContextDonated(context)
-              : () => _showEditContextNotDonated(context)),
+          icon: HeroIcons.trash,
+          // HeroIcons.ellipsisHorizontal,
+          onPressed: () {
+            _askForPermission(context);
+          }),
+      //  donated
+      //     ? () => _showEditContextDonated(context)
+      //     : () => _showEditContextNotDonated(context)),
     );
   }
 }

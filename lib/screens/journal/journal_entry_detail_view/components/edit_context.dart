@@ -42,7 +42,10 @@ class EditContext extends StatelessWidget {
           Expanded(
               child: Button(
             style: donated ? ButtonStyle.secondary : ButtonStyle.primary,
-            title: donated ? 'Spende zurückziehen' : 'Spenden',
+            title: donated
+                ? 'Spende zurückziehen'
+                : 'Spenden', //TODO Spenden obwohl schon gespendet????
+            //TODO was für Parent widget??
             onPressed: donated ? onRevoke : onDonate,
           )),
           const SizedBox(width: 8),

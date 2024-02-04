@@ -24,6 +24,33 @@ class JournalEntryDetailViewWrapper extends StatefulWidget {
 }
 
 class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
+  void _askForReset() {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: const Text('Weg zurücksetzen?'),
+            content: const Text(
+                'Möchtest du wirklich den Weg zurücksetzen? Der Weg wird auf die ursprünglichen Daten zurückgesetzt, wobei alle Änderungen verloren gehen.'),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: const Text('Abbrechen'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              CupertinoDialogAction(
+                child: const Text('Zurücksetzen'),
+                onPressed: () {
+                  widget.trip.reset();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final trekko = TrekkoProvider.of(context);
@@ -49,31 +76,32 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                   }),
             ),
             middle: const Text('Wege'),
-            trailing: widget.trip.donationState == DonationState.donated
-                ? Button(
-                    stretch: false,
-                    title: 'Zurückziehen',
-                    onPressed: () async {
-                      await trekko.revoke(trekko
-                          .getTripQuery()
-                          .idEqualTo(widget.trip.id)
-                          .build());
-                    },
-                    size: ButtonSize.small,
-                    style: ButtonStyle.secondary,
-                  )
-                : Button(
-                    stretch: false,
-                    title: 'Spenden',
-                    onPressed: () async {
-                      await trekko.donate(trekko
-                          .getTripQuery()
-                          .idEqualTo(widget.trip.id)
-                          .build());
-                    },
-                    size: ButtonSize.small,
-                    style: ButtonStyle.primary,
-                  )),
+            trailing:
+                // widget.trip.donationState == DonationState.donated
+                //     ?
+                Button(
+              stretch: false,
+              title: 'Zurücksetzen',
+              onPressed: () async {
+                _askForReset(); //TODO funktioniert nicht & vorher fragen
+                await trekko.saveTrip(widget.trip);
+              },
+              size: ButtonSize.small,
+              style: ButtonStyle.secondary,
+            )
+            // : Button(
+            //     stretch: false,
+            //     title: 'Spenden',
+            //     onPressed: () async {
+            //       await trekko.donate(trekko
+            //           .getTripQuery()
+            //           .idEqualTo(widget.trip.id)
+            //           .build());
+            //     },
+            //     size: ButtonSize.small,
+            // style: ButtonStyle.primary,
+            // )
+            ),
         child: SafeArea(
             child: Stack(
           children: [

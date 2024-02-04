@@ -23,7 +23,7 @@ class MapOptionSheet extends StatefulWidget {
 class _MapOptionSheetState extends State<MapOptionSheet> {
   void generateTrip() {
     Trip trip = TripBuilder()
-        .move_r(const Duration(minutes: 20), 2.kilo.meters)
+        .move_r(const Duration(minutes: 20), 1.kilo.meters)
         .build();
     widget.trekko.saveTrip(trip);
   }
