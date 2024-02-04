@@ -31,7 +31,9 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
           children: [
             Text(
                 "Bitte gib den Registrierungscode\nein, den wir dir an deine E-Mail Adresse\ngesendet haben.",
-                style: AppThemeTextStyles.title),
+                textAlign: TextAlign.center,
+                style: AppThemeTextStyles.normal),
+            const SizedBox(height: 50),
             TextInput(title: "Code", hiddenTitle: "Code", controller: code),
           ],
         ));
