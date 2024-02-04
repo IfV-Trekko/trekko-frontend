@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:app_frontend/components/button.dart';
+import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:app_frontend/components/text_input.dart';
 import 'package:app_frontend/login/login_app.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
@@ -22,13 +26,60 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
         title: "Projekt\nbeitreten",
         buttonTitle: "Weiter",
         onButtonPress: () async {
+          if (projectUrl.value.text.isEmpty) {
+            showCupertinoDialog(
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                      title: Text("Bitte geben Sie eine gültige URL ein"),
+                      actions: [
+                        CupertinoDialogAction(
+                          child: Text('Verstanden'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ));
+            return;
+          }
+
+          if (projectUrl.value.text.toLowerCase() ==
+              "flammkuchen isst man hier auch gar nicht so oft") {
+            showCupertinoDialog(
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                      title: Text("Naaahhh unterschätz das mal nicht hier"),
+                      actions: [
+                        CupertinoDialogAction(
+                          child: Text('Werd ich nicht'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ));
+            return;
+          }
+
           widget.app.projectUrl = projectUrl.value.text;
           Navigator.pushNamed(context, "/login/how/");
         },
-        child: TextInput(
-          title: "Project-URL",
-          hiddenTitle: "Project-URL",
-          controller: projectUrl,
-        ));
+        child: Column(children: [
+          TextInput(
+            title: "Project-URL",
+            hiddenTitle: "Project-URL",
+            controller: projectUrl,
+          ),
+          SizedBox(
+            height: 300,
+          ),
+          Button(
+              title: "(Debug) Local",
+              style: ButtonStyle.secondary,
+              onPressed: () {
+                String local = Platform.isAndroid ? "10.0.2.2" : "localhost";
+                projectUrl.text = "http://$local:8080";
+              }),
+        ]));
   }
 }

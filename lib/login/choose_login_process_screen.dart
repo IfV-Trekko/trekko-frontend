@@ -4,6 +4,7 @@ import 'package:app_frontend/login/item_divider.dart';
 import 'package:app_frontend/login/login_app.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 
 class ChooseLoginProcessScreen extends StatelessWidget {
   final LoginApp app;
@@ -19,8 +20,14 @@ class ChooseLoginProcessScreen extends StatelessWidget {
         onButtonPress: null,
         child: Column(
           children: [
-            const Text("TODO: Bild"),
-            const SizedBox(height: 300,),
+            const HeroIcon(
+              HeroIcons.user,
+              // kp wie das original logo heißt dieses goofy ass logo muss aber erstmal reichen
+              size: 250,
+            ),
+            const SizedBox(
+              height: 100,
+            ),
             Button(
                 title: "Registrieren",
                 onPressed: () {

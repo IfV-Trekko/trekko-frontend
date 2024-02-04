@@ -48,8 +48,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           const ItemDivider(),
           TextInput(
-            title: "Passwort Wiederholen",
-            hiddenTitle: "Passwort Wiederholen",
+            title: "Passwort wiederholen",
+            hiddenTitle: "Passwort wiederholen",
             controller: passwordRepeat,
           ),
         ]));

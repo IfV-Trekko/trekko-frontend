@@ -16,11 +16,21 @@ class WelcomeScreen extends StatelessWidget {
       onButtonPress: () async {
         Navigator.pushNamed(context, "/login/project/");
       },
-      child: const Column(
+      child: Column(
         children: [
-          Text("Eine App des Institut für\nVerkehrswesen am KIT",
+          const Text("Eine App des Institut für\nVerkehrswesen am KIT",
               textAlign: TextAlign.center),
-          Text("TODO: LOGO"),
+          const SizedBox(height: 100),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset("assets/images/IfV.png", width: 82, height: 87),
+              const SizedBox(width: 50),
+              Image.asset("assets/images/KIT.png", width: 141, height: 66),
+            ],
+          )
+
         ],
       ),
     );
