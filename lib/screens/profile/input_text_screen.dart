@@ -40,6 +40,32 @@ class _TextInputPageState extends State<TextInputPage> {
 
       case QuestionType.number:
       // Logik für Zahlenfragen
+        //int selectedIndex = 0;
+        return CupertinoActionSheet(
+          actions: <Widget>[
+            SizedBox(
+              height: 200, // Höhe des Pickers
+              child: CupertinoPicker(
+                itemExtent: 32,
+                //useMagnifier: true,
+                backgroundColor: AppThemeColors.contrast0,
+                onSelectedItemChanged: (int index) {
+                  //selectedIndex = index;
+                  Navigator.of(context).pop(index);
+                },
+                children: List<Widget>.generate(101, (int index) {
+                  return Center(child: Text('$index'));
+                }),
+              ),
+            )
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: Text('Fertig'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        );
         break;
 
       case QuestionType.text:
