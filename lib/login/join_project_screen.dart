@@ -74,7 +74,7 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
             controller: projectUrl,
           ),
           const SizedBox(
-            height: 300,
+            height: 200,
           ),
           Button(
               title: "(Debug) Local",
