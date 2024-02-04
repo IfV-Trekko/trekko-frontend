@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 
 class CustomPageControl extends StatefulWidget {
   final List<Widget> pages;
+  final double pageHeights;
 
-  const CustomPageControl({Key? key, required this.pages}) : super(key: key);
+  const CustomPageControl({Key? key, required this.pages, required this.pageHeights}) : super(key: key);
 
   @override
   _CustomPageControlState createState() => _CustomPageControlState();
@@ -27,11 +28,14 @@ class _CustomPageControlState extends State<CustomPageControl> {
 
   @override
   Widget build(BuildContext context) {
+
+    double currentPageHeight = widget.pageHeights;
+
     return Column(
       children: [
         Container(
           padding: EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
-          height: 288,
+          height: currentPageHeight,
           child: PageView(
             controller: _pageController,
             onPageChanged: _onPageChanged,

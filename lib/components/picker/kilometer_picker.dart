@@ -1,10 +1,15 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class KilometerPicker extends StatefulWidget {
   final double initialValue;
   final Function(double) onChange;
+<<<<<<<< HEAD:lib/components/picker/kilometer_picker.dart
   const KilometerPicker(
+========
+  const JournalEntryDetailKilometerPicker(
+>>>>>>>> main:lib/screens/journal/journal_entry_detail_view/components/kilometer_picker.dart
       {super.key, required this.initialValue, required this.onChange});
 
   @override

@@ -55,68 +55,78 @@ class PieChartWidgetState extends State<PieChartWidget> {
       }));
     }
 
-    return Column(
-      children: [
-        Row(
-          children: [
-            Container(
-              margin: EdgeInsets.only(bottom: 14.0, left: 12.0, top: 12.0),
-              child: Text('Gesamtstrecke', style: AppThemeTextStyles.title),
-            ),
-          ],
-        ),
-        AspectRatio(
-          aspectRatio: 1.6,
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              StreamBuilder<List<PieChartSectionData>>(
-                stream: StreamZip(pieCharts),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return PieChart(
-                      PieChartData(
-                        sectionsSpace: 5,
-                        centerSpaceRadius: 50,
-                        sections: snapshot.data!,
-                        startDegreeOffset: 20,
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    throw snapshot.error!;
-                    return Text("${snapshot.error}");
-                  } else {
-                    return CupertinoActivityIndicator();
-                  }
-                },
-              ),
-              Text(
-                sum.as(kilo.meters).roundToDouble().toString() + " km",
-                style: AppThemeTextStyles.normal
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: AppThemeColors.contrast100,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          padding: EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
-          child: Wrap(
-            spacing:
-                12, // Horizontaler Abstand zwischen den Legenden-Indikatoren
-            runSpacing: 12, // Vertikaler Abstand zwischen den Zeilen
+    return Container(
+      decoration: BoxDecoration(
+        color: AppThemeColors.contrast0,
+        border: Border.all(color: AppThemeColors.contrast400),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: EdgeInsets.only(top: 9, bottom: 16, left: 12, right: 12),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
             children: [
-              for (TransportType type in TransportType.values)
-                LegendIndicator(
-                    color: TransportDesign.getColor(type),
-                    text: TransportDesign.getName(type)),
+              Container(
+                margin: EdgeInsets.only(bottom: 14.0, left: 4.0, top: 7.0),
+                child: Text('Gesamtstrecke', style: AppThemeTextStyles.title),
+              ),
             ],
           ),
-        )
-      ],
+          AspectRatio(
+            aspectRatio: 1.6,
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                StreamBuilder<List<PieChartSectionData>>(
+                  stream: StreamZip(pieCharts),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return PieChart(
+                        PieChartData(
+                          sectionsSpace: 5,
+                          centerSpaceRadius: 50,
+                          sections: snapshot.data!,
+                          startDegreeOffset: 20,
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      throw snapshot.error!;
+                      return Text("${snapshot.error}");
+                    } else {
+                      return CupertinoActivityIndicator();
+                    }
+                  },
+                ),
+                Text(
+                  sum.as(kilo.meters).roundToDouble().toString() + " km",
+                  style: AppThemeTextStyles.normal
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: AppThemeColors.contrast100,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
+            child: Wrap(
+              spacing:
+                  12, // Horizontaler Abstand zwischen den Legenden-Indikatoren
+              runSpacing: 12, // Vertikaler Abstand zwischen den Zeilen
+              children: [
+                for (TransportType type in TransportType.values)
+                  LegendIndicator(
+                      color: TransportDesign.getColor(type),
+                      text: TransportDesign.getName(type)),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 

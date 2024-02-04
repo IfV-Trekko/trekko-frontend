@@ -24,12 +24,6 @@ class AttributeRow extends StatelessWidget {
             style: AppThemeTextStyles.normal,
           ),
           value
-          // Text(
-          //   value, // Verwendung des Parameters value
-          //   style: AppThemeTextStyles.normal.copyWith(
-          //       fontWeight: FontWeight.bold
-          //   ),
-          // ),
         ],
       ),
     );

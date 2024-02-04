@@ -222,6 +222,7 @@ class _JournalState extends State<Journal> {
               key: ValueKey(trips[index].id),
               trip,
               selectionMode,
+              widget.trekko,
               isSelected: selectedTrips.contains(trip.id),
               onSelectionChanged: (Trip trip, bool isSelected) {
                 setState(() {
@@ -282,8 +283,7 @@ class _JournalState extends State<Journal> {
       }
       int count = await widget.trekko.revoke(query.build());
       finishedAction(
-          'Sie haben ihre Spende über $count Wege zurückgezogen',
-          false);
+          'Sie haben ihre Spende über $count Wege zurückgezogen', false);
     } catch (e) {
       finishedAction(
           "Fehler beim Zurückziehen der Wege", true); // Handle the error here
