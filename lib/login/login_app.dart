@@ -3,6 +3,7 @@ import 'package:app_backend/model/onboarding_text_type.dart';
 import 'package:app_frontend/login/choose_login_process_screen.dart';
 import 'package:app_frontend/login/enter_code_screen.dart';
 import 'package:app_frontend/login/join_project_screen.dart';
+import 'package:app_frontend/login/questionnaire_screen.dart';
 import 'package:app_frontend/login/sign_in_screen.dart';
 import 'package:app_frontend/login/sign_up_screen.dart';
 import 'package:app_frontend/login/text_info_screen.dart';
@@ -16,12 +17,13 @@ class LoginApp extends StatelessWidget {
 
   LoginApp(this.trekkoCallBack, {super.key});
 
-  void use(Trekko trekko) {
-    trekkoCallBack.call(trekko);
+  void launchApp() {
+    trekkoCallBack.call(trekko!);
   }
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Clean this up
     Map<String, Widget Function(BuildContext)> routes = {
       "/login/welcome/": (b) => WelcomeScreen(this),
       "/login/project/": (b) => JoinProjectScreen(this),
@@ -37,6 +39,11 @@ class LoginApp extends StatelessWidget {
           text: trekko!.loadText(OnboardingTextType.whatText),
           title: "Was wollen\nwir?",
           nextPage: "/login/questionnaire/"),
+      "/login/questionnaire/": (b) => QuestionnaireScreen(this,
+          questions: trekko!
+              .getProfile()
+              .first
+              .then((value) => value.preferences.onboardingQuestions)),
     };
 
     return CupertinoApp(

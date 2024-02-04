@@ -25,9 +25,10 @@ class _SignInScreenState extends State<SignInScreen> {
         title: "Anmeldung",
         buttonTitle: "Anmelden",
         onButtonPress: () async {
-          widget.app.use(await LoginBuilder(widget.app.projectUrl!,
-                  email.value.text, password.value.text)
-              .build()); // TODO: Error handling
+          widget.app.trekko = await LoginBuilder(widget.app.projectUrl!,
+              email.value.text, password.value.text)
+              .build(); // TODO: Error handling
+          widget.app.launchApp();
         },
         child: Column(children: [
           TextInput(
