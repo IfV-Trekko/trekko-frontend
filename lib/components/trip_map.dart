@@ -42,7 +42,7 @@ class _TripMapState extends State<TripMap>
             stepZoom: 1.0,
           ),
         ));
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 5), () {
       for (var i = 0; i < widget.pathGeoPoints.length - 2; i++) {
         controller.drawRoad(
             widget.pathGeoPoints[i], widget.pathGeoPoints[i + 1],

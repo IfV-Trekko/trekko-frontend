@@ -3,7 +3,7 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class MainMap extends StatefulWidget {
   //TODO bisher nur aus Prototypen übernommen
-  MainMap({Key? key}) : super(key: key) {}
+  const MainMap({Key? key}) : super(key: key);
 
   @override
   _MainMapState createState() => _MainMapState();
@@ -13,7 +13,7 @@ class _MainMapState extends State<MainMap>
     with AutomaticKeepAliveClientMixin<MainMap> {
   MapController controller = MapController.withUserPosition(
       trackUserLocation:
-          UserTrackingOption(enableTracking: true, unFollowUser: false));
+          const UserTrackingOption(enableTracking: true, unFollowUser: false));
 
   @override
   Widget build(BuildContext context) {

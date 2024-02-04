@@ -16,7 +16,7 @@ import 'package:isar/isar.dart';
 class JournalEntryDetailViewWrapper extends StatefulWidget {
   final Trip trip;
 
-  JournalEntryDetailViewWrapper({required this.trip, Key? key})
+  const JournalEntryDetailViewWrapper({required this.trip, Key? key})
       : super(key: key);
 
   @override
@@ -108,6 +108,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
             Align(
               alignment: Alignment.bottomCenter,
               child: EditContext(
+                  //TODO schießt mit hoch
                   donated: widget.trip.donationState == DonationState.donated,
                   onReset: () {
                     widget.trip.reset();
