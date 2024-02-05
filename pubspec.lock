@@ -22,7 +22,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "2dcf80a37c07875ccd29f6c5e1c03e047827cd0b"
+      resolved-ref: "667855d2c31f2f5fa3a9418357748546972d256d"
       url: "https://github.com/KIT-PSE-2023-24/app-backend"
     source: git
     version: "1.0.0+1"
@@ -653,10 +653,10 @@ packages:
     dependency: transitive
     description:
       name: routing_client_dart
-      sha256: "2e006535b672c2f2ccf1241fa38c48869617014a2687d776b50f39235f9050a9"
+      sha256: b7d48ba131d9a73933855d64df911364564a367b5be222ab30eba4fc1632ebcc
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.3"
+    version: "0.5.4"
   shelf:
     dependency: transitive
     description:

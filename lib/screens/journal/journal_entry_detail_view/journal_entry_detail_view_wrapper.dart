@@ -9,7 +9,7 @@ import 'package:app_frontend/screens/journal/journal_entry_detail_view/component
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/details.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/edit_context.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_provider.dart';
-import 'package:app_frontend/trekko_provider.dart';
+import 'package:app_frontend/screens/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 
