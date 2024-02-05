@@ -27,12 +27,6 @@ class TripsListView extends StatefulWidget {
 class _TripsListViewState extends State<TripsListView> {
   @override
   Widget build(BuildContext context) {
-    // Your existing buildTripsListView code goes here, with some modifications:
-    // Replace all instances of `trips` with `widget.trips`
-    // Replace all instances of `selectionMode` with `widget.selectionMode`
-    // Replace all instances of `onSelectionChanged` with `widget.onSelectionChanged`
-    // Replace all instances of `trekko` with `widget.trekko`
-
     widget.trips.sort((a, b) => a.calculateStartTime().compareTo(b.calculateStartTime()));
     return ListView.builder(
       padding: EdgeInsets.only(
