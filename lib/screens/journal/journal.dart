@@ -90,7 +90,7 @@ class _JournalState extends State<Journal> {
                     GestureDetector(
                       onTap: () {
                         widget.trekko.saveTrip(TripBuilder()
-                            .move_r(Duration(minutes: 10), 1000000.meters)
+                            .move_r(Duration(minutes: 10), 1000.meters)
                             .build());
                       },
                       child: const Icon(CupertinoIcons.add,
