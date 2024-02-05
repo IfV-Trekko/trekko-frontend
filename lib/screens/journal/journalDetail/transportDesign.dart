@@ -17,12 +17,12 @@ class TransportDesign {
 
   //TODO change to correct icons from CupertinoIcons package
   static final Map<TransportType, HeroIcons> _icons = {
-    TransportType.by_foot: HeroIcons.heart,
-    TransportType.bicycle: HeroIcons.hashtag,
-    TransportType.car: HeroIcons.hashtag,
-    TransportType.publicTransport: HeroIcons.hashtag,
-    TransportType.ship: HeroIcons.hashtag,
-    TransportType.plane: HeroIcons.hashtag,
+    TransportType.by_foot: HeroIcons.footstepsOutline,
+    TransportType.bicycle: HeroIcons.bicycleOutline,
+    TransportType.car: HeroIcons.carSportOutline,
+    TransportType.publicTransport: HeroIcons.trainOutline,
+    TransportType.ship: HeroIcons.boatOutline,
+    TransportType.plane: HeroIcons.airplaneOutline,
     TransportType.other: HeroIcons.hashtag,
   };
 
