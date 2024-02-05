@@ -3,6 +3,8 @@ import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../screens/journal/journalDetail/transportDesign.dart';
+
 class PathShowcase extends StatelessWidget {
   //TODO testen!
   final Trip trip;
@@ -26,15 +28,7 @@ class PathShowcase extends StatelessWidget {
                 height: 4,
                 width:
                     leg.getDistance().defaultValue / distance * availableSpace,
-                color: switch (leg.transportType) {
-                  TransportType.bicycle => AppThemeColors.purple,
-                  TransportType.by_foot => AppThemeColors.blue,
-                  TransportType.car => AppThemeColors.orange,
-                  TransportType.other => AppThemeColors.contrast400,
-                  TransportType.plane => AppThemeColors.turquoise,
-                  TransportType.publicTransport => AppThemeColors.pink,
-                  TransportType.ship => CupertinoColors.systemGreen,
-                },
+                color: TransportDesign.getColor(leg.transportType),
               ),
           ],
         );
