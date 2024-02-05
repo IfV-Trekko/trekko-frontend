@@ -1,4 +1,6 @@
+import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_frontend/app_theme.dart';
+import 'package:app_frontend/screens/journal/journalDetail/transportDesign.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/ckeck_box_response.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/text_response.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,8 +8,10 @@ import 'package:flutter/cupertino.dart';
 class Details extends StatefulWidget {
   final String detailPurpose;
   final String detailComment;
+  final List<TransportType> detailVehicle;
   final Function(String) onSavedPurpose;
   final Function(String) onSavedComment;
+  final Function(List<TransportType>) onSavedVehicle;
   final double additionalDividerMargin = 2;
 
   const Details(
@@ -15,6 +19,8 @@ class Details extends StatefulWidget {
       required this.onSavedPurpose,
       required this.detailComment,
       required this.onSavedComment,
+      required this.onSavedVehicle,
+      required this.detailVehicle,
       super.key});
 
   @override
@@ -59,7 +65,14 @@ class _DetailsState extends State<Details> {
             additionalInfo: const Text('zu Fuß'), //TODO implementieren
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) => const CheckBoxResponse()));
+                  builder: (context) => CheckBoxResponse<TransportType>(
+                        getName: TransportDesign.getName,
+                        title: 'Verkehrsmittel',
+                        responses: TransportType.values,
+                        onSaved: (List<TransportType> value) =>
+                            widget.onSavedVehicle(value),
+                        initialResponses: widget.detailVehicle,
+                      )));
             },
           ),
         ],

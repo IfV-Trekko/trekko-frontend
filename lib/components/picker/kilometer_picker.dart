@@ -1,10 +1,10 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class KilometerPicker extends StatefulWidget {
   final double initialValue;
   final Function(double) onChange;
+
   const KilometerPicker({
     Key? key,
     required this.initialValue,
@@ -16,15 +16,17 @@ class KilometerPicker extends StatefulWidget {
 }
 
 class _KilometerPickerState extends State<KilometerPicker> {
-  //TODO ok button hinzufügen?
   late double _kilometers;
   late TextEditingController _controller;
+  late OverlayEntry _overlayEntry;
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     _kilometers = widget.initialValue;
     _controller = TextEditingController(text: _kilometers.toStringAsFixed(1));
+    _focusNode.addListener(_handleFocusChange);
   }
 
   void _onEditingComplete() {
@@ -37,11 +39,48 @@ class _KilometerPickerState extends State<KilometerPicker> {
       _controller.text = _kilometers.toStringAsFixed(1);
       widget.onChange(_kilometers);
     });
+    _focusNode.unfocus();
+  }
+
+  void _handleFocusChange() {
+    if (_focusNode.hasFocus) {
+      _overlayEntry = _createOverlayEntry();
+      Overlay.of(context)!.insert(_overlayEntry);
+    } else {
+      _overlayEntry.remove();
+    }
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    return OverlayEntry(
+      builder: (context) => Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          width: double.infinity,
+          color: AppThemeColors.contrast100,
+          child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            CupertinoButton(
+              child: Text(
+                'Speichern',
+                style: AppThemeTextStyles.normal.copyWith(
+                    color: AppThemeColors.blue,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0),
+              ),
+              onPressed: () {
+                _focusNode.unfocus();
+              },
+            ),
+          ]),
+        ),
+      ),
+    );
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -71,7 +110,8 @@ class _KilometerPickerState extends State<KilometerPicker> {
           SizedBox(
             width: textWidth + 24, // Dynamic width based on text width
             child: CupertinoTextField(
-              keyboardType: //TODO fixen
+              focusNode: _focusNode,
+              keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               textAlign: TextAlign.center,
               controller: _controller,
@@ -84,6 +124,7 @@ class _KilometerPickerState extends State<KilometerPicker> {
               suffix: Text('km',
                   style: AppThemeTextStyles.small
                       .copyWith(color: AppThemeColors.contrast500)),
+              textInputAction: TextInputAction.done,
             ),
           ),
         ],

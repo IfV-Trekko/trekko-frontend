@@ -1,5 +1,6 @@
 import 'package:app_backend/model/trip/tracked_point.dart';
 import 'package:app_frontend/app_theme.dart';
+import 'package:app_frontend/components/path_showcase.dart';
 import 'package:app_frontend/components/picker/kilometer_picker.dart';
 import 'package:app_frontend/components/picker/time_picker.dart';
 import 'package:app_frontend/trekko_provider.dart';
@@ -90,12 +91,7 @@ class _DescriptionState extends State<Description> {
               ],
             ),
             const SizedBox(height: 16),
-            Container(
-              //TODO Platzhalter für Pathshowcase
-              height: 4,
-              width: double.infinity,
-              color: AppThemeColors.contrast700,
-            ),
+            PathShowcase(trip: widget.trip),
             const SizedBox(height: 16),
             Row(
               children: [

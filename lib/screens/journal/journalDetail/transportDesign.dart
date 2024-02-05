@@ -26,7 +26,7 @@ class TransportDesign {
     TransportType.other: HeroIcons.hashtag,
   };
 
-  static final Map<TransportType, String>  _name = {
+  static final Map<TransportType, String> _name = {
     TransportType.by_foot: "Zu Fuß",
     TransportType.bicycle: "Fahrrad",
     TransportType.car: "Auto",
