@@ -1,20 +1,20 @@
 import 'package:app_backend/model/trip/tracked_point.dart';
 import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/kilometer_picker.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/time_picker.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_provider.dart';
+import 'package:app_frontend/components/picker/kilometer_picker.dart';
+import 'package:app_frontend/components/picker/time_picker.dart';
+import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:intl/intl.dart';
 import 'package:fling_units/fling_units.dart';
 
-class JournalEntryDetailViewDescription extends StatefulWidget {
+class Description extends StatefulWidget {
   final Trip trip;
   final DateTime startDate;
   final DateTime endDate;
 
-  JournalEntryDetailViewDescription({
+  const Description({
     //TODO Klasse sehr lang
     required this.trip,
     required this.startDate,
@@ -23,12 +23,10 @@ class JournalEntryDetailViewDescription extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _JournalEntryDetailViewDescriptionState createState() =>
-      _JournalEntryDetailViewDescriptionState();
+  _DescriptionState createState() => _DescriptionState();
 }
 
-class _JournalEntryDetailViewDescriptionState
-    extends State<JournalEntryDetailViewDescription> {
+class _DescriptionState extends State<Description> {
   Future<String> _getStreet(TrackedPoint where) async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(where.latitude, where.longitude);
@@ -58,45 +56,47 @@ class _JournalEntryDetailViewDescriptionState
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         color: AppThemeColors.contrast0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
               children: [
-                JournalEntryDetailViewTimePicker(
+                TimePicker(
                   initialDateTime: widget.trip.calculateStartTime(),
                   maximumDateTime: widget.trip.calculateEndTime(),
                   onChange: (val) {
                     widget.trip.startTime = val;
-                    JournalEntryDetailViewProvider.updateOf(context, true);
+                    TrekkoProvider.of(context).saveTrip(widget.trip);
                   },
                 ),
-                Spacer(),
-                JournalEntryDetailKilometerPicker(
+                const Spacer(),
+                KilometerPicker(
                     initialValue: widget.trip.getDistance().as(kilo.meters),
                     onChange: (val) {
                       widget.trip.setDistance(val.kilo.meters);
+                      TrekkoProvider.of(context).saveTrip(widget.trip);
                     }),
-                Spacer(),
-                JournalEntryDetailViewTimePicker(
+                const Spacer(),
+                TimePicker(
                   onChange: (val) {
                     widget.trip.endTime = val;
+                    TrekkoProvider.of(context).saveTrip(widget.trip);
                   },
                   initialDateTime: widget.trip.calculateEndTime(),
                   minimumDateTime: widget.trip.calculateStartTime(),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Container(
               //TODO Platzhalter für Pathshowcase
               height: 4,
               width: double.infinity,
               color: AppThemeColors.contrast700,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 FutureBuilder(
@@ -109,7 +109,7 @@ class _JournalEntryDetailViewDescriptionState
                       } else if (snapshot.hasError) {
                         return Text('-', style: AppThemeTextStyles.small);
                       }
-                      return CupertinoActivityIndicator();
+                      return const CupertinoActivityIndicator();
                     }),
                 const Spacer(),
                 FutureBuilder(
@@ -122,15 +122,15 @@ class _JournalEntryDetailViewDescriptionState
                       } else if (snapshot.hasError) {
                         return Text('-', style: AppThemeTextStyles.small);
                       }
-                      return CupertinoActivityIndicator();
+                      return const CupertinoActivityIndicator();
                     }),
               ],
             ),
-            SizedBox(height: 6),
+            const SizedBox(height: 6),
             Row(
               children: [
                 FutureBuilder(
-                    future: _getLocality(
+                    future: _getLocality(//TODO Backend soll übernehmen
                         widget.trip.legs.first.trackedPoints.first),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -142,7 +142,7 @@ class _JournalEntryDetailViewDescriptionState
                             style: AppThemeTextStyles.small
                                 .copyWith(color: AppThemeColors.contrast700));
                       }
-                      return CupertinoActivityIndicator();
+                      return const CupertinoActivityIndicator();
                     }),
                 const Spacer(),
                 FutureBuilder(
@@ -158,11 +158,11 @@ class _JournalEntryDetailViewDescriptionState
                             style: AppThemeTextStyles.small
                                 .copyWith(color: AppThemeColors.contrast700));
                       }
-                      return CupertinoActivityIndicator();
+                      return const CupertinoActivityIndicator();
                     }),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               children: [
                 Text(

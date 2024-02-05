@@ -1,13 +1,13 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 
-class JournalEntryDetailViewTimePicker extends StatefulWidget {
+class TimePicker extends StatefulWidget {
   final DateTime initialDateTime;
   final Function(DateTime) onChange;
   DateTime? minimumDateTime;
   DateTime? maximumDateTime;
 
-  JournalEntryDetailViewTimePicker({
+  TimePicker({
     Key? key,
     required this.initialDateTime,
     required this.onChange,
@@ -19,12 +19,10 @@ class JournalEntryDetailViewTimePicker extends StatefulWidget {
   }
 
   @override
-  _JournalEntryDetailViewTimePickerState createState() =>
-      _JournalEntryDetailViewTimePickerState();
+  _TimePickerState createState() => _TimePickerState();
 }
 
-class _JournalEntryDetailViewTimePickerState
-    extends State<JournalEntryDetailViewTimePicker> {
+class _TimePickerState extends State<TimePicker> {
   late DateTime selectedDateTime;
   late DateTime setDateTime;
 
@@ -80,10 +78,10 @@ class _JournalEntryDetailViewTimePickerState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 34,
       child: CupertinoButton(
-        padding: EdgeInsets.symmetric(horizontal: 11),
+        padding: const EdgeInsets.symmetric(horizontal: 11),
         color: AppThemeColors.contrast150,
         onPressed: () => _showCupertinoDateTimePicker(
           context,

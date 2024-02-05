@@ -4,7 +4,7 @@ import 'package:app_frontend/screens/analysis/analysis.dart';
 import 'package:app_frontend/screens/journal/journal.dart';
 import 'package:app_frontend/screens/profile/profile.dart';
 import 'package:app_frontend/screens/tracking/tracking.dart';
-import 'package:app_frontend/screens/trekko_provider.dart';
+import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
