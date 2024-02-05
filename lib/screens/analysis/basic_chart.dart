@@ -60,7 +60,7 @@ class BasicChart extends StatelessWidget {
                       var speed = snapshot.data
                           ?.as(kilo.meters, hours)
                           .roundToDouble()
-                          .toString(); // Ersetzen Sie dies durch die richtige Berechnung
+                          .toString();
                       dataWidget = Text('${speed.toString()} km/h');
                     } else {
                       dataWidget = const Text('Keine Daten');

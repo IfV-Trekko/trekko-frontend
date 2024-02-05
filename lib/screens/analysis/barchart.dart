@@ -189,7 +189,7 @@ class BarChartWidgetState extends State<BarChartWidget> {
                         extraLinesData: ExtraLinesData(
                           horizontalLines: [
                             HorizontalLine(
-                              y: durationSum / TransportType.values.length, //TODO: schöner Code??
+                              y: durationSum / TransportType.values.length,
                               color: AppThemeColors.contrast400,
                               strokeWidth: 2,
                             ),
@@ -216,7 +216,6 @@ class BarChartWidgetState extends State<BarChartWidget> {
                     );
                   } else if (snapshot.hasError) {
                     throw snapshot.error!;
-                    return Text("${snapshot.error}");
                   } else {
                     return CupertinoActivityIndicator();
                   }

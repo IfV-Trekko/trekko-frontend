@@ -1,4 +1,3 @@
-import 'package:app_backend/controller/trekko.dart';
 import 'package:flutter/cupertino.dart';
 import '../../app_theme.dart';
 
