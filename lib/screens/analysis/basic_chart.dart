@@ -29,7 +29,7 @@ class BasicChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container( //TODO: Schöner Code? Code Duplikation
+    return Container(
       decoration: BoxDecoration(
         color: AppThemeColors.contrast0,
         border: Border.all(color: AppThemeColors.contrast400),

@@ -1,6 +1,7 @@
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_frontend/screens/journal/journalDetail/transportDesign.dart';
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 import '../../app_theme.dart';
 
 class BasicChartRow extends StatelessWidget {
@@ -20,18 +21,20 @@ class BasicChartRow extends StatelessWidget {
       ),
       padding: EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [ //TODO: Icon einfügen
-          // Icon(
-          //   TransportDesign.getIcon(type),
-          //   color: TransportDesign.getColor(type),
-          // ),
+        children: [
+          HeroIcon(
+            TransportDesign.getIcon(type),
+            size: 17,
+            color: TransportDesign.getColor(type),
+          ),
+          SizedBox(width: 8),
           Text(
             TransportDesign.getName(type),
             style: AppThemeTextStyles.normal.copyWith(
               color: TransportDesign.getColor(type),
             ),
           ),
+          Spacer(),
           value
         ],
       ),

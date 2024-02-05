@@ -53,7 +53,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
       }));
     }
 
-    return Container( //TODO: SChöner Code? Code Duplikation
+    return Container(
       decoration: BoxDecoration(
         color: AppThemeColors.contrast0,
         border: Border.all(color: AppThemeColors.contrast400),
