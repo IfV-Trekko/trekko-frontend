@@ -5,6 +5,7 @@ import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/screens/journal/journalDetail/transportDesign.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 import '../../app_theme.dart';
 import 'attribute_row.dart';
 import 'package:isar/isar.dart';
@@ -83,13 +84,13 @@ class VehicleDataBox extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [  //TODO: Icon einfügen
-                /*Icon(
+              children: [
+                HeroIcon(
                   TransportDesign.getIcon(vehicle),
+                  size: 24,
                   color: TransportDesign.getColor(vehicle),
-                  size: 32,
-                ),*/
+                ),
+                const SizedBox(width: 8),
                 Text(
                   TransportDesign.getName(vehicle),
                   style: AppThemeTextStyles.title.copyWith(
