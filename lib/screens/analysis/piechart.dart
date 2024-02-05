@@ -1,5 +1,4 @@
 import 'package:async/async.dart';
-
 import 'package:app_backend/controller/analysis/reductions.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/leg.dart';
@@ -11,7 +10,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
-
 import '../journal/journalDetail/transportDesign.dart';
 
 class PieChartWidget extends StatefulWidget {
@@ -44,8 +42,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
           value: value == null ? 0 : value.as(meters),
           title: value == null
               ? '0%'
-              : (value.as(meters) / sum.as(meters) * 100).round().toString() +
-                  '%',
+              : '${(value.as(meters) / sum.as(meters) * 100).round()}%',
           radius: 55,
           titleStyle: AppThemeTextStyles.normal.copyWith(
             color: AppThemeColors.contrast0,
@@ -55,13 +52,13 @@ class PieChartWidgetState extends State<PieChartWidget> {
       }));
     }
 
-    return Container(
+    return Container( //TODO: SChöner Code? Code Duplikation
       decoration: BoxDecoration(
         color: AppThemeColors.contrast0,
         border: Border.all(color: AppThemeColors.contrast400),
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: EdgeInsets.only(top: 9, bottom: 16, left: 12, right: 12),
+      padding: const EdgeInsets.only(top: 9, bottom: 16, left: 12, right: 12),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,7 +66,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
           Row(
             children: [
               Container(
-                margin: EdgeInsets.only(bottom: 14.0, left: 4.0, top: 7.0),
+                margin: const EdgeInsets.only(bottom: 14.0, left: 4.0, top: 7.0),
                 child: Text('Gesamtstrecke', style: AppThemeTextStyles.title),
               ),
             ],
@@ -100,7 +97,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
                   },
                 ),
                 Text(
-                  sum.as(kilo.meters).roundToDouble().toString() + " km",
+                  "${sum.as(kilo.meters).roundToDouble()} km",
                   style: AppThemeTextStyles.normal
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
@@ -112,7 +109,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
               color: AppThemeColors.contrast100,
               borderRadius: BorderRadius.circular(8),
             ),
-            padding: EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
+            padding: const EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
             child: Wrap(
               spacing:
                   12, // Horizontaler Abstand zwischen den Legenden-Indikatoren
@@ -142,7 +139,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           } else {
-            return CupertinoActivityIndicator();
+            return buildPieChart(0.meters);
           }
         });
   }
