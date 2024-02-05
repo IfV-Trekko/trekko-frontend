@@ -142,7 +142,7 @@ class BarChartWidgetState extends State<BarChartWidget> {
       ),
     );
 
-    return Container(
+    return Container( //TODO: schöner Code?? bzw Codeduplikation
     decoration: BoxDecoration(
     color: AppThemeColors.contrast0,
     border: Border.all(color: AppThemeColors.contrast400),

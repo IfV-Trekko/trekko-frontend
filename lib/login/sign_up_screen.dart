@@ -1,5 +1,6 @@
 import 'package:app_backend/controller/builder/build_exception.dart';
 import 'package:app_backend/controller/builder/registration_builder.dart';
+import 'package:app_backend/controller/builder/registration_result.dart';
 import 'package:app_frontend/components/text_input.dart';
 import 'package:app_frontend/login/item_divider.dart';
 import 'package:app_frontend/login/login_app.dart';
@@ -37,9 +38,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 .build();
             Navigator.pushNamed(context, "/login/enterCode/");
           } catch(e) {
-            String reason = "Unbekannt";
+            String reason = "Unbekannter Fehler";
             if (e is BuildException) {
               reason = e.reason.toString();
+              if (e.reason == RegistrationResult.failedOther) {
+                print(e);
+              }
             }
             showCupertinoDialog(
                 context: context,

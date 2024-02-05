@@ -1,4 +1,5 @@
 import 'package:app_backend/model/profile/onboarding_question.dart';
+import 'package:app_backend/model/profile/question_answer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:app_backend/model/profile/question_type.dart';
 import '../../app_theme.dart';
@@ -35,7 +36,35 @@ class _TextInputPageState extends State<TextInputPage> {
   Widget _buildContentBasedOnQuestionType() {
     switch (widget.question.type) {
       case QuestionType.select:
-      // Logik für Auswahlfragen
+      return CupertinoActionSheet(
+        actions: <Widget>[
+          SizedBox(
+            height: 200, // Höhe des Pickers
+            child: CupertinoPicker(
+              itemExtent: 32,
+              backgroundColor: AppThemeColors.contrast0,
+              onSelectedItemChanged: (int index) {
+                index;
+              },
+              children: List<Widget>.generate(
+                widget.question.options!.length,
+                    (int index) {
+                  return Center(
+                    child: Text(widget.question.options![index].toString()),
+                  );
+                },
+              ),
+            ),
+          )
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: const Text('Fertig'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      );
+
         break;
 
       case QuestionType.number:
