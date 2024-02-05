@@ -95,8 +95,7 @@ class VehicleDataBox extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16), // Abstand zwischen Titel und AttributRows
-            // Beispielimplementierung von AttributeRow
+            const SizedBox(height: 16),
             AttributeRow(
                 title: 'Gesamtstrecke',
                 value: getDataFormatted((t) => t.getDistance(),
@@ -111,13 +110,13 @@ class VehicleDataBox extends StatelessWidget {
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Geschwindigkeit',
-                value: getDataFormatted((t) => t.getSpeed(),
+                value: getDataFormatted((t) => t.calculateSpeed(),
                     SpeedReduction.AVERAGE, (d) => d.as(kilo.meters, hours).roundToDouble().toString() + " km/h")),
 
             SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Wegzeit',
-                value: getDataFormatted((t) => t.getDuration(),
+                value: getDataFormatted((t) => t.calculateDuration(),
                     DurationReduction.AVERAGE, (d) => d.inMinutes.roundToDouble().toString() + " min")),
           ],
         ),

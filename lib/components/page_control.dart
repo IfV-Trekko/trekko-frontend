@@ -34,7 +34,7 @@ class _CustomPageControlState extends State<CustomPageControl> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
+          padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
           height: currentPageHeight,
           child: PageView(
             controller: _pageController,
@@ -48,10 +48,10 @@ class _CustomPageControlState extends State<CustomPageControl> {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 14.0),
-          padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
+          margin: const EdgeInsets.only(top: 14.0),
+          padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
           decoration: BoxDecoration(
-            color: Color(0xffDDDDDD).withOpacity(0.75),
+            color: const Color(0xffDDDDDD).withOpacity(0.75),
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: _buildPageIndicator(),
@@ -70,7 +70,7 @@ class _CustomPageControlState extends State<CustomPageControl> {
             (index) => Container(
           width: 8.0,
           height: 8.0,
-          margin: EdgeInsets.symmetric(vertical: 3.0, horizontal: 4.0),
+          margin: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 4.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _currentPage == index

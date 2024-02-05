@@ -22,7 +22,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "667855d2c31f2f5fa3a9418357748546972d256d"
+      resolved-ref: d850b7653e0e057d6d81180ffbd84f087098cda7
       url: "https://github.com/KIT-PSE-2023-24/app-backend"
     source: git
     version: "1.0.0+1"
@@ -356,10 +356,11 @@ packages:
   heroicons:
     dependency: "direct main"
     description:
-      name: heroicons
-      sha256: "43320f7412a495f2f6dabe29ae543d167a1355a425f8a824b2d6b8b0f3abf335"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: a83bde5769670e99b0bfe6444e614c310df6611f
+      url: "https://github.com/KIT-PSE-2023-24/heroiconsPSE.git"
+    source: git
     version: "0.9.0"
   http:
     dependency: transitive

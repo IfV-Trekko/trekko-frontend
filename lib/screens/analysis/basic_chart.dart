@@ -23,21 +23,21 @@ class BasicChart extends StatelessWidget {
             .filter()
             .legsElement((l) => l.transportTypeEqualTo(vehicle))
             .build(),
-        (t) => t.getSpeed(),
+        (t) => t.calculateSpeed(),
         SpeedReduction.AVERAGE);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Container( //TODO: Schöner Code? Code Duplikation
       decoration: BoxDecoration(
         color: AppThemeColors.contrast0,
         border: Border.all(color: AppThemeColors.contrast400),
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
+      padding: const EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
       child: Container(
-          margin: EdgeInsets.only(top: 7, left: 4, right: 4),
+          margin: const EdgeInsets.only(top: 7, left: 4, right: 4),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +48,7 @@ class BasicChart extends StatelessWidget {
                   style: AppThemeTextStyles.title,
                 ),
               ]),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ...TransportType.values.map((type) {
                 return StreamBuilder<
                     DerivedMeasurement<Measurement<Distance>,
@@ -60,10 +60,10 @@ class BasicChart extends StatelessWidget {
                       var speed = snapshot.data
                           ?.as(kilo.meters, hours)
                           .roundToDouble()
-                          .toString(); // Ersetzen Sie dies durch die richtige Berechnung
+                          .toString();
                       dataWidget = Text('${speed.toString()} km/h');
                     } else {
-                      dataWidget = Text('Keine Daten');
+                      dataWidget = const Text('Keine Daten');
                     }
                     return BasicChartRow(type: type, value: dataWidget);
                   },

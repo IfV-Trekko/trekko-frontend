@@ -1,10 +1,13 @@
+import 'package:app_backend/controller/builder/authentification_utils.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/battery_usage_setting.dart';
 import 'package:app_backend/model/profile/onboarding_question.dart';
 import 'package:app_backend/model/profile/question_type.dart';
+import 'package:app_frontend/screens/profile/setting_picker.dart';
 import 'package:flutter/cupertino.dart';
 import '../../app_theme.dart';
 import 'package:app_backend/model/profile/profile.dart';
+import '../../main.dart';
 import 'input_text_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -33,7 +36,8 @@ class _ProfileScreenState extends State<ProfileScreen>
       OnboardingQuestion question, Function(String) onChange) async {
     final result = await Navigator.of(context).push(
       CupertinoPageRoute<String>(
-        builder: (BuildContext context) => TextInputPage(question: question),
+        builder: (BuildContext context) => TextInputPage(question: question,
+            trekko: widget.trekko, profile: profile),
       ),
     );
     if (result != null) {
@@ -42,55 +46,26 @@ class _ProfileScreenState extends State<ProfileScreen>
     }
   }
 
-  Future<void> _showBatteryUsageSettingPicker(
-      BuildContext context, Profile profile) async {
+  Future <void> _showBatteryUsageSettingPicker(BuildContext context, Profile profile) async {
+    List<Widget> batterySettingOptions = BatteryUsageSetting.values.map((setting) {
+      return Center(child: Text(setting.name));
+    }).toList();
+
+    void onSettingSelected(int selectedIndex) {
+      BatteryUsageSetting selectedSetting = BatteryUsageSetting.values[selectedIndex];
+      profile.preferences.batteryUsageSetting = selectedSetting;
+      widget.trekko.savePreferences(profile.preferences);
+    }
+
     await showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
-        int selectedIndex = BatteryUsageSetting.values
-            .indexOf(profile.preferences.batteryUsageSetting);
-        return CupertinoActionSheet(
-          actions: <Widget>[
-            SizedBox(
-              height: 200,
-              child: CupertinoPicker(
-                magnification: 1.22,
-                squeeze: 1.2,
-                useMagnifier: true,
-                itemExtent: 32,
-                onSelectedItemChanged: (int index) {
-                  selectedIndex = index;
-                },
-                children: List<Widget>.generate(
-                  BatteryUsageSetting.values.length,
-                  (int index) {
-                    return Center(
-                      child: Text(BatteryUsageSetting.values[index].name),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            child: const Text('Fertig'),
-            onPressed: () {
-              Navigator.pop(context);
-              _updateBatteryUsageSetting(
-                  profile, BatteryUsageSetting.values[selectedIndex]);
-            },
-          ),
+        return SettingsPicker(
+          onSettingSelected: onSettingSelected,
+          children: batterySettingOptions,
         );
       },
     );
-  }
-
-  void _updateBatteryUsageSetting(
-      Profile profile, BatteryUsageSetting setting) {
-    profile.preferences.batteryUsageSetting = setting;
-    widget.trekko
-        .savePreferences(profile.preferences); //TODO: saving of settings
-    widget.trekko.savePreferences(profile.preferences);
   }
 
   @override
@@ -119,7 +94,6 @@ class _ProfileScreenState extends State<ProfileScreen>
 
                   CupertinoListTile questionTile;
                   if (question.type == QuestionType.boolean) {
-                    // CupertinoSwitch für boolean Fragen
                     questionTile = CupertinoListTile.notched(
                       padding: listTilePadding,
                       title: Text(question.title,
@@ -131,9 +105,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                         onChanged: (bool? newValue) {
                           if (newValue != null) {
                             profile.preferences.setQuestionAnswer(question.key,
-                                newValue); //TODO: implement change of answer
+                                newValue);
                             widget.trekko.savePreferences(profile.preferences);
                           }
+                        },
+                      ),
+                    );
+                  } else if (question.type == QuestionType.select) {
+                    // CupertinoListTile mit onTap-Navigation für select-Fragen
+                    questionTile = CupertinoListTile.notched(
+                      padding: listTilePadding,
+                      title: Text(question.title,
+                          style: AppThemeTextStyles.normal),
+                      additionalInfo: Text(answer ?? "Nicht beantwortet"),
+                      trailing: const CupertinoListTileChevron(),
+                      onTap: () => _navigateAndEditText(
+                        profile,
+                        question,
+                        (String value) {
+                          profile.preferences
+                              .setQuestionAnswer(question.key, value);
+                          widget.trekko.savePreferences(profile.preferences);
                         },
                       ),
                     );
@@ -145,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           style: AppThemeTextStyles.normal),
                       additionalInfo: Text(answer == null
                           ? "Nicht beantwortet"
-                          : answer.toString()),
+                          : question.type == QuestionType.number ? answer.toInt().toString() : answer.toString()),
                       trailing: const CupertinoListTileChevron(),
                       onTap: () => _navigateAndEditText(
                         profile,
@@ -203,13 +195,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                               style: AppThemeTextStyles.normal),
                           additionalInfo: Text(
                               profile.preferences.batteryUsageSetting.name),
-                          //TODO: implement change of usage setting
                           onTap: () async {
-                            await _showBatteryUsageSettingPicker(
-                                context, profile);
+                            await _showBatteryUsageSettingPicker(context, profile);
                           },
                         ),
                       ],
+                    ),
+                    CupertinoListSection.insetGrouped(
+                        margin: listSectionMargin,
+                        additionalDividerMargin: defaultDividerMargin,
+                        children:[
+                          CupertinoListTile.notched(
+                              padding: listTilePadding,
+                              title: Text('Abmelden',
+                                  style: AppThemeTextStyles.normal.copyWith(
+                                    color: AppThemeColors.blue,
+                                  )),
+                              onTap: () async {
+                                await widget.trekko.terminate();
+                                runLoginApp();
+                              }),
+                        ]
                     ),
                     CupertinoListSection.insetGrouped(
                       margin: listSectionMargin,
@@ -221,8 +227,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 style: AppThemeTextStyles.normal.copyWith(
                                   color: AppThemeColors.red,
                                 )),
-                            onTap: () {
-                              //TODO: implement delete profile
+                            onTap: () async {
+                              await widget.trekko.terminate();
+                              await AuthentificationUtils.deleteProfile(profile.projectUrl, profile.email);
+                              runLoginApp();
                             }),
                       ],
                     ),
