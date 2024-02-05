@@ -1,14 +1,19 @@
+import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/onboarding_question.dart';
-import 'package:app_backend/model/profile/question_answer.dart';
+import 'package:app_backend/model/profile/profile.dart';
+import 'package:app_frontend/screens/profile/setting_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:app_backend/model/profile/question_type.dart';
+import 'package:flutter/material.dart';
 import '../../app_theme.dart';
 
 class TextInputPage extends StatefulWidget {
   final OnboardingQuestion question;
+  final Trekko trekko;
+  final Profile profile;
 
   TextInputPage({
-    required this.question,
+    required this.question, required this.trekko, required this.profile
   });
 
   @override
@@ -36,72 +41,35 @@ class _TextInputPageState extends State<TextInputPage> {
   Widget _buildContentBasedOnQuestionType() {
     switch (widget.question.type) {
       case QuestionType.select:
-      return CupertinoActionSheet(
-        actions: <Widget>[
-          SizedBox(
-            height: 200, // Höhe des Pickers
-            child: CupertinoPicker(
-              itemExtent: 32,
-              backgroundColor: AppThemeColors.contrast0,
-              onSelectedItemChanged: (int index) {
-                index;
-              },
-              children: List<Widget>.generate(
-                widget.question.options!.length,
-                    (int index) {
-                  return Center(
-                    child: Text(widget.question.options![index].toString()),
-                  );
-                },
-              ),
-            ),
-          )
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          child: const Text('Fertig'),
-          onPressed: () {
-            Navigator.pop(context);
+        return SettingsPicker(
+          children: widget.question.options!.map((option) => Center(
+            child: Text(option.answer),
+          )).toList(),
+          onSettingSelected: (int selectedIndex) {
+            widget.profile.preferences.setQuestionAnswer(
+            widget.question.key, widget.question.options![selectedIndex].key);
+            widget.trekko.savePreferences(widget.profile.preferences);
           },
-        ),
-      );
-
-        break;
+        );
 
       case QuestionType.number:
       // Logik für Zahlenfragen
-        //int selectedIndex = 0;
-        return CupertinoActionSheet(
-          actions: <Widget>[
-            SizedBox(
-              height: 200, // Höhe des Pickers
-              child: CupertinoPicker(
-                itemExtent: 32,
-                //useMagnifier: true,
-                backgroundColor: AppThemeColors.contrast0,
-                onSelectedItemChanged: (int index) {
-                  //selectedIndex = index;
-                  Navigator.of(context).pop(index);
-                },
-                children: List<Widget>.generate(101, (int index) {
-                  return Center(child: Text('$index'));
-                }),
-              ),
-            )
-          ],
-          cancelButton: CupertinoActionSheetAction(
-            child: Text('Fertig'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+        return CupertinoTextField(
+          placeholder: widget.question.title,
+          autofocus: true,
+          keyboardType: TextInputType.number,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
           ),
+          onSubmitted: (String value) {
+            Navigator.of(context).pop(value);
+          },
         );
-        break;
 
       case QuestionType.text:
         return CupertinoTextField(
           placeholder: widget.question.title,
           autofocus: true,
-          //controller: TextEditingController(text: widget.question.title), //TODO: Textfeld mit Frage vorbelegen nötig???
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
           ),

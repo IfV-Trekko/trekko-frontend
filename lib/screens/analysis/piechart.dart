@@ -139,7 +139,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           } else {
-            return CupertinoActivityIndicator();
+            return buildPieChart(0.meters);
           }
         });
   }
