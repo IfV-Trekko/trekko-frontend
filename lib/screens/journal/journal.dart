@@ -211,11 +211,13 @@ class _JournalScreenState extends State<StatefulWidget>
   }
 
   void handleSelectionChange(Trip trip, bool isSelected) {
-    if (isSelected) {
-      selectedTrips.add(trip.id);
-    } else {
-      selectedTrips.remove(trip.id);
-    }
+    setState(() {
+      if (isSelected) {
+        selectedTrips.add(trip.id);
+      } else {
+        selectedTrips.remove(trip.id);
+      }
+    });
   }
 
   void delete(Trekko trekko) async {
