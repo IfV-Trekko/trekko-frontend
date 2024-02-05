@@ -7,10 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import '../../app_theme.dart';
 import '../../components/constants/button_size.dart';
-import 'journal_entry.dart';
+import 'TripsListView.dart';
 import 'package:fling_units/fling_units.dart';
-
-import 'journal_subtitle.dart';
 
 class Journal extends StatefulWidget {
   final Trekko trekko;
@@ -128,7 +126,22 @@ class _JournalState extends State<Journal> {
                         style: AppThemeTextStyles.title,
                       ));
                     } else {
-                      return buildTripsListView(trips);
+                      return TripsListView(
+                        trips: trips,
+                        selectionMode: selectionMode,
+                        onSelectionChanged: (Trip trip, bool isSelected) {
+                          setState(() {
+                            if (isSelected) {
+                              selectedTrips.add(trip.id);
+                            } else {
+                              selectedTrips.remove(trip.id);
+                            }
+                          });
+                        },
+                        trekko: widget.trekko,
+                        selectedTrips: selectedTrips,
+                      );
+                      //return buildTripsListView(trips);
                     }
                   }
                 },
@@ -204,75 +217,6 @@ class _JournalState extends State<Journal> {
           ),
       ],
     );
-  }
-
-  //only way to fix horrible nesting, too bad
-  Widget buildTripsListView(List<Trip> trips) {
-    trips.sort((a, b) => a.calculateStartTime().compareTo(b.calculateStartTime()));
-
-    return ListView.builder(
-      padding: EdgeInsets.only(
-        left: 16.0,
-        right: 16.0,
-        bottom: selectionMode ? 64.0 : 16.0,
-      ),
-      itemCount: trips.length,
-      itemBuilder: (context, index) {
-        final trip = trips[index];
-
-        // Check if this is the first trip or a new day has started
-        if (index == 0 || !_isSameDay(trips[index - 1].calculateStartTime(), trip.calculateStartTime())) {
-          return Column(
-            children: [
-              JournalSubtitle(trip.calculateStartTime()), // Add the JournalSubtitle widget
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: JournalEntry(
-                  key: ValueKey(trips[index].id),
-                  trip,
-                  selectionMode,
-                  widget.trekko,
-                  isSelected: selectedTrips.contains(trip.id),
-                  onSelectionChanged: (Trip trip, bool isSelected) {
-                    setState(() {
-                      if (isSelected) {
-                        selectedTrips.add(trip.id);
-                      } else {
-                        selectedTrips.remove(trip.id);
-                      }
-                    });
-                  },
-                ),
-              ),
-            ],
-          );
-        } else {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: JournalEntry(
-              key: ValueKey(trips[index].id),
-              trip,
-              selectionMode,
-              widget.trekko,
-              isSelected: selectedTrips.contains(trip.id),
-              onSelectionChanged: (Trip trip, bool isSelected) {
-                setState(() {
-                  if (isSelected) {
-                    selectedTrips.add(trip.id);
-                  } else {
-                    selectedTrips.remove(trip.id);
-                  }
-                });
-              },
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  bool _isSameDay(DateTime date1, DateTime date2) {
-    return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
   }
 
   void delete() async {
