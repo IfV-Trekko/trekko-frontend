@@ -27,7 +27,7 @@ class BasicChartRow extends StatelessWidget {
           //   color: TransportDesign.getColor(type),
           // ),
           Text(
-            TransportDesign.getName(type), // Verwendung des Parameters title
+            TransportDesign.getName(type),
             style: AppThemeTextStyles.normal.copyWith(
               color: TransportDesign.getColor(type),
             ),

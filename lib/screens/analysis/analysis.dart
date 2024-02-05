@@ -1,4 +1,3 @@
-
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_frontend/app_theme.dart';
@@ -35,7 +34,7 @@ class _AnalysisState extends State<Analysis> with AutomaticKeepAliveClientMixin{
         backgroundColor: AppThemeColors.contrast100,
         child: CustomScrollView (
           slivers: [
-            CupertinoSliverNavigationBar(
+            const CupertinoSliverNavigationBar(
               largeTitle: Text('Statistik'),
             ),
             SliverToBoxAdapter(

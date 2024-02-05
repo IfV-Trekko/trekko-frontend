@@ -51,30 +51,34 @@ class VehicleDataBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var sizedBox = const SizedBox(height: 8);
     return Container(
-      color: AppThemeColors.contrast0,
-      child: Container(
+        decoration: BoxDecoration(
+          color: AppThemeColors.contrast0,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Container(
         padding: EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
         decoration: BoxDecoration(
-          color: AppThemeColors.contrast0, // Hintergrundfarbe
+          color: AppThemeColors.contrast0,
           border: Border.all(
-            color: TransportDesign.getColor(vehicle).withOpacity(0.27), // Rahmenfarbe
+            color: TransportDesign.getColor(vehicle).withOpacity(0.27),
           ),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
               TransportDesign.getColor(vehicle)
-                  .withOpacity(0.08), // Anfangsfarbe des Verlaufs
+                  .withOpacity(0.08),
               TransportDesign.getColor(vehicle)
-                  .withOpacity(0.00), // Mittelfarbe des Verlaufs
+                  .withOpacity(0.00),
               TransportDesign.getColor(vehicle)
                   .withOpacity(0.00),
             ],
-            stops: [0.0, 0.1875, 1], // Definieren Sie hier die Stop-Positionen
+            stops: [0.0, 0.1875, 1],
           ),
 
-          borderRadius: BorderRadius.circular(6), // Eckenradius
+          borderRadius: BorderRadius.circular(6),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,40 +92,39 @@ class VehicleDataBox extends StatelessWidget {
                   size: 32,
                 ),*/
                 Text(
-                  TransportDesign.getName(vehicle), // Verwendung des Parameters title
+                  TransportDesign.getName(vehicle),
                   style: AppThemeTextStyles.title.copyWith(
                     color: TransportDesign.getColor(vehicle),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 16), // Abstand zwischen Titel und AttributRows
-            // Beispielimplementierung von AttributeRow
+            const SizedBox(height: 16),
             AttributeRow(
                 title: 'Gesamtstrecke',
                 value: getDataFormatted((t) => t.getDistance(),
                     DistanceReduction.SUM, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
 
-            SizedBox(height: 8),
+            sizedBox,
             AttributeRow(
                 title: 'Ø Strecke pro Weg',
                 value: getDataFormatted((t) => t.getDistance(),
                     DistanceReduction.AVERAGE, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
 
-            SizedBox(height: 8),
+            sizedBox,
             AttributeRow(
                 title: 'Ø Geschwindigkeit',
                 value: getDataFormatted((t) => t.getSpeed(),
                     SpeedReduction.AVERAGE, (d) => d.as(kilo.meters, hours).roundToDouble().toString() + " km/h")),
 
-            SizedBox(height: 8),
+            sizedBox,
             AttributeRow(
                 title: 'Ø Wegzeit',
                 value: getDataFormatted((t) => t.getDuration(),
                     DurationReduction.AVERAGE, (d) => d.inMinutes.roundToDouble().toString() + " min")),
           ],
         ),
-      )
+      ),
     );
   }
 }
