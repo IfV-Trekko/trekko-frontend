@@ -14,7 +14,6 @@ class ChooseLoginProcessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(ModalRoute.of(context)!.settings.arguments);
     return SimpleOnboardingScreen(
         title: "Neu hier?",
         buttonTitle: null,
@@ -33,7 +32,8 @@ class ChooseLoginProcessScreen extends StatelessWidget {
                 title: "Registrieren",
                 onPressed: () {
                   Navigator.pushNamed(context, SignUpScreen.route,
-                      arguments: ModalRoute.of(context)!.settings.arguments as String);
+                      arguments:
+                          ModalRoute.of(context)!.settings.arguments as String);
                 }),
             const ItemDivider(),
             Button(
@@ -41,7 +41,8 @@ class ChooseLoginProcessScreen extends StatelessWidget {
                 style: ButtonStyle.secondary,
                 onPressed: () {
                   Navigator.pushNamed(context, SignInScreen.route,
-                      arguments: ModalRoute.of(context)!.settings.arguments as String);
+                      arguments:
+                          ModalRoute.of(context)!.settings.arguments as String);
                 }),
           ],
         ));
