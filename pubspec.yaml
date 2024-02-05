@@ -35,7 +35,10 @@ dependencies:
   flutter_osm_plugin: ^0.70.2
   flutter:
     sdk: flutter
-  heroicons: 0.9.0
+  heroicons:
+    git:
+      url: https://github.com/KIT-PSE-2023-24/heroiconsPSE.git
+      ref: master
   google_fonts: ^6.1.0
   intl: ^0.18.1
   # The following adds the Cupertino Icons font to your application.
