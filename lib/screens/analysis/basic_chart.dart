@@ -29,7 +29,7 @@ class BasicChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container( //TODO: Schöner Code? Code Duplikation
+    return Container(
       decoration: BoxDecoration(
         color: AppThemeColors.contrast0,
         border: Border.all(color: AppThemeColors.contrast400),
@@ -60,7 +60,7 @@ class BasicChart extends StatelessWidget {
                       var speed = snapshot.data
                           ?.as(kilo.meters, hours)
                           .roundToDouble()
-                          .toString(); // Ersetzen Sie dies durch die richtige Berechnung
+                          .toString();
                       dataWidget = Text('${speed.toString()} km/h');
                     } else {
                       dataWidget = const Text('Keine Daten');

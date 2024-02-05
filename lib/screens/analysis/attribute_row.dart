@@ -20,7 +20,7 @@ class AttributeRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            title, // Verwendung des Parameters title
+            title,
             style: AppThemeTextStyles.normal,
           ),
           value
