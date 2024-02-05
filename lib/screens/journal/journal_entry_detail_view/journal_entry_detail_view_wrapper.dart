@@ -116,8 +116,8 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                   )),
               Description(
                   trip: widget.trip,
-                  startDate: widget.trip.calculateStartTime(),
-                  endDate: widget.trip.calculateEndTime()),
+                  startDate: widget.trip.getStartTime(),
+                  endDate: widget.trip.getEndTime()),
               Container(
                 height: 1,
                 width: double.infinity,

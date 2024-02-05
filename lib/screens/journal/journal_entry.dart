@@ -180,19 +180,19 @@ class _InformationRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          DateFormat('HH:mm').format(trip.calculateStartTime()),
+          DateFormat('HH:mm').format(trip.getStartTime()),
           style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
         ),
         Row(
           children: [
-            Text("${trip.getDuration().inMinutes} min"),
+            Text("${trip.calculateDuration().inMinutes} min"),
             const SizedBox(width: 4.0),
             Text(
                 "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km"),
           ],
         ),
         Text(
-          DateFormat('HH:mm').format(trip.calculateEndTime()),
+          DateFormat('HH:mm').format(trip.getEndTime()),
           style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
         ),
       ],
