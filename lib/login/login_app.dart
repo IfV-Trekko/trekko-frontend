@@ -12,47 +12,37 @@ import 'package:flutter/cupertino.dart';
 
 class LoginApp extends StatelessWidget {
   final Function(Trekko) trekkoCallBack;
-  String? projectUrl;
-  Trekko? trekko;
 
-  LoginApp(this.trekkoCallBack, {super.key});
+  const LoginApp(this.trekkoCallBack, {super.key});
 
-  void launchApp() {
-    trekkoCallBack.call(trekko!);
+  void launchApp(Trekko trekko) {
+    trekkoCallBack.call(trekko);
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: Clean this up
     Map<String, Widget Function(BuildContext)> routes = {
-      WelcomeScreen.route: (b) => WelcomeScreen(this),
-      JoinProjectScreen.route: (b) => JoinProjectScreen(this),
-      ChooseLoginProcessScreen.route: (b) => ChooseLoginProcessScreen(this),
-      SignInScreen.route: (b) => SignInScreen(this),
-      SignUpScreen.route: (b) => SignUpScreen(this),
-      EnterCodeScreen.route: (b) => EnterCodeScreen(this),
-      TextInfoScreen.routeAbout: (b) => TextInfoScreen(this,
-          text: trekko!.loadText(OnboardingTextType.whoText),
+      WelcomeScreen.route: (b) => const WelcomeScreen(),
+      JoinProjectScreen.route: (b) => const JoinProjectScreen(),
+      ChooseLoginProcessScreen.route: (b) => const ChooseLoginProcessScreen(),
+      SignInScreen.route: (b) => SignInScreen(trekkoCallBack),
+      SignUpScreen.route: (b) => const SignUpScreen(),
+      EnterCodeScreen.route: (b) => const EnterCodeScreen(),
+      TextInfoScreen.routeAbout: (b) => const TextInfoScreen(
+          text: OnboardingTextType.whoText,
           title: "Wer sind wir?",
           nextPage: TextInfoScreen.routeGoal),
-      TextInfoScreen.routeGoal: (b) => TextInfoScreen(this,
-          text: trekko!.loadText(OnboardingTextType.whatText),
+      TextInfoScreen.routeGoal: (b) => const TextInfoScreen(
+          text: OnboardingTextType.whatText,
           title: "Was wollen\nwir?",
           nextPage: QuestionnaireScreen.route),
-      QuestionnaireScreen.route: (b) => QuestionnaireScreen(this,
-          questions: trekko!
-              .getProfile()
-              .first
-              .then((value) => value.preferences.onboardingQuestions)),
+      QuestionnaireScreen.route: (b) => QuestionnaireScreen(trekkoCallBack),
     };
 
     return CupertinoApp(
-      home: WelcomeScreen(this),
-      onGenerateRoute: (settings) {
-        return CupertinoPageRoute(
-            builder: (b) => routes[settings.name]!.call(b));
-      },
-      // routes: routes,
+      home: const WelcomeScreen(),
+      routes: routes,
     );
   }
 }

@@ -1,10 +1,9 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
-import 'package:app_frontend/login/login_app.dart';
 import 'package:flutter/cupertino.dart';
 
 class SimpleOnboardingScreen extends StatefulWidget {
-  final LoginApp app;
+
   final Widget child;
   final String title;
   final String? buttonTitle;
@@ -12,7 +11,6 @@ class SimpleOnboardingScreen extends StatefulWidget {
 
   const SimpleOnboardingScreen(
       {super.key,
-      required this.app,
       required this.child,
       required this.title,
       required this.buttonTitle,
