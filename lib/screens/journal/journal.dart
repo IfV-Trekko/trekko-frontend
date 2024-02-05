@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import '../../app_theme.dart';
 import '../../components/constants/button_size.dart';
-import 'journal_entry.dart';
+import 'TripsListView.dart';
 import 'package:fling_units/fling_units.dart';
 
 class Journal extends StatefulWidget {
@@ -90,7 +90,7 @@ class _JournalState extends State<Journal> {
                     GestureDetector(
                       onTap: () {
                         widget.trekko.saveTrip(TripBuilder()
-                            .move_r(Duration(minutes: 10), 1000000.meters)
+                            .move_r(Duration(minutes: 10), 1000.meters)
                             .build());
                       },
                       child: const Icon(CupertinoIcons.add,
@@ -126,7 +126,22 @@ class _JournalState extends State<Journal> {
                         style: AppThemeTextStyles.title,
                       ));
                     } else {
-                      return buildTripsListView(trips);
+                      return TripsListView(
+                        trips: trips,
+                        selectionMode: selectionMode,
+                        onSelectionChanged: (Trip trip, bool isSelected) {
+                          setState(() {
+                            if (isSelected) {
+                              selectedTrips.add(trip.id);
+                            } else {
+                              selectedTrips.remove(trip.id);
+                            }
+                          });
+                        },
+                        trekko: widget.trekko,
+                        selectedTrips: selectedTrips,
+                      );
+                      //return buildTripsListView(trips);
                     }
                   }
                 },
@@ -201,40 +216,6 @@ class _JournalState extends State<Journal> {
             ),
           ),
       ],
-    );
-  }
-
-  //only way to fix horrible nesting, too bad
-  Widget buildTripsListView(List<Trip> trips) {
-    return ListView.builder(
-      padding: EdgeInsets.only(
-        left: 16.0,
-        right: 16.0,
-        top: 16.0,
-        bottom: selectionMode ? 64.0 : 16.0,
-      ),
-      itemCount: trips.length,
-      itemBuilder: (context, index) {
-        final trip = trips[index];
-        return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: JournalEntry(
-              key: ValueKey(trips[index].id),
-              trip,
-              selectionMode,
-              widget.trekko,
-              isSelected: selectedTrips.contains(trip.id),
-              onSelectionChanged: (Trip trip, bool isSelected) {
-                setState(() {
-                  if (isSelected) {
-                    selectedTrips.add(trip.id);
-                  } else {
-                    selectedTrips.remove(trip.id);
-                  }
-                });
-              },
-            ));
-      },
     );
   }
 

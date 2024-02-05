@@ -4,19 +4,19 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
-import 'package:app_frontend/components/map.dart';
+import 'package:app_frontend/components/trip_map.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/description.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/details.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/edit_context.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_provider.dart';
-import 'package:app_frontend/screens/trekko_provider.dart';
+import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:isar/isar.dart';
 
 class JournalEntryDetailViewWrapper extends StatefulWidget {
   final Trip trip;
 
-  JournalEntryDetailViewWrapper({required this.trip, Key? key})
+  const JournalEntryDetailViewWrapper({required this.trip, Key? key})
       : super(key: key);
 
   @override
@@ -24,79 +24,122 @@ class JournalEntryDetailViewWrapper extends StatefulWidget {
 }
 
 class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
-  bool hasUnsafedChanges = false;
-
-  void setUnsafedChanges(bool hasUnsafedChanges) {
-    setState(() {
-      this.hasUnsafedChanges = hasUnsafedChanges;
-    });
+  void _askForReset() {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: const Text('Weg zurücksetzen?'),
+            content: const Text(
+                'Möchtest du wirklich den Weg zurücksetzen? Der Weg wird auf die ursprünglichen Daten zurückgesetzt, wobei alle Änderungen verloren gehen.'),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: const Text('Abbrechen'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              CupertinoDialogAction(
+                child: const Text('Zurücksetzen'),
+                onPressed: () {
+                  widget.trip.reset();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     final trekko = TrekkoProvider.of(context);
+    final pathGeoPoints = <GeoPoint>[];
 
-    return JournalEntryDetailViewProvider(
-      hasUnsafedChanges: hasUnsafedChanges,
-      onSetUnsafedChanges: setUnsafedChanges,
-      child: CupertinoPageScaffold(
+    for (var leg in widget.trip.legs) {
+      pathGeoPoints.insert(
+          pathGeoPoints.length,
+          GeoPoint(
+              latitude: leg.trackedPoints.first.latitude,
+              longitude: leg.trackedPoints.first.longitude));
+    }
+
+    return CupertinoPageScaffold(
         backgroundColor: AppThemeColors.contrast150,
         navigationBar: CupertinoNavigationBar(
-            leading: CupertinoNavigationBarBackButton(
-                previousPageTitle: 'Tagebuch', //TODO off center
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
+            leading: Transform.translate(
+              offset: const Offset(-16, 0), //TODO überprüfen
+              child: CupertinoNavigationBarBackButton(
+                  previousPageTitle: 'Tagebuch',
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }),
+            ),
             middle: const Text('Wege'),
-            trailing: widget.trip.donationState == DonationState.donated
-                ? Button(
-                    stretch: false,
-                    title: 'Zurückziehen',
-                    onPressed: () {
-                      trekko.revoke(trekko
-                          .getTripQuery()
-                          .idEqualTo(widget.trip.id)
-                          .build());
-                    },
-                    size: ButtonSize.small,
-                    style: ButtonStyle.secondary,
-                  )
-                : Button(
-                    stretch: false,
-                    title: 'Spenden',
-                    onPressed: () {
-                      trekko.donate(trekko
-                          .getTripQuery()
-                          .idEqualTo(widget.trip.id)
-                          .build());
-                    },
-                    size: ButtonSize.small,
-                    style: ButtonStyle.primary,
-                  )),
+            trailing:
+                // widget.trip.donationState == DonationState.donated
+                //     ?
+                Button(
+              stretch: false,
+              title: 'Zurücksetzen',
+              onPressed: () async {
+                _askForReset(); //TODO funktioniert nicht & vorher fragen
+                await trekko.saveTrip(widget.trip);
+              },
+              size: ButtonSize.small,
+              style: ButtonStyle.secondary,
+            )
+            // : Button(
+            //     stretch: false,
+            //     title: 'Spenden',
+            //     onPressed: () async {
+            //       await trekko.donate(trekko
+            //           .getTripQuery()
+            //           .idEqualTo(widget.trip.id)
+            //           .build());
+            //     },
+            //     size: ButtonSize.small,
+            // style: ButtonStyle.primary,
+            // )
+            ),
         child: SafeArea(
-            child: Column(
+            child: Stack(
           children: [
             Expanded(
                 child: ListView(children: [
               SizedBox(
                   height: 234,
                   child: Center(
-                    child: MainMap(),
+                    child: TripMap(
+                      pathGeoPoints: pathGeoPoints,
+                    ),
                   )),
-              JournalEntryDetailViewDescription(
+              Description(
                   trip: widget.trip,
-                  startDate: widget.trip.calculateStartTime(),
-                  endDate: widget.trip.calculateEndTime()),
+                  startDate: widget.trip.getStartTime(),
+                  endDate: widget.trip.getEndTime()),
               Container(
                 height: 1,
                 width: double.infinity,
                 color: AppThemeColors.contrast700,
               ),
-              const JournalEntryDetailViewDetails(),
+              Details(
+                detailPurpose: widget.trip.purpose ?? '',
+                onSavedPurpose: (value) {
+                  widget.trip.purpose = value;
+                  trekko.saveTrip(widget.trip);
+                },
+                detailComment: widget.trip.comment ?? '',
+                onSavedComment: (value) {
+                  widget.trip.comment = value;
+                  trekko.saveTrip(widget.trip);
+                },
+              ),
             ])),
             Align(
               alignment: Alignment.bottomCenter,
-              child: JournalEntryDetailViewEditContext(
+              child: EditContext(
+                  //TODO schießt mit hoch
                   donated: widget.trip.donationState == DonationState.donated,
                   onReset: () {
                     widget.trip.reset();
@@ -113,8 +156,6 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                   },
                   onDelete: () {
                     Navigator.of(context).pop();
-                    Future.delayed(const Duration(
-                        seconds: 1)); //TODO warum schmiert trotzdem ab?
                     trekko.deleteTrip(trekko
                         .getTripQuery()
                         .idEqualTo(widget.trip.id)
@@ -125,11 +166,10 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                         .getTripQuery()
                         .idEqualTo(widget.trip.id)
                         .build());
+                    trekko.saveTrip(widget.trip); //TODO funktioniert nicht
                   }),
             ),
           ],
-        )),
-      ),
-    );
+        )));
   }
 }

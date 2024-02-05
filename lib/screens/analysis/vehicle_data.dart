@@ -51,7 +51,6 @@ class VehicleDataBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var sizedBox = const SizedBox(height: 8);
     return Container(
         decoration: BoxDecoration(
           color: AppThemeColors.contrast0,
@@ -105,22 +104,22 @@ class VehicleDataBox extends StatelessWidget {
                 value: getDataFormatted((t) => t.getDistance(),
                     DistanceReduction.SUM, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
 
-            sizedBox,
+            SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Strecke pro Weg',
                 value: getDataFormatted((t) => t.getDistance(),
                     DistanceReduction.AVERAGE, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
 
-            sizedBox,
+            SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Geschwindigkeit',
-                value: getDataFormatted((t) => t.getSpeed(),
+                value: getDataFormatted((t) => t.calculateSpeed(),
                     SpeedReduction.AVERAGE, (d) => d.as(kilo.meters, hours).roundToDouble().toString() + " km/h")),
 
-            sizedBox,
+            SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Wegzeit',
-                value: getDataFormatted((t) => t.getDuration(),
+                value: getDataFormatted((t) => t.calculateDuration(),
                     DurationReduction.AVERAGE, (d) => d.inMinutes.roundToDouble().toString() + " min")),
           ],
         ),

@@ -23,7 +23,7 @@ class BasicChart extends StatelessWidget {
             .filter()
             .legsElement((l) => l.transportTypeEqualTo(vehicle))
             .build(),
-        (t) => t.getSpeed(),
+        (t) => t.calculateSpeed(),
         SpeedReduction.AVERAGE);
   }
 

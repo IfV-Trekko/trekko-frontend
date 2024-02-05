@@ -2,13 +2,13 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/trip.dart';
+import 'package:app_frontend/screens/journal/TripsListView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import '../../app_theme.dart';
 import '../../components/button.dart';
 import '../../components/constants/button_size.dart';
 import '../../components/constants/button_style.dart';
-import 'journal_entry.dart';
 
 class DonationModal extends StatefulWidget {
   final Trekko trekko;
@@ -96,31 +96,20 @@ class DonationModalState extends State<DonationModal>
               style: AppThemeTextStyles.title,
             ));
           } else {
-            return ListView.builder(
-              padding: const EdgeInsets.all(16.0),
-              itemCount: trips.length,
-              itemBuilder: (context, index) {
-                final trip = trips[index];
-                return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: JournalEntry(
-                      key: ValueKey(trips[index].id),
-                      trip,
-                      loadCheckmark,
-                      widget.trekko,
-                      isSelected: selectedTrips.contains(trip.id),
-                      isDisabled: isLoading,
-                      onSelectionChanged: (Trip trip, bool isSelected) {
-                        setState(() {
-                          if (isSelected) {
-                            selectedTrips.add(trip.id);
-                          } else {
-                            selectedTrips.remove(trip.id);
-                          }
-                        });
-                      },
-                    ));
+            return TripsListView(
+              trips: trips,
+              selectionMode: true,
+              onSelectionChanged: (Trip trip, bool isSelected) {
+                setState(() {
+                  if (isSelected) {
+                    selectedTrips.add(trip.id);
+                  } else {
+                    selectedTrips.remove(trip.id);
+                  }
+                });
               },
+              trekko: widget.trekko,
+              selectedTrips: selectedTrips,
             );
           }
         }
