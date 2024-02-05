@@ -2,9 +2,13 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/text_input.dart';
 import 'package:app_frontend/login/login_app.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
+import 'package:app_frontend/login/text_info_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class EnterCodeScreen extends StatefulWidget {
+
+  static const String route = "/login/enterCode/";
+
   final LoginApp app;
 
   const EnterCodeScreen(this.app, {super.key});
@@ -25,7 +29,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
         buttonTitle: "Verifizieren",
         onButtonPress: () async {
           // TODO: Register here instead of the screen before
-          Navigator.pushNamed(context, "/login/about/");
+          Navigator.pushNamed(context, TextInfoScreen.routeAbout);
         },
         child: Column(
           children: [

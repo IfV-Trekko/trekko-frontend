@@ -5,6 +5,9 @@ import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class QuestionnaireScreen extends StatefulWidget {
+
+  static const String route = "/login/questionnaire/";
+
   final LoginApp app;
   final Future<List<OnboardingQuestion>> questions;
 

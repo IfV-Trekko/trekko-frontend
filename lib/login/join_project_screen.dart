@@ -4,11 +4,15 @@ import 'package:app_backend/controller/builder/authentification_utils.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:app_frontend/components/text_input.dart';
+import 'package:app_frontend/login/choose_login_process_screen.dart';
 import 'package:app_frontend/login/login_app.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class JoinProjectScreen extends StatefulWidget {
+
+  static const String route = "/login/project/";
+
   final LoginApp app;
 
   const JoinProjectScreen(this.app, {super.key});
@@ -65,7 +69,7 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
           }
 
           widget.app.projectUrl = projectUrl.value.text;
-          Navigator.pushNamed(context, "/login/how/");
+          Navigator.pushNamed(context, ChooseLoginProcessScreen.route);
         },
         child: Column(children: [
           TextInput(

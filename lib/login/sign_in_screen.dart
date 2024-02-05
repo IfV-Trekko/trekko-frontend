@@ -7,6 +7,9 @@ import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class SignInScreen extends StatefulWidget {
+
+  static const String route = "/login/signIn/";
+
   final LoginApp app;
 
   const SignInScreen(this.app, {super.key});

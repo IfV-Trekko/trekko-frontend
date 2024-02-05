@@ -2,12 +2,16 @@ import 'package:app_backend/controller/builder/build_exception.dart';
 import 'package:app_backend/controller/builder/registration_builder.dart';
 import 'package:app_backend/controller/builder/registration_result.dart';
 import 'package:app_frontend/components/text_input.dart';
+import 'package:app_frontend/login/enter_code_screen.dart';
 import 'package:app_frontend/login/item_divider.dart';
 import 'package:app_frontend/login/login_app.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class SignUpScreen extends StatefulWidget {
+
+  static const String route = "/login/signUp/";
+
   final LoginApp app;
 
   const SignUpScreen(this.app, {super.key});
@@ -36,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 passwordRepeat.value.text,
                 "12345")
                 .build();
-            Navigator.pushNamed(context, "/login/enterCode/");
+            Navigator.pushNamed(context, EnterCodeScreen.route);
           } catch(e) {
             String reason = "Unbekannter Fehler";
             if (e is BuildException) {

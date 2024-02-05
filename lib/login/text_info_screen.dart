@@ -4,6 +4,10 @@ import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class TextInfoScreen extends StatelessWidget {
+
+  static const String routeAbout = "/login/about/";
+  static const String routeGoal = "/login/goal/";
+
   final LoginApp app;
   final String title;
   final Future<String> text;

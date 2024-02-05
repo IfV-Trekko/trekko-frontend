@@ -25,21 +25,21 @@ class LoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: Clean this up
     Map<String, Widget Function(BuildContext)> routes = {
-      "/login/welcome/": (b) => WelcomeScreen(this),
-      "/login/project/": (b) => JoinProjectScreen(this),
-      "/login/how/": (b) => ChooseLoginProcessScreen(this),
-      "/login/signIn/": (b) => SignInScreen(this),
-      "/login/signUp/": (b) => SignUpScreen(this),
-      "/login/enterCode/": (b) => EnterCodeScreen(this),
-      "/login/about/": (b) => TextInfoScreen(this,
+      WelcomeScreen.route: (b) => WelcomeScreen(this),
+      JoinProjectScreen.route: (b) => JoinProjectScreen(this),
+      ChooseLoginProcessScreen.route: (b) => ChooseLoginProcessScreen(this),
+      SignInScreen.route: (b) => SignInScreen(this),
+      SignUpScreen.route: (b) => SignUpScreen(this),
+      EnterCodeScreen.route: (b) => EnterCodeScreen(this),
+      TextInfoScreen.routeAbout: (b) => TextInfoScreen(this,
           text: trekko!.loadText(OnboardingTextType.whoText),
           title: "Wer sind wir?",
-          nextPage: "/login/goal/"),
-      "/login/goal/": (b) => TextInfoScreen(this,
+          nextPage: TextInfoScreen.routeGoal),
+      TextInfoScreen.routeGoal: (b) => TextInfoScreen(this,
           text: trekko!.loadText(OnboardingTextType.whatText),
           title: "Was wollen\nwir?",
-          nextPage: "/login/questionnaire/"),
-      "/login/questionnaire/": (b) => QuestionnaireScreen(this,
+          nextPage: QuestionnaireScreen.route),
+      QuestionnaireScreen.route: (b) => QuestionnaireScreen(this,
           questions: trekko!
               .getProfile()
               .first
