@@ -44,19 +44,16 @@ class _JournalScreenState extends State<StatefulWidget>
             slivers: <Widget>[
               CupertinoSliverNavigationBar(
                 largeTitle: const Text("Tagebuch"),
-                leading: Container(
-                  alignment: Alignment.centerLeft,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectionMode = !selectionMode;
-                      });
-                    },
-                    child: Text(
-                      selectionMode ? "Fertig" : "Bearbeiten",
-                      style: AppThemeTextStyles.normal
-                          .copyWith(color: AppThemeColors.blue),
-                    ),
+                leading: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectionMode = !selectionMode;
+                    });
+                  },
+                  child: Text(
+                    selectionMode ? "Fertig" : "Bearbeiten",
+                    style: AppThemeTextStyles.normal
+                        .copyWith(color: AppThemeColors.blue),
                   ),
                 ),
                 trailing: Row(
@@ -71,7 +68,7 @@ class _JournalScreenState extends State<StatefulWidget>
                           showDonationModal(context);
                         },
                       ),
-                    const SizedBox(width: 32.0),
+                    const SizedBox(width: 20.0),
                     if (!selectionMode)
                       GestureDetector(
                         onTap: () {
