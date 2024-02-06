@@ -157,8 +157,11 @@ class _JournalScreenState extends State<StatefulWidget>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          merge(trekko);
+                        onTap: () async {
+                          await merge(trekko);
+                          setState(() {
+                            selectionMode = false;
+                          });
                         },
                         child: Text(
                           "Vereinigen",
@@ -167,8 +170,11 @@ class _JournalScreenState extends State<StatefulWidget>
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          revoke(trekko);
+                        onTap: () async {
+                          await revoke(trekko);
+                          setState(() {
+                            selectionMode = false;
+                          });
                         },
                         child: Text(
                           "Zurückziehen",
@@ -177,8 +183,11 @@ class _JournalScreenState extends State<StatefulWidget>
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          delete(trekko);
+                        onTap: () async {
+                          await delete(trekko);
+                          setState(() {
+                            selectionMode = false;
+                          });
                         },
                         child: Text(
                           "Löschen",
