@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
-import '../journal/journalDetail/transportDesign.dart';
+import '../../components/constants/transportDesign.dart';
 import 'legend_indicator.dart';
 
 class PieChartWidget extends StatefulWidget {
@@ -41,7 +41,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
         return PieChartSectionData(
           color: TransportDesign.getColor(type),
           value: value == null ? 0 : value.as(meters),
-          title: value == null
+          title: value == null || sum == const Distance.zero()
               ? '0%'
               : '${(value.as(meters) / sum.as(meters) * 100).round()}%',
           radius: 55,
@@ -144,4 +144,3 @@ class PieChartWidgetState extends State<PieChartWidget> {
         });
   }
 }
-

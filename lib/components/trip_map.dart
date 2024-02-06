@@ -1,11 +1,31 @@
+import 'package:app_backend/model/trip/transport_type.dart';
+import 'package:app_backend/model/trip/trip.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
+import 'constants/transportDesign.dart';
+
 class TripMap extends StatefulWidget {
-  final List<GeoPoint> pathGeoPoints;
+  final Trip trip;
+  final MapController controller = MapController.withPosition(
+      initPosition: // Karlsruhe
+          GeoPoint(latitude: 49.013379, longitude: 8.404393));
+  late List<GeoPoint> pathGeoPoints = [];
   late BoundingBox tripBoundingBox;
-  //TODO bisher nur aus Prototypen übernommen
-  TripMap({required this.pathGeoPoints, Key? key}) : super(key: key) {
+
+  TripMap({required this.trip, Key? key}) : super(key: key) {
+    for (var leg in trip.legs) {
+      pathGeoPoints.insert(
+          pathGeoPoints.length,
+          GeoPoint(
+              latitude: leg.trackedPoints.first.latitude,
+              longitude: leg.trackedPoints.first.longitude));
+      pathGeoPoints.insert(
+          pathGeoPoints.length,
+          GeoPoint(
+              latitude: leg.trackedPoints.last.latitude,
+              longitude: leg.trackedPoints.last.longitude));
+    }
     tripBoundingBox = BoundingBox.fromGeoPoints(pathGeoPoints);
   }
 
@@ -15,25 +35,35 @@ class TripMap extends StatefulWidget {
 
 class _TripMapState extends State<TripMap>
     with AutomaticKeepAliveClientMixin<TripMap> {
-  MapController controller = MapController.withPosition(
-      initPosition: // Karlsruhe
-          GeoPoint(latitude: 49.013379, longitude: 8.404393));
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 5), () {
+      //TODO awaiten
+      for (var i = 0; i < widget.pathGeoPoints.length - 1; i += 2) {
+        widget.controller
+            .drawRoad(widget.pathGeoPoints[i], widget.pathGeoPoints[i + 1],
+                roadType: switch (widget.trip.legs[i ~/ 2].transportType) {
+                  TransportType.bicycle => RoadType.bike,
+                  TransportType.by_foot => RoadType.foot,
+                  _ => RoadType.foot,
+                },
+                roadOption: RoadOption(
+                  roadWidth: 5,
+                  roadColor: TransportDesign.getColor(
+                      widget.trip.legs[i ~/ 2].transportType),
+                  zoomInto: true,
+                ));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    controller.init();
-    controller.zoomToBoundingBox(widget.tripBoundingBox);
-    controller.listenerMapLongTapping.addListener(() {
-      //TODO check nicht was da passiert
-      if (controller.listenerMapLongTapping.value != null) {
-        GeoPoint point = controller.listenerMapLongTapping.value!;
-        print(point);
-      }
-    });
 
     OSMFlutter osm = OSMFlutter(
-        controller: controller,
+        controller: widget.controller,
         osmOption: const OSMOption(
           zoomOption: ZoomOption(
             initZoom: 12,
@@ -42,26 +72,12 @@ class _TripMapState extends State<TripMap>
             stepZoom: 1.0,
           ),
         ));
-    Future.delayed(const Duration(seconds: 5), () {
-      for (var i = 0; i < widget.pathGeoPoints.length - 2; i++) {
-        controller.drawRoad(
-            widget.pathGeoPoints[i], widget.pathGeoPoints[i + 1],
-            roadType: RoadType.foot,
-            roadOption: const RoadOption(
-              roadWidth: 5,
-              roadColor: CupertinoColors.systemBlue,
-              zoomInto: true,
-            ));
-        //TODO sollte funktionieren, brauche nur ein Testobjekt
-        //TODO wird erst bei Save ausgeführt warum?
-      }
-    });
     return osm;
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    widget.controller.dispose();
     super.dispose();
   }
 

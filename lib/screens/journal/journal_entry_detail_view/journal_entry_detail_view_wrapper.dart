@@ -24,6 +24,8 @@ class JournalEntryDetailViewWrapper extends StatefulWidget {
 }
 
 class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
+  bool isLoading = false;
+
   void _askForReset() {
     showCupertinoDialog(
         context: context,
@@ -54,15 +56,6 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
   @override
   Widget build(BuildContext context) {
     final trekko = TrekkoProvider.of(context);
-    final pathGeoPoints = <GeoPoint>[];
-
-    for (var leg in widget.trip.legs) {
-      pathGeoPoints.insert(
-          pathGeoPoints.length,
-          GeoPoint(
-              latitude: leg.trackedPoints.first.latitude,
-              longitude: leg.trackedPoints.first.longitude));
-    }
 
     return CupertinoPageScaffold(
         backgroundColor: AppThemeColors.contrast150,
@@ -88,20 +81,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
               },
               size: ButtonSize.small,
               style: ButtonStyle.secondary,
-            )
-            // : Button(
-            //     stretch: false,
-            //     title: 'Spenden',
-            //     onPressed: () async {
-            //       await trekko.donate(trekko
-            //           .getTripQuery()
-            //           .idEqualTo(widget.trip.id)
-            //           .build());
-            //     },
-            //     size: ButtonSize.small,
-            // style: ButtonStyle.primary,
-            // )
-            ),
+            )),
         child: SafeArea(
             child: Stack(
           children: [
@@ -111,7 +91,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                   height: 234,
                   child: Center(
                     child: TripMap(
-                      pathGeoPoints: pathGeoPoints,
+                      trip: widget.trip,
                     ),
                   )),
               Description(
@@ -124,6 +104,11 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                 color: AppThemeColors.contrast700,
               ),
               Details(
+                detailVehicle: widget.trip.getTransportTypes(),
+                onSavedVehicle: (value) {
+                  widget.trip.setTransportTypes(value);
+                  trekko.saveTrip(widget.trip);
+                },
                 detailPurpose: widget.trip.purpose ?? '',
                 onSavedPurpose: (value) {
                   widget.trip.purpose = value;
@@ -140,19 +125,26 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
               alignment: Alignment.bottomCenter,
               child: EditContext(
                   //TODO schießt mit hoch
+                  isDonatig: isLoading,
                   donated: widget.trip.donationState == DonationState.donated,
                   onReset: () {
-                    widget.trip.reset();
+                    widget.trip.reset(); //TODO funktioniert nicht
                   },
                   onUpdate: () {
                     trekko.saveTrip(widget.trip);
                   },
                   onDonate: () async {
                     await trekko.saveTrip(widget.trip);
+                    setState(() {
+                      isLoading = true;
+                    });
                     await trekko.donate(trekko
                         .getTripQuery()
                         .idEqualTo(widget.trip.id)
                         .build());
+                    setState(() {
+                      isLoading = false;
+                    });
                   },
                   onDelete: () {
                     Navigator.of(context).pop();
@@ -161,12 +153,18 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                         .idEqualTo(widget.trip.id)
                         .build());
                   },
-                  onRevoke: () {
-                    trekko.revoke(trekko
+                  onRevoke: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await trekko.revoke(trekko
                         .getTripQuery()
                         .idEqualTo(widget.trip.id)
                         .build());
-                    trekko.saveTrip(widget.trip); //TODO funktioniert nicht
+                    trekko.saveTrip(widget.trip);
+                    setState(() {
+                      isLoading = false;
+                    });
                   }),
             ),
           ],

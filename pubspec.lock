@@ -22,7 +22,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: fcf9b5612ee7e5e21b05649a2572f7776be7576c
+      resolved-ref: f48efad1846a275d50505588dd395c93ffc129ac
       url: "https://github.com/KIT-PSE-2023-24/app-backend"
     source: git
     version: "1.0.0+1"
@@ -42,6 +42,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  background_locator_2:
+    dependency: transitive
+    description:
+      name: background_locator_2
+      sha256: "145ef41767306052cbb2159478c0369b83c9800740f7acc656530c263d371695"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6"
   boolean_selector:
     dependency: transitive
     description:
@@ -163,7 +171,7 @@ packages:
     source: hosted
     version: "0.66.1"
   fling_units:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: fling_units
       sha256: "2bf10acf2eb519e666df036881ef64c073e826225b00ce2663aa9d7547449312"
@@ -358,7 +366,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: a83bde5769670e99b0bfe6444e614c310df6611f
+      resolved-ref: "3dff49cee46c2c31ea7e8492eb27d96843df6b9d"
       url: "https://github.com/KIT-PSE-2023-24/heroiconsPSE.git"
     source: git
     version: "0.9.0"
@@ -403,7 +411,7 @@ packages:
     source: hosted
     version: "1.0.4"
   isar:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: isar
       sha256: "99165dadb2cf2329d3140198363a7e7bff9bbd441871898a87e26914d25cf1ea"

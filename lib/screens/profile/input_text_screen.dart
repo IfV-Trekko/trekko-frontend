@@ -10,7 +10,7 @@ class TextInputPage extends StatefulWidget {
   final OnboardingQuestion question;
   final Trekko trekko;
   final Profile profile;
-
+  
   const TextInputPage({super.key,
     required this.question, required this.trekko, required this.profile
   });
@@ -20,7 +20,6 @@ class TextInputPage extends StatefulWidget {
 }
 
 class _TextInputPageState extends State<TextInputPage> {
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(

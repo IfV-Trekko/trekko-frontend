@@ -7,6 +7,7 @@ enum ButtonStyle {
   destructive(AppThemeColors.red, AppThemeColors.contrast0),
   transparent(AppThemeColors.contrast0, AppThemeColors.blue);
 
+
   const ButtonStyle(this.backgroundColor, this.textColor);
   final Color backgroundColor;
   final Color textColor;

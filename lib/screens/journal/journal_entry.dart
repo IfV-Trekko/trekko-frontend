@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 
 import 'journalDetail/journalDetailBoxDonation.dart';
+import 'journal_entry_detail_view/journal_entry_detail_view.dart';
 
 class JournalEntry extends StatelessWidget {
   final Trip trip;
@@ -68,14 +69,14 @@ class JournalEntry extends StatelessWidget {
                     enableHapticFeedback: true,
                     actions: <Widget>[
                       Builder(
-                        builder: (context) => CupertinoContextMenuAction(
+                        builder: (menuContext) => CupertinoContextMenuAction(
                           onPressed: () {
                             if (trip.donationState == DonationState.donated) {
                               trekko.revoke(createQuery().build());
                             } else {
                               trekko.donate(createQuery().build());
                             }
-                            Navigator.pop(context);
+                            Navigator.pop(menuContext);
                           },
                           isDefaultAction: true,
                           trailingIcon:
@@ -92,10 +93,14 @@ class JournalEntry extends StatelessWidget {
                         ),
                       ),
                       Builder(
-                        builder: (context) => CupertinoContextMenuAction(
+                        builder: (menuContext) => CupertinoContextMenuAction(
                           onPressed: () {
-                            //TODO: Deatilseite öffnen;
-                            Navigator.pop(context);
+                            Navigator.pop(menuContext);
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) =>
+                                        JournalEntryDetailView(trip)));
                           },
                           trailingIcon: CupertinoIcons.pen,
                           child: Text(
@@ -106,10 +111,10 @@ class JournalEntry extends StatelessWidget {
                         ),
                       ),
                       Builder(
-                        builder: (context) => CupertinoContextMenuAction(
+                        builder: (menuContext) => CupertinoContextMenuAction(
                           onPressed: () {
                             trekko.deleteTrip(createQuery().build());
-                            Navigator.pop(context);
+                            Navigator.pop(menuContext);
                           },
                           trailingIcon: CupertinoIcons.trash,
                           child: Text(
@@ -141,6 +146,11 @@ class JournalEntry extends StatelessWidget {
             if (onSelectionChanged != null) {
               onSelectionChanged!(trip, !isSelected);
             }
+          } else {
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => JournalEntryDetailView(trip)));
           }
         },
         child: Container(
@@ -154,7 +164,8 @@ class JournalEntry extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 10),
+            padding: const EdgeInsets.only(
+                left: 16.0, right: 16.0, top: 16.0, bottom: 10),
             child: Column(
               children: [
                 _InformationRow(trip),
@@ -176,24 +187,37 @@ class _InformationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Duration duration = trip.calculateDuration();
+    int hours = duration.inHours;
+    int minutes = duration.inMinutes.remainder(60);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          DateFormat('HH:mm').format(trip.getStartTime()),
-          style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
+        Flexible(
+          child: Text(
+            DateFormat('HH:mm').format(trip.getStartTime()),
+            style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
+          ),
         ),
-        Row(
-          children: [
-            Text("${trip.calculateDuration().inMinutes} min"),
-            const SizedBox(width: 4.0),
-            Text(
-                "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km"),
-          ],
+        Expanded(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              children: [
+                Text(hours > 0 ? "$hours h $minutes min" : "$minutes min"),
+                const SizedBox(width: 4.0),
+                Text(
+                  "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km",
+                ),
+              ],
+            ),
+          ),
         ),
-        Text(
-          DateFormat('HH:mm').format(trip.getEndTime()),
-          style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
+        Flexible(
+          child: Text(
+            DateFormat('HH:mm').format(trip.getEndTime()),
+            style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
+          ),
         ),
       ],
     );
@@ -208,7 +232,7 @@ class _VehicleLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(bottom: 20.0, top: 12),
+        padding: const EdgeInsets.only(bottom: 20.0, top: 12),
         child: PathShowcase(trip: trip));
   }
 }
@@ -234,7 +258,7 @@ class _LabelRow extends StatelessWidget {
           for (var vehicleType in uniqueVehicleTypes)
             Wrap(
               children: [
-                JournalDetailBoxVehicle(vehicleType),
+                JournalDetailBoxVehicle(vehicleType, showText: true),
               ],
             ),
           // Add JournalDetailBox for purpose and donation

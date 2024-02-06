@@ -10,6 +10,7 @@ class Button extends StatelessWidget {
   final HeroIcons? icon;
   final bool loading;
   final bool stretch;
+  final bool fillIcon;
   final ButtonStyle style;
   final ButtonSize size;
   final Function onPressed;
@@ -21,6 +22,7 @@ class Button extends StatelessWidget {
       this.size = ButtonSize.large,
       this.loading = false,
       this.stretch = true,
+      this.fillIcon = false,
       this.icon,
       super.key});
 
@@ -59,6 +61,9 @@ class Button extends StatelessWidget {
                           icon!,
                           size: size.iconSize,
                           color: style.textColor,
+                          style: fillIcon
+                              ? HeroIconStyle.solid
+                              : HeroIconStyle.outline,
                         ),
                         if (title.isNotEmpty) ...[
                           SizedBox(width: size.sizedBoxWidth),

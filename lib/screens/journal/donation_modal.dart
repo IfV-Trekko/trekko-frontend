@@ -122,19 +122,24 @@ class DonationModalState extends State<DonationModal>
       isLoading = true;
     });
     int donatedTrips = 0;
-    for (var element in selectedTrips) {
-      try {
-        await widget.trekko.donate(
-            widget.trekko.getTripQuery().filter().idEqualTo(element).build());
-            donatedTrips++;
-      } catch (error) {
-        donatedTrips++;
-        Navigator.pop(context); // Close the modal
-        setState(() {
-          isLoading = false; // Set isLoading to false
-        });
-        finishedAction('Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten', true);
-        return;
+    var allTrips = await widget.trekko.getTripQuery().filter().donationStateEqualTo(DonationState.undefined).findAll();
+    for (var trip in allTrips) {
+      if (selectedTrips.contains(trip.id)) {
+        try {
+          await widget.trekko.donate(
+              widget.trekko.getTripQuery().filter().idEqualTo(trip.id).build());
+          donatedTrips++;
+        } catch (error) {
+          Navigator.pop(context); // Close the modal
+          setState(() {
+            isLoading = false; // Set isLoading to false
+          });
+          finishedAction('Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten', true);
+          return;
+        }
+      } else {
+        trip.donationState = DonationState.notDonated;
+        widget.trekko.saveTrip(trip);
       }
     }
     Navigator.pop(context);
