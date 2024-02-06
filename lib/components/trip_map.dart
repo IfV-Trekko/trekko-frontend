@@ -21,13 +21,17 @@ class _TripMapState extends State<TripMap>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    controller.init();
     controller.zoomToBoundingBox(widget.tripBoundingBox);
-    controller.listenerMapLongTapping.addListener(() {
-      //TODO check nicht was da passiert
-      if (controller.listenerMapLongTapping.value != null) {
-        GeoPoint point = controller.listenerMapLongTapping.value!;
-        print(point);
+    Future.delayed(const Duration(seconds: 5), () {
+      for (var i = 0; i < widget.pathGeoPoints.length - 2; i++) {
+        controller.drawRoad(
+            widget.pathGeoPoints[i], widget.pathGeoPoints[i + 1],
+            roadType: RoadType.foot,
+            roadOption: const RoadOption(
+              roadWidth: 5,
+              roadColor: CupertinoColors.systemBlue,
+              zoomInto: true,
+            ));
       }
     });
 
@@ -41,20 +45,6 @@ class _TripMapState extends State<TripMap>
             stepZoom: 1.0,
           ),
         ));
-    Future.delayed(const Duration(seconds: 5), () {
-      for (var i = 0; i < widget.pathGeoPoints.length - 2; i++) {
-        controller.drawRoad(
-            widget.pathGeoPoints[i], widget.pathGeoPoints[i + 1],
-            roadType: RoadType.foot, //TODO dynamisch machen
-            roadOption: const RoadOption(
-              roadWidth: 5,
-              roadColor: CupertinoColors.systemBlue,
-              zoomInto: true,
-            ));
-        //TODO sollte funktionieren, brauche nur ein Testobjekt
-        //TODO wird erst bei Save ausgeführt warum?
-      }
-    });
     return osm;
   }
 

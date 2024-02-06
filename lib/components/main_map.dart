@@ -1,8 +1,10 @@
+import 'dart:io';
+
+import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class MainMap extends StatefulWidget {
-  //TODO bisher nur aus Prototypen übernommen
   const MainMap({Key? key}) : super(key: key);
 
   @override
@@ -18,8 +20,7 @@ class _MainMapState extends State<MainMap>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    controller.init();
-
+    _moveToUserLocation();
     OSMFlutter osm = OSMFlutter(
         controller: controller,
         osmOption: const OSMOption(
@@ -37,6 +38,15 @@ class _MainMapState extends State<MainMap>
   void dispose() {
     controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _moveToUserLocation() async {
+    TrekkoProvider.of(context).getPosition().listen((event) {
+      controller.changeLocation(
+          GeoPoint(latitude: event.latitude, longitude: event.longitude));
+      controller.goToLocation(
+          GeoPoint(latitude: event.latitude, longitude: event.longitude));
+    });
   }
 
   @override
