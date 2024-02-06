@@ -22,32 +22,6 @@ class MapOptionSheet extends StatefulWidget {
 }
 
 class _MapOptionSheetState extends State<MapOptionSheet> {
-  void generateTrip() {
-    Trip trip = TripBuilder()
-        .move_r(const Duration(minutes: 20), 1.kilo.meters)
-        .leg(type: TransportType.car)
-        .move_r(const Duration(minutes: 20), 1.kilo.meters)
-        .leg(type: TransportType.bicycle)
-        .move_r(const Duration(minutes: 20), 1.kilo.meters)
-        .leg(type: TransportType.by_foot)
-        .build();
-    widget.trekko.saveTrip(trip);
-  }
-
-  void openTripModal() {
-    // Trip trip =
-    //     TripBuilder().move_r(Duration(minutes: 40), 2.kilo.meters).build();
-    widget.trekko.getTripQuery().findFirst().then((trip) => {
-          // widget.trekko.deleteTrip(
-          //     widget.trekko.getTripQuery().idEqualTo(trip!.id).build())
-
-          Navigator.of(context).push(CupertinoPageRoute(
-              builder: (context) => JournalEntryDetailView(trip!)))
-        });
-
-    // });
-  }
-
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -164,10 +138,6 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                           }
                           return const CupertinoActivityIndicator();
                         }),
-                    const SizedBox(height: 16),
-                    Button(title: 'Generate Trip', onPressed: generateTrip),
-                    const SizedBox(height: 16),
-                    Button(title: 'Open detailView', onPressed: openTripModal),
                   ],
                 ),
               ));
