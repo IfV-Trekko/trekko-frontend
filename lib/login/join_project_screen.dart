@@ -49,11 +49,11 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
             showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
-                      title: Text(
+                      title: const Text(
                           "Das angegebene Projekt konnte nicht gefunden werden"),
                       actions: [
                         CupertinoDialogAction(
-                          child: Text('Verstanden'),
+                          child: const Text('Erneut versuchen'),
                           onPressed: () {
                             Navigator.pop(context);
                           },

@@ -1,10 +1,9 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/onboarding_question.dart';
 import 'package:app_backend/model/profile/profile.dart';
-import 'package:app_frontend/screens/profile/setting_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:app_backend/model/profile/question_type.dart';
-import 'package:flutter/material.dart';
+
 import '../../app_theme.dart';
 
 class TextInputPage extends StatefulWidget {
@@ -12,7 +11,7 @@ class TextInputPage extends StatefulWidget {
   final Trekko trekko;
   final Profile profile;
 
-  TextInputPage({
+  const TextInputPage({super.key,
     required this.question, required this.trekko, required this.profile
   });
 
@@ -31,7 +30,7 @@ class _TextInputPageState extends State<TextInputPage> {
       ),
       child: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: _buildContentBasedOnQuestionType(),
         ),
       ),
@@ -40,20 +39,8 @@ class _TextInputPageState extends State<TextInputPage> {
 
   Widget _buildContentBasedOnQuestionType() {
     switch (widget.question.type) {
-      case QuestionType.select:
-        return SettingsPicker(
-          children: widget.question.options!.map((option) => Center(
-            child: Text(option.answer),
-          )).toList(),
-          onSettingSelected: (int selectedIndex) {
-            widget.profile.preferences.setQuestionAnswer(
-            widget.question.key, widget.question.options![selectedIndex].key);
-            widget.trekko.savePreferences(widget.profile.preferences);
-          },
-        );
 
       case QuestionType.number:
-      // Logik für Zahlenfragen
         return CupertinoTextField(
           placeholder: widget.question.title,
           autofocus: true,
@@ -79,8 +66,7 @@ class _TextInputPageState extends State<TextInputPage> {
         );
 
       default:
-        return Text('Unbekannter Fragentyp');
+        return const Text('Unbekannter Fragentyp');
     }
-    return Container(); // Fallback für nicht behandelte Fälle
   }
 }
