@@ -36,7 +36,6 @@ class _MultiSelectResponseState<T> extends State<MultiSelectResponse<T>> {
 
   @override
   Widget build(BuildContext context) {
-    print(_newResponses);
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           backgroundColor: AppThemeColors.contrast100,

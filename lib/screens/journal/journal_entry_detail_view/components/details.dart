@@ -91,7 +91,7 @@ class _DetailsState extends State<Details> {
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) => MultiSelectResponse<TransportType>(
-                        singleSelect: true,
+                        singleSelect: false,
                         getName: TransportDesign.getName,
                         title: 'Verkehrsmittel',
                         responses: TransportType.values,
