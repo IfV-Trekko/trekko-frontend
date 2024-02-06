@@ -117,7 +117,6 @@ class JournalEntry extends StatelessWidget {
                             Navigator.pop(menuContext);
                           },
                           trailingIcon: CupertinoIcons.trash,
-                          //TODO: Die Hunde von cuperinoIcons unterstützen keine farben
                           child: Text(
                             'Unwiderruflich löschen',
                             style: AppThemeTextStyles.normal
