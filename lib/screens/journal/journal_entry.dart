@@ -96,9 +96,11 @@ class JournalEntry extends StatelessWidget {
                         builder: (menuContext) => CupertinoContextMenuAction(
                           onPressed: () {
                             Navigator.pop(menuContext);
-                            Navigator.push(context, CupertinoPageRoute(
-                                builder: (context) =>
-                                    JournalEntryDetailView(trip)));
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) =>
+                                        JournalEntryDetailView(trip)));
                           },
                           trailingIcon: CupertinoIcons.pen,
                           child: Text(
@@ -145,6 +147,11 @@ class JournalEntry extends StatelessWidget {
             if (onSelectionChanged != null) {
               onSelectionChanged!(trip, !isSelected);
             }
+          } else {
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => JournalEntryDetailView(trip)));
           }
         },
         child: Container(
