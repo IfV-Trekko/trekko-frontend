@@ -31,7 +31,7 @@ dependencies:
   app_backend:
     git:
       url: https://github.com/KIT-PSE-2023-24/app-backend
-      ref: master
+      ref: e09a7aa12bb131eeb734cd0c4a91c521f976ad39
   flutter_osm_plugin: ^0.70.2
   flutter:
     sdk: flutter

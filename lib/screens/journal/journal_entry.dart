@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 
 import 'journalDetail/journalDetailBoxDonation.dart';
+import 'journal_entry_detail_view/journal_entry_detail_view.dart';
 
 class JournalEntry extends StatelessWidget {
   final Trip trip;
@@ -68,14 +69,14 @@ class JournalEntry extends StatelessWidget {
                     enableHapticFeedback: true,
                     actions: <Widget>[
                       Builder(
-                        builder: (context) => CupertinoContextMenuAction(
+                        builder: (menuContext) => CupertinoContextMenuAction(
                           onPressed: () {
                             if (trip.donationState == DonationState.donated) {
                               trekko.revoke(createQuery().build());
                             } else {
                               trekko.donate(createQuery().build());
                             }
-                            Navigator.pop(context);
+                            Navigator.pop(menuContext);
                           },
                           isDefaultAction: true,
                           trailingIcon:
@@ -92,10 +93,12 @@ class JournalEntry extends StatelessWidget {
                         ),
                       ),
                       Builder(
-                        builder: (context) => CupertinoContextMenuAction(
+                        builder: (menuContext) => CupertinoContextMenuAction(
                           onPressed: () {
-                            //TODO: Deatilseite öffnen;
-                            Navigator.pop(context);
+                            Navigator.pop(menuContext);
+                            Navigator.push(context, CupertinoPageRoute(
+                                builder: (context) =>
+                                    JournalEntryDetailView(trip)));
                           },
                           trailingIcon: CupertinoIcons.pen,
                           child: Text(
@@ -106,10 +109,10 @@ class JournalEntry extends StatelessWidget {
                         ),
                       ),
                       Builder(
-                        builder: (context) => CupertinoContextMenuAction(
+                        builder: (menuContext) => CupertinoContextMenuAction(
                           onPressed: () {
                             trekko.deleteTrip(createQuery().build());
-                            Navigator.pop(context);
+                            Navigator.pop(menuContext);
                           },
                           trailingIcon: CupertinoIcons.trash,
                           //TODO: Die Hunde von cuperinoIcons unterstützen keine farben
@@ -235,7 +238,8 @@ class _LabelRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final uniqueVehicleTypes = trip.getTransportTypes();
+    final uniqueVehicleTypes =
+        trip.legs.map((leg) => leg.transportType).toSet();
 
     return Align(
       alignment: Alignment.centerLeft,
