@@ -69,9 +69,6 @@ class _JournalScreenState extends State<StatefulWidget>
                         size: ButtonSize.small,
                         onPressed: () async {
                           showDonationModal(context);
-                          setState(() {
-                            selectionMode = !selectionMode;
-                          });
                         },
                       ),
                     const SizedBox(width: 32.0),
