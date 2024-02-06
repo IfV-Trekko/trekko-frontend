@@ -1,6 +1,7 @@
 import 'package:app_backend/controller/builder/authentification_utils.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/battery_usage_setting.dart';
+import 'package:app_backend/model/tracking_state.dart';
 import 'package:app_frontend/screens/profile/form.dart';
 import 'package:app_frontend/screens/profile/setting_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,13 +31,16 @@ class _ProfileScreenState extends State<ProfileScreen>
   final EdgeInsetsGeometry listSectionMargin =
       const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
-  Future <void> showBatteryUsageSettingPicker(BuildContext context, Profile profile) async {
-    List<Widget> batterySettingOptions = BatteryUsageSetting.values.map((setting) {
+  Future<void> showBatteryUsageSettingPicker(
+      BuildContext context, Profile profile) async {
+    List<Widget> batterySettingOptions =
+        BatteryUsageSetting.values.map((setting) {
       return Center(child: Text(setting.name));
     }).toList();
 
     void onSettingSelected(int selectedIndex) {
-      BatteryUsageSetting selectedSetting = BatteryUsageSetting.values[selectedIndex];
+      BatteryUsageSetting selectedSetting =
+          BatteryUsageSetting.values[selectedIndex];
       profile.preferences.batteryUsageSetting = selectedSetting;
       widget.trekko.savePreferences(profile.preferences);
     }
@@ -69,7 +73,8 @@ class _ProfileScreenState extends State<ProfileScreen>
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 Profile profile = snapshot.data!;
-                List<CupertinoListTile> questionTiles = QuestionTilesBuilder.buildQuestionTiles(
+                List<CupertinoListTile> questionTiles =
+                    QuestionTilesBuilder.buildQuestionTiles(
                   context: context,
                   profile: profile,
                   trekko: widget.trekko,
@@ -119,7 +124,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                           additionalInfo: Text(
                               profile.preferences.batteryUsageSetting.name),
                           onTap: () async {
-                            await showBatteryUsageSettingPicker(context, profile);
+                            await showBatteryUsageSettingPicker(
+                                context, profile);
                           },
                         ),
                       ],
@@ -127,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     CupertinoListSection.insetGrouped(
                         margin: listSectionMargin,
                         additionalDividerMargin: defaultDividerMargin,
-                        children:[
+                        children: [
                           CupertinoListTile.notched(
                               padding: listTilePadding,
                               title: Text('Abmelden',
@@ -135,11 +141,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     color: AppThemeColors.blue,
                                   )),
                               onTap: () async {
-                                await widget.trekko.terminate();
+                                await widget.trekko
+                                    .setTrackingState(TrackingState.paused);
                                 runLoginApp();
                               }),
-                        ]
-                    ),
+                        ]),
                     CupertinoListSection.insetGrouped(
                       margin: listSectionMargin,
                       additionalDividerMargin: defaultDividerMargin,
@@ -151,9 +157,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   color: AppThemeColors.red,
                                 )),
                             onTap: () async {
-                              await widget.trekko.terminate();
-                              await AuthentificationUtils.deleteProfile(profile.projectUrl, profile.email);
+                              await widget.trekko
+                                  .setTrackingState(TrackingState.paused);
                               runLoginApp();
+                              await AuthentificationUtils.deleteProfile(
+                                  profile.projectUrl, profile.email);
                             }),
                       ],
                     ),
