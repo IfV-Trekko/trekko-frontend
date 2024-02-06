@@ -10,8 +10,10 @@ class JournalDetailBoxVehicle extends StatelessWidget {
   final String _title;
   final Color _color;
   final HeroIcons _icon;
+  final bool showText;
 
-  JournalDetailBoxVehicle(TransportType transportType)
+  JournalDetailBoxVehicle(TransportType transportType,
+      {this.showText = false, Key? key})
       : _title = TransportDesign.getName(transportType),
         _color = TransportDesign.getColor(transportType),
         _icon = TransportDesign.getIcon(transportType);
@@ -19,12 +21,12 @@ class JournalDetailBoxVehicle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 24,
-        decoration: BoxDecoration(
-          color: _color.withOpacity(0.16), // Background color with opacity 0.16
-          borderRadius: BorderRadius.circular(4.0),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 6),
+      height: 24,
+      decoration: BoxDecoration(
+        color: _color.withOpacity(0.16), // Background color with opacity 0.16
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -34,10 +36,20 @@ class JournalDetailBoxVehicle extends StatelessWidget {
             size: 18,
             color: _color.withOpacity(0.8), // Icon color with opacity 0.8
           ),
-          SizedBox(width: 6),
-          Text(
-            _title,
-            style: AppThemeTextStyles.small.copyWith(color: _color),
+          LayoutBuilder(
+            builder: ((context, constraints) {
+              return Row(
+                children: [
+                  if (showText) const SizedBox(width: 6),
+                  if (showText)
+                    Text(
+                      _title,
+                      style: AppThemeTextStyles.small
+                          .copyWith(color: _color.withOpacity(0.8)),
+                    ),
+                ],
+              );
+            }),
           ),
         ],
       ),

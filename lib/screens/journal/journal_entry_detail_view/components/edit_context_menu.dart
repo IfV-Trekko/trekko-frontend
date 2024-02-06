@@ -16,79 +16,7 @@ class EditContextMenu extends StatelessWidget {
       required this.onRevoke,
       super.key});
 
-  // void _showEditContextDonated(BuildContext context) {
-  //   showCupertinoModalPopup<void>(
-  //     context: context,
-  //     builder: (BuildContext context) => CupertinoActionSheet(
-  //       actions: <CupertinoActionSheetAction>[
-  //         CupertinoActionSheetAction(
-  //           onPressed: () {
-  //             onReset();
-  //             Navigator.pop(context);
-  //           },
-  //           child: const Text('Zurücksetzen'),
-  //         ),
-  //         CupertinoActionSheetAction(
-  //           onPressed: () {
-  //             onRevoke();
-  //             Navigator.pop(context);
-  //           },
-  //           child: const Text('Spende zurückziehen'),
-  //         ),
-  //         CupertinoActionSheetAction(
-  //           onPressed: () {
-  //             onDelete();
-  //             Navigator.pop(context);
-  //           },
-  //           isDestructiveAction: true,
-  //           child: const Text('Unwideruflich löschen'),
-  //         ),
-  //       ],
-  //       cancelButton: CupertinoActionSheetAction(
-  //         isDefaultAction: true,
-  //         onPressed: () {
-  //           Navigator.pop(context, 'Cancel');
-  //         },
-  //         child: const Text('Cancel'),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // void _showEditContextNotDonated(BuildContext context) {
-  //   showCupertinoModalPopup<void>(
-  //     context: context,
-  //     builder: (BuildContext context) => CupertinoActionSheet(
-  //       actions: <CupertinoActionSheetAction>[
-  //         CupertinoActionSheetAction(
-  //           onPressed: () {
-  //             onReset();
-  //             Navigator.pop(context);
-  //           },
-  //           child: const Text('Zurücksetzen'),
-  //         ),
-  //         CupertinoActionSheetAction(
-  //           onPressed: () {
-  //             onDelete();
-  //             Navigator.pop(context);
-  //           },
-  //           isDestructiveAction: true,
-  //           child: const Text('Unwideruflich Löschen'),
-  //         ),
-  //       ],
-  //       cancelButton: CupertinoActionSheetAction(
-  //         isDefaultAction: true,
-  //         onPressed: () {
-  //           Navigator.pop(context, 'Cancel');
-  //         },
-  //         child: const Text('Cancel'),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   void _askForPermission(BuildContext context) {
-    //TODO was sagt iht dazu?
     showCupertinoModalPopup<void>(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
@@ -99,7 +27,7 @@ class EditContextMenu extends StatelessWidget {
                 CupertinoDialogAction(
                   child: const Text('Abbrechen'),
                   onPressed: () {
-                    Navigator.pop(context); //TODO implement
+                    Navigator.pop(context);
                   },
                 ),
                 CupertinoDialogAction(
@@ -125,9 +53,6 @@ class EditContextMenu extends StatelessWidget {
           onPressed: () {
             _askForPermission(context);
           }),
-      //  donated
-      //     ? () => _showEditContextDonated(context)
-      //     : () => _showEditContextNotDonated(context)),
     );
   }
 }

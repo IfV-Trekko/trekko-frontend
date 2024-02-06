@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 
 class EditContext extends StatelessWidget {
   final bool donated;
+  final bool isDonatig;
   final Function() onDonate;
   final Function() onUpdate;
   final Function() onDelete;
@@ -14,6 +15,7 @@ class EditContext extends StatelessWidget {
 
   const EditContext(
       {required this.donated,
+      required this.isDonatig,
       required this.onDonate,
       required this.onUpdate,
       required this.onDelete,
@@ -41,11 +43,9 @@ class EditContext extends StatelessWidget {
         children: [
           Expanded(
               child: Button(
+            loading: isDonatig,
             style: donated ? ButtonStyle.secondary : ButtonStyle.primary,
-            title: donated
-                ? 'Spende zurückziehen'
-                : 'Spenden', //TODO Spenden obwohl schon gespendet????
-            //TODO was für Parent widget??
+            title: donated ? 'Spende zurückziehen' : 'Spenden',
             onPressed: donated ? onRevoke : onDonate,
           )),
           const SizedBox(width: 8),
