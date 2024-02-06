@@ -163,7 +163,7 @@ packages:
     source: hosted
     version: "0.66.1"
   fling_units:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: fling_units
       sha256: "2bf10acf2eb519e666df036881ef64c073e826225b00ce2663aa9d7547449312"
@@ -403,7 +403,7 @@ packages:
     source: hosted
     version: "1.0.4"
   isar:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: isar
       sha256: "99165dadb2cf2329d3140198363a7e7bff9bbd441871898a87e26914d25cf1ea"
