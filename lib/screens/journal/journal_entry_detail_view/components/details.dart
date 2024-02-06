@@ -83,7 +83,7 @@ class _DetailsState extends State<Details> {
                           showText: false)
                     ],
                     const SizedBox(width: 4),
-                    Text('...'),
+                    const Text('...'),
                   ],
                 ]);
               }),
@@ -104,8 +104,6 @@ class _DetailsState extends State<Details> {
         ],
       ),
       CupertinoListSection.insetGrouped(
-        //TODO Bei Zeilenumbruch richtig angezeigt?
-        //TODO auslagern
         backgroundColor: AppThemeColors.contrast150,
         additionalDividerMargin: widget.additionalDividerMargin,
         children: [

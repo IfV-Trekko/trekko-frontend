@@ -22,7 +22,7 @@ class Button extends StatelessWidget {
       this.size = ButtonSize.large,
       this.loading = false,
       this.stretch = true,
-      this.fillIcon = true,
+      this.fillIcon = false,
       this.icon,
       super.key});
 

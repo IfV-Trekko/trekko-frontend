@@ -149,6 +149,7 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                               );
                             } else if (snapshot.data! == TrackingState.paused) {
                               return Button(
+                                fillIcon: true,
                                 title: 'Erhebung starten',
                                 icon: HeroIcons.play, //TODO solid machen
                                 style: ButtonStyle.primary,
