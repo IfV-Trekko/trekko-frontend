@@ -4,7 +4,6 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 class TripMap extends StatefulWidget {
   final List<GeoPoint> pathGeoPoints;
   late BoundingBox tripBoundingBox;
-  //TODO bisher nur aus Prototypen übernommen
   TripMap({required this.pathGeoPoints, Key? key}) : super(key: key) {
     tripBoundingBox = BoundingBox.fromGeoPoints(pathGeoPoints);
   }
@@ -46,7 +45,7 @@ class _TripMapState extends State<TripMap>
       for (var i = 0; i < widget.pathGeoPoints.length - 2; i++) {
         controller.drawRoad(
             widget.pathGeoPoints[i], widget.pathGeoPoints[i + 1],
-            roadType: RoadType.foot,
+            roadType: RoadType.foot, //TODO dynamisch machen
             roadOption: const RoadOption(
               roadWidth: 5,
               roadColor: CupertinoColors.systemBlue,

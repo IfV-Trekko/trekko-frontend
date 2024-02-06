@@ -112,6 +112,7 @@ class JournalEntry extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           trailingIcon: CupertinoIcons.trash,
+                          //TODO: Die Hunde von cuperinoIcons unterstützen keine farben
                           child: Text(
                             'Unwiderruflich löschen',
                             style: AppThemeTextStyles.normal
@@ -221,9 +222,7 @@ class _VehicleLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.only(bottom: 20.0, top: 12),
-        child: PathShowcase(trip: trip));
+    return Container(); //TODO Linie implementieren
   }
 }
 
@@ -237,26 +236,29 @@ class _LabelRow extends StatelessWidget {
     final uniqueVehicleTypes =
         trip.legs.map((leg) => leg.transportType).toSet();
 
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Wrap(
-        alignment: WrapAlignment.start,
-        spacing: 6.0, // Horizontal space between children
-        runSpacing: 6.0, // Vertical space between lines
-        children: [
-          // Generate vehicle type boxes
-          for (var vehicleType in uniqueVehicleTypes)
-            Wrap(
-              children: [
-                JournalDetailBoxVehicle(vehicleType),
-              ],
-            ),
-          // Add JournalDetailBox for purpose and donation
-          if (trip.purpose != null && trip.purpose!.isNotEmpty)
-            JournalDetailBox(trip.purpose.toString()),
-          JournalDetailBoxDonation(trip.donationState),
-          // Icon at the end
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Wrap(
+          alignment: WrapAlignment.start,
+          spacing: 6.0, // Horizontal space between children
+          runSpacing: 6.0, // Vertical space between lines
+          children: [
+            // Generate vehicle type boxes
+            for (var vehicleType in uniqueVehicleTypes)
+              Wrap(
+                children: [
+                  JournalDetailBoxVehicle(vehicleType, showText: true),
+                ],
+              ),
+            // Add JournalDetailBox for purpose and donation
+            if (trip.purpose != null && trip.purpose!.isNotEmpty)
+              JournalDetailBox(trip.purpose.toString()),
+            JournalDetailBoxDonation(trip.donationState),
+            // Icon at the end
+          ],
+        ),
       ),
     );
   }

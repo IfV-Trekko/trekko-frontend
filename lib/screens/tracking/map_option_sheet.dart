@@ -1,6 +1,7 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/controller/utils/trip_builder.dart';
 import 'package:app_backend/model/tracking_state.dart';
+import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
@@ -24,6 +25,11 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
   void generateTrip() {
     Trip trip = TripBuilder()
         .move_r(const Duration(minutes: 20), 1.kilo.meters)
+        .leg(type: TransportType.car)
+        .move_r(const Duration(minutes: 20), 1.kilo.meters)
+        .leg(type: TransportType.bicycle)
+        .move_r(const Duration(minutes: 20), 1.kilo.meters)
+        .leg(type: TransportType.by_foot)
         .build();
     widget.trekko.saveTrip(trip);
   }
@@ -44,7 +50,6 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO eventutell auslagern
     return DraggableScrollableSheet(
         snap: true,
         minChildSize: 0.265,
@@ -73,27 +78,52 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                             style: AppThemeTextStyles.largeTitle
                                 .copyWith(fontWeight: FontWeight.w700))),
                     StreamBuilder(
-                        stream: super
-                            .widget
-                            .trekko
-                            .getTrackingState(), //TODO funktioniert nicht?
+                        stream: super.widget.trekko.getTrackingState(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             if (snapshot.data! == TrackingState.running) {
-                              return Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                    'Automatisch erfasst seit 2 Tagen', //TODO dynamisch machen
-                                    // 'Automatisch erfasst seit ${super.widget.trekko} Tagen',
-                                    style: AppThemeTextStyles.normal),
-                              );
+                              return StreamBuilder(
+                                  stream: widget.trekko.getProfile(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                            'Automatisch erfasst seit ${snapshot.data!.lastTimeTracked!.difference(DateTime.now()).inDays} Tagen',
+                                            style: AppThemeTextStyles.normal),
+                                      );
+                                    }
+                                    return Container(
+                                        alignment: Alignment.centerLeft,
+                                        child:
+                                            const CupertinoActivityIndicator());
+                                  });
                             } else if (snapshot.data! == TrackingState.paused) {
-                              return Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text('Letzte Erhebung vor 5 Tagen',
-                                    // 'Letzte Erhebung vor ${super.widget.trekko} Tagen',
-                                    style: AppThemeTextStyles.normal),
-                              );
+                              return StreamBuilder(
+                                  stream: widget.trekko.getProfile(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: (snapshot
+                                                    .data!.lastTimeTracked ==
+                                                null)
+                                            ? Text(
+                                                'Noch keine Erhebung gestartet',
+                                                style:
+                                                    AppThemeTextStyles.normal,
+                                              )
+                                            : Text(
+                                                'Letzte Erhebung vor ${snapshot.data!.lastTimeTracked!.difference(DateTime.now()).inDays} Tagen',
+                                                style:
+                                                    AppThemeTextStyles.normal),
+                                      );
+                                    }
+                                    return Container(
+                                        alignment: Alignment.centerLeft,
+                                        child:
+                                            const CupertinoActivityIndicator());
+                                  });
                             }
                           }
                           return Container(
@@ -102,10 +132,7 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                         }),
                     const SizedBox(height: 16),
                     StreamBuilder(
-                        stream: super
-                            .widget
-                            .trekko
-                            .getTrackingState(), //TODO funktioniert nicht?
+                        stream: super.widget.trekko.getTrackingState(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             if (snapshot.data! == TrackingState.running) {
@@ -136,14 +163,6 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                           }
                           return const CupertinoActivityIndicator();
                         }),
-                    // const SizedBox(height: 15.7), TODO cool?
-                    // Container(
-                    //   height: 1,
-                    //   width: double.infinity,
-                    //   color: AppThemeColors.contrast700,
-                    // ),
-                    const SizedBox(height: 16),
-                    const Idea(),
                     const SizedBox(height: 16),
                     Button(title: 'Generate Trip', onPressed: generateTrip),
                     const SizedBox(height: 16),
