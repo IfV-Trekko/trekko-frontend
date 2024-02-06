@@ -109,11 +109,12 @@ class _JournalScreenState extends State<StatefulWidget>
                     } else {
                       final trips = snapshot.data ?? [];
                       if (trips.isEmpty) {
-                        return Center(
-                            child: Text(
+                        return SliverFillRemaining(
+                            child: Center(
+                                child: Text(
                           'Noch keine Wege verfügbar',
                           style: AppThemeTextStyles.title,
-                        ));
+                        )));
                       } else {
                         return TripsList(
                             trips: trips,
@@ -220,7 +221,7 @@ class _JournalScreenState extends State<StatefulWidget>
     });
   }
 
-  void delete(Trekko trekko) async {
+  Future<void> delete(Trekko trekko) async {
     try {
       setState(() {
         isLoading = true;
@@ -237,7 +238,7 @@ class _JournalScreenState extends State<StatefulWidget>
     }
   }
 
-  void merge(Trekko trekko) async {
+  Future<void> merge(Trekko trekko) async {
     try {
       setState(() {
         isLoading = true;
@@ -256,7 +257,7 @@ class _JournalScreenState extends State<StatefulWidget>
     }
   }
 
-  void revoke(Trekko trekko) async {
+  Future<void> revoke(Trekko trekko) async {
     try {
       QueryBuilder<Trip, Trip, QAfterFilterCondition> query =
           trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
