@@ -177,7 +177,6 @@ class _InformationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     Duration duration = trip.calculateDuration();
     int hours = duration.inHours;
     int minutes = duration.inMinutes.remainder(60);
@@ -214,6 +213,7 @@ class _InformationRow extends StatelessWidget {
     );
   }
 }
+
 class _VehicleLine extends StatelessWidget {
   final Trip trip;
 
@@ -234,8 +234,7 @@ class _LabelRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final uniqueVehicleTypes =
-        trip.legs.map((leg) => leg.transportType).toSet();
+    final uniqueVehicleTypes = trip.getTransportTypes();
 
     return Align(
       alignment: Alignment.centerLeft,
