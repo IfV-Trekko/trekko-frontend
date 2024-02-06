@@ -1,15 +1,18 @@
 import 'package:app_backend/controller/builder/build_exception.dart';
 import 'package:app_backend/controller/builder/login_builder.dart';
+import 'package:app_backend/controller/builder/login_result.dart';
+import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/components/text_input.dart';
 import 'package:app_frontend/login/item_divider.dart';
-import 'package:app_frontend/login/login_app.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class SignInScreen extends StatefulWidget {
-  final LoginApp app;
+  static const String route = "/login/signIn/";
 
-  const SignInScreen(this.app, {super.key});
+  final Function(Trekko) callback;
+
+  const SignInScreen(this.callback, {super.key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -22,33 +25,41 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return SimpleOnboardingScreen(
-        app: widget.app,
         title: "Anmeldung",
         buttonTitle: "Anmelden",
         onButtonPress: () async {
           try {
-            widget.app.trekko = await LoginBuilder(
-                widget.app.projectUrl!, email.value.text, password.value.text)
+            Trekko trekko = await LoginBuilder.withData(
+                    projectUrl:
+                        ModalRoute.of(context)!.settings.arguments as String,
+                    email: email.value.text,
+                    password: password.value.text)
                 .build();
-            widget.app.launchApp();
-          } catch(e) {
+            widget.callback.call(trekko);
+          } catch (e) {
             String reason = "Unbekannt";
             if (e is BuildException) {
               reason = e.reason.toString();
+              if (e.reason == LoginResult.failedOther) {
+                print(e);
+              }
+            } else {
+              print(e);
             }
             showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
-                  title: Text("Fehler: " + reason), // TODO: Better information text
-                  actions: [
-                    CupertinoDialogAction(
-                      child: Text('Ok'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
-                ));
+                      title: Text("Fehler: " + reason),
+                      // TODO: Better information text
+                      actions: [
+                        CupertinoDialogAction(
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ));
           }
         },
         child: Column(children: [

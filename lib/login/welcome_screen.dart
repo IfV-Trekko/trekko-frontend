@@ -1,20 +1,20 @@
-import 'package:app_frontend/login/login_app.dart';
+import 'package:app_frontend/login/join_project_screen.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  final LoginApp app;
 
-  const WelcomeScreen(this.app, {super.key});
+  static const String route = "/login/welcome/";
+
+  const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SimpleOnboardingScreen(
-      app: app,
       title: 'Willkommen\nbei\n TREKKO',
       buttonTitle: 'Beginnen',
       onButtonPress: () async {
-        Navigator.pushNamed(context, "/login/project/");
+        Navigator.pushNamed(context, JoinProjectScreen.route);
       },
       child: Column(
         children: [
@@ -30,7 +30,6 @@ class WelcomeScreen extends StatelessWidget {
               Image.asset("assets/images/KIT.png", width: 141, height: 66),
             ],
           )
-
         ],
       ),
     );

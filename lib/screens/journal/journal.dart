@@ -1,74 +1,50 @@
-import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/controller/utils/trip_builder.dart';
 import 'package:app_backend/model/trip/trip.dart';
+import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
+import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/screens/journal/donation_modal.dart';
+import 'package:app_frontend/screens/journal/journal_entry.dart';
+import 'package:app_frontend/screens/journal/trips_list.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:app_backend/controller/trekko.dart';
+import 'package:app_frontend/trekko_provider.dart';
+import 'package:app_backend/controller/trekko.dart';
 import 'package:isar/isar.dart';
-import '../../app_theme.dart';
-import '../../components/constants/button_size.dart';
-import 'TripsListView.dart';
 import 'package:fling_units/fling_units.dart';
 
-class Journal extends StatefulWidget {
-  final Trekko trekko;
-
-  Journal({super.key, required this.trekko});
+class JournalScreen extends StatefulWidget {
+  JournalScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return _JournalState();
-  }
+  _JournalScreenState createState() => _JournalScreenState();
 }
 
-class _JournalState extends State<Journal> {
+class _JournalScreenState extends State<StatefulWidget>
+    with AutomaticKeepAliveClientMixin {
   bool selectionMode = false;
-  List<int> selectedTrips = [];
-  TripBuilder tripBuilder = TripBuilder();
   bool isLoading = false;
+  List<int> selectedTrips = [];
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  void showModal(BuildContext context) {
-    showCupertinoModalPopup(
-      context: context,
-      builder: (BuildContext context) {
-        return DonationModal(widget.trekko);
-      },
-    ).then((_) {
-      setState(() {
-        selectionMode = false;
-      });
-    });
-  }
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
-    final Widget donationButton = Button(
-      title: "Spenden",
-      stretch: false,
-      size: ButtonSize.small,
-      onPressed: () async {
-        showModal(context);
-        setState(() {
-          selectionMode = !selectionMode;
-        });
-      },
-    );
+    super.build(context);
 
-    return Stack(
-      children: [
-        CupertinoPageScaffold(
-          backgroundColor: AppThemeColors.contrast0,
-          child: CustomScrollView(slivers: [
-            CupertinoSliverNavigationBar(
-              largeTitle: const Text('Tagebuch'),
-              leading: Container(
-                alignment: Alignment.centerLeft,
-                child: GestureDetector(
+    final Trekko trekko = TrekkoProvider.of(context);
+
+    return CupertinoPageScaffold(
+        child: SafeArea(
+      bottom: true,
+      child: Stack(
+        children: <Widget>[
+          CustomScrollView(
+            slivers: <Widget>[
+              CupertinoSliverNavigationBar(
+                largeTitle: const Text("Tagebuch"),
+                leading: GestureDetector(
                   onTap: () {
                     setState(() {
                       selectionMode = !selectionMode;
@@ -80,189 +56,218 @@ class _JournalState extends State<Journal> {
                         .copyWith(color: AppThemeColors.blue),
                   ),
                 ),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (!selectionMode) donationButton,
-                  const SizedBox(width: 32.0),
-                  if (!selectionMode)
-                    GestureDetector(
-                      onTap: () {
-                        widget.trekko.saveTrip(TripBuilder()
-                            .move_r(Duration(minutes: 10), 1000.meters)
-                            .build());
-                      },
-                      child: const Icon(CupertinoIcons.add,
-                          color: AppThemeColors.blue),
-                    ),
-                ],
-              ),
-            ),
-            SliverFillRemaining(
-                child: SafeArea(
-              top: false,
-              bottom: true,
-              child: StreamBuilder<List<Trip>>(
-                stream: widget.trekko
-                    .getTripQuery()
-                    .build()
-                    .watch(fireImmediately: true),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (snapshot.connectionState ==
-                          ConnectionState.waiting &&
-                      snapshot.data == null) {
-                    return const Center(
-                        child: CupertinoActivityIndicator(
-                            radius: 20, color: AppThemeColors.contrast500));
-                  } else {
-                    final trips = snapshot.data ?? [];
-                    if (trips.isEmpty) {
-                      return Center(
-                          child: Text(
-                        'Noch keine Wege verfügbar',
-                        style: AppThemeTextStyles.title,
-                      ));
-                    } else {
-                      return TripsListView(
-                        trips: trips,
-                        selectionMode: selectionMode,
-                        onSelectionChanged: (Trip trip, bool isSelected) {
-                          setState(() {
-                            if (isSelected) {
-                              selectedTrips.add(trip.id);
-                            } else {
-                              selectedTrips.remove(trip.id);
-                            }
-                          });
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (!selectionMode)
+                      Button(
+                        title: "Spenden",
+                        stretch: false,
+                        size: ButtonSize.small,
+                        onPressed: () async {
+                          showDonationModal(context);
                         },
-                        trekko: widget.trekko,
-                        selectedTrips: selectedTrips,
-                      );
-                      //return buildTripsListView(trips);
-                    }
-                  }
-                },
+                      ),
+                    const SizedBox(width: 20.0),
+                    if (!selectionMode)
+                      GestureDetector(
+                        onTap: () {
+                          trekko.saveTrip(TripBuilder()
+                              .move_r(const Duration(minutes: 10), 1000.meters)
+                              .build());
+                        },
+                        child: const Icon(CupertinoIcons.add,
+                            color: AppThemeColors.blue),
+                      ),
+                  ],
+                ),
+                backgroundColor: AppThemeColors.contrast0,
               ),
-            )),
-          ]),
-        ),
-        if (selectionMode)
-          Positioned(
-            bottom: 48,
-            left: 0,
-            right: 0,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: AppThemeColors.contrast0,
-                border: Border(
-                  top: BorderSide(
-                    color: AppThemeColors.contrast400,
-                    width: 1.0,
+              StreamBuilder(
+                  stream: trekko
+                      .getTripQuery()
+                      .build()
+                      .watch(fireImmediately: true),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return SliverFillRemaining(
+                          child: Text('Error: ${snapshot.error}'));
+                    } else if (snapshot.connectionState ==
+                            ConnectionState.waiting &&
+                        snapshot.data == null) {
+                      return const SliverFillRemaining(
+                          child: Center(
+                              child: CupertinoActivityIndicator(
+                                  radius: 20,
+                                  color: AppThemeColors.contrast500)));
+                    } else {
+                      final trips = snapshot.data ?? [];
+                      if (trips.isEmpty) {
+                        return SliverFillRemaining(
+                            child: Center(
+                                child: Text(
+                          'Noch keine Wege verfügbar',
+                          style: AppThemeTextStyles.title,
+                        )));
+                      } else {
+                        return TripsList(
+                            trips: trips,
+                            selectionMode: selectionMode,
+                            onSelectionChanged: handleSelectionChange,
+                            selectedTrips: selectedTrips);
+                      }
+                    }
+                  }),
+              const SliverToBoxAdapter(child: SizedBox(height: 48)),
+            ],
+          ),
+          if (isLoading)
+            Positioned.fill(
+              child: Container(
+                color: AppThemeColors.contrast0.withOpacity(0.5),
+                child: const Center(
+                  child: CupertinoActivityIndicator(
+                    radius: 20,
                   ),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(13.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        merge();
-                      },
-                      child: Text(
-                        "Vereinigen",
-                        style: AppThemeTextStyles.normal
-                            .copyWith(color: AppThemeColors.blue),
-                      ),
+            )
+          else if (selectionMode)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: AppThemeColors.contrast0,
+                  border: Border(
+                    top: BorderSide(
+                      color: AppThemeColors.contrast400,
+                      width: 1.0,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        revoke();
-                      },
-                      child: Text(
-                        "Zurückziehen",
-                        style: AppThemeTextStyles.normal
-                            .copyWith(color: AppThemeColors.blue),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(13.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          await merge(trekko);
+                          setState(() {
+                            selectionMode = false;
+                          });
+                        },
+                        child: Text(
+                          "Vereinigen",
+                          style: AppThemeTextStyles.normal
+                              .copyWith(color: AppThemeColors.blue),
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        delete();
-                      },
-                      child: Text(
-                        "Löschen",
-                        style: AppThemeTextStyles.normal
-                            .copyWith(color: AppThemeColors.red),
+                      GestureDetector(
+                        onTap: () async {
+                          await revoke(trekko);
+                          setState(() {
+                            selectionMode = false;
+                          });
+                        },
+                        child: Text(
+                          "Zurückziehen",
+                          style: AppThemeTextStyles.normal
+                              .copyWith(color: AppThemeColors.blue),
+                        ),
                       ),
-                    ),
-                  ],
+                      GestureDetector(
+                        onTap: () async {
+                          await delete(trekko);
+                          setState(() {
+                            selectionMode = false;
+                          });
+                        },
+                        child: Text(
+                          "Löschen",
+                          style: AppThemeTextStyles.normal
+                              .copyWith(color: AppThemeColors.red),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        if (isLoading)
-          Positioned.fill(
-            child: Container(
-              color: AppThemeColors.contrast0.withOpacity(0.5),
-              child: const Center(
-                child: CupertinoActivityIndicator(
-                  radius: 20,
-                ),
-              ),
-            ),
-          ),
-      ],
-    );
+            )
+        ],
+      ),
+    ));
   }
 
-  void delete() async {
+  void showDonationModal(BuildContext context) {
+    final Trekko trekko = TrekkoProvider.of(context);
+
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return DonationModal(trekko);
+      },
+    ).then((_) {
+      setState(() {
+        selectionMode = false;
+      });
+    });
+  }
+
+  void handleSelectionChange(Trip trip, bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        selectedTrips.add(trip.id);
+      } else {
+        selectedTrips.remove(trip.id);
+      }
+    });
+  }
+
+  Future<void> delete(Trekko trekko) async {
     try {
       setState(() {
         isLoading = true;
       });
       QueryBuilder<Trip, Trip, QAfterFilterCondition> query =
-          widget.trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
+          trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
       for (var tripId in selectedTrips) {
         query = query.or().idEqualTo(tripId);
       }
-      int deletedTrips = await widget.trekko.deleteTrip(query.build());
+      int deletedTrips = await trekko.deleteTrip(query.build());
       finishedAction('Sie haben $deletedTrips Wege gelöscht', false);
     } catch (e) {
       finishedAction("Fehler beim Löschen der Wege", true);
     }
   }
 
-  void merge() async {
+  Future<void> merge(Trekko trekko) async {
     try {
       setState(() {
         isLoading = true;
       });
       QueryBuilder<Trip, Trip, QAfterFilterCondition> query =
-          widget.trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
+          trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
       int count = 0;
       for (var tripId in selectedTrips) {
         query = query.or().idEqualTo(tripId);
         count++;
       }
-      await widget.trekko.mergeTrips(query.build());
+      await trekko.mergeTrips(query.build());
       finishedAction('Sie haben $count Wege zusammengefügt', false);
     } catch (e) {
       finishedAction("Fehler beim Vereinigen der Wege", true);
     }
   }
 
-  void revoke() async {
+  Future<void> revoke(Trekko trekko) async {
     try {
       QueryBuilder<Trip, Trip, QAfterFilterCondition> query =
-          widget.trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
+          trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
       for (var tripId in selectedTrips) {
         query = query.or().idEqualTo(tripId);
       }
-      int count = await widget.trekko.revoke(query.build());
+      int count = await trekko.revoke(query.build());
       finishedAction(
           'Sie haben ihre Spende über $count Wege zurückgezogen', false);
     } catch (e) {
@@ -283,7 +288,7 @@ class _JournalState extends State<Journal> {
               content: Text(message),
               actions: [
                 CupertinoDialogAction(
-                  child: Text('Schließen'),
+                  child: const Text("Schließen"),
                   onPressed: () {
                     Navigator.pop(context);
                   },

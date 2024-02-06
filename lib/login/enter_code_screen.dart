@@ -1,31 +1,30 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/text_input.dart';
-import 'package:app_frontend/login/login_app.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
+import 'package:app_frontend/login/text_info_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class EnterCodeScreen extends StatefulWidget {
-  final LoginApp app;
+  static const String route = "/login/enterCode/";
 
-  const EnterCodeScreen(this.app, {super.key});
+  const EnterCodeScreen({super.key});
 
   @override
   State<EnterCodeScreen> createState() => _EnterCodeScreenState();
 }
 
 class _EnterCodeScreenState extends State<EnterCodeScreen> {
-
   TextEditingController code = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return SimpleOnboardingScreen(
-        app: widget.app,
         title: "Fast\ngeschafft...",
         buttonTitle: "Verifizieren",
         onButtonPress: () async {
           // TODO: Register here instead of the screen before
-          Navigator.pushNamed(context, "/login/about/");
+          Navigator.pushNamed(context, TextInfoScreen.routeAbout,
+              arguments: ModalRoute.of(context)!.settings.arguments);
         },
         child: Column(
           children: [

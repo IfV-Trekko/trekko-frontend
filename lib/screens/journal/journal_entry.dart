@@ -155,7 +155,8 @@ class JournalEntry extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(
+                left: 16.0, right: 16.0, top: 16.0, bottom: 10),
             child: Column(
               children: [
                 _InformationRow(trip),
@@ -177,29 +178,36 @@ class _InformationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            DateFormat('HH:mm').format(trip.calculateStartTime()),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: Text(
+            DateFormat('HH:mm').format(trip.getStartTime()),
             style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
           ),
-          Row(
-            children: [
-              Text("${trip.calculateDuration().inMinutes} min"),
-              const SizedBox(width: 4.0),
-              Text(
-                  "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km"),
-            ],
+        ),
+        Expanded(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              children: [
+                Text("${trip.calculateDuration().inMinutes} min"),
+                const SizedBox(width: 4.0),
+                Text(
+                  "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km",
+                ),
+              ],
+            ),
           ),
-          Text(
-            DateFormat('HH:mm').format(trip.calculateEndTime()),
-            style: AppThemeTextStyles.largeTitle,
+        ),
+        Flexible(
+          child: Text(
+            DateFormat('HH:mm').format(trip.getEndTime()),
+            style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

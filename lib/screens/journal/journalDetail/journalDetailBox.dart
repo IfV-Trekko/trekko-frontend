@@ -20,6 +20,7 @@ class JournalDetailBox extends StatelessWidget {
         children: [
           Text(
             _title,
+            overflow: TextOverflow.ellipsis,
             style: AppThemeTextStyles.small.copyWith(
               color: AppThemeColors.contrast900,
             )

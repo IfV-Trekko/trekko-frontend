@@ -8,6 +8,7 @@ import 'package:async/async.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 import '../../app_theme.dart';
 import 'package:isar/isar.dart';
 
@@ -71,51 +72,49 @@ class BarChartWidgetState extends State<BarChartWidget> {
     }
 
     Widget getTitles(double value, TitleMeta meta) {
-      String text;
-      TextStyle? style;
+      HeroIcon icon;
+      //TextStyle? style;
       switch (value.toInt()) {
         case 0:
-          text = 'zF';
-          style =
-              TextStyle(color: TransportDesign.getColor(TransportType.by_foot));
+          icon = HeroIcon(TransportDesign.getIcon(TransportType.by_foot),
+              size: 17,
+              color: TransportDesign.getColor(TransportType.by_foot));
           break;
         case 1:
-          text = 'Fr';
-          style =
-              TextStyle(color: TransportDesign.getColor(TransportType.bicycle));
+          icon = HeroIcon(TransportDesign.getIcon(TransportType.bicycle),
+              size: 17,
+              color: TransportDesign.getColor(TransportType.bicycle));
           break;
         case 2:
-          text = 'A';
-          style = TextStyle(color: TransportDesign.getColor(TransportType.car));
+          icon = HeroIcon(TransportDesign.getIcon(TransportType.car),
+              size: 17,
+              color: TransportDesign.getColor(TransportType.car));
           break;
         case 3:
-          text = 'ÖPNV';
-          style = TextStyle(
+          icon = HeroIcon(TransportDesign.getIcon(TransportType.publicTransport),
+              size: 17,
               color: TransportDesign.getColor(TransportType.publicTransport));
           break;
         case 4:
-          text = 'S';
-          style =
-              TextStyle(color: TransportDesign.getColor(TransportType.ship));
+          icon = HeroIcon(TransportDesign.getIcon(TransportType.ship),
+              size: 17,
+              color: TransportDesign.getColor(TransportType.ship));
           break;
         case 5:
-          text = 'Fl';
-          style =
-              TextStyle(color: TransportDesign.getColor(TransportType.plane));
-          break;
-        case 6:
-          text = 'Sonst.';
-          style =
-              TextStyle(color: TransportDesign.getColor(TransportType.other));
+          icon = HeroIcon(TransportDesign.getIcon(TransportType.plane),
+              size: 17,
+              color: TransportDesign.getColor(TransportType.plane));
           break;
         default:
-          text = '';
+          icon = HeroIcon(TransportDesign.getIcon(TransportType.other),
+              size: 17,
+              color: TransportDesign.getColor(TransportType.other));
           break;
       }
       return SideTitleWidget(
         axisSide: meta.axisSide,
         space: 6,
-        child: Text(text, style: style),
+        child: icon,
       );
     }
 
@@ -142,7 +141,7 @@ class BarChartWidgetState extends State<BarChartWidget> {
       ),
     );
 
-    return Container( //TODO: schöner Code?? bzw Codeduplikation
+    return Container(
     decoration: BoxDecoration(
     color: AppThemeColors.contrast0,
     border: Border.all(color: AppThemeColors.contrast400),

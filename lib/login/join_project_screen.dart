@@ -4,14 +4,14 @@ import 'package:app_backend/controller/builder/authentification_utils.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:app_frontend/components/text_input.dart';
-import 'package:app_frontend/login/login_app.dart';
+import 'package:app_frontend/login/choose_login_process_screen.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class JoinProjectScreen extends StatefulWidget {
-  final LoginApp app;
+  static const String route = "/login/project/";
 
-  const JoinProjectScreen(this.app, {super.key});
+  const JoinProjectScreen({super.key});
 
   @override
   State<JoinProjectScreen> createState() => _JoinProjectScreenState();
@@ -23,7 +23,6 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return SimpleOnboardingScreen(
-        app: widget.app,
         title: "Projekt\nbeitreten",
         buttonTitle: "Weiter",
         onButtonPress: () async {
@@ -33,16 +32,16 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
             showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
-                  title: Text("Naaahhh unterschätz das mal nicht hier"),
-                  actions: [
-                    CupertinoDialogAction(
-                      child: Text('Werd ich nicht'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
-                ));
+                      title: Text("Naaahhh unterschätz das mal nicht hier"),
+                      actions: [
+                        CupertinoDialogAction(
+                          child: Text('Werd ich nicht'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ));
             return;
           }
 
@@ -64,8 +63,8 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
             return;
           }
 
-          widget.app.projectUrl = projectUrl.value.text;
-          Navigator.pushNamed(context, "/login/how/");
+          Navigator.pushNamed(context, ChooseLoginProcessScreen.route,
+              arguments: projectUrl.value.text);
         },
         child: Column(children: [
           TextInput(

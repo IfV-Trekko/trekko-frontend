@@ -38,7 +38,7 @@ class _TrekkoAppState extends State<TrekkoApp> {
     screens = [
       Screen('Erhebung', HeroIcons.play,
           TrackingScreen(trekko: super.widget.trekko)),
-      Screen('Tagebuch', HeroIcons.queueList, Journal(trekko: super.widget.trekko)),
+      Screen('Tagebuch', HeroIcons.queueList, JournalScreen()),
       Screen('Statistik', HeroIcons.chartPie, Analysis(super.widget.trekko)),
       Screen(
           'Profil', HeroIcons.userCircle, ProfileScreen(super.widget.trekko)),
@@ -55,21 +55,22 @@ class _TrekkoAppState extends State<TrekkoApp> {
           child: CupertinoTabScaffold(
             controller: controller,
             tabBar: CupertinoTabBar(
+              backgroundColor: AppThemeColors.contrast0,
               onTap: (index) {
                 // This is to make the widget refresh to update the icon state
                 setState(() {});
               },
               items: screens
                   .map((e) => BottomNavigationBarItem(
-                icon: HeroIcon(
-                  e.icon,
-                  size: 24,
-                  style: currentScreen == e
-                      ? HeroIconStyle.solid
-                      : HeroIconStyle.outline,
-                ),
-                label: e.title,
-              ))
+                        icon: HeroIcon(
+                          e.icon,
+                          size: 24,
+                          style: currentScreen == e
+                              ? HeroIconStyle.solid
+                              : HeroIconStyle.outline,
+                        ),
+                        label: e.title,
+                      ))
                   .toList(),
             ),
             tabBuilder: (context, index) {
