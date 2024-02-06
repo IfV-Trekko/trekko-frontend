@@ -1,6 +1,7 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/controller/utils/trip_builder.dart';
 import 'package:app_backend/model/tracking_state.dart';
+import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
@@ -24,6 +25,11 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
   void generateTrip() {
     Trip trip = TripBuilder()
         .move_r(const Duration(minutes: 20), 1.kilo.meters)
+        .leg(type: TransportType.car)
+        .move_r(const Duration(minutes: 20), 1.kilo.meters)
+        .leg(type: TransportType.bicycle)
+        .move_r(const Duration(minutes: 20), 1.kilo.meters)
+        .leg(type: TransportType.by_foot)
         .build();
     widget.trekko.saveTrip(trip);
   }
@@ -157,8 +163,6 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                           }
                           return const CupertinoActivityIndicator();
                         }),
-                    const SizedBox(height: 16),
-                    const Idea(),
                     const SizedBox(height: 16),
                     Button(title: 'Generate Trip', onPressed: generateTrip),
                     const SizedBox(height: 16),

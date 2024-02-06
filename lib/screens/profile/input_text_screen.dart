@@ -12,16 +12,14 @@ class TextInputPage extends StatefulWidget {
   final Trekko trekko;
   final Profile profile;
 
-  TextInputPage({
-    required this.question, required this.trekko, required this.profile
-  });
+  TextInputPage(
+      {required this.question, required this.trekko, required this.profile});
 
   @override
   _TextInputPageState createState() => _TextInputPageState();
 }
 
 class _TextInputPageState extends State<TextInputPage> {
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -31,7 +29,7 @@ class _TextInputPageState extends State<TextInputPage> {
       ),
       child: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: _buildContentBasedOnQuestionType(),
         ),
       ),
@@ -42,18 +40,20 @@ class _TextInputPageState extends State<TextInputPage> {
     switch (widget.question.type) {
       case QuestionType.select:
         return SettingsPicker(
-          children: widget.question.options!.map((option) => Center(
-            child: Text(option.answer),
-          )).toList(),
+          children: widget.question.options!
+              .map((option) => Center(
+                    child: Text(option.answer),
+                  ))
+              .toList(),
           onSettingSelected: (int selectedIndex) {
-            widget.profile.preferences.setQuestionAnswer(
-            widget.question.key, widget.question.options![selectedIndex].key);
+            widget.profile.preferences.setQuestionAnswer(widget.question.key,
+                widget.question.options![selectedIndex].key);
             widget.trekko.savePreferences(widget.profile.preferences);
           },
         );
 
       case QuestionType.number:
-      // Logik für Zahlenfragen
+        // Logik für Zahlenfragen
         return CupertinoTextField(
           placeholder: widget.question.title,
           autofocus: true,
@@ -80,7 +80,6 @@ class _TextInputPageState extends State<TextInputPage> {
 
       default:
         return Text('Unbekannter Fragentyp');
-    }
-    return Container(); // Fallback für nicht behandelte Fälle
+    } // Fallback für nicht behandelte Fälle
   }
 }

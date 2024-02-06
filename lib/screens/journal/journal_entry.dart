@@ -112,6 +112,7 @@ class JournalEntry extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           trailingIcon: CupertinoIcons.trash,
+                          //TODO: Die Hunde von cuperinoIcons unterstützen keine farben
                           child: Text(
                             'Unwiderruflich löschen',
                             style: AppThemeTextStyles.normal
@@ -154,7 +155,7 @@ class JournalEntry extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 10),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
                 _InformationRow(trip),
@@ -176,26 +177,29 @@ class _InformationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          DateFormat('HH:mm').format(trip.getStartTime()),
-          style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
-        ),
-        Row(
-          children: [
-            Text("${trip.calculateDuration().inMinutes} min"),
-            const SizedBox(width: 4.0),
-            Text(
-                "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km"),
-          ],
-        ),
-        Text(
-          DateFormat('HH:mm').format(trip.getEndTime()),
-          style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            DateFormat('HH:mm').format(trip.calculateStartTime()),
+            style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
+          ),
+          Row(
+            children: [
+              Text("${trip.calculateDuration().inMinutes} min"),
+              const SizedBox(width: 4.0),
+              Text(
+                  "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km"),
+            ],
+          ),
+          Text(
+            DateFormat('HH:mm').format(trip.calculateEndTime()),
+            style: AppThemeTextStyles.largeTitle,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -207,9 +211,7 @@ class _VehicleLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.only(bottom: 20.0, top: 12),
-        child: PathShowcase(trip: trip));
+    return Container(); //TODO Linie implementieren
   }
 }
 
@@ -223,26 +225,29 @@ class _LabelRow extends StatelessWidget {
     final uniqueVehicleTypes =
         trip.legs.map((leg) => leg.transportType).toSet();
 
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Wrap(
-        alignment: WrapAlignment.start,
-        spacing: 6.0, // Horizontal space between children
-        runSpacing: 6.0, // Vertical space between lines
-        children: [
-          // Generate vehicle type boxes
-          for (var vehicleType in uniqueVehicleTypes)
-            Wrap(
-              children: [
-                JournalDetailBoxVehicle(vehicleType),
-              ],
-            ),
-          // Add JournalDetailBox for purpose and donation
-          if (trip.purpose != null && trip.purpose!.isNotEmpty)
-            JournalDetailBox(trip.purpose.toString()),
-          JournalDetailBoxDonation(trip.donationState),
-          // Icon at the end
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Wrap(
+          alignment: WrapAlignment.start,
+          spacing: 6.0, // Horizontal space between children
+          runSpacing: 6.0, // Vertical space between lines
+          children: [
+            // Generate vehicle type boxes
+            for (var vehicleType in uniqueVehicleTypes)
+              Wrap(
+                children: [
+                  JournalDetailBoxVehicle(vehicleType, showText: true),
+                ],
+              ),
+            // Add JournalDetailBox for purpose and donation
+            if (trip.purpose != null && trip.purpose!.isNotEmpty)
+              JournalDetailBox(trip.purpose.toString()),
+            JournalDetailBoxDonation(trip.donationState),
+            // Icon at the end
+          ],
+        ),
       ),
     );
   }

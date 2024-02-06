@@ -1,13 +1,15 @@
 import 'package:app_frontend/app_theme.dart';
+import 'package:app_frontend/components/constants/text_response_keyboard_type.dart';
+import 'package:app_frontend/components/responses/text_response.dart';
 import 'package:flutter/cupertino.dart';
 
 class KilometerPicker extends StatefulWidget {
-  final double initialValue;
-  final Function(double) onChange;
+  final double value;
+  final Function(String) onChange;
 
   const KilometerPicker({
     Key? key,
-    required this.initialValue,
+    required this.value,
     required this.onChange,
   }) : super(key: key);
 
@@ -16,119 +18,46 @@ class KilometerPicker extends StatefulWidget {
 }
 
 class _KilometerPickerState extends State<KilometerPicker> {
-  late double _kilometers;
-  late TextEditingController _controller;
-  late OverlayEntry _overlayEntry;
-  final _focusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    _kilometers = widget.initialValue;
-    _controller = TextEditingController(text: _kilometers.toStringAsFixed(1));
-    _focusNode.addListener(_handleFocusChange);
-  }
-
-  void _onEditingComplete() {
-    final parsedValue = double.tryParse(_controller.text.replaceAll(',', '.'));
-    final updatedValue = parsedValue != null && parsedValue > 0
-        ? parsedValue
-        : widget.initialValue;
-    setState(() {
-      _kilometers = updatedValue;
-      _controller.text = _kilometers.toStringAsFixed(1);
-      widget.onChange(_kilometers);
-    });
-    _focusNode.unfocus();
-  }
-
-  void _handleFocusChange() {
-    if (_focusNode.hasFocus) {
-      _overlayEntry = _createOverlayEntry();
-      Overlay.of(context)!.insert(_overlayEntry);
-    } else {
-      _overlayEntry.remove();
-    }
-  }
-
-  OverlayEntry _createOverlayEntry() {
-    return OverlayEntry(
-      builder: (context) => Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          width: double.infinity,
-          color: AppThemeColors.contrast100,
-          child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-            CupertinoButton(
-              child: Text(
-                'Speichern',
-                style: AppThemeTextStyles.normal.copyWith(
-                    color: AppThemeColors.blue,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0),
-              ),
-              onPressed: () {
-                _focusNode.unfocus();
-              },
-            ),
-          ]),
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final textPainter = TextPainter(
-      text: TextSpan(
-        text: _controller.text,
-        style: AppThemeTextStyles.small,
-      ),
-      maxLines: 1,
-      textDirection: TextDirection.ltr,
-    )..layout(minWidth: 0, maxWidth: double.infinity);
-
-    final textWidth = textPainter.size.width;
-
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 11),
-      height: 34,
-      decoration: BoxDecoration(
-        color: AppThemeColors.contrast0,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: AppThemeColors.contrast200, width: 1),
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            width: textWidth + 24, // Dynamic width based on text width
-            child: CupertinoTextField(
-              focusNode: _focusNode,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              textAlign: TextAlign.center,
-              controller: _controller,
-              padding: const EdgeInsets.all(0),
-              onEditingComplete: _onEditingComplete,
-              style: AppThemeTextStyles.small,
-              decoration: BoxDecoration(
-                border: Border.all(color: AppThemeColors.contrast0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppThemeColors.contrast150, width: 1),
+        ),
+        padding: EdgeInsets.zero,
+        height: 34,
+        child: Align(
+          alignment: Alignment.center,
+          child: CupertinoButton(
+            padding: EdgeInsets.symmetric(horizontal: 11),
+            color: AppThemeColors.contrast0,
+            child: Row(children: [
+              Text(
+                widget.value.toStringAsFixed(2),
+                style: AppThemeTextStyles.small,
               ),
-              suffix: Text('km',
-                  style: AppThemeTextStyles.small
-                      .copyWith(color: AppThemeColors.contrast500)),
-              textInputAction: TextInputAction.done,
-            ),
+              const SizedBox(width: 6),
+              Text(
+                'km',
+                style: AppThemeTextStyles.small
+                    .copyWith(color: AppThemeColors.contrast500),
+              ),
+            ]),
+            onPressed: () {
+              Navigator.of(context).push(CupertinoPageRoute(
+                builder: (context) => TextResponse(
+                  maxLines: 1,
+                  keyboardType: TextResponseKeyboardType.dezimal,
+                  maxLength: 10,
+                  onSaved: widget.onChange,
+                  title: 'Distanz ändern',
+                  placeholder: '8,4',
+                  initialValue: widget.value.toStringAsFixed(2),
+                ),
+              ));
+            },
           ),
-        ],
-      ),
-    );
+        ));
   }
 }

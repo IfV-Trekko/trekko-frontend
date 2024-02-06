@@ -1,9 +1,12 @@
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_frontend/app_theme.dart';
+import 'package:app_frontend/components/constants/text_response_keyboard_type.dart';
+import 'package:app_frontend/screens/journal/journalDetail/journalDetailBoxVehicle.dart';
 import 'package:app_frontend/screens/journal/journalDetail/transportDesign.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/ckeck_box_response.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/text_response.dart';
+import 'package:app_frontend/components/responses/multi_select_response.dart';
+import 'package:app_frontend/components/responses/text_response.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 
 class Details extends StatefulWidget {
   final String detailPurpose;
@@ -40,7 +43,7 @@ class _DetailsState extends State<Details> {
             title: Text('Anlass / Zweck', style: AppThemeTextStyles.normal),
             trailing: const CupertinoListTileChevron(),
             additionalInfo: widget.detailPurpose.isEmpty
-                ? const Text('Arbeit, Freizeit, etc.') //TODO maximal lang?
+                ? const Text('Arbeit, Freizeit, etc.')
                 : SizedBox(
                     width: 150,
                     child: Text(
@@ -52,6 +55,8 @@ class _DetailsState extends State<Details> {
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) => TextResponse(
+                      maxLines: 1,
+                      keyboardType: TextResponseKeyboardType.text,
                       maxLength: 350,
                       onSaved: widget.onSavedPurpose,
                       title: 'Anlass / Zweck',
@@ -62,10 +67,31 @@ class _DetailsState extends State<Details> {
           CupertinoListTile(
             title: Text('Verkehrsmittel', style: AppThemeTextStyles.normal),
             trailing: const CupertinoListTileChevron(),
-            additionalInfo: const Text('zu Fuß'), //TODO implementieren
+            additionalInfo: Container(
+              width: 150,
+              child: LayoutBuilder(builder: (context, constraints) {
+                return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  if (widget.detailVehicle.length <= 3) ...[
+                    for (TransportType type in widget.detailVehicle) ...[
+                      const SizedBox(width: 4),
+                      JournalDetailBoxVehicle(type, showText: false)
+                    ],
+                  ] else ...[
+                    for (int i = 0; i < 3; i++) ...[
+                      const SizedBox(width: 4),
+                      JournalDetailBoxVehicle(widget.detailVehicle[i],
+                          showText: false)
+                    ],
+                    const SizedBox(width: 4),
+                    Text('...'),
+                  ],
+                ]);
+              }),
+            ),
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) => CheckBoxResponse<TransportType>(
+                  builder: (context) => MultiSelectResponse<TransportType>(
+                        singleSelect: true,
                         getName: TransportDesign.getName,
                         title: 'Verkehrsmittel',
                         responses: TransportType.values,
@@ -99,6 +125,8 @@ class _DetailsState extends State<Details> {
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) => TextResponse(
+                      maxLines: 6,
+                      keyboardType: TextResponseKeyboardType.text,
                       maxLength: 700,
                       onSaved: widget.onSavedComment,
                       title: 'Kommentar',
