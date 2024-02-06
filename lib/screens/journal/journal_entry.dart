@@ -177,6 +177,10 @@ class _InformationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Duration duration = trip.calculateDuration();
+    int hours = duration.inHours;
+    int minutes = duration.inMinutes.remainder(60);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -191,7 +195,7 @@ class _InformationRow extends StatelessWidget {
             fit: BoxFit.scaleDown,
             child: Row(
               children: [
-                Text("${trip.calculateDuration().inMinutes} min"),
+                Text(hours > 0 ? "$hours h $minutes min" : "$minutes min"),
                 const SizedBox(width: 4.0),
                 Text(
                   "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km",
