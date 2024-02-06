@@ -55,6 +55,7 @@ class _TrekkoAppState extends State<TrekkoApp> {
           child: CupertinoTabScaffold(
             controller: controller,
             tabBar: CupertinoTabBar(
+              backgroundColor: AppThemeColors.contrast0,
               onTap: (index) {
                 // This is to make the widget refresh to update the icon state
                 setState(() {});
