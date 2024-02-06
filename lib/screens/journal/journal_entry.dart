@@ -154,7 +154,8 @@ class JournalEntry extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 10),
+            padding: const EdgeInsets.only(
+                left: 16.0, right: 16.0, top: 16.0, bottom: 10),
             child: Column(
               children: [
                 _InformationRow(trip),
@@ -179,27 +180,36 @@ class _InformationRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          DateFormat('HH:mm').format(trip.getStartTime()),
-          style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
+        Flexible(
+          child: Text(
+            DateFormat('HH:mm').format(trip.getStartTime()),
+            style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
+          ),
         ),
-        Row(
-          children: [
-            Text("${trip.calculateDuration().inMinutes} min"),
-            const SizedBox(width: 4.0),
-            Text(
-                "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km"),
-          ],
+        Expanded(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              children: [
+                Text("${trip.calculateDuration().inMinutes} min"),
+                const SizedBox(width: 4.0),
+                Text(
+                  "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km",
+                ),
+              ],
+            ),
+          ),
         ),
-        Text(
-          DateFormat('HH:mm').format(trip.getEndTime()),
-          style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
+        Flexible(
+          child: Text(
+            DateFormat('HH:mm').format(trip.getEndTime()),
+            style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
+          ),
         ),
       ],
     );
   }
 }
-
 class _VehicleLine extends StatelessWidget {
   final Trip trip;
 
