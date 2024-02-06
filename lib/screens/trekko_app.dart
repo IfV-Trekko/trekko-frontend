@@ -74,12 +74,16 @@ class _TrekkoAppState extends State<TrekkoApp> {
                   .toList(),
             ),
             tabBuilder: (context, index) {
-              return CupertinoTabView(builder: (context) {
-                return IndexedStack(
-                  index: index,
-                  children: screens.map((e) => e.screen).toList(),
-                );
-              });
+              return IndexedStack(
+                index: index,
+                children: screens
+                    .map((e) => CupertinoTabView(
+                          builder: (context) {
+                            return e.screen;
+                          },
+                        ))
+                    .toList(),
+              );
             },
           )),
     );

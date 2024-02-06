@@ -178,6 +178,9 @@ class _InformationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Duration duration = trip.calculateDuration();
+    int hours = duration.inHours;
+    int minutes = duration.inMinutes.remainder(60);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -192,7 +195,7 @@ class _InformationRow extends StatelessWidget {
             fit: BoxFit.scaleDown,
             child: Row(
               children: [
-                Text("${trip.calculateDuration().inMinutes} min"),
+                Text(hours > 0 ? "$hours h $minutes min" : "$minutes min"),
                 const SizedBox(width: 4.0),
                 Text(
                   "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km",
@@ -219,7 +222,9 @@ class _VehicleLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(); //TODO Linie implementieren
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 20.0, top: 12),
+        child: PathShowcase(trip: trip));
   }
 }
 
@@ -230,32 +235,28 @@ class _LabelRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final uniqueVehicleTypes =
-        trip.legs.map((leg) => leg.transportType).toSet();
+    final uniqueVehicleTypes = trip.getTransportTypes();
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Wrap(
-          alignment: WrapAlignment.start,
-          spacing: 6.0, // Horizontal space between children
-          runSpacing: 6.0, // Vertical space between lines
-          children: [
-            // Generate vehicle type boxes
-            for (var vehicleType in uniqueVehicleTypes)
-              Wrap(
-                children: [
-                  JournalDetailBoxVehicle(vehicleType, showText: true),
-                ],
-              ),
-            // Add JournalDetailBox for purpose and donation
-            if (trip.purpose != null && trip.purpose!.isNotEmpty)
-              JournalDetailBox(trip.purpose.toString()),
-            JournalDetailBoxDonation(trip.donationState),
-            // Icon at the end
-          ],
-        ),
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Wrap(
+        alignment: WrapAlignment.start,
+        spacing: 6.0, // Horizontal space between children
+        runSpacing: 6.0, // Vertical space between lines
+        children: [
+          // Generate vehicle type boxes
+          for (var vehicleType in uniqueVehicleTypes)
+            Wrap(
+              children: [
+                JournalDetailBoxVehicle(vehicleType, showText: true),
+              ],
+            ),
+          // Add JournalDetailBox for purpose and donation
+          if (trip.purpose != null && trip.purpose!.isNotEmpty)
+            JournalDetailBox(trip.purpose.toString()),
+          JournalDetailBoxDonation(trip.donationState),
+          // Icon at the end
+        ],
       ),
     );
   }

@@ -50,11 +50,13 @@ class _JournalScreenState extends State<StatefulWidget>
                       selectionMode = !selectionMode;
                     });
                   },
-                  child: Text(
-                    selectionMode ? "Fertig" : "Bearbeiten",
-                    style: AppThemeTextStyles.normal
-                        .copyWith(color: AppThemeColors.blue),
-                  ),
+                  child: Row(mainAxisSize: MainAxisSize.min, children: [
+                    Text(
+                      selectionMode ? "Fertig" : "Bearbeiten",
+                      style: AppThemeTextStyles.normal
+                          .copyWith(color: AppThemeColors.blue),
+                    )
+                  ]),
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
