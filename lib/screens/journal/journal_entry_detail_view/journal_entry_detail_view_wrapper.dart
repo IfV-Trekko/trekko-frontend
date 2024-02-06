@@ -56,15 +56,6 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
   @override
   Widget build(BuildContext context) {
     final trekko = TrekkoProvider.of(context);
-    final pathGeoPoints = <GeoPoint>[];
-
-    for (var leg in widget.trip.legs) {
-      pathGeoPoints.insert(
-          pathGeoPoints.length,
-          GeoPoint(
-              latitude: leg.trackedPoints.first.latitude,
-              longitude: leg.trackedPoints.first.longitude));
-    }
 
     return CupertinoPageScaffold(
         backgroundColor: AppThemeColors.contrast150,
@@ -90,20 +81,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
               },
               size: ButtonSize.small,
               style: ButtonStyle.secondary,
-            )
-            // : Button(
-            //     stretch: false,
-            //     title: 'Spenden',
-            //     onPressed: () async {
-            //       await trekko.donate(trekko
-            //           .getTripQuery()
-            //           .idEqualTo(widget.trip.id)
-            //           .build());
-            //     },
-            //     size: ButtonSize.small,
-            // style: ButtonStyle.primary,
-            // )
-            ),
+            )),
         child: SafeArea(
             child: Stack(
           children: [
@@ -113,7 +91,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                   height: 234,
                   child: Center(
                     child: TripMap(
-                      pathGeoPoints: pathGeoPoints,
+                      trip: widget.trip,
                     ),
                   )),
               Description(
