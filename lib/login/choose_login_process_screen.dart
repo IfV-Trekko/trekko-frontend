@@ -1,3 +1,4 @@
+import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:app_frontend/login/item_divider.dart';
@@ -19,15 +20,14 @@ class ChooseLoginProcessScreen extends StatelessWidget {
         buttonTitle: null,
         onButtonPress: null,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const HeroIcon(
               HeroIcons.user,
-              // kp wie das original logo heißt dieses goofy ass logo muss aber erstmal reichen
               size: 250,
+              color: AppThemeColors.contrast900,
             ),
-            const SizedBox(
-              height: 100,
-            ),
+            const SizedBox(height: 100,), //TODO: Add a better spacing
             Button(
                 title: "Registrieren",
                 onPressed: () {

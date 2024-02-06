@@ -2,7 +2,9 @@ import 'package:app_backend/controller/builder/build_exception.dart';
 import 'package:app_backend/controller/builder/registration_builder.dart';
 import 'package:app_backend/controller/builder/registration_result.dart';
 import 'package:app_backend/controller/trekko.dart';
+import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/text_input.dart';
+import 'package:app_frontend/login/accept_terms_widget.dart';
 import 'package:app_frontend/login/enter_code_screen.dart';
 import 'package:app_frontend/login/item_divider.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
@@ -18,16 +20,19 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController passwordRepeat = TextEditingController();
+
+  bool _agreedToTerms = false;
 
   @override
   Widget build(BuildContext context) {
     return SimpleOnboardingScreen(
         title: "Registrierung",
-        buttonTitle: "Registrieren",
-        onButtonPress: () async {
+        buttonTitle: _agreedToTerms ? "Registrieren" : null,
+        onButtonPress: _agreedToTerms ? () async {
           try {
             Trekko trekko = await RegistrationBuilder.withData(
                     projectUrl:
@@ -40,7 +45,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Navigator.pushNamed(context, EnterCodeScreen.route,
                 arguments: trekko);
           } catch (e) {
-            String reason = "Unbekannter Fehler";
+            String reason =
+                "Unbekannter Fehler"; //TODO: Fehlermeldungen anpassen
             if (e is BuildException) {
               reason = e.reason.toString();
               if (e.reason == RegistrationResult.failedOther) {
@@ -64,8 +70,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ],
                     ));
           }
-        },
-        child: Column(children: [
+        }: null,
+        child: SingleChildScrollView(
+            child: Column(
+                children: [
           TextInput(
             title: "E-Mail",
             hiddenTitle: "E-Mail Adresse",
@@ -78,6 +86,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
             controller: password,
             obscured: true,
           ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 22),
+                child: Text(
+                  "Passwortanfoderungen: \n- mind. 8 Zeichen lang \n- mind einen Großbuchstaben"
+                  " \n- mind.einen Kleinbuchstaben \n- mind. eine Zahl enthalten "
+                  "\n- mind. ein Sonderzeichen enthalten",
+                  style: AppThemeTextStyles.tiny,
+                ),
+              )
+            ],
+          ),
           const ItemDivider(),
           TextInput(
             title: "Passwort wiederholen",
@@ -85,6 +107,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
             controller: passwordRepeat,
             obscured: true,
           ),
-        ]));
+          const ItemDivider(),
+          Container(
+            padding: const EdgeInsets.only(left: 8),
+            child: AcceptTermsWidget(
+              onAccepted: (bool value) {
+                setState(() {
+                  _agreedToTerms = value;
+                });
+              },
+            ),
+          ),
+                ]
+            ),
+        )
+    );
   }
 }
