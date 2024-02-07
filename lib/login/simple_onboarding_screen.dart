@@ -34,44 +34,48 @@ class _SimpleOnboardingScreenState extends State<SimpleOnboardingScreen> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         child: Center(
-      child: SafeArea(
-        child: Padding(
+            child: SafeArea(
+      child: Padding(
           padding: EdgeInsets.zero,
           child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: widget.padding ?? const EdgeInsets.only(bottom: 16, left: 16, right: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(widget.title,
-                      textAlign: TextAlign.center,
-                      style: AppThemeTextStyles.onboardingHeadline),
-                  const SizedBox(height: 100),
-                  widget.child,
-                ],
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: widget.padding ??
+                      EdgeInsets.only(bottom: 16, left: 16, right: 16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 70,
+                      ),
+                      Text(widget.title,
+                          textAlign: TextAlign.center,
+                          style: AppThemeTextStyles.onboardingHeadline),
+                      const SizedBox(height: 100),
+                      widget.child,
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
-          if (widget.buttonTitle != null)
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              child: Button(
-                title: widget.buttonTitle!,
-                stretch: true,
-                loading: _isLoading,
-                onPressed: () async {
-                  setLoading(true);
-                  if (widget.onButtonPress != null) {
-                    await widget.onButtonPress!();
-                  }
-                  setLoading(false);
-                },
-              ),
-            ),
-        ],
-      )),
+              if (widget.buttonTitle != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  child: Button(
+                    title: widget.buttonTitle!,
+                    stretch: true,
+                    loading: _isLoading,
+                    onPressed: () async {
+                      setLoading(true);
+                      if (widget.onButtonPress != null) {
+                        await widget.onButtonPress!();
+                      }
+                      setLoading(false);
+                    },
+                  ),
+                ),
+            ],
+          )),
     )));
   }
 }

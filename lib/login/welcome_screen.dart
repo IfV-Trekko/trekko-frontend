@@ -1,9 +1,9 @@
+import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/login/join_project_screen.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class WelcomeScreen extends StatelessWidget {
-
   static const String route = "/login/welcome/";
 
   const WelcomeScreen({super.key});
@@ -18,8 +18,11 @@ class WelcomeScreen extends StatelessWidget {
       },
       child: Column(
         children: [
-          const Text("Eine App des Institut für\nVerkehrswesen am KIT",
-              textAlign: TextAlign.center),
+          Text(
+            "Eine App des Institut für\nVerkehrswesen am KIT",
+            textAlign: TextAlign.center,
+            style: AppThemeTextStyles.normal,
+          ),
           const SizedBox(height: 100),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,

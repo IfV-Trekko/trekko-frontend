@@ -34,15 +34,14 @@ class AppThemeColors {
 }
 
 class AppThemeTextStyles {
-
   static TextStyle get onboardingHeadline => GoogleFonts.inter(
-    textStyle: const TextStyle(inherit: false),
-    fontSize: 50,
-    fontWeight: FontWeight.bold,
-    height: 1.76,
-    letterSpacing: -0.6,
-    color: AppThemeColors.contrast900,
-  );
+        textStyle: const TextStyle(inherit: false),
+        fontSize: 50,
+        fontWeight: FontWeight.bold,
+        height: 1.2,
+        letterSpacing: -0.6,
+        color: AppThemeColors.contrast900,
+      );
 
   static TextStyle get headline => GoogleFonts.inter(
         textStyle: const TextStyle(inherit: false),
