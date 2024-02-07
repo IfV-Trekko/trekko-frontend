@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
