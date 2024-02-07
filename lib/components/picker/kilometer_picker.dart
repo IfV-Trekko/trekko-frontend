@@ -30,7 +30,7 @@ class _KilometerPickerState extends State<KilometerPicker> {
         child: Align(
           alignment: Alignment.center,
           child: CupertinoButton(
-            padding: EdgeInsets.symmetric(horizontal: 11),
+            padding: const EdgeInsets.symmetric(horizontal: 11),
             color: AppThemeColors.contrast0,
             child: Row(children: [
               Text(

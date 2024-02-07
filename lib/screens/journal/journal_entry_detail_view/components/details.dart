@@ -6,7 +6,6 @@ import 'package:app_frontend/components/constants/transportDesign.dart';
 import 'package:app_frontend/components/responses/multi_select_response.dart';
 import 'package:app_frontend/components/responses/text_response.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:heroicons/heroicons.dart';
 
 class Details extends StatefulWidget {
   final String detailPurpose;
@@ -67,7 +66,7 @@ class _DetailsState extends State<Details> {
           CupertinoListTile(
             title: Text('Verkehrsmittel', style: AppThemeTextStyles.normal),
             trailing: const CupertinoListTileChevron(),
-            additionalInfo: Container(
+            additionalInfo: SizedBox(
               width: 150,
               child: LayoutBuilder(builder: (context, constraints) {
                 return Row(mainAxisAlignment: MainAxisAlignment.end, children: [

@@ -10,7 +10,6 @@ import 'package:app_frontend/screens/journal/journal_entry_detail_view/component
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/edit_context.dart';
 import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:isar/isar.dart';
 
 class JournalEntryDetailViewWrapper extends StatefulWidget {

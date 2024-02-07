@@ -3,17 +3,17 @@ import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/leg.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
+import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
 
-import '../../app_theme.dart';
 import 'basicchart_row.dart';
 
 class BasicChart extends StatelessWidget {
-  Trekko trekko;
+  final Trekko trekko;
 
-  BasicChart({required this.trekko});
+  const BasicChart({super.key, required this.trekko});
 
   Stream<DerivedMeasurement<Measurement<Distance>, Measurement<Time>>?> getData(
       TransportType vehicle) {

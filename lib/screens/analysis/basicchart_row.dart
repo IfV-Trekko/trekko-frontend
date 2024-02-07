@@ -8,18 +8,18 @@ class BasicChartRow extends StatelessWidget {
   final TransportType type;
   final Widget value;
 
-  BasicChartRow({required this.type, required this.value});
+  const BasicChartRow({super.key, required this.type, required this.value});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         color: AppThemeColors.contrast0,
         border: Border.all(color: AppThemeColors.contrast150),
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
+      padding: const EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
       child: Row(
         children: [
           HeroIcon(
@@ -27,14 +27,14 @@ class BasicChartRow extends StatelessWidget {
             size: 17,
             color: TransportDesign.getColor(type),
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Text(
             TransportDesign.getName(type),
             style: AppThemeTextStyles.normal.copyWith(
               color: TransportDesign.getColor(type),
             ),
           ),
-          Spacer(),
+          const Spacer(),
           value
         ],
       ),

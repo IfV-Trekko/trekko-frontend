@@ -1,19 +1,20 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/screens/journal/journal_entry.dart';
+import 'package:app_frontend/screens/journal/journal_subtitle.dart';
 import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'journal_subtitle.dart';
 
 class TripsList extends StatelessWidget {
   final List<Trip> trips;
   final bool selectionMode;
   final Function(Trip, bool) onSelectionChanged;
 
-  List<int> selectedTrips = [];
+  final List<int> selectedTrips;
 
-  TripsList(
-      {required this.trips,
+  const TripsList(
+      {super.key,
+      required this.trips,
       required this.selectionMode,
       required this.onSelectionChanged,
       required this.selectedTrips});

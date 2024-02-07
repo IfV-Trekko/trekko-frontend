@@ -6,10 +6,10 @@ class MainMap extends StatefulWidget {
   const MainMap({Key? key}) : super(key: key);
 
   @override
-  _MainMapState createState() => _MainMapState();
+  MainMapState createState() => MainMapState();
 }
 
-class _MainMapState extends State<MainMap>
+class MainMapState extends State<MainMap>
     with AutomaticKeepAliveClientMixin<MainMap> {
   MapController controller = MapController.withUserPosition(
       trackUserLocation:

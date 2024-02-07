@@ -22,10 +22,10 @@ class TrekkoApp extends StatefulWidget {
   const TrekkoApp({super.key, required this.trekko});
 
   @override
-  _TrekkoAppState createState() => _TrekkoAppState();
+  TrekkoAppState createState() => TrekkoAppState();
 }
 
-class _TrekkoAppState extends State<TrekkoApp> {
+class TrekkoAppState extends State<TrekkoApp> {
   final CupertinoTabController controller = CupertinoTabController();
 
   late List<Screen> screens;
@@ -44,7 +44,7 @@ class _TrekkoAppState extends State<TrekkoApp> {
     screens = [
       Screen('Erhebung', HeroIcons.play,
           TrackingScreen(trekko: super.widget.trekko)),
-      Screen('Tagebuch', HeroIcons.queueList, JournalScreen()),
+      Screen('Tagebuch', HeroIcons.queueList, const JournalScreen()),
       Screen('Statistik', HeroIcons.chartPie, Analysis(super.widget.trekko)),
       Screen(
           'Profil', HeroIcons.userCircle, ProfileScreen(super.widget.trekko)),

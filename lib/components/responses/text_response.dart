@@ -74,7 +74,7 @@ class _TextResponseState extends State<TextResponse> {
         ),
       ),
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Align(
