@@ -27,6 +27,8 @@ class DonationModalState extends State<DonationModal>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
         previousPageTitle: 'Tagebuch',
@@ -167,7 +169,7 @@ class DonationModalState extends State<DonationModal>
               content: Text(message),
               actions: [
                 CupertinoDialogAction(
-                  child: Text('Schließen'),
+                  child: const Text('Schließen'),
                   onPressed: () {
                     Navigator.pop(context);
                   },

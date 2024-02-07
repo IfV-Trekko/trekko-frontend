@@ -7,7 +7,6 @@ import 'package:app_frontend/components/constants/transportDesign.dart';
 import 'package:async/async.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import '../../app_theme.dart';
 import 'package:isar/isar.dart';
@@ -19,12 +18,12 @@ class Tuple<T1, T2> {
 }
 
 class BarChartWidget extends StatefulWidget {
+  final Trekko trekko;
+
+  const BarChartWidget({super.key, required this.trekko});
+
   @override
   State<StatefulWidget> createState() => BarChartWidgetState();
-
-  Trekko trekko;
-
-  BarChartWidget({required this.trekko});
 }
 
 class BarChartWidgetState extends State<BarChartWidget> {
@@ -141,7 +140,7 @@ class BarChartWidgetState extends State<BarChartWidget> {
         border: Border.all(color: AppThemeColors.contrast400),
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: EdgeInsets.only(top: 9, bottom: 16, left: 12, right: 12),
+      padding: const EdgeInsets.only(top: 9, bottom: 16, left: 12, right: 12),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -212,7 +211,7 @@ class BarChartWidgetState extends State<BarChartWidget> {
                     } else if (snapshot.hasError) {
                       throw snapshot.error!;
                     } else {
-                      return CupertinoActivityIndicator();
+                      return const CupertinoActivityIndicator();
                     }
                   },
                 ),

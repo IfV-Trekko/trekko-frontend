@@ -3,15 +3,14 @@ import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/path_showcase.dart';
-import 'package:app_frontend/screens/journal/journalDetail/journalDetailBoxVehicle.dart';
+import 'package:app_frontend/screens/journal/journal_detail/journal_detail_box.dart';
+import 'package:app_frontend/screens/journal/journal_detail/journal_detail_box_donation.dart';
+import 'package:app_frontend/screens/journal/journal_detail/journal_detail_box_vehicle.dart';
+import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
 import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
-import 'journalDetail/journalDetailBox.dart';
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
-
-import 'journalDetail/journalDetailBoxDonation.dart';
-import 'journal_entry_detail_view/journal_entry_detail_view.dart';
 
 class JournalEntry extends StatelessWidget {
   final Trip trip;

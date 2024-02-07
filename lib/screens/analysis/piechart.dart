@@ -16,9 +16,9 @@ class PieChartWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => PieChartWidgetState();
 
-  Trekko trekko;
+  final Trekko trekko;
 
-  PieChartWidget({required this.trekko});
+  const PieChartWidget({super.key, required this.trekko});
 }
 
 class PieChartWidgetState extends State<PieChartWidget> {
@@ -92,7 +92,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
                     } else if (snapshot.hasError) {
                       throw snapshot.error!;
                     } else {
-                      return CupertinoActivityIndicator();
+                      return const CupertinoActivityIndicator();
                     }
                   },
                 ),

@@ -1,18 +1,18 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/trip.dart';
+import 'package:app_frontend/screens/journal/journal_entry.dart';
+import 'package:app_frontend/screens/journal/journal_subtitle.dart';
 import 'package:flutter/cupertino.dart';
-
-import 'journal_entry.dart';
-import 'journal_subtitle.dart';
 
 class TripsListView extends StatefulWidget {
   final List<Trip> trips;
   final bool selectionMode;
   final Function(Trip, bool) onSelectionChanged;
   final Trekko trekko;
-  List<int> selectedTrips = [];
+  final List<int> selectedTrips;
 
-  TripsListView({
+  const TripsListView({
+    super.key,
     required this.trips,
     required this.selectionMode,
     required this.onSelectionChanged,
@@ -39,10 +39,13 @@ class _TripsListViewState extends State<TripsListView> {
         final trip = widget.trips[index];
 
         // Check if this is the first trip or a new day has started
-        if (index == 0 || !_isSameDay(widget.trips[index - 1].getStartTime(), trip.getStartTime())) {
+        if (index == 0 ||
+            !_isSameDay(
+                widget.trips[index - 1].getStartTime(), trip.getStartTime())) {
           return Column(
             children: [
-              JournalSubtitle(trip.getStartTime()), // Add the JournalSubtitle widget
+              JournalSubtitle(
+                  trip.getStartTime()), // Add the JournalSubtitle widget
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: JournalEntry(
@@ -90,6 +93,8 @@ class _TripsListViewState extends State<TripsListView> {
   }
 
   bool _isSameDay(DateTime date1, DateTime date2) {
-    return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
   }
 }

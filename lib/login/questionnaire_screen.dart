@@ -43,7 +43,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
               children: questionTiles,
             );
           }
-          return Center(child: CupertinoActivityIndicator());
+          return const Center(child: CupertinoActivityIndicator());
         },
       ),
     );

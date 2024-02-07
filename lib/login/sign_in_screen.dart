@@ -58,7 +58,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       // TODO: Better information text
                       actions: [
                         CupertinoDialogAction(
-                          child: Text('Ok'),
+                          child: const Text('Ok'),
                           onPressed: () {
                             Navigator.pop(context);
                           },

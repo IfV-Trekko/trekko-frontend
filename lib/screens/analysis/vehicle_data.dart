@@ -3,19 +3,20 @@ import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/leg.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
+import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/constants/transportDesign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
-import '../../app_theme.dart';
 import 'attribute_row.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
 
 class VehicleDataBox extends StatelessWidget {
-  Trekko trekko;
-  TransportType vehicle;
+  final Trekko trekko;
+  final TransportType vehicle;
 
-  VehicleDataBox({required this.trekko, required this.vehicle});
+  const VehicleDataBox(
+      {super.key, required this.trekko, required this.vehicle});
 
   Stream<T?> getData<T>(T Function(Trip) apply, Reduction<T> reduction) {
     return trekko.analyze(
@@ -35,7 +36,7 @@ class VehicleDataBox extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Text(
-            format(snapshot.data!), // Verwendung des Parameters value
+            format(snapshot.data as T), // Verwendung des Parameters value
             style:
                 AppThemeTextStyles.normal.copyWith(fontWeight: FontWeight.bold),
           );
@@ -53,12 +54,13 @@ class VehicleDataBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
-          color: AppThemeColors.contrast0,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Container(
-        padding: EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
+      decoration: BoxDecoration(
+        color: AppThemeColors.contrast0,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Container(
+        padding:
+            const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
         decoration: BoxDecoration(
           color: AppThemeColors.contrast0,
           border: Border.all(
@@ -68,16 +70,12 @@ class VehicleDataBox extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              TransportDesign.getColor(vehicle)
-                  .withOpacity(0.08),
-              TransportDesign.getColor(vehicle)
-                  .withOpacity(0.00),
-              TransportDesign.getColor(vehicle)
-                  .withOpacity(0.00),
+              TransportDesign.getColor(vehicle).withOpacity(0.08),
+              TransportDesign.getColor(vehicle).withOpacity(0.00),
+              TransportDesign.getColor(vehicle).withOpacity(0.00),
             ],
-            stops: [0.0, 0.1875, 1],
+            stops: const [0.0, 0.1875, 1],
           ),
-
           borderRadius: BorderRadius.circular(6),
         ),
         child: Column(
@@ -102,26 +100,31 @@ class VehicleDataBox extends StatelessWidget {
             const SizedBox(height: 16),
             AttributeRow(
                 title: 'Gesamtstrecke',
-                value: getDataFormatted((t) => t.getDistance(),
-                    DistanceReduction.SUM, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
-
-            SizedBox(height: 8),
+                value: getDataFormatted(
+                    (t) => t.getDistance(),
+                    DistanceReduction.SUM,
+                    (d) => "${d.as(kilo.meters).roundToDouble()} km")),
+            const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Strecke pro Weg',
-                value: getDataFormatted((t) => t.getDistance(),
-                    DistanceReduction.AVERAGE, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
-
-            SizedBox(height: 8),
+                value: getDataFormatted(
+                    (t) => t.getDistance(),
+                    DistanceReduction.AVERAGE,
+                    (d) => "${d.as(kilo.meters).roundToDouble()} km")),
+            const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Geschwindigkeit',
-                value: getDataFormatted((t) => t.calculateSpeed(),
-                    SpeedReduction.AVERAGE, (d) => d.as(kilo.meters, hours).roundToDouble().toString() + " km/h")),
-
-            SizedBox(height: 8),
+                value: getDataFormatted(
+                    (t) => t.calculateSpeed(),
+                    SpeedReduction.AVERAGE,
+                    (d) => "${d.as(kilo.meters, hours).roundToDouble()} km/h")),
+            const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Wegzeit',
-                value: getDataFormatted((t) => t.calculateDuration(),
-                    DurationReduction.AVERAGE, (d) => d.inMinutes.roundToDouble().toString() + " min")),
+                value: getDataFormatted(
+                    (t) => t.calculateDuration(),
+                    DurationReduction.AVERAGE,
+                    (d) => "${d.inMinutes.roundToDouble()} min")),
           ],
         ),
       ),

@@ -5,7 +5,7 @@ class AttributeRow extends StatelessWidget {
   final String title;
   final Widget value;
 
-  AttributeRow({required this.title, required this.value});
+  const AttributeRow({super.key, required this.title, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class AttributeRow extends StatelessWidget {
         border: Border.all(color: AppThemeColors.contrast150),
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
+      padding: const EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

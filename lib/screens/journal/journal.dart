@@ -13,7 +13,7 @@ import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
 
 class JournalScreen extends StatefulWidget {
-  JournalScreen({super.key});
+  const JournalScreen({super.key});
 
   @override
   _JournalScreenState createState() => _JournalScreenState();

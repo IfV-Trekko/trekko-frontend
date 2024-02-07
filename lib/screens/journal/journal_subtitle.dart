@@ -40,5 +40,5 @@ class JournalSubtitle extends StatelessWidget {
     return DateFormat('EEEE, dd. MMMM yyyy', 'de_DE').format(date);
   }
 
-  JournalSubtitle(this._date);
+  const JournalSubtitle(this._date, {super.key});
 }

@@ -3,7 +3,6 @@ import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/components/constants/transportDesign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-import 'constants/transportDesign.dart';
 
 class TripMap extends StatefulWidget {
   final Trip trip;

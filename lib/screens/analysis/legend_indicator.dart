@@ -22,7 +22,7 @@ class LegendIndicator extends StatelessWidget {
             color: color,
           ),
         ),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         Text(text,
             style: AppThemeTextStyles.normal.copyWith(
               color: color,
