@@ -35,7 +35,7 @@ class VehicleDataBox extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Text(
-            format(snapshot.data!), // Verwendung des Parameters value
+            format(snapshot.data as T), // Verwendung des Parameters value
             style:
                 AppThemeTextStyles.normal.copyWith(fontWeight: FontWeight.bold),
           );
@@ -75,7 +75,7 @@ class VehicleDataBox extends StatelessWidget {
               TransportDesign.getColor(vehicle)
                   .withOpacity(0.00),
             ],
-            stops: [0.0, 0.1875, 1],
+            stops: const [0.0, 0.1875, 1],
           ),
 
           borderRadius: BorderRadius.circular(6),

@@ -5,7 +5,7 @@ class AcceptTermsWidget extends StatefulWidget {
 
   final Function(bool) onAccepted; // Callback hinzufügen
 
-  AcceptTermsWidget({Key? key, required this.onAccepted}) : super(key: key);
+  const AcceptTermsWidget({Key? key, required this.onAccepted}) : super(key: key);
 
   @override
   _AcceptTermsWidgetState createState() => _AcceptTermsWidgetState();

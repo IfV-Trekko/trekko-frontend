@@ -6,7 +6,7 @@ import 'package:heroicons/heroicons.dart';
 class JournalDetailBoxDonation extends StatelessWidget {
   final DonationState state;
 
-  JournalDetailBoxDonation(this.state, {super.key});
+  const JournalDetailBoxDonation(this.state, {super.key});
 
   @override
   Widget build(BuildContext context) {

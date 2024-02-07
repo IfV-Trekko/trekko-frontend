@@ -5,7 +5,7 @@ class AttributeRow extends StatelessWidget {
   final String title;
   final Widget value;
 
-  AttributeRow({super.key, required this.title, required this.value});
+  const AttributeRow({super.key, required this.title, required this.value});
 
   @override
   Widget build(BuildContext context) {

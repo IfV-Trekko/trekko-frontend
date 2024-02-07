@@ -8,7 +8,7 @@ class BasicChartRow extends StatelessWidget {
   final TransportType type;
   final Widget value;
 
-  BasicChartRow({super.key, required this.type, required this.value});
+  const BasicChartRow({super.key, required this.type, required this.value});
 
   @override
   Widget build(BuildContext context) {

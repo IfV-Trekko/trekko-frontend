@@ -66,7 +66,7 @@ class _DetailsState extends State<Details> {
           CupertinoListTile(
             title: Text('Verkehrsmittel', style: AppThemeTextStyles.normal),
             trailing: const CupertinoListTileChevron(),
-            additionalInfo: Container(
+            additionalInfo: SizedBox(
               width: 150,
               child: LayoutBuilder(builder: (context, constraints) {
                 return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
