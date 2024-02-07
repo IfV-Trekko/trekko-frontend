@@ -95,67 +95,85 @@ class _DescriptionState extends State<Description> {
             const SizedBox(height: 16),
             Row(
               children: [
-                FutureBuilder(
-                    future:
-                        _getStreet(widget.trip.legs.first.trackedPoints.first),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(snapshot.data!,
-                            style: AppThemeTextStyles.small);
-                      } else if (snapshot.hasError) {
-                        return Text('-', style: AppThemeTextStyles.small);
-                      }
-                      return const CupertinoActivityIndicator();
-                    }),
+                SizedBox(
+                  width: 180,
+                  child: FutureBuilder(
+                      future: _getStreet(
+                          widget.trip.legs.first.trackedPoints.first),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(snapshot.data!,
+                              style: AppThemeTextStyles.small);
+                        } else if (snapshot.hasError) {
+                          return Text('-', style: AppThemeTextStyles.small);
+                        }
+                        return const CupertinoActivityIndicator();
+                      }),
+                ),
                 const Spacer(),
-                FutureBuilder(
-                    future:
-                        _getStreet(widget.trip.legs.last.trackedPoints.last),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(snapshot.data!,
-                            style: AppThemeTextStyles.small);
-                      } else if (snapshot.hasError) {
-                        return Text('-', style: AppThemeTextStyles.small);
-                      }
-                      return const CupertinoActivityIndicator();
-                    }),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: SizedBox(
+                    width: 180,
+                    child: FutureBuilder(
+                        future: _getStreet(
+                            widget.trip.legs.last.trackedPoints.last),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(snapshot.data!,
+                                style: AppThemeTextStyles.small);
+                          } else if (snapshot.hasError) {
+                            return Text('-', style: AppThemeTextStyles.small);
+                          }
+                          return const CupertinoActivityIndicator();
+                        }),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 6),
             Row(
               children: [
-                FutureBuilder(
-                    future: _getLocality(//TODO Backend soll übernehmen
-                        widget.trip.legs.first.trackedPoints.first),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(snapshot.data!,
-                            style: AppThemeTextStyles.small
-                                .copyWith(color: AppThemeColors.contrast700));
-                      } else if (snapshot.hasError) {
-                        return Text('-',
-                            style: AppThemeTextStyles.small
-                                .copyWith(color: AppThemeColors.contrast700));
-                      }
-                      return const CupertinoActivityIndicator();
-                    }),
+                SizedBox(
+                  width: 180,
+                  child: FutureBuilder(
+                      future: _getLocality(//TODO Backend soll übernehmen
+                          widget.trip.legs.first.trackedPoints.first),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(snapshot.data!,
+                              style: AppThemeTextStyles.small
+                                  .copyWith(color: AppThemeColors.contrast700));
+                        } else if (snapshot.hasError) {
+                          return Text('-',
+                              style: AppThemeTextStyles.small
+                                  .copyWith(color: AppThemeColors.contrast700));
+                        }
+                        return const CupertinoActivityIndicator();
+                      }),
+                ),
                 const Spacer(),
-                FutureBuilder(
-                    future:
-                        _getLocality(widget.trip.legs.last.trackedPoints.last),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(snapshot.data!,
-                            style: AppThemeTextStyles.small
-                                .copyWith(color: AppThemeColors.contrast700));
-                      } else if (snapshot.hasError) {
-                        return Text('-',
-                            style: AppThemeTextStyles.small
-                                .copyWith(color: AppThemeColors.contrast700));
-                      }
-                      return const CupertinoActivityIndicator();
-                    }),
+                SizedBox(
+                  width: 180,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: FutureBuilder(
+                        future: _getLocality(
+                            widget.trip.legs.last.trackedPoints.last),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(snapshot.data!,
+                                style: AppThemeTextStyles.small.copyWith(
+                                    color: AppThemeColors.contrast700));
+                          } else if (snapshot.hasError) {
+                            return Text('-',
+                                style: AppThemeTextStyles.small.copyWith(
+                                    color: AppThemeColors.contrast700));
+                          }
+                          return const CupertinoActivityIndicator();
+                        }),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
