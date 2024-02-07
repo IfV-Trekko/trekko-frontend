@@ -3,6 +3,7 @@ import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/components/constants/transportDesign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'constants/transportDesign.dart';
 
 class TripMap extends StatefulWidget {
   final Trip trip;
@@ -38,22 +39,24 @@ class _TripMapState extends State<TripMap>
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
-      //TODO awaiten
       for (var i = 0; i < widget.pathGeoPoints.length - 1; i += 2) {
-        widget.controller
-            .drawRoad(widget.pathGeoPoints[i], widget.pathGeoPoints[i + 1],
-                roadType: switch (widget.trip.legs[i ~/ 2].transportType) {
-                  TransportType.bicycle => RoadType.bike,
-                  TransportType.by_foot => RoadType.foot,
-                  _ => RoadType.foot,
-                },
-                roadOption: RoadOption(
-                  roadWidth: 5,
-                  roadColor: TransportDesign.getColor(
-                      widget.trip.legs[i ~/ 2].transportType),
-                  zoomInto: true,
-                ));
+        widget.controller.drawRoad(
+            widget.pathGeoPoints[i], widget.pathGeoPoints[i + 1],
+            roadType: switch (widget.trip.legs[i ~/ 2].transportType) {
+              TransportType.bicycle => RoadType.bike,
+              TransportType.by_foot => RoadType.foot,
+              _ => RoadType.foot,
+            },
+            roadOption: RoadOption(
+                roadWidth: 5,
+                roadColor: TransportDesign.getColor(
+                    widget.trip.legs[i ~/ 2].transportType),
+                zoomInto: true));
       }
+      Future.delayed(const Duration(seconds: 5), () {
+        widget.controller
+            .zoomToBoundingBox(widget.tripBoundingBox, paddinInPixel: 20);
+      });
     });
   }
 
