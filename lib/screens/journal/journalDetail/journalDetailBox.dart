@@ -26,5 +26,5 @@ class JournalDetailBox extends StatelessWidget {
     );
   }
 
-  JournalDetailBox(this._title);
+  JournalDetailBox(this._title, {super.key});
 }

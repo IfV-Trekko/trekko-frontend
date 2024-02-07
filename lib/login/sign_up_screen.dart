@@ -58,11 +58,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
             showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
-                      title: Text("Fehler: " + reason),
+                      title: Text("Fehler: $reason"),
                       // TODO: Better information text
                       actions: [
                         CupertinoDialogAction(
-                          child: Text('Ok'),
+                          child: const Text('Ok'),
                           onPressed: () {
                             Navigator.pop(context);
                           },

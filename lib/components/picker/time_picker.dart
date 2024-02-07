@@ -4,19 +4,20 @@ import 'package:flutter/cupertino.dart';
 class TimePicker extends StatefulWidget {
   final DateTime initialDateTime;
   final Function(DateTime) onChange;
-  DateTime? minimumDateTime;
-  DateTime? maximumDateTime;
+  final DateTime? minimumDateTime;
+  final DateTime? maximumDateTime;
 
   TimePicker({
     Key? key,
     required this.initialDateTime,
     required this.onChange,
-    this.minimumDateTime,
-    this.maximumDateTime,
-  }) : super(key: key) {
-    minimumDateTime ??= initialDateTime.subtract(const Duration(days: 7));
-    maximumDateTime ??= initialDateTime.add(const Duration(days: 7));
-  }
+    DateTime? minimumDateTime,
+    DateTime? maximumDateTime,
+  })  : minimumDateTime = minimumDateTime ??
+            initialDateTime.subtract(const Duration(days: 7)),
+        maximumDateTime =
+            maximumDateTime ?? initialDateTime.add(const Duration(days: 7)),
+        super(key: key);
 
   @override
   _TimePickerState createState() => _TimePickerState();

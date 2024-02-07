@@ -29,7 +29,7 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         onPressed: () {
           onPressed();
         },
@@ -47,13 +47,13 @@ class Button extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (loading) ...[
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       CupertinoActivityIndicator(
                         color: style == ButtonStyle.primary
                             ? AppThemeColors.contrast0
                             : AppThemeColors.blue,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                     ] else ...[
                       const SizedBox(width: 10),
                       if (icon != null) ...[

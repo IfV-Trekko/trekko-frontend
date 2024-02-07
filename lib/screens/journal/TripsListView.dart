@@ -12,7 +12,7 @@ class TripsListView extends StatefulWidget {
   final Trekko trekko;
   List<int> selectedTrips = [];
 
-  TripsListView({
+  TripsListView({super.key, 
     required this.trips,
     required this.selectionMode,
     required this.onSelectionChanged,

@@ -15,7 +15,7 @@ class VehicleDataBox extends StatelessWidget {
   Trekko trekko;
   TransportType vehicle;
 
-  VehicleDataBox({required this.trekko, required this.vehicle});
+  VehicleDataBox({super.key, required this.trekko, required this.vehicle});
 
   Stream<T?> getData<T>(T Function(Trip) apply, Reduction<T> reduction) {
     return trekko.analyze(
@@ -58,7 +58,7 @@ class VehicleDataBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
         ),
         child: Container(
-        padding: EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
+        padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
         decoration: BoxDecoration(
           color: AppThemeColors.contrast0,
           border: Border.all(
@@ -103,25 +103,25 @@ class VehicleDataBox extends StatelessWidget {
             AttributeRow(
                 title: 'Gesamtstrecke',
                 value: getDataFormatted((t) => t.getDistance(),
-                    DistanceReduction.SUM, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
+                    DistanceReduction.SUM, (d) => "${d.as(kilo.meters).roundToDouble()} km")),
 
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Strecke pro Weg',
                 value: getDataFormatted((t) => t.getDistance(),
-                    DistanceReduction.AVERAGE, (d) => d.as(kilo.meters).roundToDouble().toString() + " km")),
+                    DistanceReduction.AVERAGE, (d) => "${d.as(kilo.meters).roundToDouble()} km")),
 
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Geschwindigkeit',
                 value: getDataFormatted((t) => t.calculateSpeed(),
-                    SpeedReduction.AVERAGE, (d) => d.as(kilo.meters, hours).roundToDouble().toString() + " km/h")),
+                    SpeedReduction.AVERAGE, (d) => "${d.as(kilo.meters, hours).roundToDouble()} km/h")),
 
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Wegzeit',
                 value: getDataFormatted((t) => t.calculateDuration(),
-                    DurationReduction.AVERAGE, (d) => d.inMinutes.roundToDouble().toString() + " min")),
+                    DurationReduction.AVERAGE, (d) => "${d.inMinutes.roundToDouble()} min")),
           ],
         ),
       ),

@@ -13,7 +13,7 @@ class TripsList extends StatelessWidget {
   List<int> selectedTrips = [];
 
   TripsList(
-      {required this.trips,
+      {super.key, required this.trips,
       required this.selectionMode,
       required this.onSelectionChanged,
       required this.selectedTrips});

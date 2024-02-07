@@ -6,7 +6,7 @@ import 'package:heroicons/heroicons.dart';
 class JournalDetailBoxDonation extends StatelessWidget {
   final DonationState state;
 
-  JournalDetailBoxDonation(this.state);
+  JournalDetailBoxDonation(this.state, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class JournalDetailBoxDonation extends StatelessWidget {
           color: AppThemeColors.green,
         ),
         child: Padding(
-          padding: EdgeInsets.only(right: 2.0, left: 8.0),
+          padding: const EdgeInsets.only(right: 2.0, left: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -27,7 +27,7 @@ class JournalDetailBoxDonation extends StatelessWidget {
                   style: AppThemeTextStyles.small.copyWith(
                     color: AppThemeColors.contrast0,
                   )),
-              SizedBox(width: 2),
+              const SizedBox(width: 2),
               const HeroIcon(
                 HeroIcons.checkCircle,
                 size: 20,
@@ -45,7 +45,7 @@ class JournalDetailBoxDonation extends StatelessWidget {
             color: AppThemeColors.contrast150,
           ),
           child: Padding(
-              padding: EdgeInsets.only(right: 2.0, left: 8.0),
+              padding: const EdgeInsets.only(right: 2.0, left: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
@@ -54,7 +54,7 @@ class JournalDetailBoxDonation extends StatelessWidget {
                       style: AppThemeTextStyles.small.copyWith(
                         color: AppThemeColors.contrast800,
                       )),
-                  SizedBox(width: 2),
+                  const SizedBox(width: 2),
                   const HeroIcon(
                     HeroIcons.checkCircle,
                     size: 20,

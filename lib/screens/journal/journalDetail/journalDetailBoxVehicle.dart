@@ -1,9 +1,8 @@
 import 'package:app_backend/model/trip/transport_type.dart';
+import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/constants/transportDesign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
-
-import '../../../app_theme.dart';
 
 class JournalDetailBoxVehicle extends StatelessWidget {
   final String _title;
@@ -12,7 +11,7 @@ class JournalDetailBoxVehicle extends StatelessWidget {
   final bool showText;
 
   JournalDetailBoxVehicle(TransportType transportType,
-      {this.showText = false, Key? key})
+      {super.key, this.showText = false})
       : _title = TransportDesign.getName(transportType),
         _color = TransportDesign.getColor(transportType),
         _icon = TransportDesign.getIcon(transportType);

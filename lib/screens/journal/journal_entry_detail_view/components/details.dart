@@ -6,7 +6,6 @@ import 'package:app_frontend/components/constants/transportDesign.dart';
 import 'package:app_frontend/components/responses/multi_select_response.dart';
 import 'package:app_frontend/components/responses/text_response.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:heroicons/heroicons.dart';
 
 class Details extends StatefulWidget {
   final String detailPurpose;

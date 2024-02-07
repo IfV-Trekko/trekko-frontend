@@ -167,7 +167,7 @@ class DonationModalState extends State<DonationModal>
               content: Text(message),
               actions: [
                 CupertinoDialogAction(
-                  child: Text('Schließen'),
+                  child: const Text('Schließen'),
                   onPressed: () {
                     Navigator.pop(context);
                   },

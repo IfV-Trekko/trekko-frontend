@@ -32,10 +32,10 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
             showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
-                      title: Text("Naaahhh unterschätz das mal nicht hier"),
+                      title: const Text("Naaahhh unterschätz das mal nicht hier"),
                       actions: [
                         CupertinoDialogAction(
-                          child: Text('Werd ich nicht'),
+                          child: const Text('Werd ich nicht'),
                           onPressed: () {
                             Navigator.pop(context);
                           },

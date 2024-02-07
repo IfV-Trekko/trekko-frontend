@@ -29,7 +29,7 @@ class TextInput extends StatelessWidget {
               placeholder: hiddenTitle,
               obscureText: obscured,
               style: AppThemeTextStyles.normal,
-              padding: EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.only(left: 10),
               decoration: BoxDecoration(
                 color: AppThemeColors.contrast100,
                 shape: BoxShape.rectangle,
