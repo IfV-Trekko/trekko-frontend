@@ -4,14 +4,13 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/screens/journal/donation_modal.dart';
+import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
 import 'package:app_frontend/screens/journal/trips_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/trekko_provider.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
-
-import 'journal_entry_detail_view/journal_entry_detail_view.dart';
 
 class JournalScreen extends StatefulWidget {
   JournalScreen({super.key});
@@ -78,9 +77,11 @@ class _JournalScreenState extends State<StatefulWidget>
                               .move_r(const Duration(minutes: 10), 1000.meters)
                               .build();
                           trekko.saveTrip(newTrip);
-                          Navigator.push(context, CupertinoPageRoute(
-                              builder: (context) =>
-                                  JournalEntryDetailView(newTrip)));
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) =>
+                                      JournalEntryDetailView(newTrip)));
                         },
                         child: const Icon(CupertinoIcons.add,
                             color: AppThemeColors.blue),

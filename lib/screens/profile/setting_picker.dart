@@ -1,11 +1,13 @@
+import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
-import '../../app_theme.dart';
 
 class SettingsPicker extends StatelessWidget {
   final List<Widget> children;
   final Function(int) onSettingSelected;
 
-  const SettingsPicker({Key? key, required this.children, required this.onSettingSelected}) : super(key: key);
+  const SettingsPicker(
+      {Key? key, required this.children, required this.onSettingSelected})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,5 +38,3 @@ class SettingsPicker extends StatelessWidget {
     );
   }
 }
-
-

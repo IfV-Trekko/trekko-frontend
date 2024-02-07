@@ -1,9 +1,8 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/profile.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
+import 'package:app_frontend/screens/profile/form.dart';
 import 'package:flutter/cupertino.dart';
-
-import '../screens/profile/form.dart';
 
 class QuestionnaireScreen extends StatefulWidget {
   static const String route = "/login/questionnaire/";
@@ -32,10 +31,11 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             Profile profile = snapshot.data!;
-            List<CupertinoListTile> questionTiles = QuestionTilesBuilder.buildQuestionTiles(
+            List<CupertinoListTile> questionTiles =
+                QuestionTilesBuilder.buildQuestionTiles(
               context: context,
               profile: profile,
-              trekko:  trekko,
+              trekko: trekko,
               padding: const EdgeInsets.only(left: 16, right: 16),
             );
             return CupertinoListSection.insetGrouped(
