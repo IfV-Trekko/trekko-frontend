@@ -8,7 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 class AcceptTermsWidget extends StatefulWidget {
   final Function(bool) onAccepted; // Callback hinzufügen
 
-  const AcceptTermsWidget({Key? key, required this.onAccepted}) : super(key: key);
+  const AcceptTermsWidget({Key? key, required this.onAccepted})
+      : super(key: key);
 
   @override
   _AcceptTermsWidgetState createState() => _AcceptTermsWidgetState();
