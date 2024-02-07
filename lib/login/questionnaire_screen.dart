@@ -1,5 +1,6 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/profile.dart';
+import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/login/simple_onboarding_screen.dart';
 import 'package:app_frontend/screens/profile/form.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +41,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
             );
             return CupertinoListSection.insetGrouped(
               additionalDividerMargin: 2,
+              backgroundColor: AppThemeColors.contrast0,
               children: questionTiles,
             );
           }
