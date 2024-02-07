@@ -245,8 +245,7 @@ class _LabelRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final uniqueVehicleTypes =
-        trip.legs.map((leg) => leg.transportType).toSet();
+    final uniqueVehicleTypes = trip.getTransportTypes();
 
     return Align(
       alignment: Alignment.centerLeft,
