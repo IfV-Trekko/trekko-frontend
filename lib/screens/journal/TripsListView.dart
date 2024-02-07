@@ -1,9 +1,8 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/trip.dart';
+import 'package:app_frontend/screens/journal/journal_entry.dart';
+import 'package:app_frontend/screens/journal/journal_subtitle.dart';
 import 'package:flutter/cupertino.dart';
-
-import 'journal_entry.dart';
-import 'journal_subtitle.dart';
 
 class TripsListView extends StatefulWidget {
   final List<Trip> trips;
