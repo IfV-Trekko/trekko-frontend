@@ -5,6 +5,6 @@ class ItemDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(height: 11);
+    return const SizedBox(height: 12);
   }
 }

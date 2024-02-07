@@ -21,7 +21,7 @@ class LoginApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Clean this up
+    //TODO: Clean this up
     Map<String, Widget Function(BuildContext)> routes = {
       WelcomeScreen.route: (b) => const WelcomeScreen(),
       JoinProjectScreen.route: (b) => const JoinProjectScreen(),
@@ -37,7 +37,7 @@ class LoginApp extends StatelessWidget {
           text: OnboardingTextType.whatText,
           title: "Was wollen\nwir?",
           nextPage: QuestionnaireScreen.route),
-      QuestionnaireScreen.route: (b) => QuestionnaireScreen(trekkoCallBack),
+      QuestionnaireScreen.route: (b) => QuestionnaireScreen(trekkoCallBack,),
     };
 
     return CupertinoApp(

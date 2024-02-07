@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
-import '../journal/journalDetail/transportDesign.dart';
+import '../../components/constants/transportDesign.dart';
 import 'legend_indicator.dart';
 
 class PieChartWidget extends StatefulWidget {

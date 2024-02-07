@@ -1,22 +1,16 @@
 import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/controller/utils/trip_builder.dart';
 import 'package:app_backend/model/tracking_state.dart';
-import 'package:app_backend/model/trip/transport_type.dart';
-import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
-import 'package:app_frontend/screens/tracking/tracking.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:isar/isar.dart';
-import 'package:fling_units/fling_units.dart';
 
 class MapOptionSheet extends StatefulWidget {
   final Trekko trekko;
 
   const MapOptionSheet({super.key, required this.trekko});
+
   @override
   State<MapOptionSheet> createState() => _MapOptionSheetState();
 }
@@ -27,7 +21,7 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
     return DraggableScrollableSheet(
         snap: true,
         minChildSize: 0.265,
-        maxChildSize: 0.5,
+        maxChildSize: 0.265,
         initialChildSize: 0.265,
         builder: (context, scrollController) {
           return Container(
@@ -125,7 +119,8 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                               return Button(
                                 fillIcon: true,
                                 title: 'Erhebung starten',
-                                icon: HeroIcons.play, //TODO solid machen
+                                icon: HeroIcons.play,
+                                //TODO solid machen
                                 style: ButtonStyle.primary,
                                 onPressed: () {
                                   super

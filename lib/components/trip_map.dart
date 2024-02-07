@@ -4,6 +4,8 @@ import 'package:app_frontend/screens/journal/journalDetail/transportDesign.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
+import 'constants/transportDesign.dart';
+
 class TripMap extends StatefulWidget {
   final Trip trip;
   final MapController controller = MapController.withPosition(

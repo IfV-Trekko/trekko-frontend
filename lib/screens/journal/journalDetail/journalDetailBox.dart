@@ -6,7 +6,6 @@ class JournalDetailBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: 24,
       decoration: BoxDecoration(
@@ -14,18 +13,15 @@ class JournalDetailBox extends StatelessWidget {
         border: Border.all(color: AppThemeColors.contrast200),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            _title,
-            overflow: TextOverflow.ellipsis,
-            style: AppThemeTextStyles.small.copyWith(
-              color: AppThemeColors.contrast900,
-            )
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 100),
+        child: Text(
+          _title,
+          overflow: TextOverflow.ellipsis,
+          style: AppThemeTextStyles.small.copyWith(
+            color: AppThemeColors.contrast900,
           ),
-        ],
+        ),
       ),
     );
   }

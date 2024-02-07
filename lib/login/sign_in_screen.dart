@@ -62,7 +62,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     ));
           }
         },
-        child: Column(children: [
+        child: Column(
+            children: [
           TextInput(
             title: "E-Mail",
             hiddenTitle: "E-Mail Adresse",

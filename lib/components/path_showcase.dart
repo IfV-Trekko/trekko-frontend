@@ -1,8 +1,8 @@
 import 'package:app_backend/model/trip/trip.dart';
-import 'package:app_frontend/screens/journal/journalDetail/transportDesign.dart';
+import 'package:app_frontend/components/constants/transportDesign.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../screens/journal/journalDetail/transportDesign.dart';
+import 'constants/transportDesign.dart';
 
 class PathShowcase extends StatelessWidget {
   //TODO testen!
