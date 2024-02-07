@@ -1,14 +1,13 @@
-
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/trip.dart';
+import 'package:app_frontend/app_theme.dart';
+import 'package:app_frontend/components/button.dart';
+import 'package:app_frontend/components/constants/button_size.dart';
+import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:app_frontend/screens/journal/TripsListView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
-import '../../app_theme.dart';
-import '../../components/button.dart';
-import '../../components/constants/button_size.dart';
-import '../../components/constants/button_style.dart';
 
 class DonationModal extends StatefulWidget {
   final Trekko trekko;
@@ -122,7 +121,11 @@ class DonationModalState extends State<DonationModal>
       isLoading = true;
     });
     int donatedTrips = 0;
-    var allTrips = await widget.trekko.getTripQuery().filter().donationStateEqualTo(DonationState.undefined).findAll();
+    var allTrips = await widget.trekko
+        .getTripQuery()
+        .filter()
+        .donationStateEqualTo(DonationState.undefined)
+        .findAll();
     for (var trip in allTrips) {
       if (selectedTrips.contains(trip.id)) {
         try {
@@ -134,7 +137,9 @@ class DonationModalState extends State<DonationModal>
           setState(() {
             isLoading = false; // Set isLoading to false
           });
-          finishedAction('Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten', true);
+          finishedAction(
+              'Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten',
+              true);
           return;
         }
       } else {
@@ -158,16 +163,16 @@ class DonationModalState extends State<DonationModal>
     showCupertinoDialog(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
-          title: Text(error ? 'Fehler' : 'Spende Erfolgreich'),
-          content: Text(message),
-          actions: [
-            CupertinoDialogAction(
-              child: Text('Schließen'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
-        ));
+              title: Text(error ? 'Fehler' : 'Spende Erfolgreich'),
+              content: Text(message),
+              actions: [
+                CupertinoDialogAction(
+                  child: Text('Schließen'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            ));
   }
 }

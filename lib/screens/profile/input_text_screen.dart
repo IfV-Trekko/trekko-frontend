@@ -1,19 +1,20 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/onboarding_question.dart';
 import 'package:app_backend/model/profile/profile.dart';
+import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:app_backend/model/profile/question_type.dart';
-
-import '../../app_theme.dart';
 
 class TextInputPage extends StatefulWidget {
   final OnboardingQuestion question;
   final Trekko trekko;
   final Profile profile;
-  
-  const TextInputPage({super.key,
-    required this.question, required this.trekko, required this.profile
-  });
+
+  const TextInputPage(
+      {super.key,
+      required this.question,
+      required this.trekko,
+      required this.profile});
 
   @override
   _TextInputPageState createState() => _TextInputPageState();
@@ -38,7 +39,6 @@ class _TextInputPageState extends State<TextInputPage> {
 
   Widget _buildContentBasedOnQuestionType() {
     switch (widget.question.type) {
-
       case QuestionType.number:
         return CupertinoTextField(
           placeholder: widget.question.title,
