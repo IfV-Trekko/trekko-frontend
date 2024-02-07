@@ -22,10 +22,10 @@ class TrekkoApp extends StatefulWidget {
   const TrekkoApp({super.key, required this.trekko});
 
   @override
-  _TrekkoAppState createState() => _TrekkoAppState();
+  TrekkoAppState createState() => TrekkoAppState();
 }
 
-class _TrekkoAppState extends State<TrekkoApp> {
+class TrekkoAppState extends State<TrekkoApp> {
   final CupertinoTabController controller = CupertinoTabController();
 
   late List<Screen> screens;

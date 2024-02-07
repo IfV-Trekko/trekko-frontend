@@ -18,12 +18,12 @@ class Tuple<T1, T2> {
 }
 
 class BarChartWidget extends StatefulWidget {
+  final Trekko trekko;
+
+  const BarChartWidget({super.key, required this.trekko});
+
   @override
   State<StatefulWidget> createState() => BarChartWidgetState();
-
-  Trekko trekko;
-
-  BarChartWidget({super.key, required this.trekko});
 }
 
 class BarChartWidgetState extends State<BarChartWidget> {

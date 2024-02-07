@@ -11,9 +11,9 @@ import 'package:fling_units/fling_units.dart';
 import 'basicchart_row.dart';
 
 class BasicChart extends StatelessWidget {
-  Trekko trekko;
+  final Trekko trekko;
 
-  BasicChart({super.key, required this.trekko});
+  const BasicChart({super.key, required this.trekko});
 
   Stream<DerivedMeasurement<Measurement<Distance>, Measurement<Time>>?> getData(
       TransportType vehicle) {

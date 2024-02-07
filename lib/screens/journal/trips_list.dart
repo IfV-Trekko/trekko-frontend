@@ -10,10 +10,11 @@ class TripsList extends StatelessWidget {
   final bool selectionMode;
   final Function(Trip, bool) onSelectionChanged;
 
-  List<int> selectedTrips = [];
+  final List<int> selectedTrips;
 
-  TripsList(
-      {super.key, required this.trips,
+  const TripsList(
+      {super.key,
+      required this.trips,
       required this.selectionMode,
       required this.onSelectionChanged,
       required this.selectedTrips});

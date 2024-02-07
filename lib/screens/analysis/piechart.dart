@@ -16,9 +16,9 @@ class PieChartWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => PieChartWidgetState();
 
-  Trekko trekko;
+  final Trekko trekko;
 
-  PieChartWidget({super.key, required this.trekko});
+  const PieChartWidget({super.key, required this.trekko});
 }
 
 class PieChartWidgetState extends State<PieChartWidget> {
