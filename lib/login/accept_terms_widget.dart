@@ -1,9 +1,11 @@
+import 'package:app_backend/controller/request/bodies/response/project_metadata_response.dart';
+import 'package:app_backend/controller/trekko.dart';
+import 'package:app_backend/controller/utils/onboarding_utils.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AcceptTermsWidget extends StatefulWidget {
-
   final Function(bool) onAccepted; // Callback hinzufügen
 
   AcceptTermsWidget({Key? key, required this.onAccepted}) : super(key: key);
@@ -43,7 +45,9 @@ class _AcceptTermsWidgetState extends State<AcceptTermsWidget> {
                 child: Text(
                   'Ich akzeptiere die Allgemeinen Geschäftsbedingungen.',
                   style: AppThemeTextStyles.normal.copyWith(
-                    color: _isAccepted ? AppThemeColors.blue : AppThemeColors.contrast500,
+                    color: _isAccepted
+                        ? AppThemeColors.blue
+                        : AppThemeColors.contrast500,
                   ),
                 ),
               ),
@@ -51,17 +55,16 @@ class _AcceptTermsWidgetState extends State<AcceptTermsWidget> {
           ],
         ),
         SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
+        Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Container(
               padding: const EdgeInsets.only(left: 12),
               child: GestureDetector(
                 onTap: () async {
-                  Uri url = Uri(
-                      scheme: 'https',
-                      host: 'www.trekko.de',
-                      path: '/datenschutz');
+                  final String projectUrl =
+                      ModalRoute.of(context)!.settings.arguments as String;
+                  final ProjectMetadataResponse metaData =
+                      await OnboardingUtils.loadProjectMetadata(projectUrl);
+                  final Uri url = Uri.parse(metaData.terms);
                   if (await canLaunchUrl(url)) {
                     await launchUrl(url);
                   } else {
@@ -74,10 +77,8 @@ class _AcceptTermsWidgetState extends State<AcceptTermsWidget> {
                     color: AppThemeColors.blue,
                   ),
                 ),
-              )
-            )
-          ]
-        )
+              ))
+        ])
       ],
     );
   }

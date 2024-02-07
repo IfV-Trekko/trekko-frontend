@@ -32,9 +32,12 @@ class TextInfoScreen extends StatelessWidget {
             future: trekko.loadText(text),
             builder: (context, data) {
               if (data.hasData) {
-                return Text(
-                  data.data!,
-                  style: AppThemeTextStyles.normal,
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    data.data!,
+                    style: AppThemeTextStyles.normal.copyWith(fontSize: 18),
+                  ),
                 );
               } else if (data.hasError) {
                 return const Text("Fehler beim Laden");

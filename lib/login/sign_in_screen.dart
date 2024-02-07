@@ -37,19 +37,24 @@ class _SignInScreenState extends State<SignInScreen> {
                 .build();
             widget.callback.call(trekko);
           } catch (e) {
-            String reason = "Unbekannt";
+            String reason = "Fehler Unbekannt";
             if (e is BuildException) {
-              reason = e.reason.toString();
-              if (e.reason == LoginResult.failedOther) {
-                print(e);
+              if (e.reason == LoginResult.failedInvalidCredentials) {
+                reason = 'E-Mail oder Passwort falsch';
+              } else if (e.reason == LoginResult.failedNoConnection) {
+                reason =
+                    'Keine Verbindung zum Server, bitte überprüfen Sie Ihre Internetverbindung';
+              } else if (e.reason == LoginResult.failedNoSuchUser) {
+                reason =
+                    'Der Benutzer existiert nicht, bitte registrieren Sie sich';
+              } else if (e.reason == LoginResult.failedSessionExpired) {
+                reason = 'Sitzung abgelaufen, bitte loggen Sie sich erneut ein';
               }
-            } else {
-              print(e);
             }
             showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
-                      title: Text("Fehler: " + reason),
+                      title: Text(reason),
                       // TODO: Better information text
                       actions: [
                         CupertinoDialogAction(
@@ -62,8 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ));
           }
         },
-        child: Column(
-            children: [
+        child: Column(children: [
           TextInput(
             title: "E-Mail",
             hiddenTitle: "E-Mail Adresse",
