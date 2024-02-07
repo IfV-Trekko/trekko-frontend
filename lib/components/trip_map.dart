@@ -1,5 +1,6 @@
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
+import 'package:app_frontend/components/constants/transportDesign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'constants/transportDesign.dart';

@@ -1,12 +1,12 @@
 import 'package:app_backend/controller/builder/authentification_utils.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/battery_usage_setting.dart';
+import 'package:app_frontend/app_theme.dart';
+import 'package:app_frontend/main.dart';
 import 'package:app_frontend/screens/profile/form.dart';
 import 'package:app_frontend/screens/profile/setting_picker.dart';
 import 'package:flutter/cupertino.dart';
-import '../../app_theme.dart';
 import 'package:app_backend/model/profile/profile.dart';
-import '../../main.dart';
 
 class ProfileScreen extends StatefulWidget {
   final Trekko trekko;
@@ -19,7 +19,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with AutomaticKeepAliveClientMixin {
-
   Profile? toDelete;
 
   @override
@@ -27,22 +26,22 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   final double defaultDividerMargin = 2;
   final EdgeInsetsGeometry listTilePadding =
-  const EdgeInsets.only(left: 16, right: 16);
+      const EdgeInsets.only(left: 16, right: 16);
   final EdgeInsetsGeometry firstListSectionMargin =
-  const EdgeInsets.fromLTRB(16, 16, 16, 16);
+      const EdgeInsets.fromLTRB(16, 16, 16, 16);
   final EdgeInsetsGeometry listSectionMargin =
-  const EdgeInsets.fromLTRB(16, 0, 16, 16);
+      const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
-  Future<void> showBatteryUsageSettingPicker(BuildContext context,
-      Profile profile) async {
+  Future<void> showBatteryUsageSettingPicker(
+      BuildContext context, Profile profile) async {
     List<Widget> batterySettingOptions =
-    BatteryUsageSetting.values.map((setting) {
+        BatteryUsageSetting.values.map((setting) {
       return Center(child: Text(setting.name));
     }).toList();
 
     void onSettingSelected(int selectedIndex) {
       BatteryUsageSetting selectedSetting =
-      BatteryUsageSetting.values[selectedIndex];
+          BatteryUsageSetting.values[selectedIndex];
       profile.preferences.batteryUsageSetting = selectedSetting;
       widget.trekko.savePreferences(profile.preferences);
     }
@@ -60,8 +59,10 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   void dispose() {
-    if (toDelete != null) { // Currently doing nothing
-      AuthentificationUtils.deleteProfile(toDelete!.projectUrl, toDelete!.email);
+    if (toDelete != null) {
+      // Currently doing nothing
+      AuthentificationUtils.deleteProfile(
+          toDelete!.projectUrl, toDelete!.email);
     }
     super.dispose();
   }
@@ -79,103 +80,103 @@ class _ProfileScreenState extends State<ProfileScreen>
           ),
           SliverFillRemaining(
               child: StreamBuilder<Profile>(
-                stream: widget.trekko.getProfile(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    Profile profile = snapshot.data!;
-                    List<CupertinoListTile> questionTiles =
+            stream: widget.trekko.getProfile(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                Profile profile = snapshot.data!;
+                List<CupertinoListTile> questionTiles =
                     QuestionTilesBuilder.buildQuestionTiles(
-                      context: context,
-                      profile: profile,
-                      trekko: widget.trekko,
-                      padding: listTilePadding,
-                    );
-                    if (questionTiles.isEmpty) {
-                      questionTiles.add(CupertinoListTile.notched(
-                        padding: listTilePadding,
-                        title: Text('Keine Fragen beantwortet',
-                            style: AppThemeTextStyles.normal),
-                      ));
-                    }
+                  context: context,
+                  profile: profile,
+                  trekko: widget.trekko,
+                  padding: listTilePadding,
+                );
+                if (questionTiles.isEmpty) {
+                  questionTiles.add(CupertinoListTile.notched(
+                    padding: listTilePadding,
+                    title: Text('Keine Fragen beantwortet',
+                        style: AppThemeTextStyles.normal),
+                  ));
+                }
 
-                    return Column(
+                return Column(
+                  children: [
+                    CupertinoListSection.insetGrouped(
+                      margin: firstListSectionMargin,
+                      additionalDividerMargin: defaultDividerMargin,
                       children: [
-                        CupertinoListSection.insetGrouped(
-                          margin: firstListSectionMargin,
-                          additionalDividerMargin: defaultDividerMargin,
-                          children: [
-                            CupertinoListTile.notched(
-                              padding: listTilePadding,
-                              title:
+                        CupertinoListTile.notched(
+                          padding: listTilePadding,
+                          title:
                               Text('E-Mail', style: AppThemeTextStyles.normal),
-                              additionalInfo: Text(profile.email),
-                            ),
-                            CupertinoListTile.notched(
-                              padding: listTilePadding,
-                              title: Text('Projekt-URL',
-                                  style: AppThemeTextStyles.normal),
-                              additionalInfo: Text(profile.projectUrl),
-                            ),
-                          ],
+                          additionalInfo: Text(profile.email),
                         ),
-                        CupertinoListSection.insetGrouped(
-                          margin: listSectionMargin,
-                          additionalDividerMargin: defaultDividerMargin,
-                          children: questionTiles,
+                        CupertinoListTile.notched(
+                          padding: listTilePadding,
+                          title: Text('Projekt-URL',
+                              style: AppThemeTextStyles.normal),
+                          additionalInfo: Text(profile.projectUrl),
                         ),
-                        CupertinoListSection.insetGrouped(
-                          margin: listSectionMargin,
-                          additionalDividerMargin: defaultDividerMargin,
-                          children: [
-                            CupertinoListTile.notched(
-                              padding: listTilePadding,
-                              title: Text('Akkunutzung',
-                                  style: AppThemeTextStyles.normal),
-                              additionalInfo: Text(
-                                  profile.preferences.batteryUsageSetting.name),
-                              onTap: () async {
-                                await showBatteryUsageSettingPicker(
-                                    context, profile);
-                              },
-                            ),
-                          ],
-                        ),
-                        CupertinoListSection.insetGrouped(
-                            margin: listSectionMargin,
-                            additionalDividerMargin: defaultDividerMargin,
-                            children: [
-                              CupertinoListTile.notched(
-                                  padding: listTilePadding,
-                                  title: Text('Abmelden',
-                                      style: AppThemeTextStyles.normal.copyWith(
-                                        color: AppThemeColors.blue,
-                                      )),
-                                  onTap: () async {
-                                    runLoginApp();
-                                  }),
-                            ]),
-                        // CupertinoListSection.insetGrouped(
-                        //   margin: listSectionMargin,
-                        //   additionalDividerMargin: defaultDividerMargin,
-                        //   children: [
-                        //     CupertinoListTile.notched(
-                        //         padding: listTilePadding,
-                        //         title: Text('Profil & Daten löschen',
-                        //             style: AppThemeTextStyles.normal.copyWith(
-                        //               color: AppThemeColors.red,
-                        //             )),
-                        //         onTap: () async {
-                        //           toDelete = profile;
-                        //           runLoginApp();
-                        //         }),
-                        //   ],
-                        // ),
                       ],
-                    );
-                  }
-                  return const CupertinoActivityIndicator();
-                },
-              )),
+                    ),
+                    CupertinoListSection.insetGrouped(
+                      margin: listSectionMargin,
+                      additionalDividerMargin: defaultDividerMargin,
+                      children: questionTiles,
+                    ),
+                    CupertinoListSection.insetGrouped(
+                      margin: listSectionMargin,
+                      additionalDividerMargin: defaultDividerMargin,
+                      children: [
+                        CupertinoListTile.notched(
+                          padding: listTilePadding,
+                          title: Text('Akkunutzung',
+                              style: AppThemeTextStyles.normal),
+                          additionalInfo: Text(
+                              profile.preferences.batteryUsageSetting.name),
+                          onTap: () async {
+                            await showBatteryUsageSettingPicker(
+                                context, profile);
+                          },
+                        ),
+                      ],
+                    ),
+                    CupertinoListSection.insetGrouped(
+                        margin: listSectionMargin,
+                        additionalDividerMargin: defaultDividerMargin,
+                        children: [
+                          CupertinoListTile.notched(
+                              padding: listTilePadding,
+                              title: Text('Abmelden',
+                                  style: AppThemeTextStyles.normal.copyWith(
+                                    color: AppThemeColors.blue,
+                                  )),
+                              onTap: () async {
+                                runLoginApp();
+                              }),
+                        ]),
+                    // CupertinoListSection.insetGrouped(
+                    //   margin: listSectionMargin,
+                    //   additionalDividerMargin: defaultDividerMargin,
+                    //   children: [
+                    //     CupertinoListTile.notched(
+                    //         padding: listTilePadding,
+                    //         title: Text('Profil & Daten löschen',
+                    //             style: AppThemeTextStyles.normal.copyWith(
+                    //               color: AppThemeColors.red,
+                    //             )),
+                    //         onTap: () async {
+                    //           toDelete = profile;
+                    //           runLoginApp();
+                    //         }),
+                    //   ],
+                    // ),
+                  ],
+                );
+              }
+              return const CupertinoActivityIndicator();
+            },
+          )),
         ],
       ),
     );

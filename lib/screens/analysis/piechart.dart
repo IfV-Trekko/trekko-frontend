@@ -7,7 +7,6 @@ import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
 import '../../components/constants/transportDesign.dart';
@@ -67,7 +66,8 @@ class PieChartWidgetState extends State<PieChartWidget> {
           Row(
             children: [
               Container(
-                margin: const EdgeInsets.only(bottom: 14.0, left: 4.0, top: 7.0),
+                margin:
+                    const EdgeInsets.only(bottom: 14.0, left: 4.0, top: 7.0),
                 child: Text('Gesamtstrecke', style: AppThemeTextStyles.title),
               ),
             ],
@@ -109,10 +109,10 @@ class PieChartWidgetState extends State<PieChartWidget> {
               color: AppThemeColors.contrast100,
               borderRadius: BorderRadius.circular(8),
             ),
-            padding: const EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
+            padding:
+                const EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
             child: Wrap(
-              spacing:
-                  12,
+              spacing: 12,
               runSpacing: 12,
               children: [
                 for (TransportType type in TransportType.values)
