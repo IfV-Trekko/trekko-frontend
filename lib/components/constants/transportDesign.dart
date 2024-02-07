@@ -3,7 +3,6 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
-//TODO: change from Hashtag to correct colors and icons
 class TransportDesign {
   static final Map<TransportType, Color> _colors = {
     TransportType.by_foot: AppThemeColors.blue,
@@ -15,7 +14,6 @@ class TransportDesign {
     TransportType.other: AppThemeColors.green,
   };
 
-  //TODO change to correct icons from CupertinoIcons package
   static final Map<TransportType, HeroIcons> _icons = {
     TransportType.by_foot: HeroIcons.footstepsOutline,
     TransportType.bicycle: HeroIcons.bicycleOutline,
