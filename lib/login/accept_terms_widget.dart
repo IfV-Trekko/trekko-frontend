@@ -1,5 +1,6 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AcceptTermsWidget extends StatefulWidget {
 
@@ -49,6 +50,34 @@ class _AcceptTermsWidgetState extends State<AcceptTermsWidget> {
             ),
           ],
         ),
+        SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 12),
+              child: GestureDetector(
+                onTap: () async {
+                  Uri url = Uri(
+                      scheme: 'https',
+                      host: 'www.trekko.de',
+                      path: '/datenschutz');
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                child: Text(
+                  "Hier klicken, um die Datenschutzbestimmungen zu lesen.",
+                  style: AppThemeTextStyles.tiny.copyWith(
+                    color: AppThemeColors.blue,
+                  ),
+                ),
+              )
+            )
+          ]
+        )
       ],
     );
   }

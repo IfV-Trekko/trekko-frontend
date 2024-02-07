@@ -1,5 +1,7 @@
 PODS:
   - Alamofire (5.8.1)
+  - background_locator_2 (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
   - flutter_osm_plugin (0.0.1):
     - Alamofire
@@ -27,6 +29,7 @@ PODS:
   - Yams (5.0.6)
 
 DEPENDENCIES:
+  - background_locator_2 (from `.symlinks/plugins/background_locator_2/ios`)
   - Flutter (from `Flutter`)
   - flutter_osm_plugin (from `.symlinks/plugins/flutter_osm_plugin/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
@@ -45,6 +48,8 @@ SPEC REPOS:
     - Yams
 
 EXTERNAL SOURCES:
+  background_locator_2:
+    :path: ".symlinks/plugins/background_locator_2/ios"
   Flutter:
     :path: Flutter
   flutter_osm_plugin:
@@ -66,6 +71,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
+  background_locator_2: bc8a422343ab656d5bd98e08694c6f89fef20418
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_osm_plugin: a661df71d2a3d1698ee410dd2272c8536f9e46f4
   geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a
@@ -81,4 +87,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1afb412608b8e1daa398fb36d853e787f0d44a02
 
-COCOAPODS: 1.15.0
+COCOAPODS: 1.14.3

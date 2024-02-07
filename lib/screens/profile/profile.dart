@@ -154,22 +154,22 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     runLoginApp();
                                   }),
                             ]),
-                        // CupertinoListSection.insetGrouped(
-                        //   margin: listSectionMargin,
-                        //   additionalDividerMargin: defaultDividerMargin,
-                        //   children: [
-                        //     CupertinoListTile.notched(
-                        //         padding: listTilePadding,
-                        //         title: Text('Profil & Daten löschen',
-                        //             style: AppThemeTextStyles.normal.copyWith(
-                        //               color: AppThemeColors.red,
-                        //             )),
-                        //         onTap: () async {
-                        //           toDelete = profile;
-                        //           runLoginApp();
-                        //         }),
-                        //   ],
-                        // ),
+                        CupertinoListSection.insetGrouped(
+                          margin: listSectionMargin,
+                          additionalDividerMargin: defaultDividerMargin,
+                          children: [
+                            CupertinoListTile.notched(
+                                padding: listTilePadding,
+                                title: Text('Profil & Daten löschen',
+                                    style: AppThemeTextStyles.normal.copyWith(
+                                      color: AppThemeColors.red,
+                                    )),
+                                onTap: () async {
+                                  toDelete = profile;
+                                  runLoginApp();
+                                }),
+                          ],
+                        ),
                       ],
                     );
                   }

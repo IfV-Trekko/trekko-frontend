@@ -49,6 +49,7 @@ dependencies:
   async: ^2.11.0
   isar: ^3.1.0+1
   fling_units: ^2.2.6
+  url_launcher: ^6.0.9
 
 dev_dependencies:
   flutter_test:
