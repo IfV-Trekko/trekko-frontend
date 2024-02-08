@@ -199,9 +199,9 @@ class _JournalScreenState extends State<StatefulWidget>
         query = query.or().idEqualTo(tripId);
       }
       int deletedTrips = await trekko.deleteTrip(query.build());
-      finishedAction('Sie haben $deletedTrips Wege gelöscht', false);
+      showPopupMessage('Sie haben $deletedTrips Wege gelöscht', false);
     } catch (e) {
-      finishedAction("Fehler beim Löschen der Wege", true);
+      showPopupMessage("Fehler beim Löschen der Wege", true);
     }
   }
 
@@ -218,10 +218,10 @@ class _JournalScreenState extends State<StatefulWidget>
         count++;
       }
       await trekko.mergeTrips(query.build());
-      finishedAction('Sie haben $count Wege zusammengefügt', false);
+      showPopupMessage('Sie haben $count Wege zusammengefügt', false);
     } catch (e) {
       print(e);
-      finishedAction("Fehler beim Vereinigen der Wege", true);
+      showPopupMessage("Fehler beim Vereinigen der Wege", true);
     }
   }
 
@@ -233,15 +233,15 @@ class _JournalScreenState extends State<StatefulWidget>
         query = query.or().idEqualTo(tripId);
       }
       int count = await trekko.revoke(query.build());
-      finishedAction(
+      showPopupMessage(
           'Sie haben ihre Spende über $count Wege zurückgezogen', false);
     } catch (e) {
-      finishedAction(
+      showPopupMessage(
           "Fehler beim Zurückziehen der Wege", true); // Handle the error here
     }
   }
 
-  void finishedAction(String message, bool error) {
+  void showPopupMessage(String message, bool error) {
     selectedTrips.clear();
     setState(() {
       isLoading = false;
