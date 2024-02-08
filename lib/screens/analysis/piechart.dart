@@ -29,7 +29,9 @@ class PieChartWidgetState extends State<PieChartWidget> {
             .filter()
             .legsElement((l) => l.transportTypeEqualTo(vehicle))
             .build(),
-        (t) => t.getDistance(),
+        (t) => t.legs
+            .map((l) => l.transportType == vehicle ? l.getDistance() : 0.meters)
+            .reduce((a, b) => a + b),
         DistanceReduction.SUM);
   }
 
@@ -42,7 +44,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
           value: value == null ? 0 : value.as(meters),
           title: value == null || sum == const Distance.zero()
               ? '0%'
-              : '${(value.as(meters) / sum.as(meters) * 100).round()}%',
+              : '${(value.as(meters) / sum.as(meters) * 100).toStringAsFixed(1)}%',
           radius: 55,
           titleStyle: AppThemeTextStyles.normal.copyWith(
             color: AppThemeColors.contrast0,
@@ -86,7 +88,6 @@ class PieChartWidgetState extends State<PieChartWidget> {
                           sectionsSpace: 5,
                           centerSpaceRadius: 50,
                           sections: snapshot.data!,
-                          startDegreeOffset: 20,
                         ),
                       );
                     } else if (snapshot.hasError) {
@@ -97,7 +98,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
                   },
                 ),
                 Text(
-                  "${sum.as(kilo.meters).roundToDouble()} km",
+                  "${sum.as(kilo.meters).toStringAsFixed(1)} km",
                   style: AppThemeTextStyles.normal
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
