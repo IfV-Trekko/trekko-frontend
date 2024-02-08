@@ -9,7 +9,6 @@ class EditContext extends StatelessWidget {
   final bool isDonating;
   final Function() onDonate;
   final Function() onDelete;
-  final Function() onReset;
   final Function() onRevoke;
 
   const EditContext(
@@ -17,7 +16,6 @@ class EditContext extends StatelessWidget {
       required this.isDonating,
       required this.onDonate,
       required this.onDelete,
-      required this.onReset,
       required this.onRevoke,
       super.key});
   @override
@@ -53,7 +51,6 @@ class EditContext extends StatelessWidget {
                 style: ButtonStyle.destructive,
                 title: '',
                 icon: HeroIcons.trash,
-                // HeroIcons.ellipsisHorizontal,
                 onPressed: () {
                   _askForPermission(context);
                 }),

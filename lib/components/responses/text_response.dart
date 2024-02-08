@@ -9,9 +9,9 @@ class TextResponse extends StatefulWidget {
   final int maxLines;
   final String title;
   final String initialValue;
-  late String placeholder;
   final Function(String) onSaved;
   final TextResponseKeyboardType keyboardType;
+  late String placeholder;
   late TextEditingController _controller;
 
   TextResponse(
@@ -87,9 +87,9 @@ class _TextResponseState extends State<TextResponse> {
                   keyboardType: widget.keyboardType.inputType,
                   controller: widget._controller,
                   scrollPadding: const EdgeInsets.all(2),
-                  maxLength: widget.maxLength, //TODO reset on save empty
+                  maxLength: widget.maxLength,
                   maxLines: widget.maxLines,
-                  placeholder: widget.placeholder, //TODO warum mittig????
+                  placeholder: widget.placeholder,
                   autofocus: true,
                   decoration: BoxDecoration(
                     color: AppThemeColors.contrast100,

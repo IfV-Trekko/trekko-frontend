@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 enum TextResponseKeyboardType {
-  text(
-    inputType: TextInputType.text,
-  ),
+  text(inputType: TextInputType.text),
   number(inputType: TextInputType.number),
   dezimal(inputType: TextInputType.numberWithOptions(decimal: true)),
   ;

@@ -3,9 +3,9 @@ import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/path_showcase.dart';
-import 'package:app_frontend/screens/journal/journal_detail/journal_detail_box.dart';
-import 'package:app_frontend/screens/journal/journal_detail/journal_detail_box_donation.dart';
-import 'package:app_frontend/screens/journal/journal_detail/journal_detail_box_vehicle.dart';
+import 'package:app_frontend/screens/journal/journal_detail/donation_box.dart';
+import 'package:app_frontend/screens/journal/journal_detail/purpose_box.dart';
+import 'package:app_frontend/screens/journal/journal_detail/vehicle_box.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
 import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,8 +17,7 @@ class JournalEntry extends StatelessWidget {
   final bool selectionMode;
   final bool isSelected;
   final bool isDisabled;
-  final Function(Trip, bool)?
-      onSelectionChanged; // Callback for selection change
+  final Function(Trip, bool)? onSelectionChanged;
   final Trekko trekko;
   double maxWidth = 0;
 
@@ -45,7 +44,6 @@ class JournalEntry extends StatelessWidget {
         children: [
           if (selectionMode)
             ClipRect(
-              //transform: Matrix4.translationValues(-16, 0, 0),
               child: SizedBox(
                   width: 24,
                   height: 24,
@@ -249,21 +247,18 @@ class _LabelRow extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Wrap(
         alignment: WrapAlignment.start,
-        spacing: 6.0, // Horizontal space between children
-        runSpacing: 6.0, // Vertical space between lines
+        spacing: 6.0,
+        runSpacing: 6.0,
         children: [
-          // Generate vehicle type boxes
           for (var vehicleType in uniqueVehicleTypes)
             Wrap(
               children: [
-                JournalDetailBoxVehicle(vehicleType, showText: true),
+                VehicleBox(vehicleType, showText: true),
               ],
             ),
-          // Add JournalDetailBox for purpose and donation
           if (trip.purpose != null && trip.purpose!.isNotEmpty)
-            JournalDetailBox(trip.purpose.toString()),
-          JournalDetailBoxDonation(trip.donationState),
-          // Icon at the end
+            PurposeBox(trip.purpose.toString()),
+          DonationBox(trip.donationState),
         ],
       ),
     );
