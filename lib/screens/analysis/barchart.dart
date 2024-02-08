@@ -3,12 +3,12 @@ import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/leg.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
+import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/constants/transport_design.dart';
 import 'package:async/async.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
-import '../../app_theme.dart';
 import 'package:isar/isar.dart';
 
 class Tuple<T1, T2> {
@@ -71,7 +71,6 @@ class BarChartWidgetState extends State<BarChartWidget> {
 
     Widget getTitles(double value, TitleMeta meta) {
       HeroIcon icon;
-      //TextStyle? style;
       switch (value.toInt()) {
         case 0:
           icon = HeroIcon(TransportDesign.getIcon(TransportType.by_foot),
@@ -183,10 +182,12 @@ class BarChartWidgetState extends State<BarChartWidget> {
                           barTouchData: BarTouchData(
                             touchTooltipData: BarTouchTooltipData(
                               tooltipBgColor: AppThemeColors.contrast150,
-                              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                              getTooltipItem:
+                                  (group, groupIndex, rod, rodIndex) {
                                 return BarTooltipItem(
                                   '${rod.toY}',
-                                  const TextStyle(color: AppThemeColors.contrast900),
+                                  const TextStyle(
+                                      color: AppThemeColors.contrast900),
                                 );
                               },
                             ),
