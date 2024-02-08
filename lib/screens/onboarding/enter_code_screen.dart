@@ -1,7 +1,7 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/text_input.dart';
-import 'package:app_frontend/login/simple_onboarding_screen.dart';
-import 'package:app_frontend/login/text_info_screen.dart';
+import 'package:app_frontend/screens/onboarding/simple_onboarding_screen.dart';
+import 'package:app_frontend/screens/onboarding/text_info_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class EnterCodeScreen extends StatefulWidget {

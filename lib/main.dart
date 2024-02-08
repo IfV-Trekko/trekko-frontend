@@ -1,6 +1,6 @@
 import 'package:app_backend/controller/builder/last_login_builder.dart';
 import 'package:app_backend/controller/trekko.dart';
-import 'package:app_frontend/login/login_app.dart';
+import 'package:app_frontend/screens/onboarding/login_app.dart';
 import 'package:app_frontend/screens/trekko_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';

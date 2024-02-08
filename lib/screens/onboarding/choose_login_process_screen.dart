@@ -1,10 +1,10 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
-import 'package:app_frontend/login/item_divider.dart';
-import 'package:app_frontend/login/sign_in_screen.dart';
-import 'package:app_frontend/login/sign_up_screen.dart';
-import 'package:app_frontend/login/simple_onboarding_screen.dart';
+import 'package:app_frontend/screens/onboarding/item_divider.dart';
+import 'package:app_frontend/screens/onboarding/sign_in_screen.dart';
+import 'package:app_frontend/screens/onboarding/sign_up_screen.dart';
+import 'package:app_frontend/screens/onboarding/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
@@ -27,7 +27,9 @@ class ChooseLoginProcessScreen extends StatelessWidget {
               size: 250,
               color: AppThemeColors.contrast900,
             ),
-            const SizedBox(height: 100,), //TODO: Add a better spacing
+            const SizedBox(
+              height: 100,
+            ), //TODO: Add a better spacing
             Button(
                 title: "Registrieren",
                 onPressed: () {

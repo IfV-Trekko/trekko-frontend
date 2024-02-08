@@ -3,8 +3,8 @@ import 'package:app_backend/controller/builder/login_builder.dart';
 import 'package:app_backend/controller/builder/login_result.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/components/text_input.dart';
-import 'package:app_frontend/login/item_divider.dart';
-import 'package:app_frontend/login/simple_onboarding_screen.dart';
+import 'package:app_frontend/screens/onboarding/item_divider.dart';
+import 'package:app_frontend/screens/onboarding/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class SignInScreen extends StatefulWidget {

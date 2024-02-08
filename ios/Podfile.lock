@@ -18,7 +18,7 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - permission_handler_apple (9.1.1):
+  - permission_handler_apple (9.3.0):
     - Flutter
   - Polyline (5.1.0)
   - Tangram-es (0.17.1)
@@ -78,7 +78,7 @@ SPEC CHECKSUMS:
   geolocator_apple: 9157311f654584b9bb72686c55fc02a97b73f461
   isar_flutter_libs: b69f437aeab9c521821c3f376198c4371fa21073
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
-  permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
+  permission_handler_apple: 036b856153a2b1f61f21030ff725f3e6fece2b78
   Polyline: 2a1f29f87f8d9b7de868940f4f76deb8c678a5b1
   Tangram-es: 628b634f7fc09d2217469b9914de00d9de49ff9d
   url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
@@ -87,4 +87,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 978dd492a93a8ef4ec2dc2b3631de447af34068a
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.0

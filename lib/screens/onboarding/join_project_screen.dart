@@ -4,8 +4,8 @@ import 'package:app_backend/controller/builder/authentification_utils.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:app_frontend/components/text_input.dart';
-import 'package:app_frontend/login/choose_login_process_screen.dart';
-import 'package:app_frontend/login/simple_onboarding_screen.dart';
+import 'package:app_frontend/screens/onboarding/choose_login_process_screen.dart';
+import 'package:app_frontend/screens/onboarding/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class JoinProjectScreen extends StatefulWidget {
@@ -32,7 +32,8 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
             showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
-                      title: const Text("Naaahhh unterschätz das mal nicht hier"),
+                      title:
+                          const Text("Naaahhh unterschätz das mal nicht hier"),
                       actions: [
                         CupertinoDialogAction(
                           child: const Text('Werd ich nicht'),

@@ -1,5 +1,4 @@
 import 'package:app_backend/controller/request/bodies/response/project_metadata_response.dart';
-import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/controller/utils/onboarding_utils.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';

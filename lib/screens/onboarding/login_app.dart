@@ -1,13 +1,13 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/onboarding_text_type.dart';
-import 'package:app_frontend/login/choose_login_process_screen.dart';
-import 'package:app_frontend/login/enter_code_screen.dart';
-import 'package:app_frontend/login/join_project_screen.dart';
-import 'package:app_frontend/login/questionnaire_screen.dart';
-import 'package:app_frontend/login/sign_in_screen.dart';
-import 'package:app_frontend/login/sign_up_screen.dart';
-import 'package:app_frontend/login/text_info_screen.dart';
-import 'package:app_frontend/login/welcome_screen.dart';
+import 'package:app_frontend/screens/onboarding/choose_login_process_screen.dart';
+import 'package:app_frontend/screens/onboarding/enter_code_screen.dart';
+import 'package:app_frontend/screens/onboarding/join_project_screen.dart';
+import 'package:app_frontend/screens/onboarding/questionnaire_screen.dart';
+import 'package:app_frontend/screens/onboarding/sign_in_screen.dart';
+import 'package:app_frontend/screens/onboarding/sign_up_screen.dart';
+import 'package:app_frontend/screens/onboarding/text_info_screen.dart';
+import 'package:app_frontend/screens/onboarding/welcome_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class LoginApp extends StatelessWidget {
@@ -37,7 +37,9 @@ class LoginApp extends StatelessWidget {
           text: OnboardingTextType.whatText,
           title: "Was wollen\nwir?",
           nextPage: QuestionnaireScreen.route),
-      QuestionnaireScreen.route: (b) => QuestionnaireScreen(trekkoCallBack,),
+      QuestionnaireScreen.route: (b) => QuestionnaireScreen(
+            trekkoCallBack,
+          ),
     };
 
     return CupertinoApp(

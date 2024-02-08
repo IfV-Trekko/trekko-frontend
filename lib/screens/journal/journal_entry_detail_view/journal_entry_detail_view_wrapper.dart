@@ -4,7 +4,7 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
-import 'package:app_frontend/components/trip_map.dart';
+import 'package:app_frontend/components/maps/trip_map.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/description.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/details.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/edit_context.dart';

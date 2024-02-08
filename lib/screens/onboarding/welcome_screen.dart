@@ -1,6 +1,6 @@
 import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/login/join_project_screen.dart';
-import 'package:app_frontend/login/simple_onboarding_screen.dart';
+import 'package:app_frontend/screens/onboarding/join_project_screen.dart';
+import 'package:app_frontend/screens/onboarding/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class WelcomeScreen extends StatelessWidget {
