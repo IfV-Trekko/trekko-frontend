@@ -4,7 +4,7 @@ import 'package:app_frontend/components/constants/text_response_keyboard_type.da
 import 'package:app_frontend/components/constants/transport_design.dart';
 import 'package:app_frontend/components/responses/multi_select_response.dart';
 import 'package:app_frontend/components/responses/text_response.dart';
-import 'package:app_frontend/screens/journal/journal_detail/journal_detail_box_vehicle.dart';
+import 'package:app_frontend/screens/journal/journal_detail/vehicle_box.dart';
 import 'package:flutter/cupertino.dart';
 
 class Details extends StatefulWidget {
@@ -72,13 +72,12 @@ class _DetailsState extends State<Details> {
                   if (widget.detailVehicle.length <= 3) ...[
                     for (TransportType type in widget.detailVehicle) ...[
                       const SizedBox(width: 4),
-                      JournalDetailBoxVehicle(type, showText: false)
+                      VehicleBox(type, showText: false)
                     ],
                   ] else ...[
                     for (int i = 0; i < 3; i++) ...[
                       const SizedBox(width: 4),
-                      JournalDetailBoxVehicle(widget.detailVehicle[i],
-                          showText: false)
+                      VehicleBox(widget.detailVehicle[i], showText: false)
                     ],
                     const SizedBox(width: 4),
                     const Text('...'),
