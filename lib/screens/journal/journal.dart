@@ -4,6 +4,7 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/screens/journal/donation_modal.dart';
+import 'package:app_frontend/screens/journal/journal_edit_bar.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
 import 'package:app_frontend/screens/journal/trips_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -141,67 +142,22 @@ class _JournalScreenState extends State<StatefulWidget>
               ),
             )
           else if (selectionMode)
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: AppThemeColors.contrast0,
-                  border: Border(
-                    top: BorderSide(
-                      color: AppThemeColors.contrast400,
-                      width: 1.0,
-                    ),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(13.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          await merge(trekko);
-                          setState(() {
-                            selectionMode = false;
-                          });
-                        },
-                        child: Text(
-                          "Vereinigen",
-                          style: AppThemeTextStyles.normal
-                              .copyWith(color: AppThemeColors.blue),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          await revoke(trekko);
-                          setState(() {
-                            selectionMode = false;
-                          });
-                        },
-                        child: Text(
-                          "Zurückziehen",
-                          style: AppThemeTextStyles.normal
-                              .copyWith(color: AppThemeColors.blue),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          await delete(trekko);
-                          setState(() {
-                            selectionMode = false;
-                          });
-                        },
-                        child: Text(
-                          "Löschen",
-                          style: AppThemeTextStyles.normal
-                              .copyWith(color: AppThemeColors.red),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
+            JournalEditBar(onRevoke: () async {
+              await revoke(trekko);
+              setState(() {
+                selectionMode = false;
+              });
+            }, onMerge: () async {
+              await merge(trekko);
+              setState(() {
+                selectionMode = false;
+              });
+            }, onDelete: () async {
+              await delete(trekko);
+              setState(() {
+                selectionMode = false;
+              });
+            })
         ],
       ),
     ));
@@ -264,6 +220,7 @@ class _JournalScreenState extends State<StatefulWidget>
       await trekko.mergeTrips(query.build());
       finishedAction('Sie haben $count Wege zusammengefügt', false);
     } catch (e) {
+      print(e);
       finishedAction("Fehler beim Vereinigen der Wege", true);
     }
   }
