@@ -220,7 +220,6 @@ class _JournalScreenState extends State<StatefulWidget>
       await trekko.mergeTrips(query.build());
       showPopupMessage('Sie haben $count Wege zusammengefügt', false);
     } catch (e) {
-      print(e);
       showPopupMessage("Fehler beim Vereinigen der Wege", true);
     }
   }
