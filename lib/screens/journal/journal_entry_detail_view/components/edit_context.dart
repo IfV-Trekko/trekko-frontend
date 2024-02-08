@@ -1,23 +1,21 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/edit_context_menu.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 
 class EditContext extends StatelessWidget {
   final bool donated;
-  final bool isDonatig;
+  final bool isDonating;
   final Function() onDonate;
-  final Function() onUpdate;
   final Function() onDelete;
   final Function() onReset;
   final Function() onRevoke;
 
   const EditContext(
       {required this.donated,
-      required this.isDonatig,
+      required this.isDonating,
       required this.onDonate,
-      required this.onUpdate,
       required this.onDelete,
       required this.onReset,
       required this.onRevoke,
@@ -43,19 +41,50 @@ class EditContext extends StatelessWidget {
         children: [
           Expanded(
               child: Button(
-            loading: isDonatig,
+            loading: isDonating,
             style: donated ? ButtonStyle.secondary : ButtonStyle.primary,
             title: donated ? 'Spende zurückziehen' : 'Spenden',
             onPressed: donated ? onRevoke : onDonate,
           )),
           const SizedBox(width: 8),
-          EditContextMenu(
-              onDelete: onDelete,
-              donated: donated,
-              onReset: onReset,
-              onRevoke: onRevoke)
+          SizedBox(
+            width: 48,
+            child: Button(
+                style: ButtonStyle.destructive,
+                title: '',
+                icon: HeroIcons.trash,
+                // HeroIcons.ellipsisHorizontal,
+                onPressed: () {
+                  _askForPermission(context);
+                }),
+          ),
         ],
       ),
     );
+  }
+
+  void _askForPermission(BuildContext context) {
+    showCupertinoModalPopup<void>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+              title: const Text('Unwideruflich Löschen?'),
+              content: const Text(
+                  'Möchtest du die Spende wirklich unwiderruflich löschen?'),
+              actions: <CupertinoDialogAction>[
+                CupertinoDialogAction(
+                  child: const Text('Abbrechen'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: const Text('Löschen'),
+                  onPressed: () {
+                    onDelete();
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ));
   }
 }

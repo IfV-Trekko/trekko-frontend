@@ -60,7 +60,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
         backgroundColor: AppThemeColors.contrast150,
         navigationBar: CupertinoNavigationBar(
             leading: Transform.translate(
-              offset: const Offset(-16, 0), //TODO überprüfen
+              offset: const Offset(-16, 0),
               child: CupertinoNavigationBarBackButton(
                   previousPageTitle: 'Tagebuch',
                   onPressed: () {
@@ -68,14 +68,11 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                   }),
             ),
             middle: const Text('Wege'),
-            trailing:
-                // widget.trip.donationState == DonationState.donated
-                //     ?
-                Button(
+            trailing: Button(
               stretch: false,
               title: 'Zurücksetzen',
               onPressed: () async {
-                _askForReset(); //TODO funktioniert nicht & vorher fragen
+                _askForReset();
                 await trekko.saveTrip(widget.trip);
               },
               size: ButtonSize.small,
@@ -124,14 +121,10 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
             Align(
               alignment: Alignment.bottomCenter,
               child: EditContext(
-                  //TODO schießt mit hoch
-                  isDonatig: isLoading,
+                  isDonating: isLoading,
                   donated: widget.trip.donationState == DonationState.donated,
                   onReset: () {
-                    widget.trip.reset(); //TODO funktioniert nicht
-                  },
-                  onUpdate: () {
-                    trekko.saveTrip(widget.trip);
+                    widget.trip.reset();
                   },
                   onDonate: () async {
                     await trekko.saveTrip(widget.trip);
