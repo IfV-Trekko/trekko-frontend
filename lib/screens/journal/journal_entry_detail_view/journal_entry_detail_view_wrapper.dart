@@ -81,8 +81,9 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
         child: SafeArea(
             child: Stack(
           children: [
-            Expanded(
-                child: ListView(children: [
+            // Expanded( // TODO: Expanded can not be used in Stack
+            //     child:
+            ListView(children: [
               SizedBox(
                   height: 234,
                   child: Center(
@@ -117,7 +118,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                 },
               ),
               const SizedBox(height: 128),
-            ])),
+            ]),
             Align(
               alignment: Alignment.bottomCenter,
               child: EditContext(
