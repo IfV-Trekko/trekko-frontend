@@ -3,11 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class MainMap extends StatefulWidget {
-  final MapController controller = MapController.withUserPosition(
-      trackUserLocation:
-          const UserTrackingOption(enableTracking: true, unFollowUser: false));
-
-  MainMap({Key? key}) : super(key: key);
+  const MainMap({Key? key}) : super(key: key);
 
   @override
   MainMapState createState() => MainMapState();
@@ -15,12 +11,23 @@ class MainMap extends StatefulWidget {
 
 class MainMapState extends State<MainMap>
     with AutomaticKeepAliveClientMixin<MainMap> {
+  late MapController controller;
+
+  @override
+  void initState() {
+    // Position in karlsruhe
+    controller = MapController.withPosition(
+        initPosition: GeoPoint(latitude: 49.0069, longitude: 8.4037));
+    controller.init();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     _moveToUserLocation();
     OSMFlutter osm = OSMFlutter(
-        controller: widget.controller,
+        controller: controller,
         osmOption: const OSMOption(
           zoomOption: ZoomOption(
             initZoom: 12,
@@ -34,15 +41,15 @@ class MainMapState extends State<MainMap>
 
   @override
   void dispose() {
-    widget.controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
   Future<void> _moveToUserLocation() async {
     TrekkoProvider.of(context).getPosition().listen((event) {
-      widget.controller.changeLocation(
+      controller.changeLocation(
           GeoPoint(latitude: event.latitude, longitude: event.longitude));
-      widget.controller.goToLocation(
+      controller.goToLocation(
           GeoPoint(latitude: event.latitude, longitude: event.longitude));
     });
   }
