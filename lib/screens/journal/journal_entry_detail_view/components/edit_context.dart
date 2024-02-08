@@ -51,6 +51,7 @@ class EditContext extends StatelessWidget {
                 style: ButtonStyle.destructive,
                 title: '',
                 icon: HeroIcons.trash,
+                // HeroIcons.ellipsisHorizontal,
                 onPressed: () {
                   _askForPermission(context);
                 }),
