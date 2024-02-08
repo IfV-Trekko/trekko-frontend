@@ -4,11 +4,10 @@ import 'package:app_backend/model/trip/leg.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
+import 'package:app_frontend/screens/analysis/basicchart_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
-
-import 'basicchart_row.dart';
 
 class BasicChart extends StatelessWidget {
   final Trekko trekko;

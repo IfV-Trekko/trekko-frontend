@@ -5,9 +5,9 @@ import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/constants/transport_design.dart';
+import 'package:app_frontend/screens/analysis/attribute_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
-import 'attribute_row.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
 
@@ -15,8 +15,7 @@ class VehicleData extends StatelessWidget {
   final Trekko trekko;
   final TransportType vehicle;
 
-  const VehicleData(
-      {super.key, required this.trekko, required this.vehicle});
+  const VehicleData({super.key, required this.trekko, required this.vehicle});
 
   Stream<T?> getData<T>(T Function(Trip) apply, Reduction<T> reduction) {
     return trekko.analyze(
