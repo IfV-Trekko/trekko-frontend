@@ -35,10 +35,6 @@ class JournalEditBar extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   onMerge();
-                  // await merge(trekko);
-                  // setState(() {
-                  //   selectionMode = false;
-                  // });
                 },
                 child: Text(
                   "Vereinigen",
@@ -49,10 +45,6 @@ class JournalEditBar extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   onRevoke();
-                  // await revoke(trekko);
-                  // setState(() {
-                  //   selectionMode = false;
-                  // });
                 },
                 child: Text(
                   "Zurückziehen",
@@ -63,10 +55,6 @@ class JournalEditBar extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   onDelete();
-                  // await delete(trekko);
-                  // setState(() {
-                  //   selectionMode = false;
-                  // });
                 },
                 child: Text(
                   "Löschen",
