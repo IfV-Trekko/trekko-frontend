@@ -34,7 +34,10 @@ class BarChartWidgetState extends State<BarChartWidget> {
             .filter()
             .legsElement((l) => l.transportTypeEqualTo(vehicle))
             .build(),
-        (t) => t.calculateDuration(),
+        (t) => t.legs
+            .map((l) =>
+                l.transportType == vehicle ? l.getDuration() : Duration.zero)
+            .reduce((a, b) => a + b),
         DurationReduction.AVERAGE);
   }
 

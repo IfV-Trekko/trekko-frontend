@@ -100,14 +100,21 @@ class VehicleData extends StatelessWidget {
             AttributeRow(
                 title: 'Gesamtstrecke',
                 value: getDataFormatted(
-                    (t) => t.getDistance(),
+                    (t) => t.legs
+                        .map((l) => l.transportType == vehicle
+                            ? l.getDistance()
+                            : 0.meters)
+                        .reduce((a, b) => a + b),
                     DistanceReduction.SUM,
-                    (d) => "${d.as(kilo.meters).roundToDouble()} km")),
+                    (d) => "${d.as(kilo.meters).toStringAsFixed(1)} km")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Strecke pro Weg',
                 value: getDataFormatted(
-                    (t) => t.getDistance(),
+                    (t) => t.legs
+                        .where((l) => l.transportType == vehicle)
+                        .map((l) => l.getDistance())
+                        .reduce((a, b) => a + b),
                     DistanceReduction.AVERAGE,
                     (d) => "${d.as(kilo.meters).roundToDouble()} km")),
             const SizedBox(height: 8),
