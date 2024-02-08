@@ -11,11 +11,11 @@ import 'attribute_row.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
 
-class VehicleDataBox extends StatelessWidget {
+class VehicleData extends StatelessWidget {
   final Trekko trekko;
   final TransportType vehicle;
 
-  const VehicleDataBox(
+  const VehicleData(
       {super.key, required this.trekko, required this.vehicle});
 
   Stream<T?> getData<T>(T Function(Trip) apply, Reduction<T> reduction) {
@@ -36,7 +36,7 @@ class VehicleDataBox extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Text(
-            format(snapshot.data as T), // Verwendung des Parameters value
+            format(snapshot.data as T),
             style:
                 AppThemeTextStyles.normal.copyWith(fontWeight: FontWeight.bold),
           );
