@@ -60,7 +60,7 @@ class _SimpleOnboardingScreenState extends State<SimpleOnboardingScreen> {
               ),
               if (widget.buttonTitle != null)
                 Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                   child: Button(
                     title: widget.buttonTitle!,
                     stretch: true,
