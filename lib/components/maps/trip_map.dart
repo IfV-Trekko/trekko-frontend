@@ -7,8 +7,7 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 class TripMap extends StatefulWidget {
   final Trip trip;
   final MapController controller = MapController.withPosition(
-      initPosition: // Karlsruhe
-          GeoPoint(latitude: 49.013379, longitude: 8.404393));
+      initPosition: GeoPoint(latitude: 49.013379, longitude: 8.404393));
   late List<GeoPoint> pathGeoPoints = [];
   late BoundingBox tripBoundingBox;
 

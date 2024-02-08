@@ -26,7 +26,7 @@ class _TrackingScreenState extends State<TrackingScreen>
     return CupertinoPageScaffold(
       child: Stack(
         children: <Widget>[
-          const MainMap(),
+          MainMap(),
           Transform.translate(
             offset: const Offset(0, 40),
             child: MapOptionSheet(

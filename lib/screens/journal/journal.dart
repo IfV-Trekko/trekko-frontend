@@ -75,7 +75,7 @@ class _JournalScreenState extends State<StatefulWidget>
                       GestureDetector(
                         onTap: () {
                           Trip newTrip = TripBuilder()
-                              .move_r(const Duration(minutes: 10), 1000.meters)
+                              .move_r(const Duration(minutes: 10), 400.meters)
                               .build();
                           trekko.saveTrip(newTrip).then((value) => {
                                 Navigator.push(

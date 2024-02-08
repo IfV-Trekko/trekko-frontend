@@ -120,7 +120,6 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                                 fillIcon: true,
                                 title: 'Erhebung starten',
                                 icon: HeroIcons.play,
-                                //TODO solid machen
                                 style: ButtonStyle.primary,
                                 onPressed: () {
                                   super

@@ -38,7 +38,6 @@ class _DetailsState extends State<Details> {
         additionalDividerMargin: widget.additionalDividerMargin,
         children: [
           CupertinoListTile(
-            //TODO auch auslagern?
             title: Text('Anlass / Zweck', style: AppThemeTextStyles.normal),
             trailing: const CupertinoListTileChevron(),
             additionalInfo: widget.detailPurpose.isEmpty

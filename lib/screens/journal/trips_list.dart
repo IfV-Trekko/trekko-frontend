@@ -38,8 +38,7 @@ class TripsList extends StatelessWidget {
                       trip.calculateStartTime())) {
                 return Column(
                   children: [
-                    JournalSubtitle(trip
-                        .calculateStartTime()), // Add the JournalSubtitle widget
+                    JournalSubtitle(trip.calculateStartTime()),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: JournalEntry(
