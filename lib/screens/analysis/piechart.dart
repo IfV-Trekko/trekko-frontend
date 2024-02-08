@@ -1,4 +1,5 @@
 import 'package:app_frontend/components/constants/transport_design.dart';
+import 'package:app_frontend/screens/analysis/legend_indicator.dart';
 import 'package:async/async.dart';
 import 'package:app_backend/controller/analysis/reductions.dart';
 import 'package:app_backend/controller/trekko.dart';
@@ -10,7 +11,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
-import 'legend_indicator.dart';
 
 class PieChartWidget extends StatefulWidget {
   @override
