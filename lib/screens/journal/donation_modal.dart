@@ -5,7 +5,7 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
-import 'package:app_frontend/screens/journal/TripsListView.dart';
+import 'package:app_frontend/screens/journal/trips_list_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 
