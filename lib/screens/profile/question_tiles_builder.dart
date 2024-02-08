@@ -1,7 +1,7 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/components/constants/text_response_keyboard_type.dart';
+import 'package:app_frontend/components/picker/setting_picker.dart';
 import 'package:app_frontend/components/responses/text_response.dart';
-import 'package:app_frontend/screens/profile/setting_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:app_backend/model/profile/profile.dart';
 import 'package:app_backend/model/profile/onboarding_question.dart';
