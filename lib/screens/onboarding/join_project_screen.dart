@@ -7,6 +7,7 @@ import 'package:app_frontend/components/text_input.dart';
 import 'package:app_frontend/screens/onboarding/choose_login_process_screen.dart';
 import 'package:app_frontend/screens/onboarding/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 class JoinProjectScreen extends StatefulWidget {
   static const String route = "/login/project/";
@@ -76,13 +77,15 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
           const SizedBox(
             height: 200,
           ),
-          Button(
-              title: "(Debug) Local",
-              style: ButtonStyle.secondary,
-              onPressed: () {
-                String local = Platform.isAndroid ? "10.0.2.2" : "localhost";
-                projectUrl.text = "http://$local:8080";
-              }),
+          // If kDebugMode, add a button to set the local server
+          if (kDebugMode)
+            Button(
+                title: "(Debug) Local",
+                style: ButtonStyle.secondary,
+                onPressed: () {
+                  String local = Platform.isAndroid ? "10.0.2.2" : "localhost";
+                  projectUrl.text = "http://$local:8080";
+                }),
         ]));
   }
 }
