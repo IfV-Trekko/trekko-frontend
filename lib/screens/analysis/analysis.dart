@@ -25,9 +25,9 @@ class _AnalysisState extends State<Analysis> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    List<VehicleDataBox> vehicleData = [];
+    List<VehicleData> vehicleData = [];
     for(TransportType type in TransportType.values) {
-        vehicleData.add(VehicleDataBox(vehicle: type, trekko: widget.trekko));
+        vehicleData.add(VehicleData(vehicle: type, trekko: widget.trekko));
     }
 
     return CupertinoPageScaffold(

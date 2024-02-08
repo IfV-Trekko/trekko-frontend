@@ -180,6 +180,20 @@ class BarChartWidgetState extends State<BarChartWidget> {
                         BarChartData(
                           alignment: BarChartAlignment.values[4],
                           maxY: maxDuration,
+                          barTouchData: BarTouchData(
+                            touchTooltipData: BarTouchTooltipData(
+                              tooltipBgColor: AppThemeColors.contrast150,
+                              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                                return BarTooltipItem(
+                                  '${rod.toY}',
+                                  TextStyle(color: AppThemeColors.contrast900),
+                                );
+                              },
+                            ),
+                            touchCallback: (FlTouchEvent event, barTouchResponse) {
+                              // Hier können Sie benutzerdefinierte Aktionen definieren, wenn ein Balken berührt wird
+                            },
+                          ),
                           extraLinesData: ExtraLinesData(
                             horizontalLines: [
                               HorizontalLine(

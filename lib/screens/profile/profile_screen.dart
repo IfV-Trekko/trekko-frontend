@@ -3,7 +3,7 @@ import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/battery_usage_setting.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/main.dart';
-import 'package:app_frontend/screens/profile/form.dart';
+import 'package:app_frontend/screens/profile/question_tiles_builder.dart';
 import 'package:app_frontend/screens/profile/setting_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:app_backend/model/profile/profile.dart';
