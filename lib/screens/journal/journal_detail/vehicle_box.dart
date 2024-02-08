@@ -1,17 +1,17 @@
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/components/constants/transportDesign.dart';
+import 'package:app_frontend/components/constants/transport_design.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
-class JournalDetailBoxVehicle extends StatelessWidget {
+class VehicleBox extends StatelessWidget {
   final String _title;
   final Color _color;
   final HeroIcons _icon;
   final bool showText;
 
-  JournalDetailBoxVehicle(TransportType transportType,
-      {super.key, this.showText = false})
+  VehicleBox(TransportType transportType, {super.key, this.showText = false})
       : _title = TransportDesign.getName(transportType),
         _color = TransportDesign.getColor(transportType),
         _icon = TransportDesign.getIcon(transportType);
@@ -21,7 +21,7 @@ class JournalDetailBoxVehicle extends StatelessWidget {
     return Container(
       height: 24,
       decoration: BoxDecoration(
-        color: _color.withOpacity(0.16), // Background color with opacity 0.16
+        color: _color.withOpacity(0.16),
         borderRadius: BorderRadius.circular(4.0),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -29,11 +29,7 @@ class JournalDetailBoxVehicle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          HeroIcon(
-            _icon,
-            size: 18,
-            color: _color.withOpacity(0.8), // Icon color with opacity 0.8
-          ),
+          HeroIcon(_icon, size: 18, color: _color.withOpacity(0.8)),
           LayoutBuilder(
             builder: ((context, constraints) {
               return Row(

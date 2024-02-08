@@ -9,7 +9,6 @@ class EditContext extends StatelessWidget {
   final bool isDonating;
   final Function() onDonate;
   final Function() onDelete;
-  final Function() onReset;
   final Function() onRevoke;
 
   const EditContext(
@@ -17,7 +16,6 @@ class EditContext extends StatelessWidget {
       required this.isDonating,
       required this.onDonate,
       required this.onDelete,
-      required this.onReset,
       required this.onRevoke,
       super.key});
   @override

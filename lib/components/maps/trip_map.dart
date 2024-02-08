@@ -1,14 +1,13 @@
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
-import 'package:app_frontend/components/constants/transportDesign.dart';
+import 'package:app_frontend/components/constants/transport_design.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class TripMap extends StatefulWidget {
   final Trip trip;
   final MapController controller = MapController.withPosition(
-      initPosition: // Karlsruhe
-          GeoPoint(latitude: 49.013379, longitude: 8.404393));
+      initPosition: GeoPoint(latitude: 49.013379, longitude: 8.404393));
   late List<GeoPoint> pathGeoPoints = [];
   late BoundingBox tripBoundingBox;
 

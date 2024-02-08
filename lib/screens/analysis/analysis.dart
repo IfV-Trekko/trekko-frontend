@@ -2,11 +2,11 @@ import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/page_control.dart';
+import 'package:app_frontend/screens/analysis/barchart.dart';
+import 'package:app_frontend/screens/analysis/basic_chart.dart';
 import 'package:app_frontend/screens/analysis/piechart.dart';
 import 'package:app_frontend/screens/analysis/vehicle_data.dart';
 import 'package:flutter/cupertino.dart';
-import 'barchart.dart';
-import 'basic_chart.dart';
 
 class Analysis extends StatefulWidget {
   final Trekko trekko;
@@ -17,31 +17,31 @@ class Analysis extends StatefulWidget {
   _AnalysisState createState() => _AnalysisState();
 }
 
-class _AnalysisState extends State<Analysis> with AutomaticKeepAliveClientMixin{
-
+class _AnalysisState extends State<Analysis>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    List<VehicleDataBox> vehicleData = [];
-    for(TransportType type in TransportType.values) {
-        vehicleData.add(VehicleDataBox(vehicle: type, trekko: widget.trekko));
+    List<VehicleData> vehicleData = [];
+    for (TransportType type in TransportType.values) {
+      vehicleData.add(VehicleData(vehicle: type, trekko: widget.trekko));
     }
 
     return CupertinoPageScaffold(
         backgroundColor: AppThemeColors.contrast100,
-        child: CustomScrollView (
+        child: CustomScrollView(
           slivers: [
             const CupertinoSliverNavigationBar(
               largeTitle: Text('Statistik'),
             ),
             SliverToBoxAdapter(
-            child: CustomPageControl(
-              pages: vehicleData,
-              pageHeights: 288,
-            ),
+              child: CustomPageControl(
+                pages: vehicleData,
+                pageHeights: 288,
+              ),
             ),
             SliverToBoxAdapter(
               child: Padding(
@@ -57,7 +57,6 @@ class _AnalysisState extends State<Analysis> with AutomaticKeepAliveClientMixin{
               ),
             ),
           ],
-        )
-    );
+        ));
   }
 }

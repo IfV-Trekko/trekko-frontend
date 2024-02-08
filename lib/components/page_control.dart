@@ -4,7 +4,9 @@ class CustomPageControl extends StatefulWidget {
   final List<Widget> pages;
   final double pageHeights;
 
-  const CustomPageControl({Key? key, required this.pages, required this.pageHeights}) : super(key: key);
+  const CustomPageControl(
+      {Key? key, required this.pages, required this.pageHeights})
+      : super(key: key);
 
   @override
   _CustomPageControlState createState() => _CustomPageControlState();
@@ -28,7 +30,6 @@ class _CustomPageControlState extends State<CustomPageControl> {
 
   @override
   Widget build(BuildContext context) {
-
     double currentPageHeight = widget.pageHeights;
 
     return Column(
@@ -39,12 +40,12 @@ class _CustomPageControlState extends State<CustomPageControl> {
           child: PageView(
             controller: _pageController,
             onPageChanged: _onPageChanged,
-            children: widget.pages.map((Widget page){
+            children: widget.pages.map((Widget page) {
               return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: page,
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: page,
               );
-            } ).toList(),
+            }).toList(),
           ),
         ),
         Container(
@@ -56,7 +57,6 @@ class _CustomPageControlState extends State<CustomPageControl> {
           ),
           child: _buildPageIndicator(),
         )
-
       ],
     );
   }
@@ -64,10 +64,10 @@ class _CustomPageControlState extends State<CustomPageControl> {
   Widget _buildPageIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,   // Setzt die Breite auf das Minimum
+      mainAxisSize: MainAxisSize.min,
       children: List<Widget>.generate(
         widget.pages.length,
-            (index) => Container(
+        (index) => Container(
           width: 8.0,
           height: 8.0,
           margin: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 4.0),

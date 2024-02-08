@@ -1,11 +1,10 @@
 import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/path_showcase.dart';
-import 'package:app_frontend/screens/journal/journal_detail/journal_detail_box.dart';
-import 'package:app_frontend/screens/journal/journal_detail/journal_detail_box_donation.dart';
-import 'package:app_frontend/screens/journal/journal_detail/journal_detail_box_vehicle.dart';
+import 'package:app_frontend/screens/journal/journal_detail/donation_box.dart';
+import 'package:app_frontend/screens/journal/journal_detail/purpose_box.dart';
+import 'package:app_frontend/screens/journal/journal_detail/vehicle_box.dart';
 import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
 import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,8 +16,7 @@ class JournalEntry extends StatelessWidget {
   final bool selectionMode;
   final bool isSelected;
   final bool isDisabled;
-  final Function(Trip, bool)?
-      onSelectionChanged; // Callback for selection change
+  final Function(Trip, bool)? onSelectionChanged;
   final Trekko trekko;
   double maxWidth = 0;
 
@@ -32,20 +30,19 @@ class JournalEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     maxWidth = MediaQuery.of(context).size.width - 32;
+
     return GestureDetector(
       onTap: () {
         if (isDisabled) return;
-        if (selectionMode) {
-          if (onSelectionChanged != null) {
-            onSelectionChanged!(trip, !isSelected);
-          }
-        } else {}
+
+        if (selectionMode && onSelectionChanged != null) {
+          onSelectionChanged!(trip, !isSelected);
+        }
       },
       child: Row(
         children: [
           if (selectionMode)
             ClipRect(
-              //transform: Matrix4.translationValues(-16, 0, 0),
               child: SizedBox(
                   width: 24,
                   height: 24,
@@ -64,67 +61,25 @@ class JournalEntry extends StatelessWidget {
           Expanded(
             child: selectionMode
                 ? _buildEntry()
-                : CupertinoContextMenu(
-                    enableHapticFeedback: true,
-                    actions: <Widget>[
-                      Builder(
-                        builder: (menuContext) => CupertinoContextMenuAction(
-                          onPressed: () {
-                            if (trip.donationState == DonationState.donated) {
-                              trekko.revoke(createQuery().build());
-                            } else {
-                              trekko.donate(createQuery().build());
-                            }
-                            Navigator.pop(menuContext);
-                          },
-                          isDefaultAction: true,
-                          trailingIcon:
-                              trip.donationState == DonationState.donated
-                                  ? CupertinoIcons.xmark
-                                  : CupertinoIcons.share,
-                          child: Text(
-                            trip.donationState == DonationState.donated
-                                ? 'Spende zurückziehen'
-                                : 'Spenden',
-                            style: AppThemeTextStyles.normal
-                                .copyWith(color: AppThemeColors.contrast900),
-                          ),
-                        ),
-                      ),
-                      Builder(
-                        builder: (menuContext) => CupertinoContextMenuAction(
-                          onPressed: () {
-                            Navigator.pop(menuContext);
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (context) =>
-                                        JournalEntryDetailView(trip)));
-                          },
-                          trailingIcon: CupertinoIcons.pen,
-                          child: Text(
-                            'Bearbeiten',
-                            style: AppThemeTextStyles.normal
-                                .copyWith(color: AppThemeColors.contrast900),
-                          ),
-                        ),
-                      ),
-                      Builder(
-                        builder: (menuContext) => CupertinoContextMenuAction(
-                          onPressed: () {
-                            trekko.deleteTrip(createQuery().build());
-                            Navigator.pop(menuContext);
-                          },
-                          trailingIcon: CupertinoIcons.trash,
-                          child: Text(
-                            'Unwiderruflich löschen',
-                            style: AppThemeTextStyles.normal
-                                .copyWith(color: AppThemeColors.red),
-                          ),
-                        ),
-                      ),
-                    ],
-                    child: _buildEntry(),
+                : JournalEntryContextMenu(
+                    trip: trip,
+                    onDonate: () async {
+                      trekko.donate(createQuery().build());
+                    },
+                    onRevoke: () async {
+                      trekko.revoke(createQuery().build());
+                    },
+                    onDelete: () async {
+                      trekko.deleteTrip(createQuery().build());
+                    },
+                    onEdit: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  JournalEntryDetailView(trip)));
+                    },
+                    buildEntry: _buildEntry,
                   ),
           ),
         ],
@@ -249,21 +204,18 @@ class _LabelRow extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Wrap(
         alignment: WrapAlignment.start,
-        spacing: 6.0, // Horizontal space between children
-        runSpacing: 6.0, // Vertical space between lines
+        spacing: 6.0,
+        runSpacing: 6.0,
         children: [
-          // Generate vehicle type boxes
           for (var vehicleType in uniqueVehicleTypes)
             Wrap(
               children: [
-                JournalDetailBoxVehicle(vehicleType, showText: true),
+                VehicleBox(vehicleType, showText: true),
               ],
             ),
-          // Add JournalDetailBox for purpose and donation
           if (trip.purpose != null && trip.purpose!.isNotEmpty)
-            JournalDetailBox(trip.purpose.toString()),
-          JournalDetailBoxDonation(trip.donationState),
-          // Icon at the end
+            PurposeBox(trip.purpose.toString()),
+          DonationBox(trip.donationState),
         ],
       ),
     );

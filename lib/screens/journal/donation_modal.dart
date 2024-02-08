@@ -135,9 +135,9 @@ class DonationModalState extends State<DonationModal>
               widget.trekko.getTripQuery().filter().idEqualTo(trip.id).build());
           donatedTrips++;
         } catch (error) {
-          Navigator.pop(context); // Close the modal
+          Navigator.pop(context);
           setState(() {
-            isLoading = false; // Set isLoading to false
+            isLoading = false;
           });
           finishedAction(
               'Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten',

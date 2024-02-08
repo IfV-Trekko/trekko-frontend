@@ -1,9 +1,8 @@
 import 'package:app_backend/model/trip/trip.dart';
-import 'package:app_frontend/components/constants/transportDesign.dart';
+import 'package:app_frontend/components/constants/transport_design.dart';
 import 'package:flutter/cupertino.dart';
 
 class PathShowcase extends StatelessWidget {
-  //TODO testen!
   final Trip trip;
   late final double distance;
 

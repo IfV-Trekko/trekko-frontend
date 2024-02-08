@@ -37,15 +37,12 @@ class _TripsListViewState extends State<TripsListView> {
       itemCount: widget.trips.length,
       itemBuilder: (context, index) {
         final trip = widget.trips[index];
-
-        // Check if this is the first trip or a new day has started
         if (index == 0 ||
             !_isSameDay(
                 widget.trips[index - 1].getStartTime(), trip.getStartTime())) {
           return Column(
             children: [
-              JournalSubtitle(
-                  trip.getStartTime()), // Add the JournalSubtitle widget
+              JournalSubtitle(trip.getStartTime()),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: JournalEntry(

@@ -16,7 +16,6 @@ class Description extends StatefulWidget {
   final DateTime endDate;
 
   const Description({
-    //TODO Klasse sehr lang
     required this.trip,
     required this.startDate,
     required this.endDate,
@@ -31,7 +30,7 @@ class _DescriptionState extends State<Description> {
   Future<String> _getStreet(TrackedPoint where) async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(where.latitude, where.longitude);
-    if (placemarks.isNotEmpty) {
+    if (placemarks.isNotEmpty && placemarks.first.street!.isNotEmpty) {
       return _formatStreet(placemarks.first);
     }
     return "-";
@@ -40,7 +39,7 @@ class _DescriptionState extends State<Description> {
   Future<String> _getLocality(TrackedPoint where) async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(where.latitude, where.longitude);
-    if (placemarks.isNotEmpty) {
+    if (placemarks.isNotEmpty && placemarks.first.street!.isNotEmpty) {
       return _formatLocality(placemarks.first);
     }
     return "-";
@@ -137,7 +136,7 @@ class _DescriptionState extends State<Description> {
                 SizedBox(
                   width: 180,
                   child: FutureBuilder(
-                      future: _getLocality(//TODO Backend soll übernehmen
+                      future: _getLocality(
                           widget.trip.legs.first.trackedPoints.first),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {

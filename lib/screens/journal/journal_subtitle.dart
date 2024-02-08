@@ -5,9 +5,11 @@ import 'package:intl/intl.dart';
 class JournalSubtitle extends StatelessWidget {
   final DateTime _date;
 
+  const JournalSubtitle(this._date, {super.key});
+
   @override
   Widget build(BuildContext context) {
-    String title = _formatDate(_date);
+    String title = DateFormat('EEEE, dd. MMMM yyyy', 'de_DE').format(_date);
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Container(
@@ -35,10 +37,4 @@ class JournalSubtitle extends StatelessWidget {
       ),
     );
   }
-
-  String _formatDate(DateTime date) {
-    return DateFormat('EEEE, dd. MMMM yyyy', 'de_DE').format(date);
-  }
-
-  const JournalSubtitle(this._date, {super.key});
 }

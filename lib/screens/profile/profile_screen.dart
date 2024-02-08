@@ -2,9 +2,9 @@ import 'package:app_backend/controller/builder/authentification_utils.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/battery_usage_setting.dart';
 import 'package:app_frontend/app_theme.dart';
+import 'package:app_frontend/components/picker/setting_picker.dart';
 import 'package:app_frontend/main.dart';
-import 'package:app_frontend/screens/profile/form.dart';
-import 'package:app_frontend/screens/profile/setting_picker.dart';
+import 'package:app_frontend/screens/profile/question_tiles_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:app_backend/model/profile/profile.dart';
 
@@ -185,9 +185,9 @@ class _ProfileScreenState extends State<ProfileScreen>
     showCupertinoModalPopup<void>(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
-              title: const Text('Unwideruflich Löschen?'),
+              title: const Text('Unwiderruflich Löschen?'),
               content: const Text(
-                  'Möchtest du dein Profil mit deinen Daten wirklich unwiderruflich löschen? Dieser Schritt kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie fortfahren möchten'),
+                  'Möchten Sie ihr Profil mit deinen Daten wirklich unwiderruflich löschen? Dieser Schritt kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie fortfahren möchten?'),
               actions: <CupertinoDialogAction>[
                 CupertinoDialogAction(
                   child: const Text('Abbrechen'),

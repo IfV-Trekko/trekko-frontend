@@ -123,9 +123,6 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
               child: EditContext(
                   isDonating: isLoading,
                   donated: widget.trip.donationState == DonationState.donated,
-                  onReset: () {
-                    widget.trip.reset();
-                  },
                   onDonate: () async {
                     await trekko.saveTrip(widget.trip);
                     setState(() {
