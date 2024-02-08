@@ -22,7 +22,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: fc32962d7e37abdda2b7570540adfc32a298b7f2
+      resolved-ref: "7c5de7a5a9376fa3c7d547e938fc782075fe875f"
       url: "https://github.com/KIT-PSE-2023-24/app-backend"
     source: git
     version: "1.0.0+1"
@@ -582,10 +582,10 @@ packages:
     dependency: transitive
     description:
       name: permission_handler_android
-      sha256: "758284a0976772f9c744d6384fc5dc4834aa61e3f7aa40492927f244767374eb"
+      sha256: a5ebaa420cee8fd880ef10dedd42c6b3f493e7dbe27d7e0a7e1798669373082a
       url: "https://pub.dev"
     source: hosted
-    version: "12.0.3"
+    version: "12.0.4"
   permission_handler_apple:
     dependency: transitive
     description:

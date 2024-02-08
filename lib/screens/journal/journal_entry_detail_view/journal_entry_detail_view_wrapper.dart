@@ -119,6 +119,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                   trekko.saveTrip(widget.trip);
                 },
               ),
+              const SizedBox(height: 128),
             ])),
             Align(
               alignment: Alignment.bottomCenter,
