@@ -155,22 +155,21 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 runLoginApp();
                               }),
                         ]),
-                    // CupertinoListSection.insetGrouped(
-                    //   margin: listSectionMargin,
-                    //   additionalDividerMargin: defaultDividerMargin,
-                    //   children: [
-                    //     CupertinoListTile.notched(
-                    //         padding: listTilePadding,
-                    //         title: Text('Profil & Daten löschen',
-                    //             style: AppThemeTextStyles.normal.copyWith(
-                    //               color: AppThemeColors.red,
-                    //             )),
-                    //         onTap: () async {
-                    //           toDelete = profile;
-                    //           runLoginApp();
-                    //         }),
-                    //   ],
-                    // ),
+                    CupertinoListSection.insetGrouped(
+                      margin: listSectionMargin,
+                      additionalDividerMargin: defaultDividerMargin,
+                      children: [
+                        CupertinoListTile.notched(
+                            padding: listTilePadding,
+                            title: Text('Profil & Daten löschen',
+                                style: AppThemeTextStyles.normal.copyWith(
+                                  color: AppThemeColors.red,
+                                )),
+                            onTap: () async {
+                              _askForPermission(context, profile);
+                            }),
+                      ],
+                    ),
                   ],
                 );
               }
@@ -180,5 +179,31 @@ class _ProfileScreenState extends State<ProfileScreen>
         ],
       ),
     );
+  }
+
+  void _askForPermission(BuildContext context, Profile profile) {
+    showCupertinoModalPopup<void>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+              title: const Text('Unwideruflich Löschen?'),
+              content: const Text(
+                  'Möchtest du dein Profil mit deinen Daten wirklich unwiderruflich löschen? Dieser Schritt kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie fortfahren möchten'),
+              actions: <CupertinoDialogAction>[
+                CupertinoDialogAction(
+                  child: const Text('Abbrechen'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: const Text('Löschen'),
+                  onPressed: () {
+                    toDelete = profile;
+                    runLoginApp();
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ));
   }
 }

@@ -111,10 +111,10 @@ class _DescriptionState extends State<Description> {
                       }),
                 ),
                 const Spacer(),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: SizedBox(
-                    width: 180,
+                SizedBox(
+                  width: 180,
+                  child: Align(
+                    alignment: Alignment.centerRight,
                     child: FutureBuilder(
                         future: _getStreet(
                             widget.trip.legs.last.trackedPoints.last),

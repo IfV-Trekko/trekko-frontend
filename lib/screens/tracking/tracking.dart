@@ -28,7 +28,7 @@ class _TrackingScreenState extends State<TrackingScreen>
         children: <Widget>[
           const MainMap(),
           Transform.translate(
-            offset: const Offset(0, 64),
+            offset: const Offset(0, 40),
             child: MapOptionSheet(
               trekko: widget.trekko,
             ),

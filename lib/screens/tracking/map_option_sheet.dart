@@ -21,7 +21,7 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
     return DraggableScrollableSheet(
         snap: true,
         minChildSize: 0.265,
-        maxChildSize: 0.265,
+        maxChildSize: 0.6,
         initialChildSize: 0.265,
         builder: (context, scrollController) {
           return Container(

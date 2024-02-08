@@ -76,12 +76,13 @@ class _JournalScreenState extends State<StatefulWidget>
                           Trip newTrip = TripBuilder()
                               .move_r(const Duration(minutes: 10), 1000.meters)
                               .build();
-                          trekko.saveTrip(newTrip);
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) =>
-                                      JournalEntryDetailView(newTrip)));
+                          trekko.saveTrip(newTrip).then((value) => {
+                                Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) =>
+                                            JournalEntryDetailView(newTrip)))
+                              });
                         },
                         child: const Icon(CupertinoIcons.add,
                             color: AppThemeColors.blue),
