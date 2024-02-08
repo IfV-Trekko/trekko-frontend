@@ -2,7 +2,7 @@ import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/analysis/analysis.dart';
 import 'package:app_frontend/screens/journal/journal.dart';
-import 'package:app_frontend/screens/profile/profile.dart';
+import 'package:app_frontend/screens/profile/profile_screen.dart';
 import 'package:app_frontend/screens/tracking/tracking.dart';
 import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
