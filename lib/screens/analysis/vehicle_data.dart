@@ -4,7 +4,7 @@ import 'package:app_backend/model/trip/leg.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/components/constants/transportDesign.dart';
+import 'package:app_frontend/components/constants/transport_design.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 import 'attribute_row.dart';
