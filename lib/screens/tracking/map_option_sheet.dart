@@ -5,6 +5,7 @@ import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MapOptionSheet extends StatefulWidget {
   final Trekko trekko;
@@ -121,11 +122,14 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                                 title: 'Erhebung starten',
                                 icon: HeroIcons.play,
                                 style: ButtonStyle.primary,
-                                onPressed: () {
-                                  super
+                                onPressed: () async {
+                                  if (!(await super
                                       .widget
                                       .trekko
-                                      .setTrackingState(TrackingState.running);
+                                      .setTrackingState(
+                                          TrackingState.running))) {
+                                    _dialogNeedLocationPermission();
+                                  }
                                 },
                               );
                             }
@@ -135,6 +139,26 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                   ],
                 ),
               ));
+        });
+  }
+
+  void _dialogNeedLocationPermission() {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: const Text('Standortberechtigung fehlt'),
+            content: const Text(
+                'Um die Erhebung zu starten, benötigen wir Zugriff auf Ihren Standort. Bitte gehen Sie in die Einstellungen und ändern Sie den Standortzugriff zu "Immer Erlauben".'),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: const Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
         });
   }
 }

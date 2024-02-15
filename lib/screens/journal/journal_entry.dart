@@ -19,7 +19,8 @@ class JournalEntry extends StatelessWidget {
   final bool isDisabled;
   final Function(Trip, bool)? onSelectionChanged;
   final Trekko trekko;
-  double maxWidth = 0;
+  double maxWidth =
+      0; // TOOD: fix this, but this is a little trickier than expected
 
   JournalEntry(this.trip, this.selectionMode, this.trekko,
       {this.onSelectionChanged,
