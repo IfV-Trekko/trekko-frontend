@@ -131,7 +131,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
   @override
   Widget build(BuildContext context) {
     var stream = widget.trekko.analyze(widget.trekko.getTripQuery().build(),
-        (p0) => p0.getDistance(), DistanceReduction.SUM);
+        (p0) => p0.calculateDistance(), DistanceReduction.SUM);
     return StreamBuilder(
         stream: stream,
         builder: (context, snapshot) {
