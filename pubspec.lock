@@ -22,7 +22,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "54632663ca0c5645d265fe23291461ac5cf8882c"
+      resolved-ref: aa348512f884448656eb9c9f9d53b93d074ed2f2
       url: "https://github.com/KIT-PSE-2023-24/app-backend"
     source: git
     version: "1.0.0+1"

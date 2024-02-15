@@ -13,13 +13,15 @@ class PurposeBox extends StatelessWidget {
         border: Border.all(color: AppThemeColors.contrast200),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 6),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 100),
-        child: Text(
-          _title,
-          overflow: TextOverflow.ellipsis,
-          style: AppThemeTextStyles.small.copyWith(
-            color: AppThemeColors.contrast900,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 100),
+          child: Text(
+            _title,
+            overflow: TextOverflow.ellipsis,
+            style: AppThemeTextStyles.small.copyWith(
+              color: AppThemeColors.contrast900,
+            ),
           ),
         ),
       ),
