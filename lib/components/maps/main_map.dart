@@ -15,27 +15,32 @@ class MainMapState extends State<MainMap>
 
   @override
   void initState() {
-    // Position in karlsruhe
     controller = MapController.withPosition(
         initPosition: GeoPoint(latitude: 49.0069, longitude: 8.4037));
-    controller.init();
     super.initState();
+    controller.init();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    _moveToUserLocation();
+
     OSMFlutter osm = OSMFlutter(
         controller: controller,
-        osmOption: const OSMOption(
-          zoomOption: ZoomOption(
-            initZoom: 12,
+        osmOption: OSMOption(
+          markerOption: MarkerOption(
+              defaultMarker: const MarkerIcon(
+                  icon: Icon(
+            CupertinoIcons.location_solid,
+          ))),
+          zoomOption: const ZoomOption(
+            initZoom: 16,
             minZoomLevel: 3,
             maxZoomLevel: 19,
             stepZoom: 1.0,
           ),
         ));
+    _moveToUserLocation();
     return osm;
   }
 
