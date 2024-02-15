@@ -1,3 +1,4 @@
+import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/text_input.dart';
 import 'package:app_frontend/screens/onboarding/simple_onboarding_screen.dart';
@@ -16,13 +17,20 @@ class EnterCodeScreen extends StatefulWidget {
 class _EnterCodeScreenState extends State<EnterCodeScreen> {
   TextEditingController code = TextEditingController();
 
+  Future<bool> _onWillPop(Trekko trekko, BuildContext context) async {
+    trekko.terminate();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SimpleOnboardingScreen(
+    Trekko trekko = ModalRoute.of(context)!.settings.arguments as Trekko;
+    return PopScope(
+        onPopInvoked: (d) => _onWillPop(trekko, context),
+        child: SimpleOnboardingScreen(
         title: "Fast\ngeschafft...",
         buttonTitle: "Verifizieren",
         onButtonPress: () async {
-          // TODO: Register here instead of the screen before
           Navigator.pushNamed(context, TextInfoScreen.routeAbout,
               arguments: ModalRoute.of(context)!.settings.arguments);
         },
@@ -35,6 +43,6 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
             const SizedBox(height: 50),
             TextInput(title: "Code", hiddenTitle: "Code", controller: code),
           ],
-        ));
+        )));
   }
 }
