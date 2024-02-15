@@ -72,6 +72,7 @@ class BarChartWidgetState extends State<BarChartWidget> {
       );
     }
 
+    //TODO: Gottlosen Code fixen
     Widget getTitles(double value, TitleMeta meta) {
       HeroIcon icon;
       switch (value.toInt()) {
