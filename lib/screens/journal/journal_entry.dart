@@ -19,6 +19,8 @@ class JournalEntry extends StatelessWidget {
   final bool isDisabled;
   final Function(Trip, bool)? onSelectionChanged;
   final Trekko trekko;
+  double maxWidth =
+      0; // TOOD: fix this, but this is a little trickier than expected
 
   JournalEntry(this.trip, this.selectionMode, this.trekko,
       {this.onSelectionChanged,
@@ -29,7 +31,7 @@ class JournalEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double maxWidth = MediaQuery.of(context).size.width - 32;
+    maxWidth = MediaQuery.of(context).size.width - 32;
 
     return GestureDetector(
       onTap: () {
@@ -60,7 +62,7 @@ class JournalEntry extends StatelessWidget {
           if (selectionMode) const SizedBox(width: 16.0),
           Expanded(
             child: selectionMode
-                ? _buildEntry(maxWidth)
+                ? _buildEntry()
                 : JournalEntryContextMenu(
                     trip: trip,
                     onDonate: () async {
@@ -91,7 +93,7 @@ class JournalEntry extends StatelessWidget {
     return trekko.getTripQuery().filter().idEqualTo(trip.id);
   }
 
-  Widget _buildEntry(final double maxWidth) {
+  Widget _buildEntry() {
     return LayoutBuilder(builder: (context, constraints) {
       return GestureDetector(
         onTap: () {
