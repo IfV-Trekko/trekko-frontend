@@ -1,4 +1,5 @@
-import 'package:app_backend/model/trip/transport_type.dart';
+import 'package:app_backend/model/trip/leg.dart';
+import 'package:app_backend/model/trip/tracked_point.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/components/constants/transport_design.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,26 +7,8 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class TripMap extends StatefulWidget {
   final Trip trip;
-  final MapController controller = MapController.withPosition(
-      initPosition: GeoPoint(latitude: 49.013379, longitude: 8.404393));
-  late List<GeoPoint> pathGeoPoints = [];
-  late BoundingBox tripBoundingBox;
 
-  TripMap({required this.trip, Key? key}) : super(key: key) {
-    for (var leg in trip.legs) {
-      pathGeoPoints.insert(
-          pathGeoPoints.length,
-          GeoPoint(
-              latitude: leg.trackedPoints.first.latitude,
-              longitude: leg.trackedPoints.first.longitude));
-      pathGeoPoints.insert(
-          pathGeoPoints.length,
-          GeoPoint(
-              latitude: leg.trackedPoints.last.latitude,
-              longitude: leg.trackedPoints.last.longitude));
-    }
-    tripBoundingBox = BoundingBox.fromGeoPoints(pathGeoPoints);
-  }
+  TripMap({required this.trip, Key? key}) : super(key: key) {}
 
   @override
   _TripMapState createState() => _TripMapState();
@@ -33,51 +16,58 @@ class TripMap extends StatefulWidget {
 
 class _TripMapState extends State<TripMap>
     with AutomaticKeepAliveClientMixin<TripMap> {
+  late MapController controller;
+
+  GeoPoint _toGeoPoint(TrackedPoint trackedPoint) {
+    return GeoPoint(
+        latitude: trackedPoint.latitude, longitude: trackedPoint.longitude);
+  }
+
   @override
   void initState() {
+    controller = MapController.withPosition(
+        initPosition: GeoPoint(latitude: 49.0069, longitude: 8.4037));
     super.initState();
-    Future.delayed(const Duration(seconds: 5), () {
-      for (var i = 0; i < widget.pathGeoPoints.length - 1; i += 2) {
-        widget.controller.drawRoad(
-            widget.pathGeoPoints[i], widget.pathGeoPoints[i + 1],
-            roadType: switch (widget.trip.legs[i ~/ 2].transportType) {
-              TransportType.bicycle => RoadType.bike,
-              TransportType.by_foot => RoadType.foot,
-              _ => RoadType.foot,
-            },
-            roadOption: RoadOption(
-                roadWidth: 5,
-                roadColor: TransportDesign.getColor(
-                    widget.trip.legs[i ~/ 2].transportType),
-                zoomInto: true));
-      }
-      Future.delayed(const Duration(seconds: 5), () {
-        widget.controller
-            .zoomToBoundingBox(widget.tripBoundingBox, paddinInPixel: 20);
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    OSMFlutter osm = OSMFlutter(
-        controller: widget.controller,
+    return OSMFlutter(
+        controller: controller,
+        onMapIsReady: (bool ready) {
+          if (!ready) return;
+          _drawRoads();
+        },
         osmOption: const OSMOption(
-          zoomOption: ZoomOption(
-            initZoom: 12,
-            minZoomLevel: 3,
-            maxZoomLevel: 19,
-            stepZoom: 1.0,
-          ),
-        ));
-    return osm;
+            zoomOption: ZoomOption(
+          initZoom: 12,
+          minZoomLevel: 3,
+          maxZoomLevel: 19,
+          stepZoom: 1.0,
+        )));
+  }
+
+  _drawRoads() {
+    for (Leg leg in widget.trip.legs) {
+      controller.drawRoadManually(
+          leg.trackedPoints.map((e) => _toGeoPoint(e)).toList(growable: false),
+          RoadOption(
+              roadWidth: 5,
+              roadColor: TransportDesign.getColor(leg.transportType)));
+    }
+    controller.zoomToBoundingBox(
+        BoundingBox.fromGeoPoints(widget.trip.legs
+            .expand((element) => element.trackedPoints)
+            .map((e) => _toGeoPoint(e))
+            .toList(growable: false)),
+        paddinInPixel: 50);
   }
 
   @override
   void dispose() {
-    widget.controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 

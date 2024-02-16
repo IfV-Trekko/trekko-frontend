@@ -15,18 +15,20 @@ class MainMapState extends State<MainMap>
 
   @override
   void initState() {
+    super.initState();
     controller = MapController.withPosition(
         initPosition: GeoPoint(latitude: 49.0069, longitude: 8.4037));
-    super.initState();
-    controller.init();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    OSMFlutter osm = OSMFlutter(
+    return OSMFlutter(
         controller: controller,
+        onMapIsReady: (bool ready) {
+          _moveToUserLocation();
+        },
         osmOption: OSMOption(
           markerOption: MarkerOption(
               defaultMarker: const MarkerIcon(
@@ -40,8 +42,6 @@ class MainMapState extends State<MainMap>
             stepZoom: 1.0,
           ),
         ));
-    _moveToUserLocation();
-    return osm;
   }
 
   @override
@@ -50,7 +50,7 @@ class MainMapState extends State<MainMap>
     super.dispose();
   }
 
-  Future<void> _moveToUserLocation() async {
+  _moveToUserLocation() {
     TrekkoProvider.of(context).getPosition().listen((event) {
       controller.changeLocation(
           GeoPoint(latitude: event.latitude, longitude: event.longitude));
