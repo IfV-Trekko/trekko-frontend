@@ -54,8 +54,6 @@ class MainMapState extends State<MainMap>
     TrekkoProvider.of(context).getPosition().listen((event) {
       controller.changeLocation(
           GeoPoint(latitude: event.latitude, longitude: event.longitude));
-      controller.goToLocation(
-          GeoPoint(latitude: event.latitude, longitude: event.longitude));
     });
   }
 
