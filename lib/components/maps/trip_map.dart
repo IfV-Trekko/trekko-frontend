@@ -52,7 +52,7 @@ class _TripMapState extends State<TripMap>
   _drawRoads() {
     for (Leg leg in widget.trip.legs) {
       controller.drawRoadManually(
-          leg.trackedPoints.map((e) => _toGeoPoint(e)).toList(growable: false),
+          leg.trackedPoints.map(_toGeoPoint).toList(growable: false),
           RoadOption(
               roadWidth: 5,
               roadColor: TransportDesign.getColor(leg.transportType)));
@@ -60,7 +60,7 @@ class _TripMapState extends State<TripMap>
     controller.zoomToBoundingBox(
         BoundingBox.fromGeoPoints(widget.trip.legs
             .expand((element) => element.trackedPoints)
-            .map((e) => _toGeoPoint(e))
+            .map(_toGeoPoint)
             .toList(growable: false)),
         paddinInPixel: 50);
   }
