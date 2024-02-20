@@ -47,6 +47,7 @@ class _KilometerPickerState extends State<KilometerPicker> {
             onPressed: () {
               Navigator.of(context).push(CupertinoPageRoute(
                 builder: (context) => TextResponse(
+                  acceptEmptyResponse: false,
                   maxLines: 1,
                   keyboardType: TextResponseKeyboardType.dezimal,
                   maxLength: 10,
