@@ -83,7 +83,7 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                                                     AppThemeTextStyles.normal,
                                               )
                                             : Text(
-                                                'Letzte Erhebung vor ${snapshot.data!.lastTimeTracked!.difference(DateTime.now()).inDays} Tagen',
+                                                'Letzte Erhebung vor ${DateTime.now().difference(snapshot.data!.lastTimeTracked!).inDays} Tagen',
                                                 style:
                                                     AppThemeTextStyles.normal),
                                       );
