@@ -1,6 +1,7 @@
 import 'package:app_backend/controller/builder/authentification_utils.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/battery_usage_setting.dart';
+import 'package:app_backend/model/tracking_state.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/picker/setting_picker.dart';
 import 'package:app_frontend/main.dart';
@@ -134,9 +135,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                               style: AppThemeTextStyles.normal),
                           additionalInfo: Text(
                               profile.preferences.batteryUsageSetting.name),
-                          onTap: () async {
-                            await showBatteryUsageSettingPicker(
-                                context, profile);
+                          onTap: () {
+                            BatteryUsageSetting previousSetting =
+                                profile.preferences.batteryUsageSetting;
+                            showBatteryUsageSettingPicker(context, profile)
+                                .then((value) => updateDialog(
+                                    context, profile, previousSetting));
                           },
                         ),
                       ],
@@ -205,5 +209,36 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
               ],
             ));
+  }
+
+  void updateDialog(BuildContext context, Profile profile,
+      BatteryUsageSetting previousSetting) {
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text('Akkunutzungseinstellung geändert'),
+          content: const Text(
+              'Damit ihre Änderung wirksam wird muss die Erhbung neu gestartet werden.'),
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
+              child: Text('Abbrechen'),
+              onPressed: () {
+                profile.preferences.batteryUsageSetting = previousSetting;
+                Navigator.of(context).pop();
+              },
+            ),
+            CupertinoDialogAction(
+              child: Text('Ok'),
+              onPressed: () {
+                widget.trekko.setTrackingState(TrackingState.paused);
+                widget.trekko.setTrackingState(TrackingState.running);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
