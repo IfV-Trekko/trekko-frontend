@@ -5,6 +5,7 @@ import 'package:app_frontend/components/constants/text_response_keyboard_type.da
 import 'package:flutter/cupertino.dart';
 
 class TextResponse extends StatefulWidget {
+  final bool acceptEmptyResponse;
   final int maxLength;
   final int maxLines;
   final String title;
@@ -16,6 +17,7 @@ class TextResponse extends StatefulWidget {
 
   TextResponse(
       {super.key,
+      required this.acceptEmptyResponse,
       required this.maxLength,
       required this.maxLines,
       required this.onSaved,
@@ -32,7 +34,13 @@ class TextResponse extends StatefulWidget {
 }
 
 class _TextResponseState extends State<TextResponse> {
-  late String _newResponse = '';
+  late String _newResponse;
+
+  @override
+  void initState() {
+    super.initState();
+    _newResponse = widget.initialValue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +72,7 @@ class _TextResponseState extends State<TextResponse> {
                   double.tryParse(_newResponse.replaceAll(',', '.'));
               final updatedValue = parsedValue != null && parsedValue > 0
                   ? parsedValue
-                  : widget.initialValue;
+                  : double.parse(widget.initialValue);
               widget.onSaved(updatedValue.toString());
             } else {
               widget.onSaved(_newResponse);
