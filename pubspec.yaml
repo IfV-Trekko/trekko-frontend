@@ -29,9 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   app_backend:
-    git:
-      url: https://github.com/KIT-PSE-2023-24/app-backend
-      ref: master
+    path: ../Backend/app-backend
   flutter_osm_plugin: ^0.70.2
   flutter:
     sdk: flutter
