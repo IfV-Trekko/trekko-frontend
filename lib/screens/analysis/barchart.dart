@@ -14,6 +14,7 @@ import 'package:isar/isar.dart';
 class Tuple<T1, T2> {
   final T1 item1;
   final T2 item2;
+
   Tuple(this.item1, this.item2);
 }
 
@@ -166,7 +167,11 @@ class BarChartWidgetState extends State<BarChartWidget> {
                 child: StreamBuilder<List<Tuple<TransportType, double>>>(
                   stream: buildData(),
                   builder: (context, snapshot) {
-                    if (snapshot.hasData) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CupertinoActivityIndicator();
+                    } else if (snapshot.hasError) {
+                      throw snapshot.error!;
+                    } else if (snapshot.hasData) {
                       double maxDuration = 0;
                       double durationSum = 0;
                       List<BarChartGroupData> barGroups =
