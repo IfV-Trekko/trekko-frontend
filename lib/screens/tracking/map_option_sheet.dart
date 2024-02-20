@@ -21,16 +21,14 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
         snap: true,
-        minChildSize: 0.265,
-        maxChildSize: 0.6,
-        initialChildSize: 0.265,
+        minChildSize: 0.19,
+        maxChildSize: 0.4,
+        initialChildSize: 0.19,
         builder: (context, scrollController) {
           return Container(
               decoration: const BoxDecoration(
                 color: AppThemeColors.contrast100,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(16),
-                ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: SingleChildScrollView(
