@@ -54,7 +54,7 @@ class _TripMapState extends State<TripMap>
       controller.drawRoadManually(
           leg.trackedPoints.map(_toGeoPoint).toList(growable: false),
           RoadOption(
-              roadWidth: 5,
+              roadWidth: 20,
               roadColor: TransportDesign.getColor(leg.transportType)));
     }
     controller.zoomToBoundingBox(
