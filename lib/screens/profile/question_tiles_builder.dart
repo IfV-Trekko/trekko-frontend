@@ -103,6 +103,7 @@ class QuestionTilesBuilder {
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) => TextResponse(
+                        acceptEmptyResponse: true,
                         maxLength: 256,
                         maxLines: 1,
                         onSaved: (String newValue) {

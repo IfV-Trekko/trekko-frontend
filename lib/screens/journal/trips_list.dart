@@ -23,8 +23,7 @@ class TripsList extends StatelessWidget {
   Widget build(BuildContext context) {
     final Trekko trekko = TrekkoProvider.of(context);
 
-    trips.sort(
-        (a, b) => a.calculateStartTime().compareTo(b.calculateStartTime()));
+    trips.sort((a, b) => b.getStartTime().compareTo(a.getStartTime()));
 
     return SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -34,11 +33,11 @@ class TripsList extends StatelessWidget {
               final trip = trips[index];
 
               if (index == 0 ||
-                  !_isSameDay(trips[index - 1].calculateStartTime(),
-                      trip.calculateStartTime())) {
+                  !_isSameDay(
+                      trips[index - 1].getStartTime(), trip.getStartTime())) {
                 return Column(
                   children: [
-                    JournalSubtitle(trip.calculateStartTime()),
+                    JournalSubtitle(trip.getStartTime()),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: JournalEntry(
