@@ -53,6 +53,7 @@ class _DetailsState extends State<Details> {
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) => TextResponse(
+                      suffix: '',
                       acceptEmptyResponse: true,
                       maxLines: 1,
                       keyboardType: TextResponseKeyboardType.text,
@@ -121,6 +122,7 @@ class _DetailsState extends State<Details> {
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) => TextResponse(
+                      suffix: '',
                       acceptEmptyResponse: true,
                       maxLines: 6,
                       keyboardType: TextResponseKeyboardType.text,

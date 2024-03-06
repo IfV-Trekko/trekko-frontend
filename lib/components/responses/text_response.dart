@@ -3,12 +3,14 @@ import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/components/constants/text_response_keyboard_type.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 class TextResponse extends StatefulWidget {
   final bool acceptEmptyResponse;
   final int maxLength;
   final int maxLines;
   final String title;
+  final String suffix;
   final String initialValue;
   final Function(String) onSaved;
   final TextResponseKeyboardType keyboardType;
@@ -22,6 +24,7 @@ class TextResponse extends StatefulWidget {
       required this.maxLines,
       required this.onSaved,
       required this.title,
+      required this.suffix,
       required this.placeholder,
       required this.keyboardType,
       required this.initialValue}) {
@@ -90,6 +93,15 @@ class _TextResponseState extends State<TextResponse> {
               child: SizedBox(
                 height: 20 + ((widget.maxLines - 1) * 22) + 24,
                 child: CupertinoTextField(
+                  suffix: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
+                    child: Text(
+                      widget.suffix,
+                      style: AppThemeTextStyles.normal.copyWith(
+                        color: AppThemeColors.contrast500,
+                      ),
+                    ),
+                  ),
                   textAlign: TextAlign.start,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   keyboardType: widget.keyboardType.inputType,
