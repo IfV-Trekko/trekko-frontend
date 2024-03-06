@@ -93,6 +93,20 @@ class _TextResponseState extends State<TextResponse> {
               child: SizedBox(
                 height: 20 + ((widget.maxLines - 1) * 22) + 24,
                 child: CupertinoTextField(
+                  onEditingComplete: () {
+                    if (widget.keyboardType ==
+                        TextResponseKeyboardType.dezimal) {
+                      final parsedValue =
+                          double.tryParse(_newResponse.replaceAll(',', '.'));
+                      final updatedValue =
+                          parsedValue != null && parsedValue > 0
+                              ? parsedValue
+                              : double.parse(widget.initialValue);
+                      widget.onSaved(updatedValue.toString());
+                    } else {
+                      widget.onSaved(_newResponse);
+                    }
+                  },
                   suffix: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
                     child: Text(
