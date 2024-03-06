@@ -156,6 +156,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     color: AppThemeColors.blue,
                                   )),
                               onTap: () async {
+                                await widget.trekko.signOut();
+                                await widget.trekko.terminate();
                                 runLoginApp();
                               }),
                         ]),
