@@ -5,7 +5,6 @@ import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MapOptionSheet extends StatefulWidget {
   final Trekko trekko;
@@ -56,7 +55,7 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                                       return Container(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                            'Automatisch erfasst seit ${snapshot.data!.lastTimeTracked!.difference(DateTime.now()).inDays} Tagen',
+                                            'Automatisch erfasst seit ${DateTime.now().difference(snapshot.data!.lastTimeTracked!).inDays} Tagen',
                                             style: AppThemeTextStyles.normal),
                                       );
                                     }
