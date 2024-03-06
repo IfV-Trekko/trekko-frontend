@@ -47,12 +47,14 @@ class _KilometerPickerState extends State<KilometerPicker> {
             onPressed: () {
               Navigator.of(context).push(CupertinoPageRoute(
                 builder: (context) => TextResponse(
+                  suffix: 'km',
+                  acceptEmptyResponse: false,
                   maxLines: 1,
                   keyboardType: TextResponseKeyboardType.dezimal,
                   maxLength: 10,
                   onSaved: widget.onChange,
                   title: 'Distanz ändern',
-                  placeholder: '8,4',
+                  placeholder: '8,4 km',
                   initialValue: widget.value.toStringAsFixed(2),
                 ),
               ));

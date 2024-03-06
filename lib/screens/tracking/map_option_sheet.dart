@@ -20,16 +20,14 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
         snap: true,
-        minChildSize: 0.265,
-        maxChildSize: 0.6,
-        initialChildSize: 0.265,
+        minChildSize: 0.23,
+        maxChildSize: 0.4,
+        initialChildSize: 0.23,
         builder: (context, scrollController) {
           return Container(
               decoration: const BoxDecoration(
                 color: AppThemeColors.contrast100,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(16),
-                ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: SingleChildScrollView(
@@ -57,7 +55,7 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                                       return Container(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                            'Automatisch erfasst seit ${snapshot.data!.lastTimeTracked!.difference(DateTime.now()).inDays} Tagen',
+                                            'Automatisch erfasst seit ${DateTime.now().difference(snapshot.data!.lastTimeTracked!).inDays} Tagen',
                                             style: AppThemeTextStyles.normal),
                                       );
                                     }
@@ -82,7 +80,7 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                                                     AppThemeTextStyles.normal,
                                               )
                                             : Text(
-                                                'Letzte Erhebung vor ${snapshot.data!.lastTimeTracked!.difference(DateTime.now()).inDays} Tagen',
+                                                'Letzte Erhebung vor ${DateTime.now().difference(snapshot.data!.lastTimeTracked!).inDays} Tagen',
                                                 style:
                                                     AppThemeTextStyles.normal),
                                       );
@@ -121,11 +119,14 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                                 title: 'Erhebung starten',
                                 icon: HeroIcons.play,
                                 style: ButtonStyle.primary,
-                                onPressed: () {
-                                  super
+                                onPressed: () async {
+                                  if (!(await super
                                       .widget
                                       .trekko
-                                      .setTrackingState(TrackingState.running);
+                                      .setTrackingState(
+                                          TrackingState.running))) {
+                                    _dialogNeedLocationPermission();
+                                  }
                                 },
                               );
                             }
@@ -135,6 +136,26 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                   ],
                 ),
               ));
+        });
+  }
+
+  void _dialogNeedLocationPermission() {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: const Text('Standortberechtigung fehlt'),
+            content: const Text(
+                'Um die Erhebung zu starten, benötigen wir Zugriff auf Ihren Standort. Bitte gehen Sie in die Einstellungen und ändern Sie den Standortzugriff zu "Immer Erlauben".'),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: const Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
         });
   }
 }

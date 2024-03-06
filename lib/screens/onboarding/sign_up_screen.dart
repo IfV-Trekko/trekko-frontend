@@ -46,7 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       arguments: trekko);
                 } catch (e) {
                   String reason =
-                      "Unbekannter Fehler"; //TODO: Fehlermeldungen anpassen
+                      "Unbekannter Fehler";
                   if (e is BuildException) {
                     if (e.reason ==
                         RegistrationResult.failedInvalidCredentials) {
@@ -69,7 +69,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       context: context,
                       builder: (context) => CupertinoAlertDialog(
                             title: Text(reason),
-                            // TODO: Better information text
                             actions: [
                               CupertinoDialogAction(
                                 child: Text('Ok'),
