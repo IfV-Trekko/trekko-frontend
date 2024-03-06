@@ -33,30 +33,50 @@ class _ProfileScreenState extends State<ProfileScreen>
   final EdgeInsetsGeometry listSectionMargin =
       const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
-  Future<void> showBatteryUsageSettingPicker(
+  // Future<void> showBatteryUsageSettingPicker(
+  //     BuildContext context, Profile profile) async {
+  //   List<Widget> batterySettingOptions =
+  //       BatteryUsageSetting.values.map((setting) {
+  //     return Center(child: Text(setting.name));
+  //   }).toList();
+  //
+  //   void onSettingSelected(int selectedIndex) {
+  //     BatteryUsageSetting selectedSetting =
+  //         BatteryUsageSetting.values[selectedIndex];
+  //     profile.preferences.batteryUsageSetting = selectedSetting;
+  //     widget.trekko.savePreferences(profile.preferences);
+  //   }
+  //
+  //   await showCupertinoModalPopup<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return SettingsPicker(
+  //         onSettingSelected: onSettingSelected,
+  //         children: batterySettingOptions,
+  //       );
+  //     },
+  //   );
+  // }
+  Future<BatteryUsageSetting?> showBatteryUsageSettingPicker(
       BuildContext context, Profile profile) async {
-    List<Widget> batterySettingOptions =
-        BatteryUsageSetting.values.map((setting) {
-      return Center(child: Text(setting.name));
-    }).toList();
-
-    void onSettingSelected(int selectedIndex) {
-      BatteryUsageSetting selectedSetting =
-          BatteryUsageSetting.values[selectedIndex];
-      profile.preferences.batteryUsageSetting = selectedSetting;
-      widget.trekko.savePreferences(profile.preferences);
-    }
+    BatteryUsageSetting? temporarySelection;
 
     await showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
         return SettingsPicker(
-          onSettingSelected: onSettingSelected,
-          children: batterySettingOptions,
+          onSettingSelected: (int selectedIndex) {
+            temporarySelection = BatteryUsageSetting.values[selectedIndex];
+          },
+          children: BatteryUsageSetting.values.map((setting) => Center(child: Text(setting.name))).toList(),
         );
       },
     );
+
+    return temporarySelection;
   }
+
+
 
   @override
   void dispose() {
@@ -135,13 +155,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                               style: AppThemeTextStyles.normal),
                           additionalInfo: Text(
                               profile.preferences.batteryUsageSetting.name),
-                          onTap: () {
+                          // onTap: () {
+                          //   BatteryUsageSetting previousSetting =
+                          //       profile.preferences.batteryUsageSetting;
+                          //   showBatteryUsageSettingPicker(context, profile)
+                          //       .then((value) => updateDialog(
+                          //           context, profile, previousSetting));
+                          // },
+                          onTap: () async {
                             BatteryUsageSetting previousSetting =
                                 profile.preferences.batteryUsageSetting;
-                            showBatteryUsageSettingPicker(context, profile)
-                                .then((value) => updateDialog(
-                                    context, profile, previousSetting));
+                            BatteryUsageSetting? newSetting =
+                            await showBatteryUsageSettingPicker(context, profile);
+                            if (newSetting != null && newSetting != previousSetting) {
+                              updateDialog(context, profile, previousSetting, newSetting);
+                            }
                           },
+
                         ),
                       ],
                     ),
@@ -211,28 +241,61 @@ class _ProfileScreenState extends State<ProfileScreen>
             ));
   }
 
-  void updateDialog(BuildContext context, Profile profile,
-      BatteryUsageSetting previousSetting) {
+  // void updateDialog(BuildContext context, Profile profile,
+  //     BatteryUsageSetting previousSetting) {
+  //   showCupertinoDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return CupertinoAlertDialog(
+  //         title: const Text('Akkunutzungseinstellung geändert'),
+  //         content: const Text(
+  //             'Damit Ihre Änderung wirksam wird muss die Erhebung neu gestartet werden.'),
+  //         actions: <CupertinoDialogAction>[
+  //           CupertinoDialogAction(
+  //             child: Text('Abbrechen'),
+  //             onPressed: () {
+  //               profile.preferences.batteryUsageSetting = previousSetting;
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //           CupertinoDialogAction(
+  //             child: Text('Ok'),
+  //             onPressed: () {
+  //               widget.trekko.setTrackingState(TrackingState.paused);
+  //               widget.trekko.setTrackingState(TrackingState.running);
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
+
+  void updateDialog(BuildContext context, Profile profile, BatteryUsageSetting previousSetting, BatteryUsageSetting? newSetting) {
     showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
           title: const Text('Akkunutzungseinstellung geändert'),
-          content: const Text(
-              'Damit ihre Änderung wirksam wird muss die Erhbung neu gestartet werden.'),
+          content: const Text('Damit Ihre Änderung wirksam wird, muss die Erhebung neu gestartet werden.'),
           actions: <CupertinoDialogAction>[
             CupertinoDialogAction(
-              child: Text('Abbrechen'),
+              child: const Text('Abbrechen'),
               onPressed: () {
-                profile.preferences.batteryUsageSetting = previousSetting;
                 Navigator.of(context).pop();
               },
             ),
             CupertinoDialogAction(
-              child: Text('Ok'),
-              onPressed: () {
-                widget.trekko.setTrackingState(TrackingState.paused);
-                widget.trekko.setTrackingState(TrackingState.running);
+              child: const Text('Ok'),
+              onPressed: () async {
+                if (newSetting != null) {
+                  profile.preferences.batteryUsageSetting = newSetting;
+                  widget.trekko.savePreferences(profile.preferences);
+                  await widget.trekko.setTrackingState(TrackingState.paused);
+                  await widget.trekko.setTrackingState(TrackingState.running);
+                }
                 Navigator.of(context).pop();
               },
             ),
@@ -241,4 +304,9 @@ class _ProfileScreenState extends State<ProfileScreen>
       },
     );
   }
+
+
+
+
+
 }
