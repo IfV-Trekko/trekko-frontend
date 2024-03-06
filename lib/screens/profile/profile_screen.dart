@@ -172,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   color: AppThemeColors.red,
                                 )),
                             onTap: () async {
-                              _askForPermission(context, profile);
+                              _askForPermission(context);
                             }),
                       ],
                     ),
@@ -187,7 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  void _askForPermission(BuildContext context, Profile profile) {
+  void _askForPermission(BuildContext context) {
     showCupertinoModalPopup<void>(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
@@ -203,10 +203,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
                 CupertinoDialogAction(
                   child: const Text('Löschen'),
-                  onPressed: () {
-                    toDelete = profile;
+                  onPressed: () async {
+                    await widget.trekko.deleteProfile();
                     runLoginApp();
-                    Navigator.pop(context);
+
+                    if (mounted) {
+                      Navigator.pop(context);
+                    }
                   },
                 ),
               ],
