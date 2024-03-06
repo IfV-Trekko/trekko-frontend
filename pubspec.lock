@@ -21,7 +21,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
+      ref: master
       resolved-ref: "9d5bebc4e40ac37a0a83b130717561413b419aa6"
       url: "https://github.com/KIT-PSE-2023-24/app-backend.git"
     source: git
