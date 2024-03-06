@@ -1,3 +1,4 @@
+import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/donation_state.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
@@ -25,7 +26,7 @@ class JournalEntryDetailViewWrapper extends StatefulWidget {
 class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
   bool isLoading = false;
 
-  void _askForReset() {
+  void _askForReset(Trekko trekko) {
     showCupertinoDialog(
         context: context,
         builder: (context) {
@@ -44,6 +45,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                 child: const Text('Zurücksetzen'),
                 onPressed: () {
                   widget.trip.reset();
+                  trekko.saveTrip(widget.trip);
                   Navigator.of(context).pop();
                 },
               ),
@@ -72,8 +74,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
               stretch: false,
               title: 'Zurücksetzen',
               onPressed: () async {
-                _askForReset();
-                await trekko.saveTrip(widget.trip);
+                _askForReset(trekko);
               },
               size: ButtonSize.small,
               style: ButtonStyle.secondary,
@@ -81,8 +82,6 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
         child: SafeArea(
             child: Stack(
           children: [
-            // Expanded( // TODO: Expanded can not be used in Stack
-            //     child:
             ListView(children: [
               SizedBox(
                   height: 234,
