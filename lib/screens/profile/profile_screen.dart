@@ -1,4 +1,3 @@
-import 'package:app_backend/controller/builder/authentification_utils.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/profile/battery_usage_setting.dart';
 import 'package:app_backend/model/tracking_state.dart';
@@ -20,8 +19,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with AutomaticKeepAliveClientMixin {
-  Profile? toDelete;
-
   @override
   bool get wantKeepAlive => true;
 
@@ -56,16 +53,6 @@ class _ProfileScreenState extends State<ProfileScreen>
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    if (toDelete != null) {
-      // Currently doing nothing
-      AuthentificationUtils.deleteProfile(
-          toDelete!.projectUrl, toDelete!.email);
-    }
-    super.dispose();
   }
 
   @override
