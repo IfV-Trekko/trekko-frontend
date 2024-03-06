@@ -21,9 +21,9 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
         snap: true,
-        minChildSize: 0.19,
+        minChildSize: 0.23,
         maxChildSize: 0.4,
-        initialChildSize: 0.19,
+        initialChildSize: 0.23,
         builder: (context, scrollController) {
           return Container(
               decoration: const BoxDecoration(

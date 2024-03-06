@@ -103,11 +103,15 @@ class QuestionTilesBuilder {
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) => TextResponse(
+                        suffix: '',
                         acceptEmptyResponse: true,
                         maxLength: 256,
                         maxLines: 1,
                         onSaved: (String newValue) {
-                          if (question.type == QuestionType.number) {
+                          if (newValue.trim().isEmpty) {
+                            profile.preferences
+                                .setQuestionAnswer(question.key, null);
+                          } else if (question.type == QuestionType.number) {
                             profile.preferences.setQuestionAnswer(
                                 question.key, double.parse(newValue));
                           } else {
