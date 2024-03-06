@@ -122,6 +122,10 @@ class DonationModalState extends State<DonationModal>
     setState(() {
       isLoading = true;
     });
+    if(selectedTrips.isEmpty) {
+      finishedAction('Es muss mindestens ein Weg ausgewählt sein', true);
+      return;
+    }
     int donatedTrips = 0;
     var allTrips = await widget.trekko
         .getTripQuery()
