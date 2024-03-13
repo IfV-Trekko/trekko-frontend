@@ -24,8 +24,8 @@ class PieChartWidget extends StatefulWidget {
 class PieChartWidgetState extends State<PieChartWidget> {
   Stream<double?> getData(TransportType vehicle) {
     return widget.trekko.analyze(
-        QueryUtil(widget.trekko).transportType(vehicle).build(),
-        TripUtil(vehicle).build((leg) => leg.getDistance().as(meters)),
+        QueryUtil(widget.trekko).buildTransportType(vehicle),
+        TripUtil(vehicle).build((leg) => leg.getDistance().as(kilo.meters)),
         DoubleReduction.SUM);
   }
 
@@ -33,13 +33,12 @@ class PieChartWidgetState extends State<PieChartWidget> {
     List<Stream<PieChartSectionData>> pieCharts = List.empty(growable: true);
     for (TransportType type in TransportType.values) {
       pieCharts.add(getData(type).map((double? value) {
-        print(type.toString() + ":" + value.toString());
         return PieChartSectionData(
           color: TransportDesign.getColor(type),
           value: value ?? 0,
           title: value == null || sum == 0
               ? '0%'
-              : '${(value / sum * 100).toStringAsFixed(1)}%',
+              : '${(value / sum * 100).toStringAsFixed(0)}%',
           radius: 55,
           titleStyle: AppThemeTextStyles.normal.copyWith(
             color: AppThemeColors.contrast0,

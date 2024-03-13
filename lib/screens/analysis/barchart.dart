@@ -29,7 +29,7 @@ class BarChartWidget extends StatefulWidget {
 class BarChartWidgetState extends State<BarChartWidget> {
   Stream<double?> getData(TransportType vehicle) {
     return widget.trekko.analyze(
-        QueryUtil(widget.trekko).transportType(vehicle).build(),
+        QueryUtil(widget.trekko).buildTransportType(vehicle),
         TripUtil(vehicle)
             .build((leg) => leg.getDuration().inMinutes.toDouble()),
         AverageCalculation());

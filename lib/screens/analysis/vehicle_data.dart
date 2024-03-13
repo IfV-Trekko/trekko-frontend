@@ -21,7 +21,7 @@ class VehicleData extends StatelessWidget {
 
   Stream<T?> getData<T>(Iterable<T> Function(Trip) apply, Calculation<T> calc) {
     return trekko.analyze(
-        QueryUtil(trekko).transportType(vehicle).build(), apply, calc);
+        QueryUtil(trekko).buildTransportType(vehicle), apply, calc);
   }
 
   Widget getDataFormatted<T>(Iterable<T> Function(Trip) apply,
@@ -112,14 +112,16 @@ class VehicleData extends StatelessWidget {
             AttributeRow(
                 title: 'Ø Geschwindigkeit',
                 value: getDataFormatted(
-                    (t) => [t.calculateSpeed().as(kilo.meters, hours)],
+                    TripUtil(vehicle)
+                        .build((leg) => leg.getSpeed().as(kilo.meters, hours)),
                     AverageCalculation(),
                     (d) => "${d.toStringAsFixed(1)} km/h")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Wegzeit',
                 value: getDataFormatted(
-                    (t) => [t.calculateDuration().inMinutes],
+                    TripUtil(vehicle)
+                        .build((leg) => leg.getDuration().inMinutes.toDouble()),
                     AverageCalculation(),
                     (d) => "${d.toStringAsFixed(1)} min")),
           ],

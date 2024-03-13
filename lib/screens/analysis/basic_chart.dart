@@ -15,7 +15,7 @@ class BasicChart extends StatelessWidget {
 
   Stream<double?> getData(TransportType vehicle) {
     return trekko.analyze(
-        QueryUtil(trekko).transportType(vehicle).build(),
+        QueryUtil(trekko).buildTransportType(vehicle),
         TripUtil(vehicle).build((leg) => leg.getSpeed().as(kilo.meters, hours)),
         AverageCalculation());
   }
