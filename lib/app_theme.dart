@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   static CupertinoThemeData get lightTheme {
     return CupertinoThemeData(
+      brightness: Brightness.light,
       textTheme: CupertinoTextThemeData(
         tabLabelTextStyle: AppThemeTextStyles.tabBarLabel,
         navLargeTitleTextStyle: AppThemeTextStyles.headline,

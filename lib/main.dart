@@ -11,8 +11,7 @@ void main() async {
   await initializeDateFormatting('de', null);
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -24,9 +23,8 @@ void main() async {
 }
 
 void runTrekkoApp(Trekko trekko) {
-  runApp(CupertinoApp(
-    theme: AppTheme.lightTheme,
-    home: TrekkoApp(trekko: trekko)),
+  runApp(
+    CupertinoApp(theme: AppTheme.lightTheme, home: TrekkoApp(trekko: trekko)),
   );
 }
 
