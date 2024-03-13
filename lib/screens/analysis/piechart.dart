@@ -1,11 +1,11 @@
+import 'package:app_backend/controller/utils/analyze_util.dart';
+import 'package:app_backend/controller/utils/query_util.dart';
 import 'package:app_frontend/components/constants/transport_design.dart';
 import 'package:app_frontend/screens/analysis/legend_indicator.dart';
 import 'package:async/async.dart';
 import 'package:app_backend/controller/analysis/reductions.dart';
 import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/trip/leg.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
-import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,29 +22,24 @@ class PieChartWidget extends StatefulWidget {
 }
 
 class PieChartWidgetState extends State<PieChartWidget> {
-  Stream<Distance?> getData(TransportType vehicle) {
+  Stream<double?> getData(TransportType vehicle) {
     return widget.trekko.analyze(
-        widget.trekko
-            .getTripQuery()
-            .filter()
-            .legsElement((l) => l.transportTypeEqualTo(vehicle))
-            .build(),
-        (t) => t.legs
-            .map((l) => l.transportType == vehicle ? l.getDistance() : 0.meters)
-            .reduce((a, b) => a + b),
-        DistanceReduction.SUM);
+        QueryUtil(widget.trekko).transportType(vehicle).build(),
+        TripUtil(vehicle).build((leg) => leg.getDistance().as(meters)),
+        DoubleReduction.SUM);
   }
 
-  Widget buildPieChart(Distance sum) {
+  Widget buildPieChart(double sum) {
     List<Stream<PieChartSectionData>> pieCharts = List.empty(growable: true);
     for (TransportType type in TransportType.values) {
-      pieCharts.add(getData(type).map((Distance? value) {
+      pieCharts.add(getData(type).map((double? value) {
+        print(type.toString() + ":" + value.toString());
         return PieChartSectionData(
           color: TransportDesign.getColor(type),
-          value: value == null ? 0 : value.as(meters),
-          title: value == null || sum == const Distance.zero()
+          value: value ?? 0,
+          title: value == null || sum == 0
               ? '0%'
-              : '${(value.as(meters) / sum.as(meters) * 100).toStringAsFixed(1)}%',
+              : '${(value / sum * 100).toStringAsFixed(1)}%',
           radius: 55,
           titleStyle: AppThemeTextStyles.normal.copyWith(
             color: AppThemeColors.contrast0,
@@ -98,7 +93,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
                   },
                 ),
                 Text(
-                  "${sum.as(kilo.meters).toStringAsFixed(1)} km",
+                  "${sum.toStringAsFixed(1)} km",
                   style: AppThemeTextStyles.normal
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
@@ -131,7 +126,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
   @override
   Widget build(BuildContext context) {
     var stream = widget.trekko.analyze(widget.trekko.getTripQuery().build(),
-        (p0) => p0.calculateDistance(), DistanceReduction.SUM);
+        (t) => [t.calculateDistance().as(kilo.meters)], DoubleReduction.SUM);
     return StreamBuilder(
         stream: stream,
         builder: (context, snapshot) {
@@ -140,7 +135,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           } else {
-            return buildPieChart(0.meters);
+            return buildPieChart(0);
           }
         });
   }

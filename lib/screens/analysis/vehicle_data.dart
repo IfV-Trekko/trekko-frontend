@@ -1,6 +1,9 @@
+import 'package:app_backend/controller/analysis/average.dart';
+import 'package:app_backend/controller/analysis/calculation.dart';
 import 'package:app_backend/controller/analysis/reductions.dart';
 import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/trip/leg.dart';
+import 'package:app_backend/controller/utils/analyze_util.dart';
+import 'package:app_backend/controller/utils/query_util.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
@@ -8,7 +11,6 @@ import 'package:app_frontend/components/constants/transport_design.dart';
 import 'package:app_frontend/screens/analysis/attribute_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
 
 class VehicleData extends StatelessWidget {
@@ -17,19 +19,13 @@ class VehicleData extends StatelessWidget {
 
   const VehicleData({super.key, required this.trekko, required this.vehicle});
 
-  Stream<T?> getData<T>(T Function(Trip) apply, Reduction<T> reduction) {
+  Stream<T?> getData<T>(Iterable<T> Function(Trip) apply, Calculation<T> calc) {
     return trekko.analyze(
-        trekko
-            .getTripQuery()
-            .filter()
-            .legsElement((l) => l.transportTypeEqualTo(vehicle))
-            .build(),
-        apply,
-        reduction);
+        QueryUtil(trekko).transportType(vehicle).build(), apply, calc);
   }
 
-  Widget getDataFormatted<T>(T Function(Trip) apply, Reduction<T> reduction,
-      String Function(T) format) {
+  Widget getDataFormatted<T>(Iterable<T> Function(Trip) apply,
+      Calculation<T> reduction, String Function(T) format) {
     return StreamBuilder<T?>(
       stream: getData(apply, reduction),
       builder: (context, snapshot) {
@@ -100,38 +96,32 @@ class VehicleData extends StatelessWidget {
             AttributeRow(
                 title: 'Gesamtstrecke',
                 value: getDataFormatted(
-                    (t) => t.legs
-                        .map((l) => l.transportType == vehicle
-                            ? l.getDistance()
-                            : 0.meters)
-                        .reduce((a, b) => a + b),
-                    DistanceReduction.SUM,
-                    (d) => "${d.as(kilo.meters).toStringAsFixed(1)} km")),
+                    TripUtil(vehicle)
+                        .build((leg) => leg.getDistance().as(kilo.meters)),
+                    DoubleReduction.SUM,
+                    (d) => "${d.toStringAsFixed(1)} km")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Strecke pro Weg',
                 value: getDataFormatted(
-                    (t) => t.legs
-                        .where((l) => l.transportType == vehicle)
-                        .map((l) => l.getDistance())
-                        .reduce((a, b) => a + b),
-                    DistanceReduction.AVERAGE,
-                    (d) => "${d.as(kilo.meters).toStringAsFixed(1)} km")),
+                    TripUtil(vehicle)
+                        .build((leg) => leg.getDistance().as(kilo.meters)),
+                    AverageCalculation(),
+                    (d) => "${d.toStringAsFixed(1)} km")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Geschwindigkeit',
                 value: getDataFormatted(
-                    (t) => t.calculateSpeed(),
-                    SpeedReduction.AVERAGE,
-                    (d) =>
-                        "${d.as(kilo.meters, hours).toStringAsFixed(1)} km/h")),
+                    (t) => [t.calculateSpeed().as(kilo.meters, hours)],
+                    AverageCalculation(),
+                    (d) => "${d.toStringAsFixed(1)} km/h")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Wegzeit',
                 value: getDataFormatted(
-                    (t) => t.calculateDuration(),
-                    DurationReduction.AVERAGE,
-                    (d) => "${d.inMinutes.toStringAsFixed(1)} min")),
+                    (t) => [t.calculateDuration().inMinutes],
+                    AverageCalculation(),
+                    (d) => "${d.toStringAsFixed(1)} min")),
           ],
         ),
       ),

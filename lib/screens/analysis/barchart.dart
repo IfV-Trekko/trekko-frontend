@@ -1,15 +1,14 @@
-import 'package:app_backend/controller/analysis/reductions.dart';
+import 'package:app_backend/controller/analysis/average.dart';
 import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/trip/leg.dart';
+import 'package:app_backend/controller/utils/analyze_util.dart';
+import 'package:app_backend/controller/utils/query_util.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
-import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/components/constants/transport_design.dart';
 import 'package:async/async.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:isar/isar.dart';
 
 class Tuple<T1, T2> {
   final T1 item1;
@@ -28,18 +27,12 @@ class BarChartWidget extends StatefulWidget {
 }
 
 class BarChartWidgetState extends State<BarChartWidget> {
-  Stream<Duration?> getData(TransportType vehicle) {
+  Stream<double?> getData(TransportType vehicle) {
     return widget.trekko.analyze(
-        widget.trekko
-            .getTripQuery()
-            .filter()
-            .legsElement((l) => l.transportTypeEqualTo(vehicle))
-            .build(),
-        (t) => t.legs
-            .map((l) =>
-                l.transportType == vehicle ? l.getDuration() : Duration.zero)
-            .reduce((a, b) => a + b),
-        DurationReduction.AVERAGE);
+        QueryUtil(widget.trekko).transportType(vehicle).build(),
+        TripUtil(vehicle)
+            .build((leg) => leg.getDuration().inMinutes.toDouble()),
+        AverageCalculation());
   }
 
   @override
@@ -48,11 +41,11 @@ class BarChartWidgetState extends State<BarChartWidget> {
       List<Stream<Tuple<TransportType, double>>> data =
           List.empty(growable: true);
       for (TransportType type in TransportType.values) {
-        data.add(getData(type).map((Duration? value) {
+        data.add(getData(type).map((double? value) {
           if (value == null) {
             return Tuple(type, 0);
           } else {
-            return Tuple(type, value.inMinutes.toDouble());
+            return Tuple(type, value);
           }
         }));
       }
