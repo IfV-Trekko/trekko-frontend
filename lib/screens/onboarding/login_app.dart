@@ -22,7 +22,6 @@ class LoginApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: Clean this up
     Map<String, Widget Function(BuildContext)> routes = {
       WelcomeScreen.route: (b) => const WelcomeScreen(),
       JoinProjectScreen.route: (b) => const JoinProjectScreen(),
