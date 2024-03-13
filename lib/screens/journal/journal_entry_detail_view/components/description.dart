@@ -64,8 +64,8 @@ class _DescriptionState extends State<Description> {
             Row(
               children: [
                 TimePicker(
-                  initialDateTime: widget.trip.getStartTime(),
-                  maximumDateTime: widget.trip.getEndTime(),
+                  initialDateTime: widget.startDate,
+                  maximumDateTime: widget.endDate,
                   onChange: (val) {
                     widget.trip.startTime = val;
                     TrekkoProvider.of(context).saveTrip(widget.trip);
@@ -84,8 +84,8 @@ class _DescriptionState extends State<Description> {
                     widget.trip.endTime = val;
                     TrekkoProvider.of(context).saveTrip(widget.trip);
                   },
-                  initialDateTime: widget.trip.getEndTime(),
-                  minimumDateTime: widget.trip.getStartTime(),
+                  initialDateTime: widget.endDate,
+                  minimumDateTime: widget.startDate,
                 ),
               ],
             ),
