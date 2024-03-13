@@ -104,20 +104,11 @@ class QuestionTilesBuilder {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) => TextResponse(
                         suffix: '',
-                        acceptEmptyResponse: true,
                         maxLength: 256,
                         maxLines: 1,
-                        onSaved: (String newValue) {
-                          if (newValue.trim().isEmpty) {
-                            profile.preferences
-                                .setQuestionAnswer(question.key, null);
-                          } else if (question.type == QuestionType.number) {
-                            profile.preferences.setQuestionAnswer(
-                                question.key, double.parse(newValue));
-                          } else {
-                            profile.preferences
-                                .setQuestionAnswer(question.key, newValue);
-                          }
+                        onSaved: (String? newValue) {
+                          profile.preferences
+                              .setQuestionAnswer(question.key, newValue);
                           trekko.savePreferences(profile.preferences);
                         },
                         title: question.title,

@@ -3,23 +3,20 @@ import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/constants/button_size.dart';
 import 'package:app_frontend/components/constants/text_response_keyboard_type.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 
 class TextResponse extends StatefulWidget {
-  final bool acceptEmptyResponse;
   final int maxLength;
   final int maxLines;
   final String title;
   final String suffix;
   final String initialValue;
-  final Function(String) onSaved;
+  final Function(String?) onSaved;
   final TextResponseKeyboardType keyboardType;
   late String placeholder;
   late TextEditingController _controller;
 
   TextResponse(
       {super.key,
-      required this.acceptEmptyResponse,
       required this.maxLength,
       required this.maxLines,
       required this.onSaved,
@@ -47,7 +44,9 @@ class _TextResponseState extends State<TextResponse> {
   }
 
   void saveValue() {
-    if (widget.keyboardType == TextResponseKeyboardType.dezimal) {
+    if (_newResponse.isEmpty) {
+      widget.onSaved(null);
+    } else if (widget.keyboardType == TextResponseKeyboardType.dezimal) {
       final parsedValue = double.tryParse(_newResponse.replaceAll(',', '.'));
       final updatedValue = parsedValue != null && parsedValue > 0
           ? parsedValue

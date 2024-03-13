@@ -75,7 +75,7 @@ class _DescriptionState extends State<Description> {
                 KilometerPicker(
                     value: widget.trip.getDistance().as(kilo.meters),
                     onChange: (val) {
-                      widget.trip.setDistance(double.parse(val).kilo.meters);
+                      widget.trip.setDistance(val?.kilo.meters);
                       TrekkoProvider.of(context).saveTrip(widget.trip);
                     }),
                 const Spacer(),
