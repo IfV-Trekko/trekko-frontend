@@ -116,21 +116,22 @@ class VehicleData extends StatelessWidget {
                         .map((l) => l.getDistance())
                         .reduce((a, b) => a + b),
                     DistanceReduction.AVERAGE,
-                    (d) => "${d.as(kilo.meters).roundToDouble()} km")),
+                    (d) => "${d.as(kilo.meters).toStringAsFixed(1)} km")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Geschwindigkeit',
                 value: getDataFormatted(
                     (t) => t.calculateSpeed(),
                     SpeedReduction.AVERAGE,
-                    (d) => "${d.as(kilo.meters, hours).roundToDouble()} km/h")),
+                    (d) =>
+                        "${d.as(kilo.meters, hours).toStringAsFixed(1)} km/h")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Wegzeit',
                 value: getDataFormatted(
                     (t) => t.calculateDuration(),
                     DurationReduction.AVERAGE,
-                    (d) => "${d.inMinutes.roundToDouble()} min")),
+                    (d) => "${d.inMinutes.toStringAsFixed(1)} min")),
           ],
         ),
       ),

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 class KilometerPicker extends StatefulWidget {
   final double value;
-  final Function(String) onChange;
+  final Function(double?) onChange;
 
   const KilometerPicker({
     Key? key,
@@ -48,11 +48,12 @@ class _KilometerPickerState extends State<KilometerPicker> {
               Navigator.of(context).push(CupertinoPageRoute(
                 builder: (context) => TextResponse(
                   suffix: 'km',
-                  acceptEmptyResponse: false,
                   maxLines: 1,
                   keyboardType: TextResponseKeyboardType.dezimal,
                   maxLength: 10,
-                  onSaved: widget.onChange,
+                  onSaved: (val) {
+                    widget.onChange(val == null ? null : double.tryParse(val));
+                  },
                   title: 'Distanz ändern',
                   placeholder: '8,4 km',
                   initialValue: widget.value.toStringAsFixed(2),

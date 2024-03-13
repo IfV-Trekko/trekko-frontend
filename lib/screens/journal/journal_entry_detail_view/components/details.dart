@@ -11,8 +11,8 @@ class Details extends StatefulWidget {
   final String detailPurpose;
   final String detailComment;
   final List<TransportType> detailVehicle;
-  final Function(String) onSavedPurpose;
-  final Function(String) onSavedComment;
+  final Function(String?) onSavedPurpose;
+  final Function(String?) onSavedComment;
   final Function(List<TransportType>) onSavedVehicle;
   final double additionalDividerMargin = 2;
 
@@ -54,7 +54,6 @@ class _DetailsState extends State<Details> {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) => TextResponse(
                       suffix: '',
-                      acceptEmptyResponse: true,
                       maxLines: 1,
                       keyboardType: TextResponseKeyboardType.text,
                       maxLength: 350,
@@ -123,7 +122,6 @@ class _DetailsState extends State<Details> {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) => TextResponse(
                       suffix: '',
-                      acceptEmptyResponse: true,
                       maxLines: 6,
                       keyboardType: TextResponseKeyboardType.text,
                       maxLength: 700,

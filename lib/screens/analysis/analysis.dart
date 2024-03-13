@@ -44,18 +44,25 @@ class _AnalysisState extends State<Analysis>
               ),
             ),
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 100.0),
-                child: CustomPageControl(
-                  pages: [
-                    PieChartWidget(trekko: widget.trekko),
-                    BarChartWidget(trekko: widget.trekko),
-                    BasicChart(trekko: widget.trekko),
-                  ],
-                  pageHeights: 440,
-                ),
+              child: CustomPageControl(
+                pages: [
+                  PieChartWidget(trekko: widget.trekko),
+                  BarChartWidget(trekko: widget.trekko),
+                  BasicChart(trekko: widget.trekko),
+                ],
+                pageHeights: 440,
               ),
             ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 16.0, right: 16.0, left: 16.0, bottom: 64.0),
+                child: Text(
+                  "Die Statistiken verarbeiten nur Daten unbearbeiteter, automatisch getrackter Wege.",
+                  style: AppThemeTextStyles.tiny,
+                ),
+              ),
+            )
           ],
         ));
   }

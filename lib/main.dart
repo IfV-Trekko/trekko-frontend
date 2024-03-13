@@ -1,6 +1,5 @@
 import 'package:app_backend/controller/builder/last_login_builder.dart';
 import 'package:app_backend/controller/trekko.dart';
-import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/onboarding/login_app.dart';
 import 'package:app_frontend/screens/trekko_app.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,8 +10,7 @@ void main() async {
   await initializeDateFormatting('de', null);
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -24,15 +22,9 @@ void main() async {
 }
 
 void runTrekkoApp(Trekko trekko) {
-  runApp(CupertinoApp(
-    theme: AppTheme.lightTheme,
-    home: TrekkoApp(trekko: trekko)),
-  );
+  runApp(TrekkoApp(trekko: trekko));
 }
 
 void runLoginApp() {
-  runApp(CupertinoApp(
-    theme: AppTheme.lightTheme,
-    home: LoginApp((trekko) => runTrekkoApp(trekko)),
-  ));
+  runApp(LoginApp((trekko) => runTrekkoApp(trekko)));
 }

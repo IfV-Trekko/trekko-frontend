@@ -58,8 +58,7 @@ class BasicChart extends StatelessWidget {
                     if (snapshot.hasData) {
                       var speed = snapshot.data
                           ?.as(kilo.meters, hours)
-                          .roundToDouble()
-                          .toString();
+                          .toStringAsFixed(1);
                       dataWidget = Text('${speed.toString()} km/h');
                     } else {
                       dataWidget = const Text('Keine Daten');

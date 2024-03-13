@@ -64,8 +64,8 @@ class _DescriptionState extends State<Description> {
             Row(
               children: [
                 TimePicker(
-                  initialDateTime: widget.trip.getStartTime(),
-                  maximumDateTime: widget.trip.getEndTime(),
+                  initialDateTime: widget.startDate,
+                  maximumDateTime: widget.endDate,
                   onChange: (val) {
                     widget.trip.startTime = val;
                     TrekkoProvider.of(context).saveTrip(widget.trip);
@@ -75,7 +75,7 @@ class _DescriptionState extends State<Description> {
                 KilometerPicker(
                     value: widget.trip.getDistance().as(kilo.meters),
                     onChange: (val) {
-                      widget.trip.setDistance(double.parse(val).kilo.meters);
+                      widget.trip.setDistance(val?.kilo.meters);
                       TrekkoProvider.of(context).saveTrip(widget.trip);
                     }),
                 const Spacer(),
@@ -84,8 +84,8 @@ class _DescriptionState extends State<Description> {
                     widget.trip.endTime = val;
                     TrekkoProvider.of(context).saveTrip(widget.trip);
                   },
-                  initialDateTime: widget.trip.getEndTime(),
-                  minimumDateTime: widget.trip.getStartTime(),
+                  initialDateTime: widget.endDate,
+                  minimumDateTime: widget.startDate,
                 ),
               ],
             ),

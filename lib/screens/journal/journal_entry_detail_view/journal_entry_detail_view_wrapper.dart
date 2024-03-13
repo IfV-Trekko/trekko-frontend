@@ -26,6 +26,10 @@ class JournalEntryDetailViewWrapper extends StatefulWidget {
 class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
   bool isLoading = false;
 
+  void save(Trekko trekko) {
+    trekko.saveTrip(widget.trip);
+  }
+
   void _askForReset(Trekko trekko) {
     showCupertinoDialog(
         context: context,
@@ -45,7 +49,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                 child: const Text('Zurücksetzen'),
                 onPressed: () {
                   widget.trip.reset();
-                  trekko.saveTrip(widget.trip);
+                  save(trekko);
                   Navigator.of(context).pop();
                 },
               ),
@@ -103,17 +107,17 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                 detailVehicle: widget.trip.getTransportTypes(),
                 onSavedVehicle: (value) {
                   widget.trip.setTransportTypes(value);
-                  trekko.saveTrip(widget.trip);
+                  save(trekko);
                 },
                 detailPurpose: widget.trip.purpose ?? '',
                 onSavedPurpose: (value) {
                   widget.trip.purpose = value;
-                  trekko.saveTrip(widget.trip);
+                  save(trekko);
                 },
                 detailComment: widget.trip.comment ?? '',
                 onSavedComment: (value) {
                   widget.trip.comment = value;
-                  trekko.saveTrip(widget.trip);
+                  save(trekko);
                 },
               ),
               const SizedBox(height: 128),
@@ -124,7 +128,7 @@ class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
                   isDonating: isLoading,
                   donated: widget.trip.donationState == DonationState.donated,
                   onDonate: () async {
-                    await trekko.saveTrip(widget.trip);
+                    save(trekko);
                     setState(() {
                       isLoading = true;
                     });

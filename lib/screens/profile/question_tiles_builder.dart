@@ -57,10 +57,15 @@ class QuestionTilesBuilder {
           trailing: CupertinoSwitch(
             value: answer == null ? false : answer as bool,
             activeColor: AppThemeColors.green,
-            onChanged: (bool? newValue) {
-              if (newValue != null) {
+            onChanged: (bool? newValue) async {
+              if (newValue == null) return;
+
+              try {
                 profile.preferences.setQuestionAnswer(question.key, newValue);
-                trekko.savePreferences(profile.preferences);
+                await trekko.savePreferences(profile.preferences);
+              } catch (e) {
+                // ignore: use_build_context_synchronously
+                _showErrorDialog(context, e);
               }
             },
           ),
@@ -104,21 +109,17 @@ class QuestionTilesBuilder {
               Navigator.of(context).push(CupertinoPageRoute(
                   builder: (context) => TextResponse(
                         suffix: '',
-                        acceptEmptyResponse: true,
                         maxLength: 256,
                         maxLines: 1,
-                        onSaved: (String newValue) {
-                          if (newValue.trim().isEmpty) {
-                            profile.preferences
-                                .setQuestionAnswer(question.key, null);
-                          } else if (question.type == QuestionType.number) {
-                            profile.preferences.setQuestionAnswer(
-                                question.key, double.parse(newValue));
-                          } else {
+                        onSaved: (String? newValue) async {
+                          try {
                             profile.preferences
                                 .setQuestionAnswer(question.key, newValue);
+                            await trekko.savePreferences(profile.preferences);
+                          } catch (e) {
+                            // ignore: use_build_context_synchronously
+                            _showErrorDialog(context, e);
                           }
-                          trekko.savePreferences(profile.preferences);
                         },
                         title: question.title,
                         placeholder: question.title,
@@ -136,5 +137,26 @@ class QuestionTilesBuilder {
       questionTiles.add(questionTile);
     }
     return questionTiles;
+  }
+
+  static void _showErrorDialog(BuildContext context, Object e) {
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text('Fehlerhafte Eingabe'),
+          content: const Text(
+              'Die Eingabe konnte nicht verarbeitet werden. Bitte versuchen Sie es erneut.'),
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
