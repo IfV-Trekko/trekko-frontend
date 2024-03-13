@@ -144,9 +144,9 @@ class QuestionTilesBuilder {
       context: context,
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
-          title: const Text('Fehler'),
+          title: const Text('Fehlerhafte Eingabe'),
           content: const Text(
-              'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.'),
+              'Die Eingabe konnte nicht verarbeitet werden. Bitte versuchen Sie es erneut.'),
           actions: <CupertinoDialogAction>[
             CupertinoDialogAction(
               child: const Text('OK'),
