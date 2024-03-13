@@ -32,6 +32,7 @@ class TextResponse extends StatefulWidget {
     _controller.selection = TextSelection.fromPosition(
         TextPosition(offset: _controller.text.length));
   }
+
   @override
   State<TextResponse> createState() => _TextResponseState();
 }
@@ -43,6 +44,18 @@ class _TextResponseState extends State<TextResponse> {
   void initState() {
     super.initState();
     _newResponse = widget.initialValue;
+  }
+
+  void saveValue() {
+    if (widget.keyboardType == TextResponseKeyboardType.dezimal) {
+      final parsedValue = double.tryParse(_newResponse.replaceAll(',', '.'));
+      final updatedValue = parsedValue != null && parsedValue > 0
+          ? parsedValue
+          : double.parse(widget.initialValue);
+      widget.onSaved(updatedValue.toString());
+    } else {
+      widget.onSaved(_newResponse);
+    }
   }
 
   @override
@@ -70,16 +83,7 @@ class _TextResponseState extends State<TextResponse> {
           size: ButtonSize.small,
           stretch: false,
           onPressed: () {
-            if (widget.keyboardType == TextResponseKeyboardType.dezimal) {
-              final parsedValue =
-                  double.tryParse(_newResponse.replaceAll(',', '.'));
-              final updatedValue = parsedValue != null && parsedValue > 0
-                  ? parsedValue
-                  : double.parse(widget.initialValue);
-              widget.onSaved(updatedValue.toString());
-            } else {
-              widget.onSaved(_newResponse);
-            }
+            saveValue();
             Navigator.of(context).pop();
           },
         ),
@@ -94,18 +98,7 @@ class _TextResponseState extends State<TextResponse> {
                 height: 20 + ((widget.maxLines - 1) * 22) + 24,
                 child: CupertinoTextField(
                   onEditingComplete: () {
-                    if (widget.keyboardType ==
-                        TextResponseKeyboardType.dezimal) {
-                      final parsedValue =
-                          double.tryParse(_newResponse.replaceAll(',', '.'));
-                      final updatedValue =
-                          parsedValue != null && parsedValue > 0
-                              ? parsedValue
-                              : double.parse(widget.initialValue);
-                      widget.onSaved(updatedValue.toString());
-                    } else {
-                      widget.onSaved(_newResponse);
-                    }
+                    saveValue();
                   },
                   suffix: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
