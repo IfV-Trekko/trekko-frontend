@@ -1,12 +1,11 @@
-import 'package:app_backend/controller/analysis/reductions.dart';
+import 'package:app_backend/controller/analysis/average.dart';
 import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/trip/leg.dart';
+import 'package:app_backend/controller/utils/analyze_util.dart';
+import 'package:app_backend/controller/utils/query_util.dart';
 import 'package:app_backend/model/trip/transport_type.dart';
-import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/analysis/basicchart_row.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
 
 class BasicChart extends StatelessWidget {
@@ -14,16 +13,11 @@ class BasicChart extends StatelessWidget {
 
   const BasicChart({super.key, required this.trekko});
 
-  Stream<DerivedMeasurement<Measurement<Distance>, Measurement<Time>>?> getData(
-      TransportType vehicle) {
+  Stream<double?> getData(TransportType vehicle) {
     return trekko.analyze(
-        trekko
-            .getTripQuery()
-            .filter()
-            .legsElement((l) => l.transportTypeEqualTo(vehicle))
-            .build(),
-        (t) => t.calculateSpeed(),
-        SpeedReduction.AVERAGE);
+        QueryUtil(trekko).buildTransportType(vehicle),
+        TripUtil(vehicle).build((leg) => leg.getSpeed().as(kilo.meters, hours)),
+        AverageCalculation());
   }
 
   @override
@@ -49,16 +43,12 @@ class BasicChart extends StatelessWidget {
               ]),
               const SizedBox(height: 16),
               ...TransportType.values.map((type) {
-                return StreamBuilder<
-                    DerivedMeasurement<Measurement<Distance>,
-                        Measurement<Time>>?>(
+                return StreamBuilder<double?>(
                   stream: getData(type),
                   builder: (context, snapshot) {
                     Widget dataWidget;
                     if (snapshot.hasData) {
-                      var speed = snapshot.data
-                          ?.as(kilo.meters, hours)
-                          .toStringAsFixed(1);
+                      var speed = snapshot.data?.toStringAsFixed(1);
                       dataWidget = Text('${speed.toString()} km/h');
                     } else {
                       dataWidget = const Text('Keine Daten');
