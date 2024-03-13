@@ -174,7 +174,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   )),
                               onTap: () async {
                                 await widget.trekko.signOut();
-                                await widget.trekko.terminate();
                                 runLoginApp();
                               }),
                         ]),
@@ -214,14 +213,14 @@ class _ProfileScreenState extends State<ProfileScreen>
               actions: <CupertinoDialogAction>[
                 CupertinoDialogAction(
                   child: const Text('Abbrechen'),
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.pop(context);
                   },
                 ),
                 CupertinoDialogAction(
                   child: const Text('Löschen'),
                   onPressed: () async {
-                    await widget.trekko.deleteProfile();
+                    await widget.trekko.signOut(delete: true);
                     runLoginApp();
 
                     if (mounted) {
