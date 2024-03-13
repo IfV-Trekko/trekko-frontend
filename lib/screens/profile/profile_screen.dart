@@ -118,13 +118,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                               style: AppThemeTextStyles.normal),
                           additionalInfo: Text(
                               profile.preferences.batteryUsageSetting.name),
-                          // onTap: () {
-                          //   BatteryUsageSetting previousSetting =
-                          //       profile.preferences.batteryUsageSetting;
-                          //   showBatteryUsageSettingPicker(context, profile)
-                          //       .then((value) => updateDialog(
-                          //           context, profile, previousSetting));
-                          // },
                           onTap: () async {
                             BatteryUsageSetting previousSetting =
                                 profile.preferences.batteryUsageSetting;
