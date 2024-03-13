@@ -88,7 +88,7 @@ class _TimePickerState extends State<TimePicker> {
           context,
         ),
         child: Text(
-          "${setDateTime.hour.toString().padLeft(2, '0')}:${setDateTime.minute.toString().padLeft(2, '0')}",
+          "${widget.initialDateTime.hour.toString().padLeft(2, '0')}:${widget.initialDateTime.minute.toString().padLeft(2, '0')}",
           style: AppThemeTextStyles.small.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
