@@ -1,5 +1,6 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/onboarding_text_type.dart';
+import 'package:app_frontend/app_theme.dart';
 import 'package:app_frontend/screens/onboarding/choose_login_process_screen.dart';
 import 'package:app_frontend/screens/onboarding/enter_code_screen.dart';
 import 'package:app_frontend/screens/onboarding/join_project_screen.dart';
@@ -44,6 +45,7 @@ class LoginApp extends StatelessWidget {
 
     return CupertinoApp(
       home: const WelcomeScreen(),
+      theme: AppTheme.lightTheme,
       routes: routes,
     );
   }
