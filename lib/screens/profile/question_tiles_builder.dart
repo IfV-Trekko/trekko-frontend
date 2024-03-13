@@ -57,10 +57,15 @@ class QuestionTilesBuilder {
           trailing: CupertinoSwitch(
             value: answer == null ? false : answer as bool,
             activeColor: AppThemeColors.green,
-            onChanged: (bool? newValue) {
-              if (newValue != null) {
+            onChanged: (bool? newValue) async {
+              if (newValue == null) return;
+
+              try {
                 profile.preferences.setQuestionAnswer(question.key, newValue);
-                trekko.savePreferences(profile.preferences);
+                await trekko.savePreferences(profile.preferences);
+              } catch (e) {
+                // ignore: use_build_context_synchronously
+                _showErrorDialog(context, e);
               }
             },
           ),
@@ -106,10 +111,15 @@ class QuestionTilesBuilder {
                         suffix: '',
                         maxLength: 256,
                         maxLines: 1,
-                        onSaved: (String? newValue) {
-                          profile.preferences
-                              .setQuestionAnswer(question.key, newValue);
-                          trekko.savePreferences(profile.preferences);
+                        onSaved: (String? newValue) async {
+                          try {
+                            profile.preferences
+                                .setQuestionAnswer(question.key, newValue);
+                            await trekko.savePreferences(profile.preferences);
+                          } catch (e) {
+                            // ignore: use_build_context_synchronously
+                            _showErrorDialog(context, e);
+                          }
                         },
                         title: question.title,
                         placeholder: question.title,
@@ -127,5 +137,26 @@ class QuestionTilesBuilder {
       questionTiles.add(questionTile);
     }
     return questionTiles;
+  }
+
+  static void _showErrorDialog(BuildContext context, Object e) {
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text('Fehler'),
+          content: const Text(
+              'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.'),
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
