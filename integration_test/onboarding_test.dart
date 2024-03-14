@@ -8,7 +8,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:app_frontend/main.dart' as app;
 import 'package:intl/intl.dart';
 
-import '../test/trekko_build_utils.dart';
+import 'test_utils.dart';
 
 /*
   This test is an integration test.
@@ -21,7 +21,7 @@ void main() async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   await TrekkoBuildUtils.init();
 
-  testWidgets('Test network call and data display',
+  testWidgets('Onboarding test with registration and login',
       (WidgetTester tester) async {
     app.runLoginApp();
     await tester.pumpAndSettle(); // Wait for initial animations to settle
@@ -38,7 +38,7 @@ void main() async {
 
     await tester.enterText(
         find.widgetWithText(CupertinoTextField, 'Project-URL'),
-        'http://localhost:8080');
+        TestUtils.getAddress());
     await tester.tap(find.widgetWithText(Button, 'Weiter'));
     await tester.pumpAndSettle();
 
@@ -88,7 +88,7 @@ void main() async {
 
     expect(find.byType(ProfileScreen), findsOneWidget);
     expect(find.widgetWithText(CupertinoListTile, email), findsOneWidget);
-    expect(find.widgetWithText(CupertinoListTile, 'http://localhost:8080'),
+    expect(find.widgetWithText(CupertinoListTile, TestUtils.getAddress()),
         findsOneWidget);
     expect(find.widgetWithText(CupertinoListTile, 'Alter'), findsOneWidget);
     expect(find.widgetWithText(CupertinoListTile, '12'), findsOneWidget);
@@ -100,7 +100,7 @@ void main() async {
 
     await tester.enterText(
         find.widgetWithText(CupertinoTextField, 'Project-URL'),
-        'http://localhost:8080');
+        TestUtils.getAddress());
     await tester.tap(find.widgetWithText(Button, 'Weiter'));
     await tester.pumpAndSettle();
 

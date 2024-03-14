@@ -14,7 +14,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../test/test_utils.dart';
+import 'test_utils.dart';
 
 void main () async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -22,10 +22,10 @@ void main () async {
   Trekko? trekko;
 
   tearDown(() async {
-    if (trekko != null) await TestUtils.clearTrekko(trekko!);
+    if (trekko != null) await TestUtils.clearTrekko(trekko);
   });
 
-  testWidgets('Test every screen, after onboarding',
+  testWidgets('Test creating and deleting a journal entry',
           (WidgetTester tester) async {
     initializeDateFormatting();
 
