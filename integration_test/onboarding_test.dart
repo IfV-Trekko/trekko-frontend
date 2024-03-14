@@ -48,7 +48,7 @@ void main() async {
 
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy.MM.dd.HH.mm.ss').format(now);
-    String email = 'test' + formattedDate + '@web.de';
+    String email = 'test$formattedDate@web.de';
     await tester.enterText(
         find.widgetWithText(CupertinoTextField, 'E-Mail Adresse'), email);
     await tester.enterText(
