@@ -1,7 +1,3 @@
-import 'package:app_backend/controller/profiled_trekko.dart';
-import 'package:app_backend/controller/request/bodies/request/auth_request.dart';
-import 'package:app_backend/controller/request/bodies/response/auth_response.dart';
-import 'package:app_backend/controller/request/url_trekko_server.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/picker/time_picker.dart';
@@ -18,46 +14,22 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import '../test/test_utils.dart';
+
 void main () async {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-
-  Future<Trekko> makeTrekko(
-  String projectUrl, String email, String token) async {
-    Trekko trekko =
-    ProfiledTrekko(projectUrl: projectUrl, email: email, token: token);
-    await trekko.init();
-    return trekko;
-  }
-
-  Future<Trekko> initTrekko() async {
-    final UrlTrekkoServer trekkoServer = UrlTrekkoServer('http://localhost:8080');
-
-    String uniqueEmail = 'test@example.com';
-    AuthResponse authResponse;
-
-    try {
-      authResponse = await trekkoServer.signUp(AuthRequest(uniqueEmail, '!Abc123#'));
-    } catch (e) {
-      authResponse = await trekkoServer.signIn(AuthRequest(uniqueEmail, '!Abc123#'));
-    }
-    return await makeTrekko('http://localhost:8080', uniqueEmail, authResponse.token);
-  }
-
-  Future<void> clearTrekko(Trekko trekko) async {
-    await trekko.signOut(delete: true);
-  }
 
   Trekko? trekko;
 
   tearDown(() async {
-    if (trekko != null) await clearTrekko(trekko!);
+    if (trekko != null) await TestUtils.clearTrekko(trekko!);
   });
 
   testWidgets('Test every screen, after onboarding',
           (WidgetTester tester) async {
     initializeDateFormatting();
 
-    final Trekko trekko = await initTrekko();
+    final Trekko trekko = await TestUtils.initTrekko();
     await tester.pumpWidget(TrekkoApp(trekko: trekko,),);
 
     await tester.pumpAndSettle();
