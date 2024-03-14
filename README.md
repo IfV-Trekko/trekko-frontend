@@ -16,6 +16,17 @@ Install the packages & libraries from `pom.xml` using:
 flutter pub get
 ```
 
+#### Link `app_backend` to local package (optional)
+
+If you don't have access to the GitHub repository or `flutter pub get` is unable to download it, you can link to the app_backend package locally. Therefore, you have to change the app_backend dependency inside of the `pom.xml`:
+
+```yaml
+app_backend:
+  path: ../url/to/local/app_backend-repo # e.g. ../app_backned
+```
+
+Then run `flutter pub get` again.
+
 ### Start app
 
 Run using your IDE's run functionality or:
