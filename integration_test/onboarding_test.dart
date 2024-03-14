@@ -1,5 +1,7 @@
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/components/text_input.dart';
+import 'package:app_frontend/screens/profile/profile_screen.dart';
+import 'package:app_frontend/screens/tracking/tracking.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -80,9 +82,11 @@ void main() async {
     await tester.tap(find.widgetWithText(Button, 'Registrierung abschließen'));
     await tester.pumpAndSettle();
 
+    expect(find.byType(TrackingScreen), findsOneWidget);
     await tester.tap(find.text('Profil'));
     await tester.pumpAndSettle();
 
+    expect(find.byType(ProfileScreen), findsOneWidget);
     expect(find.widgetWithText(CupertinoListTile, email), findsOneWidget);
     expect(find.widgetWithText(CupertinoListTile, 'http://localhost:8080'),
         findsOneWidget);
