@@ -39,11 +39,19 @@ Depending on the targetted mobile OS/platform, an emulator/simulator has to be i
 
 ### Run tests
 
-All frontend integration/system tests can be ran using:
+All frontend integration tests can be ran using:
 
 ```
-flutter test
+flutter test <path-to-integration-test>
 ```
+
+Execute the tests in the following order:
+- 'integration_test/onboarding_test.dart'
+- 'integration_test/donation_integration_test.dart'
+- 'integration_test/tracking_test.dart'
+- 'integration_test/after_onboarding_integration_test.dart'
+
+The servers needs to be running and cleaned before running the tests.
 
 Unit tests of Frontend functionality are located in the `app-backend` package.
 
