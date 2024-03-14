@@ -99,8 +99,12 @@ class QuestionTilesBuilder {
         questionTile = CupertinoListTile.notched(
             padding: padding,
             title: Text(question.title, style: AppThemeTextStyles.normal),
-            additionalInfo:
-                Text(answer == null ? "Nicht beantwortet" : answer.toString()),
+            additionalInfo: SizedBox(
+                width: 250,
+                child: Text(
+                    answer == null ? "Nicht beantwortet" : answer.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end)),
             trailing: const CupertinoListTileChevron(),
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
