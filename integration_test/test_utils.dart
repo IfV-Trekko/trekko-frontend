@@ -3,45 +3,23 @@ import 'package:app_backend/controller/request/bodies/request/auth_request.dart'
 import 'package:app_backend/controller/request/bodies/response/auth_response.dart';
 import 'package:app_backend/controller/request/url_trekko_server.dart';
 import 'package:app_backend/controller/trekko.dart';
+import 'package:app_backend/controller/utils/tracking_util.dart';
+import 'package:flutter/services.dart';
 
 import 'dart:io';
 
-import 'package:app_backend/controller/utils/tracking_util.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:isar/isar.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:background_locator_2/background_locator.dart';
-
-class MyHttpOverrides extends HttpOverrides {}
-
-class MockPathProvider extends Mock
-    with MockPlatformInterfaceMixin
-    implements PathProviderPlatform {
-  @override
-  Future<String?> getApplicationDocumentsPath() async {
-    Directory tempDir = await getTemporaryDirectory();
-    return tempDir.path;
-  }
-
-  @override
-  Future<String> getApplicationSupportPath() async {
-    Directory tempDir = await getTemporaryDirectory();
-    return tempDir.path;
-  }
-}
+import 'package:integration_test/integration_test.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class TrekkoBuildUtils {
-  @GenerateMocks([BackgroundLocator])
   static Future<void> init() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
-    HttpOverrides.global = MyHttpOverrides();
-    await Isar.initializeIsarCore(download: true);
-    PathProviderPlatform.instance = MockPathProvider();
+    IntegrationTestWidgetsFlutterBinding.ensureInitialized();
     LocationBackgroundTracking.debug = true;
+    const MethodChannel('flutter.baseflow.com/permissions/methods')
+        .setMockMethodCallHandler((MethodCall methodCall) async {
+      return PermissionStatus.granted.index;
+    });
   }
 }
 
@@ -51,9 +29,9 @@ class TestUtils {
     if (Platform.isAndroid) {
       ip = "10.0.2.2";
     } else if (Platform.isMacOS) {
-      ip =  "127.0.0.1";
+      ip = "127.0.0.1";
     } else {
-      ip =  "localhost";
+      ip = "localhost";
     }
     return "http://$ip:8080";
   }
@@ -61,7 +39,7 @@ class TestUtils {
   static Future<Trekko> makeTrekko(
       String projectUrl, String email, String token) async {
     Trekko trekko =
-    ProfiledTrekko(projectUrl: projectUrl, email: email, token: token);
+        ProfiledTrekko(projectUrl: projectUrl, email: email, token: token);
     await trekko.init();
     return trekko;
   }
@@ -73,9 +51,11 @@ class TestUtils {
     AuthResponse authResponse;
 
     try {
-      authResponse = await trekkoServer.signUp(AuthRequest(uniqueEmail, '!Abc123#'));
+      authResponse =
+          await trekkoServer.signUp(AuthRequest(uniqueEmail, '!Abc123#'));
     } catch (e) {
-      authResponse = await trekkoServer.signIn(AuthRequest(uniqueEmail, '!Abc123#'));
+      authResponse =
+          await trekkoServer.signIn(AuthRequest(uniqueEmail, '!Abc123#'));
     }
     return await makeTrekko(getAddress(), uniqueEmail, authResponse.token);
   }

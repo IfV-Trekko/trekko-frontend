@@ -15,7 +15,10 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'test_utils.dart';
 
 void main () async {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  setUp(() async {
+    await TrekkoBuildUtils.init();
+  });
+
   Trekko? trekko;
 
   tearDown(() async {
