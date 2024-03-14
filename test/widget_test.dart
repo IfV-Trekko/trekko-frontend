@@ -1,3 +1,6 @@
+import 'package:app_backend/controller/profiled_trekko.dart';
+import 'package:app_backend/controller/request/bodies/request/auth_request.dart';
+import 'package:app_backend/controller/request/url_trekko_server.dart';
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_frontend/components/button.dart';
 import 'package:app_frontend/screens/tracking/tracking.dart';
@@ -22,7 +25,6 @@ void main() {
   });
 
   testWidgets("EXAMPLE DESCRIPTION", (tester) async {
-
     await tester.pumpWidget(TrackingScreen(trekko: trekko!));
     await tester.pumpAndSettle();
     expect(find.text('Mobilitätsdaten'), findsOneWidget);
@@ -35,9 +37,4 @@ void main() {
     expect(find.text('Erhebung läuft...'), findsOneWidget);
     (await trekko)?.signOut(delete: true);
   });
-
 }
-
-
-
-

@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:isar/isar.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:background_locator_2/background_locator.dart';
@@ -16,12 +17,20 @@ class MockPathProvider extends Mock
     implements PathProviderPlatform {
   @override
   Future<String?> getApplicationDocumentsPath() async {
-    return (Directory.systemTemp).path;
+    // Directory tempDir = await getTemporaryDirectory();
+    // return tempDir.path;
+    return "/var/folders/w5/dyy6d97s3hv4p2fm596f2qh80000gn/T/";
+  }
+
+  @override
+  Future<String> getApplicationSupportPath() async {
+    // Directory tempDir = await getTemporaryDirectory();
+    // return tempDir.path;
+    return "/var/folders/w5/dyy6d97s3hv4p2fm596f2qh80000gn/T/";
   }
 }
 
-class TrekkoBuildUtils{
-
+class TrekkoBuildUtils {
   @GenerateMocks([BackgroundLocator])
   static Future<void> init() async {
     TestWidgetsFlutterBinding.ensureInitialized();

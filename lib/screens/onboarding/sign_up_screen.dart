@@ -45,8 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Navigator.pushNamed(context, EnterCodeScreen.route,
                       arguments: trekko);
                 } catch (e) {
-                  String reason =
-                      "Unbekannter Fehler";
+                  String reason = "Unbekannter Fehler";
                   if (e is BuildException) {
                     if (e.reason ==
                         RegistrationResult.failedInvalidCredentials) {
@@ -71,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             title: Text(reason),
                             actions: [
                               CupertinoDialogAction(
-                                child: Text('Ok'),
+                                child: const Text('Ok'),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
