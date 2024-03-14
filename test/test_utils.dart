@@ -15,9 +15,10 @@ class TestUtils {
 
   static Future<Trekko> initTrekko() async {
     final UrlTrekkoServer trekkoServer = UrlTrekkoServer('http://localhost:8080');
-    // Generate a unique email address
+
     String uniqueEmail = 'test@example.com';
     AuthResponse authResponse;
+
     try {
       authResponse = await trekkoServer.signUp(AuthRequest(uniqueEmail, '!Abc123#'));
     } catch (e) {
