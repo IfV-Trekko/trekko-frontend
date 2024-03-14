@@ -8,7 +8,7 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 class TripMap extends StatefulWidget {
   final Trip trip;
 
-  TripMap({required this.trip, Key? key}) : super(key: key) {}
+  const TripMap({required this.trip, Key? key}) : super(key: key);
 
   @override
   _TripMapState createState() => _TripMapState();

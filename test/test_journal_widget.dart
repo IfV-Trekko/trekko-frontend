@@ -12,21 +12,20 @@ void main() {
   Future<Trekko> makeTrekko(
       String projectUrl, String email, String token) async {
     Trekko trekko =
-    ProfiledTrekko(projectUrl: projectUrl, email: email, token: token);
+        ProfiledTrekko(projectUrl: projectUrl, email: email, token: token);
     await trekko.init();
     return trekko;
   }
 
-  testWidgets('Navigation on "Erhebung starten" button tap', (
-      WidgetTester tester) async {
-    Future<Trekko> testTrekko = UrlTrekkoServer('http://localhost:8080')
+  testWidgets('Navigation on "Erhebung starten" button tap',
+      (WidgetTester tester) async {
+    UrlTrekkoServer('http://localhost:8080')
         .signUp(AuthRequest('test@web.de', '!Abc123#'))
         .then((value) async {
       // await _server.confirmEmail(CodeRequest(_code)); // TODO: exc handling
       return makeTrekko('http://localhost:8080', 'lalilu@web.de', value.token);
     });
-    await tester.pumpWidget(
-        JournalScreen()); // Erstelle den Screen
+    await tester.pumpWidget(JournalScreen()); // Erstelle den Screen
     await tester
         .pumpAndSettle(); // Lässt alle Animationen und Futures auslaufen
   });

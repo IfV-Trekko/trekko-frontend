@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:io';
 import 'package:app_backend/controller/profiled_trekko.dart';
 import 'package:app_backend/controller/request/bodies/request/auth_request.dart';
 import 'package:app_backend/controller/request/url_trekko_server.dart';
