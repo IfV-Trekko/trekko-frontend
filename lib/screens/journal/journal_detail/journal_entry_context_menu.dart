@@ -3,6 +3,7 @@ import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 
+//creates the context menu for the journal entry card showing when pressed continuously
 class JournalEntryContextMenu extends StatelessWidget {
   final Trip trip;
   final Function onDonate;

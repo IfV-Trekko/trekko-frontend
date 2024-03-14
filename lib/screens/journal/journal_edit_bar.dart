@@ -1,6 +1,6 @@
 import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
-
+//renders the bottom bar showing after "Bearbeiten" was pressed
 class JournalEditBar extends StatelessWidget {
   final Function onRevoke;
   final Function onMerge;

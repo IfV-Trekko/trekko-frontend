@@ -13,6 +13,7 @@ import 'package:app_frontend/trekko_provider.dart';
 import 'package:isar/isar.dart';
 import 'package:fling_units/fling_units.dart';
 
+//This renders the basic journal screen showing all journal entries
 class JournalScreen extends StatefulWidget {
   const JournalScreen({super.key});
 
