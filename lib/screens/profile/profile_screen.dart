@@ -93,15 +93,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                           padding: listTilePadding,
                           title:
                               Text('E-Mail', style: AppThemeTextStyles.normal),
-                          additionalInfo: Text(profile.email,
-                              overflow: TextOverflow.ellipsis),
+                          additionalInfo: SizedBox(
+                            width: 250,
+                            child: Text(profile.email,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.end),
+                          ),
                         ),
                         CupertinoListTile.notched(
                           padding: listTilePadding,
                           title: Text('Projekt-URL',
                               style: AppThemeTextStyles.normal),
-                          additionalInfo: Text(profile.projectUrl,
-                              overflow: TextOverflow.ellipsis),
+                          additionalInfo: SizedBox(
+                            width: 250,
+                            child: Text(profile.projectUrl,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.end),
+                          ),
                         ),
                       ],
                     ),

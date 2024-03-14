@@ -5,6 +5,7 @@ import 'package:app_frontend/components/constants/transport_design.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 
+//renders the vehicle box in the journal entry card
 class VehicleBox extends StatelessWidget {
   final String _title;
   final Color _color;

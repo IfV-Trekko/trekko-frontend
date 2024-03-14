@@ -46,7 +46,7 @@ class _SimpleOnboardingScreenState extends State<SimpleOnboardingScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 70,
                       ),
                       Text(widget.title,
@@ -60,7 +60,8 @@ class _SimpleOnboardingScreenState extends State<SimpleOnboardingScreen> {
               ),
               if (widget.buttonTitle != null)
                 Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                  padding:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                   child: Button(
                     title: widget.buttonTitle!,
                     stretch: true,

@@ -18,7 +18,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
   TextEditingController code = TextEditingController();
 
   Future<bool> _onWillPop(Trekko trekko, BuildContext context) async {
-    trekko.terminate();
+    trekko.signOut();
     return true;
   }
 

@@ -33,11 +33,6 @@ class TrekkoAppState extends State<TrekkoApp> {
   Screen get currentScreen => screens[controller.index];
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
     screens = [

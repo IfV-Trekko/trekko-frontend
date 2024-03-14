@@ -11,7 +11,7 @@ import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
-
+//renders the journal entry cards showing the trip information
 class JournalEntry extends StatelessWidget {
   final Trip trip;
   final bool selectionMode;

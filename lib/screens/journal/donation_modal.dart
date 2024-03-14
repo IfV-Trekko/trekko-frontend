@@ -9,6 +9,8 @@ import 'package:app_frontend/screens/journal/trips_list_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 
+//this Screen renders the donationModal, it shows after pressing the "Spenden" Button in the Journal,
+// it shows all Journal Entries without a donation state
 class DonationModal extends StatefulWidget {
   final Trekko trekko;
 

@@ -5,6 +5,7 @@ import 'package:app_frontend/screens/journal/journal_subtitle.dart';
 import 'package:app_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 
+//is used to render the list of journal entries in the journal screen
 class TripsList extends StatelessWidget {
   final List<Trip> trips;
   final bool selectionMode;

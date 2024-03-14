@@ -4,6 +4,7 @@ import 'package:app_frontend/screens/journal/journal_entry.dart';
 import 'package:app_frontend/screens/journal/journal_subtitle.dart';
 import 'package:flutter/cupertino.dart';
 
+//is used to render the list of journal entries in the donation modal
 class TripsListView extends StatefulWidget {
   final List<Trip> trips;
   final bool selectionMode;

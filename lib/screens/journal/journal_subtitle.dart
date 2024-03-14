@@ -2,6 +2,7 @@ import 'package:app_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
+//renders the dividers in the journal
 class JournalSubtitle extends StatelessWidget {
   final DateTime _date;
 
