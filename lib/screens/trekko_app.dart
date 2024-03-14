@@ -34,7 +34,6 @@ class TrekkoAppState extends State<TrekkoApp> {
 
   @override
   void dispose() {
-    widget.trekko.terminate();
     super.dispose();
   }
 
