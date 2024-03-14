@@ -1,12 +1,42 @@
 # app_frontend
 
-Frontend for trekko app
+## Installation & Setup
 
-## Getting Started
+### Prerequisites
 
-This project is a starting point for a Flutter application.
+- Flutter ^3.19.3
+- Dart ^3.3.1
+- Android Emulator and/or iOS Simulator + Xcode
 
-A few resources to get you started if this is your first Flutter project:
+### Install packages
+
+Install the packages & libraries from `pom.xml` using:
+
+```
+flutter pub get
+```
+
+### Start app
+
+Run using your IDE's run functionality or:
+
+```
+flutter run
+```
+
+Depending on the targetted mobile OS/platform, an emulator/simulator has to be installed and/or already started.
+
+### Run tests
+
+All frontend integration/system tests can be ran using:
+
+```
+flutter test
+```
+
+Unit tests of Frontend functionality are located in the `app-backend` package.
+
+### Learn More
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
