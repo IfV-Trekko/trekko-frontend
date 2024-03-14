@@ -99,11 +99,8 @@ class QuestionTilesBuilder {
         questionTile = CupertinoListTile.notched(
             padding: padding,
             title: Text(question.title, style: AppThemeTextStyles.normal),
-            additionalInfo: Text(answer == null
-                ? "Nicht beantwortet"
-                : question.type == QuestionType.number
-                    ? answer.toInt().toString()
-                    : answer.toString()),
+            additionalInfo:
+                Text(answer == null ? "Nicht beantwortet" : answer.toString()),
             trailing: const CupertinoListTileChevron(),
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
@@ -126,11 +123,7 @@ class QuestionTilesBuilder {
                         keyboardType: question.type == QuestionType.number
                             ? TextResponseKeyboardType.number
                             : TextResponseKeyboardType.text,
-                        initialValue: answer == null
-                            ? ''
-                            : question.type == QuestionType.number
-                                ? answer.round().toString()
-                                : answer,
+                        initialValue: answer == null ? '' : answer.toString(),
                       )));
             });
       }
