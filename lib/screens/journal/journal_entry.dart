@@ -1,6 +1,7 @@
 import 'package:app_backend/controller/trekko.dart';
 import 'package:app_backend/model/trip/trip.dart';
 import 'package:app_frontend/app_theme.dart';
+import 'package:app_frontend/components/constants/transport_design.dart';
 import 'package:app_frontend/components/path_showcase.dart';
 import 'package:app_frontend/screens/journal/journal_detail/donation_box.dart';
 import 'package:app_frontend/screens/journal/journal_detail/journal_entry_context_menu.dart';
@@ -11,6 +12,7 @@ import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
+
 //renders the journal entry cards showing the trip information
 class JournalEntry extends StatelessWidget {
   final Trip trip;
@@ -160,7 +162,10 @@ class _InformationRow extends StatelessWidget {
             fit: BoxFit.scaleDown,
             child: Row(
               children: [
-                Text(hours > 0 ? "$hours h $minutes min" : "$minutes min"),
+                Text(hours > 0 ? "$hours h $minutes min" : "$minutes min",
+                    style: TextStyle(
+                        color: TransportDesign.getColor(
+                            trip.getTransportTypes().first))),
                 const SizedBox(width: 4.0),
                 Text(
                   "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km",
