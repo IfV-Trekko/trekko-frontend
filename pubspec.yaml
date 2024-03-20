@@ -30,8 +30,7 @@ environment:
 dependencies:
   app_backend:
     git:
-#      url: https://github.com/KIT-PSE-2023-24/app-backend.git
-      url: /home/kaisma/Documents/Coding/Flutter/PSE/app-backend
+      url: https://github.com/KIT-PSE-2023-24/app-backend.git
       ref: master
   flutter_osm_plugin: ^0.70.2
   flutter:
