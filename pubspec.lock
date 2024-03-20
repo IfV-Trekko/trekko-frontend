@@ -23,7 +23,7 @@ packages:
       path: "."
       ref: master
       resolved-ref: "8862ff51973ce835db11e86ee48a4dc5c6d12789"
-      url: "/home/kaisma/Documents/Coding/Flutter/PSE/app-backend"
+      url: "https://github.com/KIT-PSE-2023-24/app-backend.git"
     source: git
     version: "1.0.0+1"
   args:
@@ -645,10 +645,10 @@ packages:
     dependency: transitive
     description:
       name: permission_handler_apple
-      sha256: bdafc6db74253abb63907f4e357302e6bb786ab41465e8635f362ee71fd8707b
+      sha256: "8c90be7f8244eeb2bbfa4248221d38a66ca3e3cc3ab967a25a2529d86eee7c45"
       url: "https://pub.dev"
     source: hosted
-    version: "9.4.0"
+    version: "9.4.1"
   permission_handler_html:
     dependency: transitive
     description:
@@ -725,10 +725,10 @@ packages:
     dependency: transitive
     description:
       name: routing_client_dart
-      sha256: b7d48ba131d9a73933855d64df911364564a367b5be222ab30eba4fc1632ebcc
+      sha256: "4e2acf1145bb8056e04fd93101a9f2bab2fd769c9d972f7f403f9733a670cb33"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.4"
+    version: "0.5.5"
   shelf:
     dependency: transitive
     description:
