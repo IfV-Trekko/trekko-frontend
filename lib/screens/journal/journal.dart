@@ -18,10 +18,10 @@ class JournalScreen extends StatefulWidget {
   const JournalScreen({super.key});
 
   @override
-  _JournalScreenState createState() => _JournalScreenState();
+  JournalScreenState createState() => JournalScreenState();
 }
 
-class _JournalScreenState extends State<StatefulWidget>
+class JournalScreenState extends State<StatefulWidget>
     with AutomaticKeepAliveClientMixin {
   bool selectionMode = false;
   bool isLoading = false;

@@ -23,10 +23,10 @@ class Description extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DescriptionState createState() => _DescriptionState();
+  DescriptionState createState() => DescriptionState();
 }
 
-class _DescriptionState extends State<Description> {
+class DescriptionState extends State<Description> {
   Future<String> _getStreet(TrackedPoint where) async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(where.latitude, where.longitude);

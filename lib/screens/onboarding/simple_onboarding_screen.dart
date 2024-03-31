@@ -42,7 +42,7 @@ class _SimpleOnboardingScreenState extends State<SimpleOnboardingScreen> {
               Expanded(
                 child: SingleChildScrollView(
                   padding: widget.padding ??
-                      EdgeInsets.only(bottom: 16, left: 16, right: 16),
+                      const EdgeInsets.only(bottom: 16, left: 16, right: 16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

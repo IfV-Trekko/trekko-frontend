@@ -36,10 +36,10 @@ class TestUtils {
   static Future<void> init() async {
     initializeDateFormatting();
     IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-    const MethodChannel('flutter.baseflow.com/permissions/methods')
-        .setMockMethodCallHandler((MethodCall methodCall) async {
-      return PermissionStatus.granted.index;
-    });
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+            const MethodChannel('flutter.baseflow.com/permissions/methods'),
+            (message) async => PermissionStatus.granted.index);
   }
 
   static Future<Trekko> initTrekko() async {

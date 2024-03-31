@@ -11,10 +11,10 @@ class TripMap extends StatefulWidget {
   const TripMap({required this.trip, Key? key}) : super(key: key);
 
   @override
-  _TripMapState createState() => _TripMapState();
+  TripMapState createState() => TripMapState();
 }
 
-class _TripMapState extends State<TripMap>
+class TripMapState extends State<TripMap>
     with AutomaticKeepAliveClientMixin<TripMap> {
   late MapController controller;
 

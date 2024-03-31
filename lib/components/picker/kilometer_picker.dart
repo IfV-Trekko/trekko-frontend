@@ -14,10 +14,10 @@ class KilometerPicker extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _KilometerPickerState createState() => _KilometerPickerState();
+  KilometerPickerState createState() => KilometerPickerState();
 }
 
-class _KilometerPickerState extends State<KilometerPicker> {
+class KilometerPickerState extends State<KilometerPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(

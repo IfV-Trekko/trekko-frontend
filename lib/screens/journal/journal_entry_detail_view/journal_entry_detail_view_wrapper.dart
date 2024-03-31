@@ -20,10 +20,10 @@ class JournalEntryDetailViewWrapper extends StatefulWidget {
       : super(key: key);
 
   @override
-  _TestWrapperState createState() => _TestWrapperState();
+  TestWrapperState createState() => TestWrapperState();
 }
 
-class _TestWrapperState extends State<JournalEntryDetailViewWrapper> {
+class TestWrapperState extends State<JournalEntryDetailViewWrapper> {
   bool isLoading = false;
 
   void save(Trekko trekko) {

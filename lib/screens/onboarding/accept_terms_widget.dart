@@ -12,10 +12,10 @@ class AcceptTermsWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _AcceptTermsWidgetState createState() => _AcceptTermsWidgetState();
+  AcceptTermsWidgetState createState() => AcceptTermsWidgetState();
 }
 
-class _AcceptTermsWidgetState extends State<AcceptTermsWidget> {
+class AcceptTermsWidgetState extends State<AcceptTermsWidget> {
   bool _isAccepted = false;
 
   @override

@@ -14,10 +14,10 @@ class Analysis extends StatefulWidget {
   const Analysis(this.trekko, {Key? key}) : super(key: key);
 
   @override
-  _AnalysisState createState() => _AnalysisState();
+  AnalysisState createState() => AnalysisState();
 }
 
-class _AnalysisState extends State<Analysis>
+class AnalysisState extends State<Analysis>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
