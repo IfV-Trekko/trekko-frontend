@@ -5,6 +5,7 @@ import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:trekko_frontend/components/pull_tab.dart';
 
 class MapOptionSheet extends StatefulWidget {
   final Trekko trekko;
@@ -16,6 +17,35 @@ class MapOptionSheet extends StatefulWidget {
 }
 
 class _MapOptionSheetState extends State<MapOptionSheet> {
+  void _dialogNeedLocationPermission() {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: const Text('Standortberechtigung fehlt'),
+            content: const Text(
+                'Um die Erhebung zu starten, benötigen wir Zugriff auf Ihren Standort. Bitte gehen Sie in die Einstellungen und ändern Sie den Standortzugriff zu "Immer Erlauben".'),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: const Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  String _getTrackingText(TrackingState state, DateTime? lastTimeTracked) {
+    if (state == TrackingState.running) {
+      return 'Automatisch erfasst seit ${DateTime.now().difference(lastTimeTracked!).inDays} Tagen';
+    } else if (state == TrackingState.paused && lastTimeTracked != null) {
+      return 'Letzte Erhebung vor ${DateTime.now().difference(lastTimeTracked).inDays} Tagen';
+    }
+    return 'Noch keine Erhebung gestartet';
+  }
+
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -47,6 +77,7 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                         stream: super.widget.trekko.getTrackingState(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
+                            TrackingState state = snapshot.data!;
                             if (snapshot.data! == TrackingState.running) {
                               return StreamBuilder(
                                   stream: widget.trekko.getProfile(),
@@ -55,34 +86,9 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                                       return Container(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                            'Automatisch erfasst seit ${DateTime.now().difference(snapshot.data!.lastTimeTracked!).inDays} Tagen',
+                                            _getTrackingText(state,
+                                                snapshot.data!.lastTimeTracked),
                                             style: AppThemeTextStyles.normal),
-                                      );
-                                    }
-                                    return Container(
-                                        alignment: Alignment.centerLeft,
-                                        child:
-                                            const CupertinoActivityIndicator());
-                                  });
-                            } else if (snapshot.data! == TrackingState.paused) {
-                              return StreamBuilder(
-                                  stream: widget.trekko.getProfile(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: (snapshot
-                                                    .data!.lastTimeTracked ==
-                                                null)
-                                            ? Text(
-                                                'Noch keine Erhebung gestartet',
-                                                style:
-                                                    AppThemeTextStyles.normal,
-                                              )
-                                            : Text(
-                                                'Letzte Erhebung vor ${DateTime.now().difference(snapshot.data!.lastTimeTracked!).inDays} Tagen',
-                                                style:
-                                                    AppThemeTextStyles.normal),
                                       );
                                     }
                                     return Container(
@@ -137,43 +143,5 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                 ),
               ));
         });
-  }
-
-  void _dialogNeedLocationPermission() {
-    showCupertinoDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: const Text('Standortberechtigung fehlt'),
-            content: const Text(
-                'Um die Erhebung zu starten, benötigen wir Zugriff auf Ihren Standort. Bitte gehen Sie in die Einstellungen und ändern Sie den Standortzugriff zu "Immer Erlauben".'),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: const Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
-  }
-}
-
-class PullTab extends StatelessWidget {
-  const PullTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: 40,
-        height: 5,
-        decoration: BoxDecoration(
-          color: CupertinoColors.inactiveGray,
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-    );
   }
 }
