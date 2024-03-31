@@ -3,7 +3,6 @@ import 'package:trekko_backend/controller/request/bodies/request/auth_request.da
 import 'package:trekko_backend/controller/request/bodies/response/auth_response.dart';
 import 'package:trekko_backend/controller/request/url_trekko_server.dart';
 import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/controller/utils/tracking_util.dart';
 import 'package:flutter/services.dart';
 
 import 'dart:io';
@@ -15,7 +14,6 @@ import 'package:permission_handler/permission_handler.dart';
 class TrekkoBuildUtils {
   static Future<void> init() async {
     IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-    LocationBackgroundTracking.debug = true;
     const MethodChannel('flutter.baseflow.com/permissions/methods')
         .setMockMethodCallHandler((MethodCall methodCall) async {
       return PermissionStatus.granted.index;
