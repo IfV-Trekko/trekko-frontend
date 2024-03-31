@@ -29,7 +29,7 @@ class ChooseLoginProcessScreen extends StatelessWidget {
             ),
             const SizedBox(
               height: 100,
-            ), //TODO: Add a better spacing
+            ),
             Button(
                 title: "Registrieren",
                 onPressed: () {
