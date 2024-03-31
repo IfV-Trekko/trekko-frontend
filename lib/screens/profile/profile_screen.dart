@@ -4,7 +4,7 @@ import 'package:trekko_backend/model/tracking_state.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/picker/setting_picker.dart';
 import 'package:trekko_frontend/main.dart';
-import 'package:trekko_frontend/screens/profile/question_tiles_builder.dart';
+import 'package:trekko_frontend/screens/profile/question_tiles_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/model/profile/profile.dart';
 

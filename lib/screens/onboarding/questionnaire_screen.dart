@@ -1,6 +1,6 @@
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_frontend/screens/onboarding/simple_onboarding_screen.dart';
-import 'package:trekko_frontend/screens/profile/question_tiles_builder.dart';
+import 'package:trekko_frontend/screens/profile/question_tiles_section.dart';
 import 'package:flutter/cupertino.dart';
 
 class QuestionnaireScreen extends StatefulWidget {
