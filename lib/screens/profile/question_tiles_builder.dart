@@ -1,4 +1,5 @@
 import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/model/profile/preferences.dart';
 import 'package:trekko_frontend/components/constants/text_response_keyboard_type.dart';
 import 'package:trekko_frontend/components/picker/setting_picker.dart';
 import 'package:trekko_frontend/components/responses/text_response.dart';
@@ -7,136 +8,28 @@ import 'package:trekko_backend/model/profile/profile.dart';
 import 'package:trekko_backend/model/profile/onboarding_question.dart';
 import 'package:trekko_backend/model/profile/question_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
+import 'package:trekko_frontend/screens/profile/bool_question_tile.dart';
+import 'package:trekko_frontend/screens/profile/select_question_tile.dart';
+import 'package:trekko_frontend/screens/profile/text_question_tile.dart';
 
-class QuestionTilesBuilder {
-  static List<CupertinoListTile> buildQuestionTiles({
-    required BuildContext context,
-    required Profile profile,
-    required Trekko trekko,
-    required EdgeInsetsGeometry padding,
-  }) {
-    Future<void> showSelectPicker({
-      required BuildContext context,
-      required Profile profile,
-      required Trekko trekko,
-      required OnboardingQuestion question,
-    }) async {
-      List<Widget> optionsWidgets = question.options!
-          .map((option) => Center(
-                child: Text(option.answer),
-              ))
-          .toList();
+class QuestionTilesSection extends StatelessWidget {
+  final double defaultDividerMargin = 2;
+  final EdgeInsetsGeometry listTilePadding =
+      const EdgeInsets.only(left: 16, right: 16);
+  final EdgeInsetsGeometry firstListSectionMargin =
+      const EdgeInsets.fromLTRB(16, 16, 16, 16);
+  final EdgeInsetsGeometry listSectionMargin =
+      const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
-      void onSettingSelected(int selectedIndex) {
-        String selectedOptionKey = question.options![selectedIndex].key;
-        profile.preferences.setQuestionAnswer(question.key, selectedOptionKey);
-        trekko.savePreferences(profile.preferences);
-      }
+  final Trekko trekko;
+  final EdgeInsetsGeometry padding;
 
-      await showCupertinoModalPopup<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return SettingsPicker(
-            onSettingSelected: onSettingSelected,
-            children: optionsWidgets,
-          );
-        },
-      );
-    }
+  const QuestionTilesSection(
+      {super.key,
+      required this.trekko,
+      this.padding = const EdgeInsets.only(left: 16, right: 16)});
 
-    List<CupertinoListTile> questionTiles = [];
-    for (OnboardingQuestion question
-        in profile.preferences.onboardingQuestions) {
-      dynamic answer = profile.preferences.getQuestionAnswer(question.key);
-
-      CupertinoListTile questionTile;
-      if (question.type == QuestionType.boolean) {
-        questionTile = CupertinoListTile.notched(
-          padding: padding,
-          title: Text(question.title, style: AppThemeTextStyles.normal),
-          trailing: CupertinoSwitch(
-            value: answer == null ? false : answer as bool,
-            activeColor: AppThemeColors.green,
-            onChanged: (bool? newValue) async {
-              if (newValue == null) return;
-
-              try {
-                profile.preferences.setQuestionAnswer(question.key, newValue);
-                await trekko.savePreferences(profile.preferences);
-              } catch (e) {
-                // ignore: use_build_context_synchronously
-                _showErrorDialog(context, e);
-              }
-            },
-          ),
-        );
-      } else if (question.type == QuestionType.select) {
-        dynamic selectedOptionTitle;
-        for (var option in question.options!) {
-          if (option.key == answer) {
-            selectedOptionTitle = option.answer;
-          }
-        }
-
-        bool isAnswered = answer != null && selectedOptionTitle != null;
-
-        questionTile = CupertinoListTile.notched(
-          padding: padding,
-          title: Text(question.title, style: AppThemeTextStyles.normal),
-          additionalInfo:
-              Text(isAnswered ? selectedOptionTitle : "Nicht beantwortet"),
-          trailing: const CupertinoListTileChevron(),
-          onTap: () async {
-            await showSelectPicker(
-              context: context,
-              profile: profile,
-              trekko: trekko,
-              question: question,
-            );
-          },
-        );
-      } else {
-        questionTile = CupertinoListTile.notched(
-            padding: padding,
-            title: Text(question.title, style: AppThemeTextStyles.normal),
-            additionalInfo: SizedBox(
-                width: 250,
-                child: Text(
-                    answer == null ? "Nicht beantwortet" : answer.toString(),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.end)),
-            trailing: const CupertinoListTileChevron(),
-            onTap: () {
-              Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) => TextResponse(
-                        suffix: '',
-                        maxLength: 256,
-                        maxLines: 1,
-                        onSaved: (String? newValue) async {
-                          try {
-                            profile.preferences
-                                .setQuestionAnswer(question.key, newValue);
-                            await trekko.savePreferences(profile.preferences);
-                          } catch (e) {
-                            // ignore: use_build_context_synchronously
-                            _showErrorDialog(context, e);
-                          }
-                        },
-                        title: question.title,
-                        placeholder: question.title,
-                        keyboardType: question.type == QuestionType.number
-                            ? TextResponseKeyboardType.number
-                            : TextResponseKeyboardType.text,
-                        initialValue: answer == null ? '' : answer.toString(),
-                      )));
-            });
-      }
-      questionTiles.add(questionTile);
-    }
-    return questionTiles;
-  }
-
-  static void _showErrorDialog(BuildContext context, Object e) {
+  void _showErrorDialog(BuildContext context, Object e) {
     showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
@@ -155,5 +48,76 @@ class QuestionTilesBuilder {
         );
       },
     );
+  }
+
+  void _onSave(BuildContext context, Preferences preferences,
+      OnboardingQuestion question, dynamic answer) async {
+    try {
+      preferences.setQuestionAnswer(question.key, answer);
+      await trekko.savePreferences(preferences);
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      _showErrorDialog(context, e);
+    }
+  }
+
+  List<Widget> _buildQuestionTiles(
+      BuildContext context, Preferences preferences) {
+    List<Widget> questionTiles = [];
+    for (OnboardingQuestion question in preferences.onboardingQuestions) {
+      dynamic answer = preferences.getQuestionAnswer(question.key);
+      Widget questionTile;
+      if (question.type == QuestionType.boolean) {
+        questionTile = BoolQuestionTile(
+            answer: answer,
+            question: question,
+            padding: padding,
+            onSaved: (newAnswer) =>
+                _onSave(context, preferences, question, newAnswer));
+      } else if (question.type == QuestionType.select) {
+        questionTile = SelectQuestionTile(
+            answer: answer,
+            question: question,
+            padding: padding,
+            onSaved: (newAnswer) =>
+                _onSave(context, preferences, question, newAnswer));
+      } else {
+        questionTile = TextQuestionTile(
+            answer: answer,
+            question: question,
+            padding: padding,
+            onSaved: (newAnswer) =>
+                _onSave(context, preferences, question, newAnswer));
+      }
+      questionTiles.add(questionTile);
+    }
+
+    if (questionTiles.isEmpty) {
+      questionTiles.add(CupertinoListTile.notched(
+        padding: listTilePadding,
+        title:
+            Text('Keine Fragen beantwortet', style: AppThemeTextStyles.normal),
+      ));
+    }
+
+    return questionTiles;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: trekko.getProfile().map((event) => event.preferences),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text("An error has occurred");
+          } else if (snapshot.hasData) {
+            return CupertinoListSection.insetGrouped(
+              margin: listSectionMargin,
+              additionalDividerMargin: defaultDividerMargin,
+              children: _buildQuestionTiles(context, snapshot.data!),
+            );
+          }
+          return const CupertinoActivityIndicator();
+        });
   }
 }

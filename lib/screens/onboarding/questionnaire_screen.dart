@@ -1,6 +1,4 @@
 import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/model/profile/profile.dart';
-import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/screens/onboarding/simple_onboarding_screen.dart';
 import 'package:trekko_frontend/screens/profile/question_tiles_builder.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,33 +19,12 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     Trekko trekko = ModalRoute.of(context)!.settings.arguments as Trekko;
 
     return SimpleOnboardingScreen(
-      title: "Fragebogen",
-      buttonTitle: "Registrierung abschließen",
-      onButtonPress: () async {
-        widget.callback.call(trekko);
-      },
-      padding: EdgeInsets.zero,
-      child: StreamBuilder(
-        stream: trekko.getProfile(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            Profile profile = snapshot.data!;
-            List<CupertinoListTile> questionTiles =
-                QuestionTilesBuilder.buildQuestionTiles(
-              context: context,
-              profile: profile,
-              trekko: trekko,
-              padding: const EdgeInsets.only(left: 16, right: 16),
-            );
-            return CupertinoListSection.insetGrouped(
-              additionalDividerMargin: 2,
-              backgroundColor: AppThemeColors.contrast0,
-              children: questionTiles,
-            );
-          }
-          return const Center(child: CupertinoActivityIndicator());
+        title: "Fragebogen",
+        buttonTitle: "Registrierung abschließen",
+        onButtonPress: () async {
+          widget.callback.call(trekko);
         },
-      ),
-    );
+        padding: EdgeInsets.zero,
+        child: QuestionTilesSection(trekko: trekko));
   }
 }

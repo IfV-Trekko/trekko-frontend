@@ -132,20 +132,6 @@ class _ProfileScreenState extends State<ProfileScreen>
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 Profile profile = snapshot.data!;
-                List<CupertinoListTile> questionTiles =
-                    QuestionTilesBuilder.buildQuestionTiles(
-                  context: context,
-                  profile: profile,
-                  trekko: widget.trekko,
-                  padding: listTilePadding,
-                );
-                if (questionTiles.isEmpty) {
-                  questionTiles.add(CupertinoListTile.notched(
-                    padding: listTilePadding,
-                    title: Text('Keine Fragen beantwortet',
-                        style: AppThemeTextStyles.normal),
-                  ));
-                }
 
                 return Column(
                   children: [
@@ -177,11 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                       ],
                     ),
-                    CupertinoListSection.insetGrouped(
-                      margin: listSectionMargin,
-                      additionalDividerMargin: defaultDividerMargin,
-                      children: questionTiles,
-                    ),
+                    QuestionTilesSection(trekko: widget.trekko),
                     CupertinoListSection.insetGrouped(
                       margin: listSectionMargin,
                       additionalDividerMargin: defaultDividerMargin,
