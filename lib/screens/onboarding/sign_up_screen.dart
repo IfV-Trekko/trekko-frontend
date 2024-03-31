@@ -1,13 +1,13 @@
-import 'package:app_backend/controller/builder/build_exception.dart';
-import 'package:app_backend/controller/builder/registration_builder.dart';
-import 'package:app_backend/controller/builder/registration_result.dart';
-import 'package:app_backend/controller/trekko.dart';
-import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/components/text_input.dart';
-import 'package:app_frontend/screens/onboarding/accept_terms_widget.dart';
-import 'package:app_frontend/screens/onboarding/enter_code_screen.dart';
-import 'package:app_frontend/screens/onboarding/item_divider.dart';
-import 'package:app_frontend/screens/onboarding/simple_onboarding_screen.dart';
+import 'package:trekko_backend/controller/builder/build_exception.dart';
+import 'package:trekko_backend/controller/builder/registration_builder.dart';
+import 'package:trekko_backend/controller/builder/registration_result.dart';
+import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_frontend/app_theme.dart';
+import 'package:trekko_frontend/components/text_input.dart';
+import 'package:trekko_frontend/screens/onboarding/accept_terms_widget.dart';
+import 'package:trekko_frontend/screens/onboarding/enter_code_screen.dart';
+import 'package:trekko_frontend/screens/onboarding/item_divider.dart';
+import 'package:trekko_frontend/screens/onboarding/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class SignUpScreen extends StatefulWidget {

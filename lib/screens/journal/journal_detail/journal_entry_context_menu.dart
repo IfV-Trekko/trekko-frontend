@@ -1,6 +1,6 @@
-import 'package:app_backend/model/trip/donation_state.dart';
-import 'package:app_backend/model/trip/trip.dart';
-import 'package:app_frontend/app_theme.dart';
+import 'package:trekko_backend/model/trip/donation_state.dart';
+import 'package:trekko_backend/model/trip/trip.dart';
+import 'package:trekko_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 
 //creates the context menu for the journal entry card showing when pressed continuously

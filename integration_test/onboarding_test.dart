@@ -1,11 +1,10 @@
-import 'package:app_frontend/components/button.dart';
-import 'package:app_frontend/components/text_input.dart';
-import 'package:app_frontend/screens/profile/profile_screen.dart';
-import 'package:app_frontend/screens/tracking/tracking.dart';
+import 'package:trekko_frontend/components/button.dart';
+import 'package:trekko_frontend/components/text_input.dart';
+import 'package:trekko_frontend/screens/profile/profile_screen.dart';
+import 'package:trekko_frontend/screens/tracking/tracking.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
-import 'package:app_frontend/main.dart' as app;
+import 'package:trekko_frontend/main.dart' as app;
 import 'package:intl/intl.dart';
 
 import 'test_utils.dart';

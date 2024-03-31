@@ -1,14 +1,14 @@
-import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/onboarding_text_type.dart';
-import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/screens/onboarding/choose_login_process_screen.dart';
-import 'package:app_frontend/screens/onboarding/enter_code_screen.dart';
-import 'package:app_frontend/screens/onboarding/join_project_screen.dart';
-import 'package:app_frontend/screens/onboarding/questionnaire_screen.dart';
-import 'package:app_frontend/screens/onboarding/sign_in_screen.dart';
-import 'package:app_frontend/screens/onboarding/sign_up_screen.dart';
-import 'package:app_frontend/screens/onboarding/text_info_screen.dart';
-import 'package:app_frontend/screens/onboarding/welcome_screen.dart';
+import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/model/onboarding_text_type.dart';
+import 'package:trekko_frontend/app_theme.dart';
+import 'package:trekko_frontend/screens/onboarding/choose_login_process_screen.dart';
+import 'package:trekko_frontend/screens/onboarding/enter_code_screen.dart';
+import 'package:trekko_frontend/screens/onboarding/join_project_screen.dart';
+import 'package:trekko_frontend/screens/onboarding/questionnaire_screen.dart';
+import 'package:trekko_frontend/screens/onboarding/sign_in_screen.dart';
+import 'package:trekko_frontend/screens/onboarding/sign_up_screen.dart';
+import 'package:trekko_frontend/screens/onboarding/text_info_screen.dart';
+import 'package:trekko_frontend/screens/onboarding/welcome_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 class LoginApp extends StatelessWidget {

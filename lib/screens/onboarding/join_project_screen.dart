@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:app_backend/controller/builder/authentification_utils.dart';
-import 'package:app_frontend/components/button.dart';
-import 'package:app_frontend/components/constants/button_style.dart';
-import 'package:app_frontend/components/text_input.dart';
-import 'package:app_frontend/screens/onboarding/choose_login_process_screen.dart';
-import 'package:app_frontend/screens/onboarding/simple_onboarding_screen.dart';
+import 'package:trekko_backend/controller/builder/authentification_utils.dart';
+import 'package:trekko_frontend/components/button.dart';
+import 'package:trekko_frontend/components/constants/button_style.dart';
+import 'package:trekko_frontend/components/text_input.dart';
+import 'package:trekko_frontend/screens/onboarding/choose_login_process_screen.dart';
+import 'package:trekko_frontend/screens/onboarding/simple_onboarding_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 

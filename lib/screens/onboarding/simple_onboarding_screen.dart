@@ -1,5 +1,5 @@
-import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/components/button.dart';
+import 'package:trekko_frontend/app_theme.dart';
+import 'package:trekko_frontend/components/button.dart';
 import 'package:flutter/cupertino.dart';
 
 class SimpleOnboardingScreen extends StatefulWidget {

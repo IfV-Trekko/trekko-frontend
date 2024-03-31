@@ -1,10 +1,10 @@
-import 'package:app_backend/model/trip/transport_type.dart';
-import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/components/constants/text_response_keyboard_type.dart';
-import 'package:app_frontend/components/constants/transport_design.dart';
-import 'package:app_frontend/components/responses/multi_select_response.dart';
-import 'package:app_frontend/components/responses/text_response.dart';
-import 'package:app_frontend/screens/journal/journal_detail/vehicle_box.dart';
+import 'package:trekko_backend/model/trip/transport_type.dart';
+import 'package:trekko_frontend/app_theme.dart';
+import 'package:trekko_frontend/components/constants/text_response_keyboard_type.dart';
+import 'package:trekko_frontend/components/constants/transport_design.dart';
+import 'package:trekko_frontend/components/responses/multi_select_response.dart';
+import 'package:trekko_frontend/components/responses/text_response.dart';
+import 'package:trekko_frontend/screens/journal/journal_detail/vehicle_box.dart';
 import 'package:flutter/cupertino.dart';
 
 class Details extends StatefulWidget {

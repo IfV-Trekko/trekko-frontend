@@ -1,5 +1,5 @@
-import 'package:app_backend/model/trip/donation_state.dart';
-import 'package:app_frontend/app_theme.dart';
+import 'package:trekko_backend/model/trip/donation_state.dart';
+import 'package:trekko_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 //renders the donation state box in the journal entry card

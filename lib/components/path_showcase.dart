@@ -1,5 +1,5 @@
-import 'package:app_backend/model/trip/trip.dart';
-import 'package:app_frontend/components/constants/transport_design.dart';
+import 'package:trekko_backend/model/trip/trip.dart';
+import 'package:trekko_frontend/components/constants/transport_design.dart';
 import 'package:flutter/cupertino.dart';
 
 class PathShowcase extends StatelessWidget {
