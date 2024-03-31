@@ -18,15 +18,17 @@ class SelectQuestionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dynamic selectedOptionTitle =
-        question.options!.firstWhere((option) => option.key == answer).answer;
-    bool isAnswered = answer != null && selectedOptionTitle != null;
+    String? selectedOptionTitle;
+    if (answer != null) {
+      selectedOptionTitle =
+          question.options!.firstWhere((option) => option.key == answer).answer;
+    }
 
     return CupertinoListTile.notched(
       padding: padding,
       title: Text(question.title, style: AppThemeTextStyles.normal),
       additionalInfo:
-          Text(isAnswered ? selectedOptionTitle : "Nicht beantwortet"),
+          Text(selectedOptionTitle ?? "Nicht beantwortet"),
       trailing: const CupertinoListTileChevron(),
       onTap: () async {
         await showCupertinoModalPopup<void>(
