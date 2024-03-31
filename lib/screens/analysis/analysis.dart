@@ -25,11 +25,6 @@ class _AnalysisState extends State<Analysis>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    List<VehicleData> vehicleData = [];
-    for (TransportType type in TransportType.values) {
-      vehicleData.add(VehicleData(vehicle: type, trekko: widget.trekko));
-    }
-
     return CupertinoPageScaffold(
         backgroundColor: AppThemeColors.contrast100,
         child: CustomScrollView(
@@ -39,7 +34,9 @@ class _AnalysisState extends State<Analysis>
             ),
             SliverToBoxAdapter(
               child: CustomPageControl(
-                pages: vehicleData,
+                pages: TransportType.values
+                    .map((e) => VehicleData(vehicle: e, trekko: widget.trekko))
+                    .toList(),
                 pageHeights: 288,
               ),
             ),

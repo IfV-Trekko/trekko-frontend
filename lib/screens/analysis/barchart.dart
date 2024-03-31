@@ -35,6 +35,30 @@ class BarChartWidgetState extends State<BarChartWidget> {
         AverageCalculation());
   }
 
+  BarChartGroupData chartFromDouble(TransportType type, double data) {
+    return BarChartGroupData(
+      x: TransportType.values.indexOf(type),
+      barRods: [
+        BarChartRodData(
+          toY: data,
+          color: TransportDesign.getColor(type),
+          width: 14,
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ],
+    );
+  }
+
+  Widget getTitles(double value, TitleMeta meta) {
+    var type = TransportType.values[value.toInt()];
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 6,
+      child: HeroIcon(TransportDesign.getIcon(type),
+          size: 17, color: TransportDesign.getColor(type)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Stream<List<Tuple<TransportType, double>>> buildData() {
@@ -50,62 +74,6 @@ class BarChartWidgetState extends State<BarChartWidget> {
         }));
       }
       return StreamZip(data);
-    }
-
-    BarChartGroupData chartFromDouble(TransportType type, double data) {
-      return BarChartGroupData(
-        x: TransportType.values.indexOf(type),
-        barRods: [
-          BarChartRodData(
-            toY: data,
-            color: TransportDesign.getColor(type),
-            width: 14,
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ],
-      );
-    }
-
-    //TODO: Gottlosen Code fixen
-    Widget getTitles(double value, TitleMeta meta) {
-      HeroIcon icon;
-      switch (value.toInt()) {
-        case 0:
-          icon = HeroIcon(TransportDesign.getIcon(TransportType.by_foot),
-              size: 17, color: TransportDesign.getColor(TransportType.by_foot));
-          break;
-        case 1:
-          icon = HeroIcon(TransportDesign.getIcon(TransportType.bicycle),
-              size: 17, color: TransportDesign.getColor(TransportType.bicycle));
-          break;
-        case 2:
-          icon = HeroIcon(TransportDesign.getIcon(TransportType.car),
-              size: 17, color: TransportDesign.getColor(TransportType.car));
-          break;
-        case 3:
-          icon = HeroIcon(
-              TransportDesign.getIcon(TransportType.publicTransport),
-              size: 17,
-              color: TransportDesign.getColor(TransportType.publicTransport));
-          break;
-        case 4:
-          icon = HeroIcon(TransportDesign.getIcon(TransportType.ship),
-              size: 17, color: TransportDesign.getColor(TransportType.ship));
-          break;
-        case 5:
-          icon = HeroIcon(TransportDesign.getIcon(TransportType.plane),
-              size: 17, color: TransportDesign.getColor(TransportType.plane));
-          break;
-        default:
-          icon = HeroIcon(TransportDesign.getIcon(TransportType.other),
-              size: 17, color: TransportDesign.getColor(TransportType.other));
-          break;
-      }
-      return SideTitleWidget(
-        axisSide: meta.axisSide,
-        space: 6,
-        child: icon,
-      );
     }
 
     FlTitlesData titlesData = FlTitlesData(

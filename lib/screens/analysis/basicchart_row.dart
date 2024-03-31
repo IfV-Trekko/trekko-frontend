@@ -30,9 +30,8 @@ class BasicChartRow extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             TransportDesign.getName(type),
-            style: AppThemeTextStyles.normal.copyWith(
-              color: TransportDesign.getColor(type),
-            ),
+            style: AppThemeTextStyles.normal
+                .copyWith(color: TransportDesign.getColor(type)),
           ),
           const Spacer(),
           value
