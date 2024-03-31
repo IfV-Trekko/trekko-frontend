@@ -31,8 +31,6 @@ class JournalEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double maxWidth = MediaQuery.of(context).size.width - 32;
-
     return GestureDetector(
       onTap: () {
         if (isDisabled) return;
@@ -62,7 +60,7 @@ class JournalEntry extends StatelessWidget {
           if (selectionMode) const SizedBox(width: 16.0),
           Expanded(
             child: selectionMode
-                ? _buildEntry(maxWidth)
+                ? _buildEntry()
                 : JournalEntryContextMenu(
                     trip: trip,
                     onDonate: () async {
@@ -93,7 +91,7 @@ class JournalEntry extends StatelessWidget {
     return trekko.getTripQuery().filter().idEqualTo(trip.id);
   }
 
-  Widget _buildEntry(double maxWidth) {
+  Widget _buildEntry() {
     return LayoutBuilder(builder: (context, constraints) {
       return GestureDetector(
         onTap: () {
@@ -110,7 +108,7 @@ class JournalEntry extends StatelessWidget {
           }
         },
         child: Container(
-          width: constraints.constrainWidth(maxWidth),
+          width: constraints.constrainWidth(MediaQuery.of(context).size.width - 32),
           decoration: BoxDecoration(
             color: AppThemeColors.contrast0,
             borderRadius: BorderRadius.circular(6.0),
