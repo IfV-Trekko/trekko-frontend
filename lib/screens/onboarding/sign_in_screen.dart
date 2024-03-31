@@ -56,7 +56,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
                       title: Text(reason),
-                      // TODO: Better information text
                       actions: [
                         CupertinoDialogAction(
                           child: const Text('Ok'),
