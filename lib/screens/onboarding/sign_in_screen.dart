@@ -51,7 +51,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 reason = 'Sitzung abgelaufen, bitte loggen Sie sich erneut ein';
               }
             }
-            showCupertinoDialog(
+            if (context.mounted) {
+              showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
                       title: Text(reason),
@@ -65,6 +66,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         )
                       ],
                     ));
+            }
           }
         },
         child: Column(children: [

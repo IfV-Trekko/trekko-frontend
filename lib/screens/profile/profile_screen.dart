@@ -71,7 +71,7 @@ class ProfileScreenState extends State<ProfileScreen>
                     await widget.trekko.signOut(delete: true);
                     runLoginApp();
 
-                    if (mounted) {
+                    if (context.mounted) {
                       Navigator.pop(context);
                     }
                   },
@@ -105,7 +105,7 @@ class ProfileScreenState extends State<ProfileScreen>
                   await widget.trekko.setTrackingState(TrackingState.paused);
                   await widget.trekko.setTrackingState(TrackingState.running);
                 }
-                if (!mounted) return;
+                if (!context.mounted) return;
                 Navigator.of(context).pop();
               },
             ),
@@ -181,7 +181,8 @@ class ProfileScreenState extends State<ProfileScreen>
                                 await showBatteryUsageSettingPicker(
                                     context, profile);
                             if (newSetting != null &&
-                                newSetting != previousSetting) {
+                                newSetting != previousSetting &&
+                                context.mounted) {
                               _updateDialog(context, profile, previousSetting,
                                   newSetting);
                             }

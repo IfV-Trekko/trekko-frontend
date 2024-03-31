@@ -48,25 +48,29 @@ class _JoinProjectScreenState extends State<JoinProjectScreen> {
           }
 
           if (!await AuthentificationUtils.isServerValid(projectUrl.text)) {
-            showCupertinoDialog(
-                context: context,
-                builder: (context) => CupertinoAlertDialog(
-                      title: const Text(
-                          "Das angegebene Projekt konnte nicht gefunden werden"),
-                      actions: [
-                        CupertinoDialogAction(
-                          child: const Text('Erneut versuchen'),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
-                    ));
+            if (context.mounted) {
+              showCupertinoDialog(
+                  context: context,
+                  builder: (context) => CupertinoAlertDialog(
+                        title: const Text(
+                            "Das angegebene Projekt konnte nicht gefunden werden"),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text('Erneut versuchen'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ));
+            }
             return;
           }
 
-          Navigator.pushNamed(context, ChooseLoginProcessScreen.route,
-              arguments: projectUrl.value.text);
+          if (context.mounted) {
+            Navigator.pushNamed(context, ChooseLoginProcessScreen.route,
+                arguments: projectUrl.value.text);
+          }
         },
         child: Column(children: [
           TextInput(

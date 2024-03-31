@@ -124,7 +124,7 @@ class DonationModalState extends State<DonationModal>
     setState(() {
       isLoading = true;
     });
-    if(selectedTrips.isEmpty) {
+    if (selectedTrips.isEmpty) {
       finishedAction('Es muss mindestens ein Weg ausgewählt sein', true);
       return;
     }
@@ -141,7 +141,7 @@ class DonationModalState extends State<DonationModal>
               widget.trekko.getTripQuery().filter().idEqualTo(trip.id).build());
           donatedTrips++;
         } catch (error) {
-          Navigator.pop(context);
+          if (mounted) Navigator.pop(context);
           setState(() {
             isLoading = false;
           });
@@ -155,7 +155,7 @@ class DonationModalState extends State<DonationModal>
         widget.trekko.saveTrip(trip);
       }
     }
-    Navigator.pop(context);
+    if (mounted) Navigator.pop(context);
     setState(() {
       isLoading = false;
     });

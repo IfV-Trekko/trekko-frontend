@@ -42,8 +42,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           passwordConfirmation: passwordRepeat.value.text,
                           code: "12345")
                       .build();
-                  Navigator.pushNamed(context, EnterCodeScreen.route,
+                  if (context.mounted) {
+                    Navigator.pushNamed(context, EnterCodeScreen.route,
                       arguments: trekko);
+                  }
                 } catch (e) {
                   String reason = "Unbekannter Fehler";
                   if (e is BuildException) {
@@ -64,7 +66,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       reason = 'Passwörter stimmen nicht überein.';
                     }
                   }
-                  showCupertinoDialog(
+                  if (context.mounted) {
+                    showCupertinoDialog(
                       context: context,
                       builder: (context) => CupertinoAlertDialog(
                             title: Text(reason),
@@ -77,6 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               )
                             ],
                           ));
+                  }
                 }
               }
             : null,
