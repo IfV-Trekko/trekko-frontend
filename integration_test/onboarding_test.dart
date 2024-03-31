@@ -18,7 +18,7 @@ import 'test_utils.dart';
  */
 void main() async {
   setUp(() async {
-    await TrekkoBuildUtils.init();
+    await TestUtils.init();
   });
 
   testWidgets('Onboarding test with registration and login',
