@@ -1,6 +1,6 @@
-import 'package:app_backend/controller/trekko.dart';
-import 'package:app_frontend/components/maps/main_map.dart';
-import 'package:app_frontend/screens/tracking/map_option_sheet.dart';
+import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_frontend/components/maps/main_map.dart';
+import 'package:trekko_frontend/screens/tracking/map_option_sheet.dart';
 import 'package:flutter/cupertino.dart';
 
 class TrackingScreen extends StatefulWidget {

@@ -1,9 +1,9 @@
-import 'package:app_backend/controller/profiled_trekko.dart';
-import 'package:app_backend/controller/request/bodies/request/auth_request.dart';
-import 'package:app_backend/controller/request/bodies/response/auth_response.dart';
-import 'package:app_backend/controller/request/url_trekko_server.dart';
-import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/controller/utils/tracking_util.dart';
+import 'package:trekko_backend/controller/profiled_trekko.dart';
+import 'package:trekko_backend/controller/request/bodies/request/auth_request.dart';
+import 'package:trekko_backend/controller/request/bodies/response/auth_response.dart';
+import 'package:trekko_backend/controller/request/url_trekko_server.dart';
+import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/controller/utils/tracking_util.dart';
 import 'package:flutter/services.dart';
 
 import 'dart:io';

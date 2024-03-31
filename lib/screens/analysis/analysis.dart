@@ -1,11 +1,11 @@
-import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/trip/transport_type.dart';
-import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/components/page_control.dart';
-import 'package:app_frontend/screens/analysis/barchart.dart';
-import 'package:app_frontend/screens/analysis/basic_chart.dart';
-import 'package:app_frontend/screens/analysis/piechart.dart';
-import 'package:app_frontend/screens/analysis/vehicle_data.dart';
+import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/model/trip/transport_type.dart';
+import 'package:trekko_frontend/app_theme.dart';
+import 'package:trekko_frontend/components/page_control.dart';
+import 'package:trekko_frontend/screens/analysis/barchart.dart';
+import 'package:trekko_frontend/screens/analysis/basic_chart.dart';
+import 'package:trekko_frontend/screens/analysis/piechart.dart';
+import 'package:trekko_frontend/screens/analysis/vehicle_data.dart';
 import 'package:flutter/cupertino.dart';
 
 class Analysis extends StatefulWidget {

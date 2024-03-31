@@ -1,7 +1,7 @@
-import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/trip/trip.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_wrapper.dart';
-import 'package:app_frontend/trekko_provider.dart';
+import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/model/trip/trip.dart';
+import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view_wrapper.dart';
+import 'package:trekko_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 

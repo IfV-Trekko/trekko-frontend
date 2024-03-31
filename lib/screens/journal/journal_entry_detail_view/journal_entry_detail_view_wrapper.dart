@@ -1,15 +1,15 @@
-import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/trip/donation_state.dart';
-import 'package:app_backend/model/trip/trip.dart';
-import 'package:app_frontend/app_theme.dart';
-import 'package:app_frontend/components/button.dart';
-import 'package:app_frontend/components/constants/button_size.dart';
-import 'package:app_frontend/components/constants/button_style.dart';
-import 'package:app_frontend/components/maps/trip_map.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/description.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/details.dart';
-import 'package:app_frontend/screens/journal/journal_entry_detail_view/components/edit_context.dart';
-import 'package:app_frontend/trekko_provider.dart';
+import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/model/trip/donation_state.dart';
+import 'package:trekko_backend/model/trip/trip.dart';
+import 'package:trekko_frontend/app_theme.dart';
+import 'package:trekko_frontend/components/button.dart';
+import 'package:trekko_frontend/components/constants/button_size.dart';
+import 'package:trekko_frontend/components/constants/button_style.dart';
+import 'package:trekko_frontend/components/maps/trip_map.dart';
+import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/components/description.dart';
+import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/components/details.dart';
+import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/components/edit_context.dart';
+import 'package:trekko_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 

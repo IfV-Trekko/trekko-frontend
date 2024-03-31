@@ -1,4 +1,4 @@
-import 'package:app_frontend/app_theme.dart';
+import 'package:trekko_frontend/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class AttributeRow extends StatelessWidget {

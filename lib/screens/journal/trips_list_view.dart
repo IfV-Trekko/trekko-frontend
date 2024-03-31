@@ -1,7 +1,7 @@
-import 'package:app_backend/controller/trekko.dart';
-import 'package:app_backend/model/trip/trip.dart';
-import 'package:app_frontend/screens/journal/journal_entry.dart';
-import 'package:app_frontend/screens/journal/journal_subtitle.dart';
+import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/model/trip/trip.dart';
+import 'package:trekko_frontend/screens/journal/journal_entry.dart';
+import 'package:trekko_frontend/screens/journal/journal_subtitle.dart';
 import 'package:flutter/cupertino.dart';
 
 //is used to render the list of journal entries in the donation modal

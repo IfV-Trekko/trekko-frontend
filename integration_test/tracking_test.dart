@@ -1,7 +1,7 @@
-import 'package:app_backend/controller/trekko.dart';
-import 'package:app_frontend/components/button.dart';
-import 'package:app_frontend/screens/tracking/tracking.dart';
-import 'package:app_frontend/screens/trekko_app.dart';
+import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_frontend/components/button.dart';
+import 'package:trekko_frontend/screens/tracking/tracking.dart';
+import 'package:trekko_frontend/screens/trekko_app.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
