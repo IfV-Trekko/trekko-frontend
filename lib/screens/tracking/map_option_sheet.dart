@@ -1,10 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/tracking_state.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_style.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:heroicons/heroicons.dart';
 import 'package:trekko_frontend/components/pull_tab.dart';
 
 class MapOptionSheet extends StatefulWidget {

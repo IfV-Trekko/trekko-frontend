@@ -1,5 +1,5 @@
-import 'package:trekko_backend/controller/trekko.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:trekko_backend/controller/trekko.dart';
 
 class TrekkoProvider extends InheritedWidget {
   final Trekko trekko;

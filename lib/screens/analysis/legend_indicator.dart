@@ -1,5 +1,5 @@
-import 'package:trekko_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:trekko_frontend/app_theme.dart';
 
 class LegendIndicator extends StatelessWidget {
   final Color color;

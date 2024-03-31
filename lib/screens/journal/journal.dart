@@ -1,3 +1,7 @@
+import 'package:fling_units/fling_units.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:isar/isar.dart';
+import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_builder.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
@@ -7,11 +11,7 @@ import 'package:trekko_frontend/screens/journal/donation_modal.dart';
 import 'package:trekko_frontend/screens/journal/journal_edit_bar.dart';
 import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
 import 'package:trekko_frontend/screens/journal/trips_list.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
-import 'package:isar/isar.dart';
-import 'package:fling_units/fling_units.dart';
 
 //This renders the basic journal screen showing all journal entries
 class JournalScreen extends StatefulWidget {

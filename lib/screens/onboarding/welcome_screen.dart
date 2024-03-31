@@ -1,7 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/screens/onboarding/join_project_screen.dart';
 import 'package:trekko_frontend/screens/onboarding/simple_onboarding_screen.dart';
-import 'package:flutter/cupertino.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const String route = "/login/welcome/";

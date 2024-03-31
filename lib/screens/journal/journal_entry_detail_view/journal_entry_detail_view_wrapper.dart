@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
@@ -10,8 +12,6 @@ import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/compon
 import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/components/details.dart';
 import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/components/edit_context.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:isar/isar.dart';
 
 class JournalEntryDetailViewWrapper extends StatefulWidget {
   final Trip trip;

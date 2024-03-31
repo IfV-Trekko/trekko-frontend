@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/constants/text_response_keyboard_type.dart';
-import 'package:flutter/cupertino.dart';
 
 class TextResponse extends StatefulWidget {
   final int maxLength;

@@ -1,9 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/text_input.dart';
 import 'package:trekko_frontend/screens/onboarding/simple_onboarding_screen.dart';
 import 'package:trekko_frontend/screens/onboarding/text_info_screen.dart';
-import 'package:flutter/cupertino.dart';
 
 class EnterCodeScreen extends StatefulWidget {
   static const String route = "/login/enterCode/";

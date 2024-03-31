@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/screens/analysis/analysis.dart';
@@ -5,8 +7,6 @@ import 'package:trekko_frontend/screens/journal/journal.dart';
 import 'package:trekko_frontend/screens/profile/profile_screen.dart';
 import 'package:trekko_frontend/screens/tracking/tracking.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:heroicons/heroicons.dart';
 
 class Screen {
   final String title;

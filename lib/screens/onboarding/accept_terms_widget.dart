@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/request/bodies/response/project_metadata_response.dart';
 import 'package:trekko_backend/controller/utils/onboarding_utils.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/screens/onboarding/item_divider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AcceptTermsWidget extends StatefulWidget {

@@ -1,6 +1,6 @@
-import 'package:trekko_frontend/trekko_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:trekko_frontend/trekko_provider.dart';
 
 class MainMap extends StatefulWidget {
   const MainMap({Key? key}) : super(key: key);

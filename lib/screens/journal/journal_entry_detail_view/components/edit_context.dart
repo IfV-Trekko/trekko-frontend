@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_style.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:heroicons/heroicons.dart';
 
 class EditContext extends StatelessWidget {
   final bool donated;

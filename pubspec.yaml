@@ -29,9 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   trekko_backend:
-    git:
-      url: https://github.com/KIT-PSE-2023-24/app-backend.git
-      ref: master
+    path: ../app-backend
   flutter_osm_plugin: ^0.70.2
   flutter:
     sdk: flutter

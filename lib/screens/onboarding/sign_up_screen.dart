@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/builder/build_exception.dart';
 import 'package:trekko_backend/controller/builder/registration_builder.dart';
 import 'package:trekko_backend/controller/builder/registration_result.dart';
@@ -8,7 +9,6 @@ import 'package:trekko_frontend/screens/onboarding/accept_terms_widget.dart';
 import 'package:trekko_frontend/screens/onboarding/enter_code_screen.dart';
 import 'package:trekko_frontend/screens/onboarding/item_divider.dart';
 import 'package:trekko_frontend/screens/onboarding/simple_onboarding_screen.dart';
-import 'package:flutter/cupertino.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String route = "/login/signUp/";

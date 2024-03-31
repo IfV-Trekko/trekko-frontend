@@ -1,11 +1,7 @@
-import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/model/profile/preferences.dart';
-import 'package:trekko_frontend/components/constants/text_response_keyboard_type.dart';
-import 'package:trekko_frontend/components/picker/setting_picker.dart';
-import 'package:trekko_frontend/components/responses/text_response.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:trekko_backend/model/profile/profile.dart';
+import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/profile/onboarding_question.dart';
+import 'package:trekko_backend/model/profile/preferences.dart';
 import 'package:trekko_backend/model/profile/question_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/screens/profile/bool_question_tile.dart';

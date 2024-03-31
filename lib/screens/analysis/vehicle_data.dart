@@ -1,3 +1,6 @@
+import 'package:fling_units/fling_units.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:trekko_backend/controller/analysis/average.dart';
 import 'package:trekko_backend/controller/analysis/calculation.dart';
 import 'package:trekko_backend/controller/analysis/reductions.dart';
@@ -9,9 +12,6 @@ import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
 import 'package:trekko_frontend/screens/analysis/attribute_row.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:heroicons/heroicons.dart';
-import 'package:fling_units/fling_units.dart';
 
 class VehicleData extends StatelessWidget {
   final Trekko trekko;

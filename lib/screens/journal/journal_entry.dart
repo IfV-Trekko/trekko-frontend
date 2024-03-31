@@ -1,3 +1,7 @@
+import 'package:fling_units/fling_units.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
@@ -8,10 +12,6 @@ import 'package:trekko_frontend/screens/journal/journal_detail/journal_entry_con
 import 'package:trekko_frontend/screens/journal/journal_detail/purpose_box.dart';
 import 'package:trekko_frontend/screens/journal/journal_detail/vehicle_box.dart';
 import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
-import 'package:fling_units/fling_units.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
-import 'package:isar/isar.dart';
 
 //renders the journal entry cards showing the trip information
 class JournalEntry extends StatelessWidget {

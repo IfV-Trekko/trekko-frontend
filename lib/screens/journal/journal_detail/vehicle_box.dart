@@ -1,9 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
-
-import 'package:flutter/cupertino.dart';
-import 'package:heroicons/heroicons.dart';
 
 //renders the vehicle box in the journal entry card
 class VehicleBox extends StatelessWidget {
