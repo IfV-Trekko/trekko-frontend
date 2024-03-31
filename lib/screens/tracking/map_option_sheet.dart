@@ -78,25 +78,23 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             TrackingState state = snapshot.data!;
-                            if (snapshot.data! == TrackingState.running) {
-                              return StreamBuilder(
-                                  stream: widget.trekko.getProfile(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                            _getTrackingText(state,
-                                                snapshot.data!.lastTimeTracked),
-                                            style: AppThemeTextStyles.normal),
-                                      );
-                                    }
+                            return StreamBuilder(
+                                stream: widget.trekko.getProfile(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
                                     return Container(
-                                        alignment: Alignment.centerLeft,
-                                        child:
-                                            const CupertinoActivityIndicator());
-                                  });
-                            }
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                          _getTrackingText(state,
+                                              snapshot.data!.lastTimeTracked),
+                                          style: AppThemeTextStyles.normal),
+                                    );
+                                  }
+                                  return Container(
+                                      alignment: Alignment.centerLeft,
+                                      child:
+                                          const CupertinoActivityIndicator());
+                                });
                           }
                           return Container(
                               alignment: Alignment.centerLeft,
