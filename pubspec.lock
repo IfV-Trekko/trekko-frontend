@@ -33,14 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  background_location:
+  background_locator_2:
     dependency: transitive
     description:
-      name: background_location
-      sha256: fbb83ceb8cefcc6793f0a362f12773c28fc290a5e2c76cb593ee592ec7b6cb32
+      name: background_locator_2
+      sha256: "145ef41767306052cbb2159478c0369b83c9800740f7acc656530c263d371695"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.0"
+    version: "2.0.6"
   boolean_selector:
     dependency: transitive
     description:
@@ -157,10 +157,10 @@ packages:
     dependency: transitive
     description:
       name: dio
-      sha256: "49af28382aefc53562459104f64d16b9dfd1e8ef68c862d5af436cc8356ce5a8"
+      sha256: "0978e9a3e45305a80a7210dbeaf79d6ee8bee33f70c8e542dc654c952070217f"
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.1"
+    version: "5.4.2+1"
   equatable:
     dependency: transitive
     description:
@@ -213,10 +213,10 @@ packages:
     dependency: "direct main"
     description:
       name: fling_units
-      sha256: "2bf10acf2eb519e666df036881ef64c073e826225b00ce2663aa9d7547449312"
+      sha256: "897145fb0eb9dc811b6ad47164e781b53fc9ca09f5fcc757e9185ac6240fe38f"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.6"
+    version: "2.2.7"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -612,10 +612,10 @@ packages:
     dependency: "direct dev"
     description:
       name: permission_handler
-      sha256: "74e962b7fad7ff75959161bb2c0ad8fe7f2568ee82621c9c2660b751146bfe44"
+      sha256: "18bf33f7fefbd812f37e72091a15575e72d5318854877e0e4035a24ac1113ecb"
       url: "https://pub.dev"
     source: hosted
-    version: "11.3.0"
+    version: "11.3.1"
   permission_handler_android:
     dependency: transitive
     description:
@@ -628,10 +628,10 @@ packages:
     dependency: transitive
     description:
       name: permission_handler_apple
-      sha256: "8c90be7f8244eeb2bbfa4248221d38a66ca3e3cc3ab967a25a2529d86eee7c45"
+      sha256: e9ad66020b89ff1b63908f247c2c6f931c6e62699b756ef8b3c4569350cd8662
       url: "https://pub.dev"
     source: hosted
-    version: "9.4.1"
+    version: "9.4.4"
   permission_handler_html:
     dependency: transitive
     description:
@@ -644,10 +644,10 @@ packages:
     dependency: transitive
     description:
       name: permission_handler_platform_interface
-      sha256: "23dfba8447c076ab5be3dee9ceb66aad345c4a648f0cac292c77b1eb0e800b78"
+      sha256: "48d4fcf201a1dad93ee869ab0d4101d084f49136ec82a8a06ed9cfeacab9fd20"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.0"
+    version: "4.2.1"
   permission_handler_windows:
     dependency: transitive
     description:
@@ -1040,10 +1040,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "8cb58b45c47dcb42ab3651533626161d6b67a2921917d8d429791f76972b3480"
+      sha256: "0a989dc7ca2bb51eac91e8fd00851297cfffd641aa7538b165c62637ca0eaa4a"
       url: "https://pub.dev"
     source: hosted
-    version: "5.3.0"
+    version: "5.4.0"
   workmanager:
     dependency: transitive
     description:
