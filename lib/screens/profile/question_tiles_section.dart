@@ -79,7 +79,7 @@ class QuestionTilesSection extends StatelessWidget {
                 _onSave(context, preferences, question, newAnswer));
       } else {
         questionTile = TextQuestionTile(
-            answer: answer,
+            answer: answer != null ? answer.toString() : answer,
             question: question,
             padding: padding,
             onSaved: (newAnswer) =>
