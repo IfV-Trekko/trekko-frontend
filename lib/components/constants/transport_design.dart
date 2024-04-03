@@ -1,7 +1,7 @@
-import 'package:trekko_backend/model/trip/transport_type.dart';
-import 'package:trekko_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:trekko_backend/model/trip/transport_type.dart';
+import 'package:trekko_frontend/app_theme.dart';
 
 class TransportDesign {
   static final Map<TransportType, Color> _colors = {

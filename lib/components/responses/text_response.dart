@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/constants/text_response_keyboard_type.dart';
-import 'package:flutter/cupertino.dart';
 
 class TextResponse extends StatefulWidget {
   final int maxLength;
@@ -12,10 +12,9 @@ class TextResponse extends StatefulWidget {
   final String initialValue;
   final Function(String?) onSaved;
   final TextResponseKeyboardType keyboardType;
-  late String placeholder;
-  late TextEditingController _controller;
+  final String placeholder;
 
-  TextResponse(
+  const TextResponse(
       {super.key,
       required this.maxLength,
       required this.maxLines,
@@ -24,11 +23,7 @@ class TextResponse extends StatefulWidget {
       required this.suffix,
       required this.placeholder,
       required this.keyboardType,
-      required this.initialValue}) {
-    _controller = TextEditingController(text: initialValue);
-    _controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: _controller.text.length));
-  }
+      required this.initialValue});
 
   @override
   State<TextResponse> createState() => _TextResponseState();
@@ -36,11 +31,15 @@ class TextResponse extends StatefulWidget {
 
 class _TextResponseState extends State<TextResponse> {
   late String _newResponse;
+  late TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
     _newResponse = widget.initialValue;
+    _controller = TextEditingController(text: widget.initialValue);
+    _controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: _controller.text.length));
   }
 
   void saveValue() {
@@ -59,8 +58,9 @@ class _TextResponseState extends State<TextResponse> {
 
   @override
   Widget build(BuildContext context) {
+    var combinedPlaceholder = widget.placeholder;
     for (var i = 0; i < widget.maxLines - 1; i++) {
-      widget.placeholder += '\n';
+      combinedPlaceholder += '\n';
     }
     return CupertinoPageScaffold(
       backgroundColor: AppThemeColors.contrast0,
@@ -111,11 +111,11 @@ class _TextResponseState extends State<TextResponse> {
                   textAlign: TextAlign.start,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   keyboardType: widget.keyboardType.inputType,
-                  controller: widget._controller,
+                  controller: _controller,
                   scrollPadding: const EdgeInsets.all(2),
                   maxLength: widget.maxLength,
                   maxLines: widget.maxLines,
-                  placeholder: widget.placeholder,
+                  placeholder: combinedPlaceholder,
                   autofocus: true,
                   decoration: BoxDecoration(
                     color: AppThemeColors.contrast100,

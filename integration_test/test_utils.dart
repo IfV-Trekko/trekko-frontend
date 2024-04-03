@@ -1,3 +1,4 @@
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:trekko_backend/controller/profiled_trekko.dart';
 import 'package:trekko_backend/controller/request/bodies/request/auth_request.dart';
 import 'package:trekko_backend/controller/request/bodies/response/auth_response.dart';
@@ -10,16 +11,6 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-class TrekkoBuildUtils {
-  static Future<void> init() async {
-    IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-    const MethodChannel('flutter.baseflow.com/permissions/methods')
-        .setMockMethodCallHandler((MethodCall methodCall) async {
-      return PermissionStatus.granted.index;
-    });
-  }
-}
 
 class TestUtils {
   static String getAddress() {
@@ -42,7 +33,17 @@ class TestUtils {
     return trekko;
   }
 
+  static Future<void> init() async {
+    initializeDateFormatting();
+    IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+            const MethodChannel('flutter.baseflow.com/permissions/methods'),
+            (message) async => PermissionStatus.granted.index);
+  }
+
   static Future<Trekko> initTrekko() async {
+    await init();
     final UrlTrekkoServer trekkoServer = UrlTrekkoServer(getAddress());
 
     String uniqueEmail = 'test@example.com';

@@ -9,40 +9,35 @@ import 'package:trekko_frontend/screens/tracking/tracking.dart';
 import 'package:trekko_frontend/screens/trekko_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 import 'test_utils.dart';
 
 void main () async {
+  late Trekko trekko;
   setUp(() async {
-    await TrekkoBuildUtils.init();
+    trekko = await TestUtils.initTrekko();
   });
 
-  Trekko? trekko;
-
   tearDown(() async {
-    if (trekko != null) await TestUtils.clearTrekko(trekko);
+    await TestUtils.clearTrekko(trekko);
   });
 
   testWidgets('Test creating, donating and deleting a journal entry',
           (WidgetTester tester) async {
-        initializeDateFormatting();
-
-        final Trekko trekko = await TestUtils.initTrekko();
         await tester.pumpWidget(TrekkoApp(trekko: trekko,),);
 
         await tester.pumpAndSettle();
         expect(find.byType(TrackingScreen), findsOneWidget);
 
         await tester.tap(find.text('Tagebuch'));
-        await tester.pumpAndSettle(Duration(seconds: 5));
+        await tester.pumpAndSettle(const Duration(seconds: 5));
         expect(find.byType(JournalScreen), findsOneWidget);
         await tester.tap(find.widgetWithIcon(GestureDetector, CupertinoIcons.add));
         await tester.pumpAndSettle();
         expect(find.byType(JournalEntryDetailView), findsOneWidget);
 
         await tester.tap(find.widgetWithText(Button, 'Spenden'));
-        await tester.pump(Duration(seconds: 5));
+        await tester.pump(const Duration(seconds: 5));
         expect(find.text('Spende zurückziehen'), findsOneWidget);
 
         await tester.tap(find.text('Statistik'));

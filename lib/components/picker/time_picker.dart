@@ -1,5 +1,5 @@
-import 'package:trekko_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:trekko_frontend/app_theme.dart';
 
 class TimePicker extends StatefulWidget {
   final DateTime initialDateTime;
@@ -20,10 +20,10 @@ class TimePicker extends StatefulWidget {
         super(key: key);
 
   @override
-  _TimePickerState createState() => _TimePickerState();
+  TimePickerState createState() => TimePickerState();
 }
 
-class _TimePickerState extends State<TimePicker> {
+class TimePickerState extends State<TimePicker> {
   late DateTime selectedDateTime;
   late DateTime setDateTime;
 

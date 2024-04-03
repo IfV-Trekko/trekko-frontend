@@ -3,32 +3,27 @@ import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/screens/tracking/tracking.dart';
 import 'package:trekko_frontend/screens/trekko_app.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 import 'test_utils.dart';
 
 void main() async {
+  late Trekko trekko;
   setUp(() async {
-    await TrekkoBuildUtils.init();
+    trekko = await TestUtils.initTrekko();
   });
 
-  Trekko? trekko;
-
   tearDown(() async {
-    if (trekko != null) await TestUtils.clearTrekko(trekko);
+    await TestUtils.clearTrekko(trekko);
   });
 
   testWidgets('Test every screen, after onboarding',
       (WidgetTester tester) async {
-    initializeDateFormatting();
-
-    final Trekko trekko = await TestUtils.initTrekko();
     await tester.pumpWidget(
       TrekkoApp(
         trekko: trekko,
       ),
     );
-    await tester.pump(Duration(seconds: 5));
+    await tester.pump(const Duration(seconds: 5));
 
     expect(find.byType(TrackingScreen), findsOneWidget);
     await tester.tap(find.byType(Button));

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/builder/build_exception.dart';
 import 'package:trekko_backend/controller/builder/login_builder.dart';
 import 'package:trekko_backend/controller/builder/login_result.dart';
@@ -5,7 +6,6 @@ import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_frontend/components/text_input.dart';
 import 'package:trekko_frontend/screens/onboarding/item_divider.dart';
 import 'package:trekko_frontend/screens/onboarding/simple_onboarding_screen.dart';
-import 'package:flutter/cupertino.dart';
 
 class SignInScreen extends StatefulWidget {
   static const String route = "/login/signIn/";
@@ -51,11 +51,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 reason = 'Sitzung abgelaufen, bitte loggen Sie sich erneut ein';
               }
             }
-            showCupertinoDialog(
+            if (context.mounted) {
+              showCupertinoDialog(
                 context: context,
                 builder: (context) => CupertinoAlertDialog(
                       title: Text(reason),
-                      // TODO: Better information text
                       actions: [
                         CupertinoDialogAction(
                           child: const Text('Ok'),
@@ -65,6 +65,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         )
                       ],
                     ));
+            }
           }
         },
         child: Column(children: [

@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/screens/journal/journal_entry.dart';
 import 'package:trekko_frontend/screens/journal/journal_subtitle.dart';
-import 'package:flutter/cupertino.dart';
 
 //is used to render the list of journal entries in the donation modal
 class TripsListView extends StatefulWidget {
@@ -22,10 +22,10 @@ class TripsListView extends StatefulWidget {
   });
 
   @override
-  _TripsListViewState createState() => _TripsListViewState();
+  TripsListViewState createState() => TripsListViewState();
 }
 
-class _TripsListViewState extends State<TripsListView> {
+class TripsListViewState extends State<TripsListView> {
   @override
   Widget build(BuildContext context) {
     widget.trips.sort((a, b) => a.getStartTime().compareTo(b.getStartTime()));

@@ -9,10 +9,10 @@ class CustomPageControl extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CustomPageControlState createState() => _CustomPageControlState();
+  CustomPageControlState createState() => CustomPageControlState();
 }
 
-class _CustomPageControlState extends State<CustomPageControl> {
+class CustomPageControlState extends State<CustomPageControl> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 

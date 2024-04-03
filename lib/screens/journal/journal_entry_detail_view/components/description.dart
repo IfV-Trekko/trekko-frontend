@@ -1,14 +1,14 @@
+import 'package:fling_units/fling_units.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:intl/intl.dart';
 import 'package:trekko_backend/model/trip/tracked_point.dart';
+import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/path_showcase.dart';
 import 'package:trekko_frontend/components/picker/kilometer_picker.dart';
 import 'package:trekko_frontend/components/picker/time_picker.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:trekko_backend/model/trip/trip.dart';
-import 'package:intl/intl.dart';
-import 'package:fling_units/fling_units.dart';
 
 class Description extends StatefulWidget {
   final Trip trip;
@@ -23,10 +23,10 @@ class Description extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DescriptionState createState() => _DescriptionState();
+  DescriptionState createState() => DescriptionState();
 }
 
-class _DescriptionState extends State<Description> {
+class DescriptionState extends State<Description> {
   Future<String> _getStreet(TrackedPoint where) async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(where.latitude, where.longitude);

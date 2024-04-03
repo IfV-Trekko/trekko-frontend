@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/onboarding_text_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
@@ -9,7 +10,6 @@ import 'package:trekko_frontend/screens/onboarding/sign_in_screen.dart';
 import 'package:trekko_frontend/screens/onboarding/sign_up_screen.dart';
 import 'package:trekko_frontend/screens/onboarding/text_info_screen.dart';
 import 'package:trekko_frontend/screens/onboarding/welcome_screen.dart';
-import 'package:flutter/cupertino.dart';
 
 class LoginApp extends StatelessWidget {
   final Function(Trekko) trekkoCallBack;

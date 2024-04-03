@@ -1,6 +1,6 @@
-import 'package:trekko_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:trekko_frontend/app_theme.dart';
 
 //renders the dividers in the journal
 class JournalSubtitle extends StatelessWidget {

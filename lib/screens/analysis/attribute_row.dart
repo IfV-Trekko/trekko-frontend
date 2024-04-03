@@ -1,5 +1,5 @@
-import 'package:trekko_frontend/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:trekko_frontend/app_theme.dart';
 
 class AttributeRow extends StatelessWidget {
   final String title;
@@ -18,13 +18,7 @@ class AttributeRow extends StatelessWidget {
       padding: const EdgeInsets.only(top: 9, bottom: 9, left: 12, right: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: AppThemeTextStyles.normal,
-          ),
-          value
-        ],
+        children: [Text(title, style: AppThemeTextStyles.normal), value],
       ),
     );
   }

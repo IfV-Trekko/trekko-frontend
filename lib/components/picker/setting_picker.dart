@@ -1,5 +1,5 @@
-import 'package:trekko_frontend/app_theme.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:trekko_frontend/app_theme.dart';
 
 class SettingsPicker extends StatelessWidget {
   final List<Widget> children;

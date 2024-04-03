@@ -1,7 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/constants/text_response_keyboard_type.dart';
 import 'package:trekko_frontend/components/responses/text_response.dart';
-import 'package:flutter/cupertino.dart';
 
 class KilometerPicker extends StatefulWidget {
   final double value;
@@ -14,10 +14,10 @@ class KilometerPicker extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _KilometerPickerState createState() => _KilometerPickerState();
+  KilometerPickerState createState() => KilometerPickerState();
 }
 
-class _KilometerPickerState extends State<KilometerPicker> {
+class KilometerPickerState extends State<KilometerPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(

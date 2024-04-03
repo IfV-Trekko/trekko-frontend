@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/builder/build_exception.dart';
 import 'package:trekko_backend/controller/builder/registration_builder.dart';
 import 'package:trekko_backend/controller/builder/registration_result.dart';
@@ -8,7 +9,6 @@ import 'package:trekko_frontend/screens/onboarding/accept_terms_widget.dart';
 import 'package:trekko_frontend/screens/onboarding/enter_code_screen.dart';
 import 'package:trekko_frontend/screens/onboarding/item_divider.dart';
 import 'package:trekko_frontend/screens/onboarding/simple_onboarding_screen.dart';
-import 'package:flutter/cupertino.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String route = "/login/signUp/";
@@ -42,8 +42,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           passwordConfirmation: passwordRepeat.value.text,
                           code: "12345")
                       .build();
-                  Navigator.pushNamed(context, EnterCodeScreen.route,
+                  if (context.mounted) {
+                    Navigator.pushNamed(context, EnterCodeScreen.route,
                       arguments: trekko);
+                  }
                 } catch (e) {
                   String reason = "Unbekannter Fehler";
                   if (e is BuildException) {
@@ -64,7 +66,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       reason = 'Passwörter stimmen nicht überein.';
                     }
                   }
-                  showCupertinoDialog(
+                  if (context.mounted) {
+                    showCupertinoDialog(
                       context: context,
                       builder: (context) => CupertinoAlertDialog(
                             title: Text(reason),
@@ -77,6 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               )
                             ],
                           ));
+                  }
                 }
               }
             : null,

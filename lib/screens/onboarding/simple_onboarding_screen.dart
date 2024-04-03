@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
-import 'package:flutter/cupertino.dart';
 
 class SimpleOnboardingScreen extends StatefulWidget {
   final Widget child;
@@ -42,7 +42,7 @@ class _SimpleOnboardingScreenState extends State<SimpleOnboardingScreen> {
               Expanded(
                 child: SingleChildScrollView(
                   padding: widget.padding ??
-                      EdgeInsets.only(bottom: 16, left: 16, right: 16),
+                      const EdgeInsets.only(bottom: 16, left: 16, right: 16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
@@ -6,7 +7,6 @@ import 'package:trekko_frontend/screens/analysis/barchart.dart';
 import 'package:trekko_frontend/screens/analysis/basic_chart.dart';
 import 'package:trekko_frontend/screens/analysis/piechart.dart';
 import 'package:trekko_frontend/screens/analysis/vehicle_data.dart';
-import 'package:flutter/cupertino.dart';
 
 class Analysis extends StatefulWidget {
   final Trekko trekko;
@@ -14,10 +14,10 @@ class Analysis extends StatefulWidget {
   const Analysis(this.trekko, {Key? key}) : super(key: key);
 
   @override
-  _AnalysisState createState() => _AnalysisState();
+  AnalysisState createState() => AnalysisState();
 }
 
-class _AnalysisState extends State<Analysis>
+class AnalysisState extends State<Analysis>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
@@ -25,11 +25,6 @@ class _AnalysisState extends State<Analysis>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    List<VehicleData> vehicleData = [];
-    for (TransportType type in TransportType.values) {
-      vehicleData.add(VehicleData(vehicle: type, trekko: widget.trekko));
-    }
-
     return CupertinoPageScaffold(
         backgroundColor: AppThemeColors.contrast100,
         child: CustomScrollView(
@@ -39,7 +34,9 @@ class _AnalysisState extends State<Analysis>
             ),
             SliverToBoxAdapter(
               child: CustomPageControl(
-                pages: vehicleData,
+                pages: TransportType.values
+                    .map((e) => VehicleData(vehicle: e, trekko: widget.trekko))
+                    .toList(),
                 pageHeights: 288,
               ),
             ),

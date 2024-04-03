@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/onboarding_text_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/screens/onboarding/simple_onboarding_screen.dart';
-import 'package:flutter/cupertino.dart';
 
 class TextInfoScreen extends StatelessWidget {
   static const String routeAbout = "/login/about/";
