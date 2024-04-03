@@ -39,7 +39,7 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
 
   String _getTrackingText(TrackingState state, DateTime? lastTimeTracked) {
     if (state == TrackingState.running && lastTimeTracked != null) {
-      return 'Automatisch erfasst seit ${DateTime.now().difference(lastTimeTracked!).inDays} Tagen';
+      return 'Automatisch erfasst seit ${DateTime.now().difference(lastTimeTracked).inDays} Tagen';
     } else if (state == TrackingState.paused && lastTimeTracked != null) {
       return 'Letzte Erhebung vor ${DateTime.now().difference(lastTimeTracked).inDays} Tagen';
     }
