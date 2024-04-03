@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/analysis/average.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/analyze_util.dart';
-import 'package:trekko_backend/controller/utils/query_util.dart';
+import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/screens/analysis/basicchart_row.dart';
@@ -15,7 +15,7 @@ class BasicChart extends StatelessWidget {
 
   Stream<double?> getData(TransportType vehicle) {
     return trekko.analyze(
-        QueryUtil(trekko).buildTransportType(vehicle),
+        TripQuery(trekko).andTransportType(vehicle).build(),
         TripUtil(vehicle).build((leg) => leg.getSpeed().as(kilo.meters, hours)),
         AverageCalculation());
   }
