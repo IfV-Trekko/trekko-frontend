@@ -27,9 +27,8 @@
         </activity>
         <service
             android:name="com.pravera.flutter_foreground_task.service.ForegroundService"
-            android:stopWithTask="true"
             android:foregroundServiceType="location"
-        android:exported="false"/>
+            android:exported="false"/>
     </application>
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
