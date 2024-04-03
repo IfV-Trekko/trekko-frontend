@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_builder.dart';
+import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
+import 'package:trekko_frontend/components/picker/date_picker_row.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
 import 'package:trekko_frontend/screens/journal/journal_edit_bar.dart';
 import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
@@ -26,6 +28,14 @@ class JournalScreenState extends State<StatefulWidget>
   bool selectionMode = false;
   bool isLoading = false;
   List<int> selectedTrips = [];
+  late DateTime selectedDate;
+
+  @override
+  void initState() {
+    DateTime now = DateTime.now();
+    selectedDate = DateTime(now.year, now.month, now.day);
+    super.initState();
+  }
 
   @override
   bool get wantKeepAlive => true;
@@ -33,9 +43,7 @@ class JournalScreenState extends State<StatefulWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     final Trekko trekko = TrekkoProvider.of(context);
-
     return CupertinoPageScaffold(
         child: SafeArea(
       bottom: true,
@@ -93,11 +101,19 @@ class JournalScreenState extends State<StatefulWidget>
                 ),
                 backgroundColor: AppThemeColors.contrast0,
               ),
+              SliverToBoxAdapter(
+                  child: DatePickerRow(
+                      time: selectedDate,
+                      onDateChanged: (date) {
+                        setState(() {
+                          selectedDate = date;
+                        });
+                      })),
               StreamBuilder(
-                  stream: trekko
-                      .getTripQuery()
-                      .build()
-                      .watch(fireImmediately: true),
+                  stream: TripQuery(trekko)
+                      .andTimeBetween(selectedDate,
+                          selectedDate.add(const Duration(days: 1)))
+                      .stream(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return SliverFillRemaining(
