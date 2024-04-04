@@ -28,7 +28,7 @@ class TripsListView extends StatefulWidget {
 class TripsListViewState extends State<TripsListView> {
   @override
   Widget build(BuildContext context) {
-    widget.trips.sort((a, b) => a.getStartTime().compareTo(b.getStartTime()));
+    // widget.trips.sort((a, b) => a.getStartTime().compareTo(b.getStartTime()));
     return ListView.builder(
       padding: EdgeInsets.only(
         left: 16.0,
@@ -40,10 +40,10 @@ class TripsListViewState extends State<TripsListView> {
         final trip = widget.trips[index];
         if (index == 0 ||
             !_isSameDay(
-                widget.trips[index - 1].getStartTime(), trip.getStartTime())) {
+                widget.trips[index - 1].calculateStartTime(), trip.calculateStartTime())) {
           return Column(
             children: [
-              JournalSubtitle(trip.getStartTime()),
+              JournalSubtitle(trip.calculateStartTime()),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: JournalEntry(

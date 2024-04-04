@@ -11,7 +11,6 @@ import 'package:trekko_frontend/screens/journal/journal_detail/donation_box.dart
 import 'package:trekko_frontend/screens/journal/journal_detail/journal_entry_context_menu.dart';
 import 'package:trekko_frontend/screens/journal/journal_detail/purpose_box.dart';
 import 'package:trekko_frontend/screens/journal/journal_detail/vehicle_box.dart';
-import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
 
 //renders the journal entry cards showing the trip information
 class JournalEntry extends StatelessWidget {
@@ -73,11 +72,11 @@ class JournalEntry extends StatelessWidget {
                       trekko.deleteTrip(createQuery().build());
                     },
                     onEdit: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) =>
-                                  JournalEntryDetailView(trip)));
+                      // Navigator.push( // TODO: re add
+                      //     context,
+                      //     CupertinoPageRoute(
+                      //         builder: (context) =>
+                      //             JournalEntryDetailView(trip)));
                     },
                     buildEntry: _buildEntry,
                   ),
@@ -101,10 +100,10 @@ class JournalEntry extends StatelessWidget {
               onSelectionChanged!(trip, !isSelected);
             }
           } else {
-            Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder: (context) => JournalEntryDetailView(trip)));
+            // Navigator.push( // TODO: re add
+            //     context,
+            //     CupertinoPageRoute(
+            //         builder: (context) => JournalEntryDetailView(trip)));
           }
         },
         child: Container(
@@ -149,7 +148,7 @@ class _InformationRow extends StatelessWidget {
       children: [
         Flexible(
           child: Text(
-            DateFormat('HH:mm').format(trip.getStartTime()),
+            DateFormat('HH:mm').format(trip.calculateStartTime()),
             style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
           ),
         ),
@@ -161,10 +160,10 @@ class _InformationRow extends StatelessWidget {
                 Text(hours > 0 ? "$hours h $minutes min" : "$minutes min",
                     style: TextStyle(
                         color: TransportDesign.getColor(
-                            trip.getTransportTypes().first))),
+                            trip.calculateTransportTypes().first))),
                 const SizedBox(width: 4.0),
                 Text(
-                  "- ${trip.getDistance().as(kilo.meters).toStringAsFixed(1)} km",
+                  "- ${trip.calculateDistance().as(kilo.meters).toStringAsFixed(1)} km",
                 ),
               ],
             ),
@@ -172,7 +171,7 @@ class _InformationRow extends StatelessWidget {
         ),
         Flexible(
           child: Text(
-            DateFormat('HH:mm').format(trip.getEndTime()),
+            DateFormat('HH:mm').format(trip.calculateEndTime()),
             style: AppThemeTextStyles.largeTitle.copyWith(letterSpacing: -1),
           ),
         ),
@@ -201,7 +200,7 @@ class _LabelRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final uniqueVehicleTypes = trip.getTransportTypes();
+    final uniqueVehicleTypes = trip.calculateTransportTypes();
 
     return Align(
       alignment: Alignment.centerLeft,

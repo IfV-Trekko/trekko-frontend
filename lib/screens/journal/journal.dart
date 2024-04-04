@@ -11,7 +11,6 @@ import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/picker/date_picker_row.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
 import 'package:trekko_frontend/screens/journal/journal_edit_bar.dart';
-import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
 import 'package:trekko_frontend/screens/journal/trips_list.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
 
@@ -87,11 +86,11 @@ class JournalScreenState extends State<StatefulWidget>
                               .move_r(const Duration(minutes: 10), 400.meters)
                               .build();
                           trekko.saveTrip(newTrip).then((value) => {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) =>
-                                            JournalEntryDetailView(newTrip)))
+                                // Navigator.push( // TODO: Re add
+                                //     context,
+                                //     CupertinoPageRoute(
+                                //         builder: (context) =>
+                                //             JournalEntryDetailView(newTrip)))
                               });
                         },
                         child: const Icon(CupertinoIcons.add,
