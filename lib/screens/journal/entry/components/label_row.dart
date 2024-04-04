@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
 import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/components/donation_box.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/components/purpose_box.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/components/vehicle_box.dart';
+import 'package:trekko_frontend/screens/journal/entry/components/donation_box.dart';
+import 'package:trekko_frontend/screens/journal/entry/components/purpose_box.dart';
+import 'package:trekko_frontend/screens/journal/entry/components/vehicle_box.dart';
 
 class LabelRow extends StatelessWidget {
   final PositionCollection data;

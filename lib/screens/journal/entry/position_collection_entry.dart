@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_frontend/app_theme.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/components/information_row.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/components/label_row.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/components/vehicle_line.dart';
+import 'package:trekko_frontend/screens/journal/entry/components/information_row.dart';
+import 'package:trekko_frontend/screens/journal/entry/components/label_row.dart';
+import 'package:trekko_frontend/screens/journal/entry/components/vehicle_line.dart';
 
 class PositionCollectionEntry extends StatefulWidget {
   final PositionCollection data;

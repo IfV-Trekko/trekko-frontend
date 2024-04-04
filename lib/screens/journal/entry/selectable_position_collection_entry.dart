@@ -1,14 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/components/information_row.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/journal_entry_context_menu.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/components/label_row.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/components/vehicle_line.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/position_collection_entry.dart';
+import 'package:trekko_frontend/screens/journal/entry/journal_entry_context_menu.dart';
+import 'package:trekko_frontend/screens/journal/entry/position_collection_entry.dart';
 
 //renders the journal entry cards showing the trip information
 class SelectablePositionCollectionEntry extends StatelessWidget {

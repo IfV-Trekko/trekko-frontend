@@ -9,8 +9,8 @@ import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/picker/date_picker_row.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
+import 'package:trekko_frontend/screens/journal/entry/selectable_position_collection_entry.dart';
 import 'package:trekko_frontend/screens/journal/journal_edit_bar.dart';
-import 'package:trekko_frontend/screens/journal/trip/entry/selectable_position_collection_entry.dart';
 import 'package:trekko_frontend/screens/journal/trip/trip_edit_view.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
 
@@ -215,7 +215,8 @@ class JournalScreenState extends State<StatefulWidget>
       Navigator.push(
           context,
           CupertinoPageRoute(
-              builder: (context) => TripEditView(tripId: trip.id)));
+              builder: (context) => TripEditView(
+                  trekko: TrekkoProvider.of(context), tripId: trip.id)));
     } else {
       setState(() {
         if (!selectedTrips.contains(trip.id)) {
