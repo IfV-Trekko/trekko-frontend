@@ -50,14 +50,9 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
   @override
   Widget build(BuildContext context) {
     return RoundedScrollableSheet(
+      title: "Mobilitätsdaten",
       initialChildSize: 0.23,
         child: Column(children: [
-      Container(
-          padding: EdgeInsets.zero,
-          alignment: Alignment.centerLeft,
-          child: Text('Mobilitätsdaten',
-              style: AppThemeTextStyles.largeTitle
-                  .copyWith(fontWeight: FontWeight.w700))),
       StreamBuilder(
           stream: super.widget.trekko.getTrackingState(),
           builder: (context, snapshot) {

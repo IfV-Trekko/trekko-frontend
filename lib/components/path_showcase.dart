@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:trekko_backend/model/trip/leg.dart';
 import 'package:trekko_backend/model/trip/position_collection.dart';
-import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
 
 class PathShowcase extends StatelessWidget {
@@ -20,19 +18,13 @@ class PathShowcase extends StatelessWidget {
 
         return Row(
           children: [
-            if (data is Trip)
-            for (var leg in (data as Trip).legs)
+            for (var leg in data.getLegs())
               Container(
                   height: 4,
                   width: leg.calculateDistance().defaultValue /
                       distance *
                       availableSpace,
                   color: TransportDesign.getColor(leg.transportType)),
-            if (data is Leg)
-              Container(
-                  height: 4,
-                  width: availableSpace,
-                  color: TransportDesign.getColor((data as Leg).transportType)),
           ],
         );
       },

@@ -4,9 +4,10 @@ import 'package:trekko_frontend/components/pull_tab.dart';
 
 class RoundedScrollableSheet extends StatelessWidget {
   final Widget child;
+  final String title;
   final double initialChildSize;
 
-  const RoundedScrollableSheet({required this.child, required this.initialChildSize, super.key});
+  const RoundedScrollableSheet({required this.child, required this.title, required this.initialChildSize, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +24,18 @@ class RoundedScrollableSheet extends StatelessWidget {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   controller: scrollController,
                   child: Column(children: <Widget>[
                     const PullTab(),
                     const SizedBox(height: 8),
+                    Container(
+                        padding: EdgeInsets.zero,
+                        alignment: Alignment.centerLeft,
+                        child: Text(title,
+                            style: AppThemeTextStyles.largeTitle
+                                .copyWith(fontWeight: FontWeight.w700))),
+                    const SizedBox(height: 16),
                     child
                   ])));
         });

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_frontend/components/maps/main_map.dart';
-import 'package:trekko_frontend/components/maps/trips_map.dart';
+import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/screens/tracking/map_option_sheet.dart';
 
 class TrackingScreen extends StatefulWidget {
@@ -30,8 +30,8 @@ class _TrackingScreenState extends State<TrackingScreen>
     return CupertinoPageScaffold(
       child: Stack(
         children: <Widget>[
-          TripsMap(
-            trips: TripQuery(widget.trekko).andTimeBetween(start, now).stream(),
+          PositionCollectionMap(
+            collections: TripQuery(widget.trekko).andTimeBetween(start, now).stream(),
           ),
           MapOptionSheet(
             trekko: widget.trekko,
