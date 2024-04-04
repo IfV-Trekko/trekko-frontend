@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_frontend/components/maps/main_map.dart';
+import 'package:trekko_frontend/components/maps/trips_map.dart';
 import 'package:trekko_frontend/screens/tracking/map_option_sheet.dart';
 
 class TrackingScreen extends StatefulWidget {
@@ -23,10 +25,14 @@ class _TrackingScreenState extends State<TrackingScreen>
   Widget build(BuildContext context) {
     super.build(context);
 
+    DateTime now = DateTime.now();
+    DateTime start = now.subtract(const Duration(days: 1));
     return CupertinoPageScaffold(
       child: Stack(
         children: <Widget>[
-          const MainMap(),
+          TripsMap(
+            trips: TripQuery(widget.trekko).andTimeBetween(start, now).stream(),
+          ),
           MapOptionSheet(
             trekko: widget.trekko,
           )
