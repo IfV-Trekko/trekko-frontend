@@ -1,6 +1,5 @@
 import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_builder.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
@@ -11,7 +10,8 @@ import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/picker/date_picker_row.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
 import 'package:trekko_frontend/screens/journal/journal_edit_bar.dart';
-import 'package:trekko_frontend/screens/journal/trips_list.dart';
+import 'package:trekko_frontend/screens/journal/trip/entry/selectable_position_collection_entry.dart';
+import 'package:trekko_frontend/screens/journal/trip/trip_edit_view.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
 
 //This renders the basic journal screen showing all journal entries
@@ -135,11 +135,25 @@ class JournalScreenState extends State<StatefulWidget>
                           style: AppThemeTextStyles.title,
                         )));
                       } else {
-                        return TripsList(
-                            trips: trips,
-                            selectionMode: selectionMode,
-                            onSelectionChanged: handleSelectionChange,
-                            selectedTrips: selectedTrips);
+                        return SliverPadding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            sliver: SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  return SelectablePositionCollectionEntry(
+                                    key: ValueKey(trips[index].id),
+                                    trekko: trekko,
+                                    data: trips[index],
+                                    selected:
+                                        selectedTrips.contains(trips[index].id),
+                                    selectionMode: selectionMode,
+                                    onTap: handleSelectionChange,
+                                  );
+                                },
+                                childCount: trips.length,
+                              ),
+                            ));
                       }
                     }
                   }),
@@ -194,14 +208,23 @@ class JournalScreenState extends State<StatefulWidget>
     });
   }
 
-  void handleSelectionChange(Trip trip, bool isSelected) {
-    setState(() {
-      if (isSelected) {
-        selectedTrips.add(trip.id);
-      } else {
-        selectedTrips.remove(trip.id);
-      }
-    });
+  void handleSelectionChange(Trip trip) {
+    print(trip.id);
+    print(selectionMode);
+    if (!selectionMode) {
+      Navigator.push(
+          context,
+          CupertinoPageRoute(
+              builder: (context) => TripEditView(tripId: trip.id)));
+    } else {
+      setState(() {
+        if (!selectedTrips.contains(trip.id)) {
+          selectedTrips.add(trip.id);
+        } else {
+          selectedTrips.remove(trip.id);
+        }
+      });
+    }
   }
 
   Future<void> delete(Trekko trekko) async {

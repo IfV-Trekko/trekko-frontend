@@ -31,7 +31,7 @@ class BarChartWidgetState extends State<BarChartWidget> {
     return widget.trekko.analyze(
         TripQuery(widget.trekko).andTransportType(vehicle).build(),
         TripUtil(vehicle)
-            .build((leg) => leg.getDuration().inMinutes.toDouble()),
+            .build((leg) => leg.calculateDuration().inMinutes.toDouble()),
         AverageCalculation());
   }
 

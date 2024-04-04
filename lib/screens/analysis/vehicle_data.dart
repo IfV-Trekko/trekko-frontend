@@ -96,32 +96,32 @@ class VehicleData extends StatelessWidget {
             AttributeRow(
                 title: 'Gesamtstrecke',
                 value: getDataFormatted(
-                    TripUtil(vehicle)
-                        .build((leg) => leg.getDistance().as(kilo.meters)),
+                    TripUtil(vehicle).build(
+                        (leg) => leg.calculateDistance().as(kilo.meters)),
                     DoubleReduction.SUM,
                     (d) => "${d.toStringAsFixed(1)} km")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Strecke pro Weg',
                 value: getDataFormatted(
-                    TripUtil(vehicle)
-                        .build((leg) => leg.getDistance().as(kilo.meters)),
+                    TripUtil(vehicle).build(
+                        (leg) => leg.calculateDistance().as(kilo.meters)),
                     AverageCalculation(),
                     (d) => "${d.toStringAsFixed(1)} km")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Geschwindigkeit',
                 value: getDataFormatted(
-                    TripUtil(vehicle)
-                        .build((leg) => leg.getSpeed().as(kilo.meters, hours)),
+                    TripUtil(vehicle).build(
+                        (leg) => leg.calculateSpeed().as(kilo.meters, hours)),
                     AverageCalculation(),
                     (d) => "${d.toStringAsFixed(1)} km/h")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Wegzeit',
                 value: getDataFormatted(
-                    TripUtil(vehicle)
-                        .build((leg) => leg.getDuration().inMinutes.toDouble()),
+                    TripUtil(vehicle).build(
+                        (leg) => leg.calculateDuration().inMinutes.toDouble()),
                     AverageCalculation(),
                     (d) => "${d.toStringAsFixed(1)} min")),
           ],

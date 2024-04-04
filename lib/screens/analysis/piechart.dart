@@ -25,7 +25,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
   Stream<double?> getData(TransportType vehicle) {
     return widget.trekko.analyze(
         TripQuery(widget.trekko).andTransportType(vehicle).build(),
-        TripUtil(vehicle).build((leg) => leg.getDistance().as(kilo.meters)),
+        TripUtil(vehicle).build((leg) => leg.calculateDistance().as(kilo.meters)),
         DoubleReduction.SUM);
   }
 

@@ -32,7 +32,6 @@ class JournalEntryContextMenu extends StatelessWidget {
             onPressed: () {
               if (trip.donationState == DonationState.donated) {
                 onRevoke();
-                // trekko.revoke(createQuery().build());
               } else {
                 onDonate();
               }
