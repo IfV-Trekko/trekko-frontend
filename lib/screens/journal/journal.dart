@@ -209,11 +209,7 @@ class JournalScreenState extends State<StatefulWidget>
       setState(() {
         isLoading = true;
       });
-      QueryBuilder<Trip, Trip, QAfterFilterCondition> query =
-          trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
-      for (var tripId in selectedTrips) {
-        query = query.or().idEqualTo(tripId);
-      }
+      var query = TripQuery(trekko).andAnyId(selectedTrips);
       int deletedTrips = await trekko.deleteTrip(query.build());
       showPopupMessage('Sie haben $deletedTrips Wege gelöscht', false);
     } catch (e) {
@@ -226,13 +222,8 @@ class JournalScreenState extends State<StatefulWidget>
       setState(() {
         isLoading = true;
       });
-      QueryBuilder<Trip, Trip, QAfterFilterCondition> query =
-          trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
-      int count = 0;
-      for (var tripId in selectedTrips) {
-        query = query.or().idEqualTo(tripId);
-        count++;
-      }
+      int count = selectedTrips.length;
+      var query = TripQuery(trekko).andAnyId(selectedTrips);
       await trekko.mergeTrips(query.build());
       showPopupMessage('Sie haben $count Wege zusammengefügt', false);
     } catch (e) {
@@ -242,11 +233,7 @@ class JournalScreenState extends State<StatefulWidget>
 
   Future<void> revoke(Trekko trekko) async {
     try {
-      QueryBuilder<Trip, Trip, QAfterFilterCondition> query =
-          trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
-      for (var tripId in selectedTrips) {
-        query = query.or().idEqualTo(tripId);
-      }
+      var query = TripQuery(trekko).andAnyId(selectedTrips);
       int count = await trekko.revoke(query.build());
       showPopupMessage(
           'Sie haben ihre Spende über $count Wege zurückgezogen', false);
