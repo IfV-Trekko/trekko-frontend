@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
@@ -129,9 +130,9 @@ class DonationModalState extends State<DonationModal>
       return;
     }
     int donatedTrips = 0;
-    var allTrips = await widget.trekko
-        .getTripQuery()
-        .filter()
+    var allTrips = await TripQuery(widget.trekko)
+        .get()
+        .and()
         .donationStateEqualTo(DonationState.undefined)
         .findAll();
     for (var trip in allTrips) {
