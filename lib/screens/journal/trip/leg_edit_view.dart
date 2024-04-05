@@ -7,9 +7,10 @@ import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/tracked_point.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/maps/position_collection_map.dart';
-import 'package:trekko_frontend/components/maps/position_collection_map_controller.dart';
 import 'package:trekko_frontend/components/rounded_scrollable_sheet.dart';
+import 'package:trekko_frontend/screens/journal/trip/detail/editable_position_details.dart';
 import 'package:trekko_frontend/screens/journal/trip/leg_edit_bar.dart';
+import 'package:trekko_frontend/screens/journal/trip/detail/position_detail_box.dart';
 
 class LegEditView extends StatefulWidget {
   final Leg leg;
@@ -25,18 +26,29 @@ class LegEditView extends StatefulWidget {
 class _LegEditViewState extends State<LegEditView> {
   final Duration _timeStep = const Duration(minutes: 10);
   late StreamController<PositionCollection> _streamController;
-  late PositionCollectionMapController _mapController;
-  late DateTime currentDate;
+  late MapController _mapController;
+  late DateTime _currentDate;
+
+  GeoPoint _toGeoPoint(TrackedPoint trackedPoint) {
+    return GeoPoint(
+        latitude: trackedPoint.latitude, longitude: trackedPoint.longitude);
+  }
 
   @override
   void initState() {
-    currentDate = widget.leg.calculateEndTime().add(_timeStep);
+    _currentDate = widget.leg.calculateEndTime().add(_timeStep);
     _streamController = StreamController<Leg>.broadcast();
-    _streamController.onListen = () {
-      _streamController.add(widget.leg);
-    };
-    _mapController = PositionCollectionMapController();
+    _mapController = MapController.withPosition(initPosition: PositionCollectionMap.karlsruhe);
     super.initState();
+  }
+
+  void _onMapReady() {
+    _streamController.add(widget.leg);
+    if (widget.leg.trackedPoints.isNotEmpty) {
+      for (var point in widget.leg.trackedPoints) {
+        _mapController.addMarker(_toGeoPoint(point));
+      }
+    }
   }
 
   void _onEditComplete() {
@@ -49,9 +61,9 @@ class _LegEditViewState extends State<LegEditView> {
   }
 
   void _onPointAdded(TrackedPoint point) {
-    _mapController.addPoint(point);
+    _mapController.addMarker(_toGeoPoint(point));
     _modifyPoints((points) =>
-        points.add(TrackedPoint.withData(49.0069, 8.4037, currentDate)));
+        points.add(TrackedPoint.withData(49.0069, 8.4037, _currentDate)));
     _onEdit();
   }
 
@@ -69,8 +81,8 @@ class _LegEditViewState extends State<LegEditView> {
       var trackedPoint = widget.leg.trackedPoints[i];
       if (trackedPoint.latitude == point.latitude &&
           trackedPoint.longitude == point.longitude) {
-        currentDate = widget.leg.trackedPoints[i].timestamp;
-        _mapController.removePoint(trackedPoint);
+        _currentDate = widget.leg.trackedPoints[i].timestamp;
+        _mapController.removeMarker(_toGeoPoint(trackedPoint));
         _modifyPoints((points) => points.removeAt(i));
         _onEdit();
         return;
@@ -86,18 +98,20 @@ class _LegEditViewState extends State<LegEditView> {
           PositionCollectionMap(
             collections: _streamController.stream.map((event) => [event]),
             onMarkerClick: _onMarkerClick,
-            controller: _mapController,
+            onMapReady: _onMapReady,
+            controllerSupplier: () => _mapController,
           ),
           // Leg edit bar which is shown always right above the sheet
           RoundedScrollableSheet(
-            title: "Optionen",
-            initialChildSize: 0.15,
+            title: "Details",
+            initialChildSize: 0.2,
             child: Column(
               children: [
+                PositionDetailBox(data: widget.leg),
                 LegEditBar(
-                    time: currentDate,
+                    time: _currentDate,
                     onDateChanged: (DateTime newDate) {
-                      currentDate = newDate;
+                      _currentDate = newDate;
                     },
                     onAddPoint: _onPointAdded),
                 Button(title: "Fertig", onPressed: _onEditComplete),

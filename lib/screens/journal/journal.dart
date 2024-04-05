@@ -209,14 +209,10 @@ class JournalScreenState extends State<StatefulWidget>
   }
 
   void handleSelectionChange(Trip trip) {
-    print(trip.id);
-    print(selectionMode);
     if (!selectionMode) {
-      Navigator.push(
-          context,
-          CupertinoPageRoute(
-              builder: (context) => TripEditView(
-                  trekko: TrekkoProvider.of(context), tripId: trip.id)));
+      Navigator.of(context).push(CupertinoPageRoute(
+          builder: (context) => TripEditView(
+              trekko: TrekkoProvider.of(context), tripId: trip.id)));
     } else {
       setState(() {
         if (!selectedTrips.contains(trip.id)) {

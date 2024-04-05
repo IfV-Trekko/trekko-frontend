@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_frontend/components/maps/main_map.dart';

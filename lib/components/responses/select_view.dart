@@ -4,28 +4,28 @@ import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
 
-class MultiSelectResponse<T> extends StatefulWidget {
-  final bool singleSelect;
+class SelectView<T> extends StatefulWidget {
   final String title;
   final Function(List<T>) onSaved;
   final List<T> initialResponses;
   final List<T> responses;
   final String Function(T) getName;
+  final bool singleSelect;
 
-  const MultiSelectResponse(
+  const SelectView(
       {required this.responses,
-      required this.singleSelect,
       required this.title,
       required this.onSaved,
       required this.initialResponses,
       required this.getName,
+      this.singleSelect = false,
       super.key});
 
   @override
-  State<MultiSelectResponse<T>> createState() => _MultiSelectResponseState<T>();
+  State<SelectView<T>> createState() => _SelectViewState<T>();
 }
 
-class _MultiSelectResponseState<T> extends State<MultiSelectResponse<T>> {
+class _SelectViewState<T> extends State<SelectView<T>> {
   late List<T> _newResponses;
 
   @override
@@ -71,25 +71,15 @@ class _MultiSelectResponseState<T> extends State<MultiSelectResponse<T>> {
                   trailing: (_newResponses.contains(response))
                       ? const HeroIcon(HeroIcons.check)
                       : const Text(''),
-                  onTap: widget.singleSelect
-                      ? () {
-                          setState(() {
-                            if (_newResponses.contains(response)) {
-                            } else {
-                              _newResponses.clear();
-                              _newResponses.add(response);
-                            }
-                          });
-                        }
-                      : () {
-                          setState(() {
-                            if (_newResponses.contains(response)) {
-                              _newResponses.remove(response);
-                            } else {
-                              _newResponses.add(response);
-                            }
-                          });
-                        },
+                  onTap: () {
+                    setState(() {
+                      if (_newResponses.contains(response)) {
+                      } else {
+                        if (widget.singleSelect) _newResponses.clear();
+                        _newResponses.add(response);
+                      }
+                    });
+                  },
                 )
             ],
           ),

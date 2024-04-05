@@ -48,6 +48,7 @@ class TimePickerState extends State<TimePicker> {
                 height: 34,
                 padding: const EdgeInsets.symmetric(horizontal: 11),
                 child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.time,
                   use24hFormat: true,
                   initialDateTime: selectedDateTime,
                   onDateTimeChanged: (val) {
@@ -57,7 +58,6 @@ class TimePickerState extends State<TimePicker> {
                   },
                   minimumDate: widget.minimumDateTime,
                   maximumDate: widget.maximumDateTime,
-                  mode: CupertinoDatePickerMode.dateAndTime,
                 ),
               ),
             ),

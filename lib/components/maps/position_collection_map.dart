@@ -1,25 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-import 'package:isar/isar.dart';
-import 'package:trekko_backend/model/position.dart';
 import 'package:trekko_backend/model/trip/leg.dart';
 import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/tracked_point.dart';
-import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
-import 'package:trekko_frontend/components/maps/position_collection_map_controller.dart';
 
 class PositionCollectionMap extends StatefulWidget {
+  static final GeoPoint karlsruhe =
+      GeoPoint(latitude: 49.006889, longitude: 8.403653);
+
   final Stream<List<PositionCollection>> collections;
-  final PositionCollectionMapController? controller;
-  final Function(Leg)? onRoadClick;
+  final MapController Function()? controllerSupplier;
   final Function(GeoPoint)? onMarkerClick;
+  final Function(Leg)? onRoadClick;
+  final Function()? onMapReady;
 
   const PositionCollectionMap(
       {required this.collections,
-      this.controller,
+      this.controllerSupplier,
       this.onMarkerClick,
       this.onRoadClick,
+      this.onMapReady,
       Key? key})
       : super(key: key);
 
@@ -29,9 +30,8 @@ class PositionCollectionMap extends StatefulWidget {
 
 class PositionCollectionMapState extends State<PositionCollectionMap>
     with AutomaticKeepAliveClientMixin<PositionCollectionMap> {
-  late MapController controller;
   List<PositionCollection>? collections;
-  List<GeoPoint> markers = [];
+  late MapController controller;
   bool zoomedToBoundingBox = false;
   bool mapReady = false;
 
@@ -40,31 +40,18 @@ class PositionCollectionMapState extends State<PositionCollectionMap>
         latitude: trackedPoint.latitude, longitude: trackedPoint.longitude);
   }
 
-  _addPosition(TrackedPoint position) {
-    markers.add(_toGeoPoint(position));
-    controller.addMarker(_toGeoPoint(position));
-  }
-
-  _removePosition(TrackedPoint position) {
-    markers.remove(_toGeoPoint(position));
-    controller.removeMarker(_toGeoPoint(position));
-  }
-
   @override
   void initState() {
-    controller = MapController.withPosition(
-        initPosition: GeoPoint(latitude: 49.0069, longitude: 8.4037));
+    controller = widget.controllerSupplier != null
+        ? widget.controllerSupplier!()
+        : MapController.withPosition(
+            // karlsruhe location
+            initPosition: PositionCollectionMap.karlsruhe);
     widget.collections.listen((event) {
       collections = event;
-      if (mapReady) {
-        _drawRoads();
-        _drawMarkers();
-      }
+      if (!mapReady) return;
+      _drawRoads(event);
     });
-    if (widget.controller != null) {
-      widget.controller!.onPointAdded = _addPosition;
-      widget.controller!.onPointRemoved = _removePosition;
-    }
     super.initState();
   }
 
@@ -77,9 +64,9 @@ class PositionCollectionMapState extends State<PositionCollectionMap>
         onMapIsReady: (bool ready) {
           if (!ready) return;
           mapReady = true;
+          widget.onMapReady?.call();
           if (collections != null) {
-            _drawRoads();
-            _drawMarkers();
+            _drawRoads(collections!);
           }
         },
         onGeoPointClicked: (geoPoint) {
@@ -98,26 +85,14 @@ class PositionCollectionMapState extends State<PositionCollectionMap>
         ));
   }
 
-  _drawMarkers() {
-    if (widget.onMarkerClick == null) return;
-    for (PositionCollection trip in collections!) {
-      for (Leg leg in trip.getLegs()) {
-        List<GeoPoint> points = leg.trackedPoints.map(_toGeoPoint).toList();
-        for (GeoPoint point in points) {
-          controller.addMarker(point);
-        }
-      }
-    }
-  }
-
-  _drawRoads() async {
+  _drawRoads(List<PositionCollection> collections) async {
     controller.clearAllRoads();
-    for (PositionCollection trip in collections!) {
+    for (PositionCollection trip in collections) {
       for (Leg leg in trip.getLegs()) {
         String key = await controller.drawRoadManually(
             leg.trackedPoints.map(_toGeoPoint).toList(growable: false),
             RoadOption(
-              zoomInto: false,
+                zoomInto: false,
                 roadWidth: 20,
                 roadColor: TransportDesign.getColor(leg.transportType)));
         controller.listenerRoadTapped.addListener(() {
