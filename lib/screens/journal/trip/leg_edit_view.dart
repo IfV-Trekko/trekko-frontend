@@ -50,9 +50,10 @@ class _LegEditViewState extends State<LegEditView> {
         element.latitude == point.latitude &&
         element.longitude == point.longitude);
   }
-  
+
   bool _checkDateExists() {
-    return widget.leg.trackedPoints.any((element) => element.timestamp.difference(_currentDate).abs().inMilliseconds < 1000);
+    return widget.leg.trackedPoints.any((element) =>
+        element.timestamp.difference(_currentDate).abs().inMilliseconds < 1000);
   }
 
   void _changeDate(DateTime newDate) {
