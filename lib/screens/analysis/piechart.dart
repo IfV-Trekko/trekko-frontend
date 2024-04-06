@@ -6,7 +6,7 @@ import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/analysis/reductions.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/analyze_util.dart';
-import 'package:trekko_backend/controller/utils/query_util.dart';
+import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
@@ -24,8 +24,8 @@ class PieChartWidget extends StatefulWidget {
 class PieChartWidgetState extends State<PieChartWidget> {
   Stream<double?> getData(TransportType vehicle) {
     return widget.trekko.analyze(
-        QueryUtil(widget.trekko).buildTransportType(vehicle),
-        TripUtil(vehicle).build((leg) => leg.getDistance().as(kilo.meters)),
+        TripQuery(widget.trekko).andTransportType(vehicle).build(),
+        TripUtil(vehicle).build((leg) => leg.calculateDistance().as(kilo.meters)),
         DoubleReduction.SUM);
   }
 

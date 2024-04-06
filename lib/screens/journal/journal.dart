@@ -1,16 +1,23 @@
 import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:isar/isar.dart';
+import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_builder.dart';
+import 'package:trekko_backend/controller/utils/trip_query.dart';
+import 'package:trekko_backend/model/trip/donation_state.dart';
+import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
+import 'package:trekko_frontend/components/picker/date_carousel.dart';
+import 'package:trekko_frontend/components/pop_up_utils.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
+import 'package:trekko_frontend/screens/journal/entry/collection_entry_context_menu.dart';
+import 'package:trekko_frontend/screens/journal/entry/selectable_position_collection_entry.dart';
 import 'package:trekko_frontend/screens/journal/journal_edit_bar.dart';
-import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
-import 'package:trekko_frontend/screens/journal/trips_list.dart';
+import 'package:trekko_frontend/screens/journal/trip/trip_edit_view.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
 
 //This renders the basic journal screen showing all journal entries
@@ -30,18 +37,21 @@ class JournalScreenState extends State<StatefulWidget>
   @override
   bool get wantKeepAlive => true;
 
+  _startOfDay(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     final Trekko trekko = TrekkoProvider.of(context);
-
     return CupertinoPageScaffold(
         child: SafeArea(
       bottom: true,
       child: Stack(
         children: <Widget>[
           CustomScrollView(
+            physics: const NeverScrollableScrollPhysics(),
             slivers: <Widget>[
               CupertinoSliverNavigationBar(
                 largeTitle: const Text("Tagebuch"),
@@ -76,14 +86,13 @@ class JournalScreenState extends State<StatefulWidget>
                       GestureDetector(
                         onTap: () {
                           Trip newTrip = TripBuilder()
-                              .move_r(const Duration(minutes: 10), 400.meters)
+                              .move_r(const Duration(minutes: 5), 100.meters)
                               .build();
                           trekko.saveTrip(newTrip).then((value) => {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) =>
-                                            JournalEntryDetailView(newTrip)))
+                                Navigator.of(context).push(CupertinoPageRoute(
+                                    builder: (context) => TripEditView(
+                                        trekko: TrekkoProvider.of(context),
+                                        tripId: value)))
                               });
                         },
                         child: const Icon(CupertinoIcons.add,
@@ -93,40 +102,90 @@ class JournalScreenState extends State<StatefulWidget>
                 ),
                 backgroundColor: AppThemeColors.contrast0,
               ),
-              StreamBuilder(
-                  stream: trekko
-                      .getTripQuery()
-                      .build()
-                      .watch(fireImmediately: true),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return SliverFillRemaining(
-                          child: Text('Error: ${snapshot.error}'));
-                    } else if (snapshot.connectionState ==
-                            ConnectionState.waiting &&
-                        snapshot.data == null) {
-                      return const SliverFillRemaining(
-                          child: Center(
-                              child: CupertinoActivityIndicator(
-                                  radius: 20,
-                                  color: AppThemeColors.contrast500)));
-                    } else {
-                      final trips = snapshot.data ?? [];
-                      if (trips.isEmpty) {
-                        return SliverFillRemaining(
-                            child: Center(
-                                child: Text(
-                          'Noch keine Wege verfügbar',
-                          style: AppThemeTextStyles.title,
-                        )));
-                      } else {
-                        return TripsList(
-                            trips: trips,
-                            selectionMode: selectionMode,
-                            onSelectionChanged: handleSelectionChange,
-                            selectedTrips: selectedTrips);
-                      }
-                    }
+              DateCarousel(
+                  initialTime: _startOfDay(DateTime.now()),
+                  childBuilder: (DateTime time) {
+                    return StreamBuilder(
+                        stream: TripQuery(trekko)
+                            .andTimeBetween(
+                                time, time.add(const Duration(days: 1)))
+                            .stream(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else if (snapshot.connectionState ==
+                                  ConnectionState.waiting &&
+                              snapshot.data == null) {
+                            return const Center(
+                                child: CupertinoActivityIndicator(
+                                    radius: 20,
+                                    color: AppThemeColors.contrast500));
+                          } else {
+                            final trips = snapshot.data ?? [];
+                            if (trips.isEmpty) {
+                              return Center(
+                                  child: Text(
+                                'Noch keine Wege verfügbar',
+                                style: AppThemeTextStyles.title,
+                              ));
+                            } else {
+                              return ListView.builder(
+                                padding: const EdgeInsets.only(
+                                  left: 16.0,
+                                  right: 16.0,
+                                  bottom: 64.0,
+                                ),
+                                itemCount: trips.length,
+                                itemBuilder: (context, index) {
+                                  Trip trip = trips[index];
+                                  return SelectablePositionCollectionEntry(
+                                    key: ValueKey(trip.id),
+                                    trekko: trekko,
+                                    data: trip,
+                                    selected: selectedTrips.contains(trip.id),
+                                    selectionMode: selectionMode,
+                                    onTap: () => handleSelectionChange(trip),
+                                    onEdit: () {
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  TripEditView(
+                                                      trekko: trekko,
+                                                      tripId: trip.id)));
+                                    },
+                                    onDelete: () {
+                                      trekko.deleteTrip(TripQuery(trekko)
+                                          .andId(trip.id)
+                                          .build());
+                                    },
+                                    actions: [
+                                      if (trip.donationState ==
+                                          DonationState.donated)
+                                        EntryAction(
+                                            title: "Zurückziehen",
+                                            icon: CupertinoIcons.xmark,
+                                            onClick: () {
+                                              trekko.revoke(TripQuery(trekko)
+                                                  .andId(trip.id)
+                                                  .build());
+                                            }),
+                                      if (trip.donationState !=
+                                          DonationState.donated)
+                                        EntryAction(
+                                            title: "Spenden",
+                                            icon: CupertinoIcons.heart,
+                                            onClick: () {
+                                              trekko.donate(TripQuery(trekko)
+                                                  .andId(trip.id)
+                                                  .build());
+                                            }),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          }
+                        });
                   }),
               const SliverToBoxAdapter(child: SizedBox(height: 48)),
             ],
@@ -179,14 +238,21 @@ class JournalScreenState extends State<StatefulWidget>
     });
   }
 
-  void handleSelectionChange(Trip trip, bool isSelected) {
-    setState(() {
-      if (isSelected) {
-        selectedTrips.add(trip.id);
-      } else {
-        selectedTrips.remove(trip.id);
-      }
-    });
+  void handleSelectionChange(PositionCollection coll) {
+    Trip trip = coll as Trip;
+    if (!selectionMode) {
+      Navigator.of(context).push(CupertinoPageRoute(
+          builder: (context) => TripEditView(
+              trekko: TrekkoProvider.of(context), tripId: trip.id)));
+    } else {
+      setState(() {
+        if (!selectedTrips.contains(trip.id)) {
+          selectedTrips.add(trip.id);
+        } else {
+          selectedTrips.remove(trip.id);
+        }
+      });
+    }
   }
 
   Future<void> delete(Trekko trekko) async {
@@ -194,11 +260,7 @@ class JournalScreenState extends State<StatefulWidget>
       setState(() {
         isLoading = true;
       });
-      QueryBuilder<Trip, Trip, QAfterFilterCondition> query =
-          trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
-      for (var tripId in selectedTrips) {
-        query = query.or().idEqualTo(tripId);
-      }
+      var query = TripQuery(trekko).andAnyId(selectedTrips);
       int deletedTrips = await trekko.deleteTrip(query.build());
       showPopupMessage('Sie haben $deletedTrips Wege gelöscht', false);
     } catch (e) {
@@ -211,33 +273,28 @@ class JournalScreenState extends State<StatefulWidget>
       setState(() {
         isLoading = true;
       });
-      QueryBuilder<Trip, Trip, QAfterFilterCondition> query =
-          trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
-      int count = 0;
-      for (var tripId in selectedTrips) {
-        query = query.or().idEqualTo(tripId);
-        count++;
-      }
+      int count = selectedTrips.length;
+      var query = TripQuery(trekko).andAnyId(selectedTrips);
       await trekko.mergeTrips(query.build());
       showPopupMessage('Sie haben $count Wege zusammengefügt', false);
     } catch (e) {
-      showPopupMessage("Fehler beim Vereinigen der Wege", true);
+      showPopupMessage(
+          "Diese Wege konnten nicht zusammengeführt werden. Bitte stelle sicher, dass sie sich nicht überschneiden.",
+          true);
+      // Log
+      Logger().f("Error while merging trips", error: e);
     }
   }
 
   Future<void> revoke(Trekko trekko) async {
     try {
-      QueryBuilder<Trip, Trip, QAfterFilterCondition> query =
-          trekko.getTripQuery().filter().idEqualTo(selectedTrips.first);
-      for (var tripId in selectedTrips) {
-        query = query.or().idEqualTo(tripId);
-      }
+      var query = TripQuery(trekko).andAnyId(selectedTrips);
       int count = await trekko.revoke(query.build());
       showPopupMessage(
           'Sie haben ihre Spende über $count Wege zurückgezogen', false);
     } catch (e) {
-      showPopupMessage(
-          "Fehler beim Zurückziehen der Wege", true); // Handle the error here
+      showPopupMessage("Fehler beim Zurückziehen der Wege", true);
+      Logger().f("Error while revoking trips", error: e);
     }
   }
 
@@ -246,19 +303,6 @@ class JournalScreenState extends State<StatefulWidget>
     setState(() {
       isLoading = false;
     });
-    showCupertinoDialog(
-        context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-              title: Text(error ? 'Fehler' : 'Abgeschlossen'),
-              content: Text(message),
-              actions: [
-                CupertinoDialogAction(
-                  child: const Text("Schließen"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              ],
-            ));
+    PopUpUtils.showPopUp(context, error ? "Fehler" : "Abgeschlossen", message);
   }
 }

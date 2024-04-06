@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
+import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/constants/button_style.dart';
-import 'package:trekko_frontend/screens/journal/trips_list_view.dart';
+import 'package:trekko_frontend/screens/journal/entry/selectable_position_collection_entry.dart';
 
 //this Screen renders the donationModal, it shows after pressing the "Spenden" Button in the Journal,
 // it shows all Journal Entries without a donation state
@@ -99,20 +101,32 @@ class DonationModalState extends State<DonationModal>
               style: AppThemeTextStyles.title,
             ));
           } else {
-            return TripsListView(
-              trips: trips,
-              selectionMode: true,
-              onSelectionChanged: (Trip trip, bool isSelected) {
-                setState(() {
-                  if (isSelected) {
-                    selectedTrips.add(trip.id);
-                  } else {
-                    selectedTrips.remove(trip.id);
-                  }
-                });
+            return ListView.builder(
+              padding: const EdgeInsets.only(
+                left: 16.0,
+                right: 16.0,
+                bottom: 64.0,
+              ),
+              itemCount: trips.length,
+              itemBuilder: (context, index) {
+                Trip trip = trips[index];
+                return SelectablePositionCollectionEntry(
+                  key: ValueKey(trip.id),
+                  trekko: widget.trekko,
+                  data: trip,
+                  selected: selectedTrips.contains(trip.id),
+                  selectionMode: true,
+                  onTap: () {
+                    setState(() {
+                      if (!selectedTrips.contains(trip.id)) {
+                        selectedTrips.add(trip.id);
+                      } else {
+                        selectedTrips.remove(trip.id);
+                      }
+                    });
+                  },
+                );
               },
-              trekko: widget.trekko,
-              selectedTrips: selectedTrips,
             );
           }
         }
@@ -129,9 +143,9 @@ class DonationModalState extends State<DonationModal>
       return;
     }
     int donatedTrips = 0;
-    var allTrips = await widget.trekko
-        .getTripQuery()
-        .filter()
+    var allTrips = await TripQuery(widget.trekko)
+        .get()
+        .and()
         .donationStateEqualTo(DonationState.undefined)
         .findAll();
     for (var trip in allTrips) {

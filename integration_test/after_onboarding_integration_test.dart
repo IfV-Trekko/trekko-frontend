@@ -4,7 +4,7 @@ import 'package:trekko_frontend/components/picker/time_picker.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/constants/button_style.dart';
 import 'package:trekko_frontend/screens/journal/journal.dart';
-import 'package:trekko_frontend/screens/journal/journal_detail/vehicle_box.dart';
+import 'package:trekko_frontend/screens/journal/components/vehicle_box.dart';
 import 'package:trekko_frontend/screens/journal/journal_entry.dart';
 import 'package:trekko_frontend/screens/journal/journal_entry_detail_view/journal_entry_detail_view.dart';
 import 'package:trekko_frontend/screens/tracking/tracking.dart';

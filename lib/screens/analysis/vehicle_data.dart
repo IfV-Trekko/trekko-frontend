@@ -6,7 +6,7 @@ import 'package:trekko_backend/controller/analysis/calculation.dart';
 import 'package:trekko_backend/controller/analysis/reductions.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/analyze_util.dart';
-import 'package:trekko_backend/controller/utils/query_util.dart';
+import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
@@ -21,7 +21,7 @@ class VehicleData extends StatelessWidget {
 
   Stream<T?> getData<T>(Iterable<T> Function(Trip) apply, Calculation<T> calc) {
     return trekko.analyze(
-        QueryUtil(trekko).buildTransportType(vehicle), apply, calc);
+        TripQuery(trekko).andTransportType(vehicle).build(), apply, calc);
   }
 
   Widget getDataFormatted<T>(Iterable<T> Function(Trip) apply,
@@ -96,32 +96,32 @@ class VehicleData extends StatelessWidget {
             AttributeRow(
                 title: 'Gesamtstrecke',
                 value: getDataFormatted(
-                    TripUtil(vehicle)
-                        .build((leg) => leg.getDistance().as(kilo.meters)),
+                    TripUtil(vehicle).build(
+                        (leg) => leg.calculateDistance().as(kilo.meters)),
                     DoubleReduction.SUM,
                     (d) => "${d.toStringAsFixed(1)} km")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Strecke pro Weg',
                 value: getDataFormatted(
-                    TripUtil(vehicle)
-                        .build((leg) => leg.getDistance().as(kilo.meters)),
+                    TripUtil(vehicle).build(
+                        (leg) => leg.calculateDistance().as(kilo.meters)),
                     AverageCalculation(),
                     (d) => "${d.toStringAsFixed(1)} km")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Geschwindigkeit',
                 value: getDataFormatted(
-                    TripUtil(vehicle)
-                        .build((leg) => leg.getSpeed().as(kilo.meters, hours)),
+                    TripUtil(vehicle).build(
+                        (leg) => leg.calculateSpeed().as(kilo.meters, hours)),
                     AverageCalculation(),
                     (d) => "${d.toStringAsFixed(1)} km/h")),
             const SizedBox(height: 8),
             AttributeRow(
                 title: 'Ø Wegzeit',
                 value: getDataFormatted(
-                    TripUtil(vehicle)
-                        .build((leg) => leg.getDuration().inMinutes.toDouble()),
+                    TripUtil(vehicle).build(
+                        (leg) => leg.calculateDuration().inMinutes.toDouble()),
                     AverageCalculation(),
                     (d) => "${d.toStringAsFixed(1)} min")),
           ],
