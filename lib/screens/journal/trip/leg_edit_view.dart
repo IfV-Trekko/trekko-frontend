@@ -72,6 +72,11 @@ class _LegEditViewState extends State<LegEditView> {
   }
 
   void _onEditComplete() {
+    if (widget.leg.trackedPoints.isEmpty) {
+      PopUpUtils.showPopUp(context, "Fehler", "Es muss mindestens ein Punkt existieren");
+      return;
+    }
+
     widget.onEditComplete();
     Navigator.of(context).pop();
   }

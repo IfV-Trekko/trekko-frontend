@@ -40,7 +40,7 @@ class LegEditBar extends StatelessWidget {
                   color: AppThemeColors.blue,
                   borderRadius: BorderRadius.circular(50),
                 ),
-                child: Icon(
+                child: const Icon(
                   CupertinoIcons.add,
                   color: CupertinoColors.white,
                 ),
