@@ -15,6 +15,8 @@ class DateCarousel extends StatefulWidget {
 }
 
 class _DateCarouselState extends State<DateCarousel> {
+  static const int crazyHighNumberSoWeCanScroll = 30000;
+
   late PageController _pageController;
   late DateTime _currentDate;
 
@@ -22,7 +24,7 @@ class _DateCarouselState extends State<DateCarousel> {
   void initState() {
     super.initState();
     _currentDate = widget.initialTime;
-    _pageController = PageController(initialPage: 30000);
+    _pageController = PageController(initialPage: crazyHighNumberSoWeCanScroll);
   }
 
   @override

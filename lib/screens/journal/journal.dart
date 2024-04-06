@@ -8,7 +8,7 @@ import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
-import 'package:trekko_frontend/components/picker/date_picker_row.dart';
+import 'package:trekko_frontend/components/picker/date_carousel.dart';
 import 'package:trekko_frontend/components/pop_up_utils.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
 import 'package:trekko_frontend/screens/journal/entry/selectable_position_collection_entry.dart';
@@ -82,14 +82,13 @@ class JournalScreenState extends State<StatefulWidget>
                       GestureDetector(
                         onTap: () {
                           Trip newTrip = TripBuilder()
-                              .move_r(const Duration(minutes: 10), 400.meters)
+                              .move_r(const Duration(minutes: 5), 100.meters)
                               .build();
                           trekko.saveTrip(newTrip).then((value) => {
-                                // Navigator.push( // TODO: Re add
-                                //     context,
-                                //     CupertinoPageRoute(
-                                //         builder: (context) =>
-                                //             JournalEntryDetailView(newTrip)))
+                                Navigator.of(context).push(CupertinoPageRoute(
+                                    builder: (context) => TripEditView(
+                                        trekko: TrekkoProvider.of(context),
+                                        tripId: value)))
                               });
                         },
                         child: const Icon(CupertinoIcons.add,

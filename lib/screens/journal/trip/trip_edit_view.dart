@@ -3,6 +3,7 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_frontend/app_theme.dart';
+import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/components/rounded_scrollable_sheet.dart';
 import 'package:trekko_frontend/components/stream_wrapper.dart';
@@ -55,6 +56,10 @@ class _TripEditViewState extends State<TripEditView> {
                           trekko.saveTrip(trip);
                         },
                       ),
+                      const SizedBox(height: 10),
+                      Button(title: "Zurück", onPressed: () {
+                        Navigator.of(context).pop();
+                      }),
                       const SizedBox(height: 10),
                       Text("Teilwege", style: AppThemeTextStyles.largeTitle),
                       const SizedBox(height: 10),

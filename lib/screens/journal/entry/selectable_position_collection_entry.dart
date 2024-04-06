@@ -5,6 +5,8 @@ import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/screens/journal/entry/journal_entry_context_menu.dart';
 import 'package:trekko_frontend/screens/journal/entry/position_collection_entry.dart';
+import 'package:trekko_frontend/screens/journal/trip/trip_edit_view.dart';
+import 'package:trekko_frontend/trekko_provider.dart';
 
 //renders the journal entry cards showing the trip information
 class SelectablePositionCollectionEntry extends StatelessWidget {
@@ -59,11 +61,9 @@ class SelectablePositionCollectionEntry extends StatelessWidget {
                         trekko.deleteTrip(createQuery().build());
                       },
                       onEdit: () {
-                        // Navigator.push( // TODO: re add
-                        //     context,
-                        //     CupertinoPageRoute(
-                        //         builder: (context) =>
-                        //             JournalEntryDetailView(trip)));
+                        Navigator.of(context).push(CupertinoPageRoute(
+                            builder: (context) =>
+                                TripEditView(trekko: trekko, tripId: data.id)));
                       },
                       buildEntry: () => PositionCollectionEntry(
                           trekko: trekko,
