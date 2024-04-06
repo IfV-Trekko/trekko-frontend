@@ -6,22 +6,20 @@ import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/screens/journal/entry/journal_entry_context_menu.dart';
 import 'package:trekko_frontend/screens/journal/entry/position_collection_entry.dart';
 import 'package:trekko_frontend/screens/journal/trip/trip_edit_view.dart';
-import 'package:trekko_frontend/trekko_provider.dart';
 
-//renders the journal entry cards showing the trip information
 class SelectablePositionCollectionEntry extends StatelessWidget {
+  final Trekko trekko;
   final Trip data;
   final bool selectionMode;
   final bool selected;
-  final Function(Trip) onTap;
-  final Trekko trekko;
+  final Function(Trip)? onTap;
 
   const SelectablePositionCollectionEntry(
       {required this.trekko,
       required this.data,
-      required this.selected,
-      required this.selectionMode,
-      required this.onTap,
+      this.selected = false,
+      this.selectionMode = false,
+      this.onTap,
       required super.key}); // TODO: this key thingy
 
   @override
@@ -40,7 +38,7 @@ class SelectablePositionCollectionEntry extends StatelessWidget {
                       activeColor: AppThemeColors.blue,
                       value: selected,
                       onChanged: (value) {
-                        onTap(data);
+                        onTap?.call(data);
                       },
                     )),
               ),
@@ -48,7 +46,9 @@ class SelectablePositionCollectionEntry extends StatelessWidget {
             Expanded(
               child: selectionMode
                   ? PositionCollectionEntry(
-                      trekko: trekko, data: data, onTap: (a) {})
+                      trekko: trekko,
+                      data: data,
+                      onTap: (a) => onTap?.call(data))
                   : JournalEntryContextMenu(
                       trip: data,
                       onDonate: () async {
@@ -68,7 +68,7 @@ class SelectablePositionCollectionEntry extends StatelessWidget {
                       buildEntry: () => PositionCollectionEntry(
                           trekko: trekko,
                           data: data,
-                          onTap: (p) => onTap(data)),
+                          onTap: (p) => onTap?.call(data)),
                     ),
             ),
           ],
