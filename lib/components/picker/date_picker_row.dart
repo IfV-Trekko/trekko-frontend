@@ -1,45 +1,69 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:heroicons/heroicons.dart';
 import 'package:trekko_frontend/components/picker/date_picker.dart';
 
-class DatePickerRow extends StatelessWidget {
-  final DateTime time;
-  final void Function(DateTime) onDateChanged;
+class DateCarousel extends StatefulWidget {
+  final DateTime initialTime;
+  final Widget Function(DateTime) childBuilder;
 
-  const DatePickerRow(
-      {super.key,
-      required this.time,
-      required this.onDateChanged});
+  const DateCarousel(
+      {Key? key, required this.initialTime, required this.childBuilder})
+      : super(key: key);
 
-  _addTime(Duration diff) {
-    onDateChanged(time.add(diff));
+  @override
+  State<DateCarousel> createState() => _DateCarouselState();
+}
+
+class _DateCarouselState extends State<DateCarousel> {
+  late PageController _pageController;
+  late DateTime _currentDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentDate = widget.initialTime;
+    _pageController = PageController(initialPage: 30000);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          CupertinoButton(
-            child: const HeroIcon(HeroIcons.arrowLeft),
-            onPressed: () {
-              _addTime(const Duration(days: -1));
-            },
-          ),
-          DatePicker(
-              time: time,
-              onDateChanged: (DateTime newDate) {
-                onDateChanged(newDate);
-              }),
-          CupertinoButton(
-            child: const HeroIcon(HeroIcons.arrowRight),
-            onPressed: () {
-              _addTime(const Duration(days: 1));
-            },
-          ),
-        ],
+    double height = MediaQuery.of(context).size.height;
+    return SliverToBoxAdapter(
+      child: SizedBox(
+        height: height * 0.8,
+        child: PageView.builder(
+          controller: _pageController,
+          allowImplicitScrolling: false,
+          itemBuilder: (context, index) {
+            DateTime date = _currentDate
+                .add(Duration(days: index - _pageController.initialPage));
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: DatePicker(
+                    time: date,
+                    onDateChanged: (newDate) {
+                      setState(() {
+                        _currentDate = newDate;
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: widget.childBuilder(date),
+                ),
+              ],
+            );
+          },
+        ),
       ),
-    ]);
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_builder.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
@@ -27,17 +28,13 @@ class JournalScreenState extends State<StatefulWidget>
   bool selectionMode = false;
   bool isLoading = false;
   List<int> selectedTrips = [];
-  late DateTime selectedDate;
-
-  @override
-  void initState() {
-    DateTime now = DateTime.now();
-    selectedDate = DateTime(now.year, now.month, now.day);
-    super.initState();
-  }
 
   @override
   bool get wantKeepAlive => true;
+
+  _startOfDay(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +46,7 @@ class JournalScreenState extends State<StatefulWidget>
       child: Stack(
         children: <Widget>[
           CustomScrollView(
+            physics: const NeverScrollableScrollPhysics(),
             slivers: <Widget>[
               CupertinoSliverNavigationBar(
                 largeTitle: const Text("Tagebuch"),
@@ -100,47 +98,41 @@ class JournalScreenState extends State<StatefulWidget>
                 ),
                 backgroundColor: AppThemeColors.contrast0,
               ),
-              SliverToBoxAdapter(
-                  child: DatePickerRow(
-                      time: selectedDate,
-                      onDateChanged: (date) {
-                        setState(() {
-                          selectedDate = date;
-                        });
-                      })),
-              StreamBuilder(
-                  stream: TripQuery(trekko)
-                      .andTimeBetween(selectedDate,
-                          selectedDate.add(const Duration(days: 1)))
-                      .stream(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return SliverFillRemaining(
-                          child: Text('Error: ${snapshot.error}'));
-                    } else if (snapshot.connectionState ==
-                            ConnectionState.waiting &&
-                        snapshot.data == null) {
-                      return const SliverFillRemaining(
-                          child: Center(
-                              child: CupertinoActivityIndicator(
-                                  radius: 20,
-                                  color: AppThemeColors.contrast500)));
-                    } else {
-                      final trips = snapshot.data ?? [];
-                      if (trips.isEmpty) {
-                        return SliverFillRemaining(
-                            child: Center(
-                                child: Text(
-                          'Noch keine Wege verfügbar',
-                          style: AppThemeTextStyles.title,
-                        )));
-                      } else {
-                        return SliverPadding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            sliver: SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
+              DateCarousel(
+                  initialTime: _startOfDay(DateTime.now()),
+                  childBuilder: (DateTime time) {
+                    return StreamBuilder(
+                        stream: TripQuery(trekko)
+                            .andTimeBetween(
+                                time, time.add(const Duration(days: 1)))
+                            .stream(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else if (snapshot.connectionState ==
+                                  ConnectionState.waiting &&
+                              snapshot.data == null) {
+                            return const Center(
+                                child: CupertinoActivityIndicator(
+                                    radius: 20,
+                                    color: AppThemeColors.contrast500));
+                          } else {
+                            final trips = snapshot.data ?? [];
+                            if (trips.isEmpty) {
+                              return Center(
+                                  child: Text(
+                                'Noch keine Wege verfügbar',
+                                style: AppThemeTextStyles.title,
+                              ));
+                            } else {
+                              return ListView.builder(
+                                padding: const EdgeInsets.only(
+                                  left: 16.0,
+                                  right: 16.0,
+                                  bottom: 64.0,
+                                ),
+                                itemCount: trips.length,
+                                itemBuilder: (context, index) {
                                   return SelectablePositionCollectionEntry(
                                     key: ValueKey(trips[index].id),
                                     trekko: trekko,
@@ -151,11 +143,10 @@ class JournalScreenState extends State<StatefulWidget>
                                     onTap: handleSelectionChange,
                                   );
                                 },
-                                childCount: trips.length,
-                              ),
-                            ));
-                      }
-                    }
+                              );
+                            }
+                          }
+                        });
                   }),
               const SliverToBoxAdapter(child: SizedBox(height: 48)),
             ],
