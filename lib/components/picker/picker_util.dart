@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 
 class PickerUtil {
 
-  static void showDialog(BuildContext context, Widget child) {
+  static void showDialog(BuildContext context, Widget child, {height = 216}) {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => Container(
-        height: 216,
+        height: height.toDouble(),
         padding: const EdgeInsets.only(top: 6.0),
         // The Bottom margin is provided to align the popup above the system
         // navigation bar.

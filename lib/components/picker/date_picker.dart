@@ -8,7 +8,10 @@ class DatePicker extends StatelessWidget {
   final Function(DateTime) onDateChanged;
 
   const DatePicker(
-      {super.key, required this.time, required this.mode, required this.onDateChanged});
+      {super.key,
+      required this.time,
+      required this.mode,
+      required this.onDateChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +19,36 @@ class DatePicker extends StatelessWidget {
         ? DateFormat('dd.MM.yyyy')
         : DateFormat('HH:mm');
     return CupertinoButton(
-      child: SizedBox(width: 100, child: Center(child: Text(format.format(time)))),
+      child:
+          SizedBox(width: 100, child: Center(child: Text(format.format(time)))),
       onPressed: () => PickerUtil.showDialog(
         context,
-        CupertinoDatePicker(
-          initialDateTime: time,
-          mode: mode,
-          use24hFormat: true,
-          showDayOfWeek: true,
-          onDateTimeChanged: (DateTime newDate) {
-            onDateChanged(newDate);
-          },
+        height: 210,
+        Column(
+          children: [
+            SizedBox(
+              height: 200,
+              child: Container(
+                height: 34,
+                padding: const EdgeInsets.symmetric(horizontal: 11),
+                child: CupertinoDatePicker(
+                  initialDateTime: time,
+                  mode: mode,
+                  use24hFormat: true,
+                  showDayOfWeek: true,
+                  onDateTimeChanged: (DateTime newDate) {
+                    onDateChanged(newDate);
+                  },
+                ),
+              ),
+            ),
+            // CupertinoButton(
+            //   child: const Text('Zurücksetzen'),
+            //   onPressed: () {
+            //     onDateChanged(DateTime.now());
+            //   },
+            // )
+          ],
         ),
       ),
     );

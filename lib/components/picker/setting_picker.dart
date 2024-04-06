@@ -11,7 +11,7 @@ class SettingsPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = 0; // Initialer Index oder aus Profile laden
+    int selectedIndex = 0; // TODO: Initialen Index mitgeben
     return CupertinoActionSheet(
       actions: <Widget>[
         SizedBox(
