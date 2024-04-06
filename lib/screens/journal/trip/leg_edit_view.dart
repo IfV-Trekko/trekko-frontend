@@ -11,6 +11,7 @@ import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/components/pop_up_utils.dart';
 import 'package:trekko_frontend/components/rounded_scrollable_sheet.dart';
+import 'package:trekko_frontend/screens/journal/trip/detail/editable_vehicle_type_box.dart';
 import 'package:trekko_frontend/screens/journal/trip/leg_edit_bar.dart';
 import 'package:trekko_frontend/screens/journal/trip/detail/position_detail_box.dart';
 
@@ -73,7 +74,8 @@ class _LegEditViewState extends State<LegEditView> {
 
   void _onEditComplete() {
     if (widget.leg.trackedPoints.isEmpty) {
-      PopUpUtils.showPopUp(context, "Fehler", "Es muss mindestens ein Punkt existieren");
+      PopUpUtils.showPopUp(
+          context, "Fehler", "Es muss mindestens ein Punkt existieren");
       return;
     }
 
@@ -177,6 +179,19 @@ class _LegEditViewState extends State<LegEditView> {
                     },
                     onAddPoint: _onPointAdded),
                 PositionDetailBox(data: widget.leg),
+                CupertinoListSection.insetGrouped(
+                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  children: [
+                    EditableVehicleTypeBox(
+                      type: widget.leg.transportType,
+                      onSavedVehicle: (value) {
+                        setState(() {
+                          widget.leg.transportType = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
                 Button(title: "Speichern", onPressed: _onEditComplete),
               ],
             ),

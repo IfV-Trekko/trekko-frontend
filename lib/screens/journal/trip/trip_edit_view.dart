@@ -12,7 +12,7 @@ import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/components/rounded_scrollable_sheet.dart';
 import 'package:trekko_frontend/components/stream_wrapper.dart';
 import 'package:trekko_frontend/screens/journal/entry/selectable_position_collection_entry.dart';
-import 'package:trekko_frontend/screens/journal/trip/detail/editable_position_details.dart';
+import 'package:trekko_frontend/screens/journal/trip/detail/editable_trip_details.dart';
 import 'package:trekko_frontend/screens/journal/trip/detail/position_detail_box.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
 
@@ -55,7 +55,7 @@ class _TripEditViewState extends State<TripEditView> {
                   child: Column(
                     children: [
                       PositionDetailBox(data: trip),
-                      EditablePositionDetails(
+                      EditableTripDetails(
                         purpose: trip.purpose,
                         comment: trip.comment,
                         onSavedPurpose: (value) {

@@ -5,7 +5,6 @@ import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/screens/journal/entry/components/donation_box.dart';
 import 'package:trekko_frontend/screens/journal/entry/components/purpose_box.dart';
 import 'package:trekko_frontend/screens/journal/entry/components/vehicle_box.dart';
-import 'package:trekko_frontend/screens/journal/entry/components/vehicle_types_wrap.dart';
 
 class LabelRow extends StatelessWidget {
   final PositionCollection data;
@@ -25,7 +24,8 @@ class LabelRow extends StatelessWidget {
         spacing: 6.0,
         runSpacing: 6.0,
         children: [
-          VehicleTypesWrap(data: data),
+          for (var vehicleType in data.calculateTransportTypes())
+            VehicleBox(vehicleType, showText: true),
           if (purpose != null && purpose.isNotEmpty)
             PurposeBox(purpose.toString()),
           DonationBox(donationState),

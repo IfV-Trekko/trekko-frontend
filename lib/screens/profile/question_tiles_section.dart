@@ -4,18 +4,12 @@ import 'package:trekko_backend/model/profile/onboarding_question.dart';
 import 'package:trekko_backend/model/profile/preferences.dart';
 import 'package:trekko_backend/model/profile/question_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
+import 'package:trekko_frontend/components/constants/tile_dimensions.dart';
 import 'package:trekko_frontend/screens/profile/bool_question_tile.dart';
 import 'package:trekko_frontend/screens/profile/select_question_tile.dart';
 import 'package:trekko_frontend/screens/profile/text_question_tile.dart';
 
 class QuestionTilesSection extends StatelessWidget {
-  final double defaultDividerMargin = 2;
-  final EdgeInsetsGeometry listTilePadding =
-      const EdgeInsets.only(left: 16, right: 16);
-  final EdgeInsetsGeometry firstListSectionMargin =
-      const EdgeInsets.fromLTRB(16, 16, 16, 16);
-  final EdgeInsetsGeometry listSectionMargin =
-      const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
   final Trekko trekko;
   final EdgeInsetsGeometry padding;
@@ -90,7 +84,7 @@ class QuestionTilesSection extends StatelessWidget {
 
     if (questionTiles.isEmpty) {
       questionTiles.add(CupertinoListTile.notched(
-        padding: listTilePadding,
+        padding: TileDimensions.listTilePadding,
         title:
             Text('Keine Fragen beantwortet', style: AppThemeTextStyles.normal),
       ));
@@ -108,8 +102,8 @@ class QuestionTilesSection extends StatelessWidget {
             return const Text("An error has occurred");
           } else if (snapshot.hasData) {
             return CupertinoListSection.insetGrouped(
-              margin: listSectionMargin,
-              additionalDividerMargin: defaultDividerMargin,
+              margin: TileDimensions.listSectionMargin,
+              additionalDividerMargin: TileDimensions.defaultDividerMargin,
               children: _buildQuestionTiles(context, snapshot.data!),
             );
           }

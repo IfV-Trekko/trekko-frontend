@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:trekko_frontend/app_theme.dart';
+import 'package:trekko_frontend/components/constants/tile_dimensions.dart';
 import 'package:trekko_frontend/components/picker/date_picker.dart';
 
 class LegEditBar extends StatelessWidget {
-  final EdgeInsetsGeometry listSectionMargin =
-      const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
   final DateTime time;
   final Function(DateTime) onDateChanged;
@@ -21,7 +20,8 @@ class LegEditBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoListSection.insetGrouped(
-      margin: listSectionMargin,
+      margin: TileDimensions.listSectionMargin,
+      additionalDividerMargin: TileDimensions.defaultDividerMargin,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
