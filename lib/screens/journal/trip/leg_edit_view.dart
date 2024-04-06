@@ -73,12 +73,6 @@ class _LegEditViewState extends State<LegEditView> {
   }
 
   void _onEditComplete() {
-    if (widget.leg.trackedPoints.isEmpty) {
-      PopUpUtils.showPopUp(
-          context, "Fehler", "Es muss mindestens ein Punkt existieren");
-      return;
-    }
-
     widget.onEditComplete();
     Navigator.of(context).pop();
   }
@@ -111,7 +105,9 @@ class _LegEditViewState extends State<LegEditView> {
         List.from(widget.leg.trackedPoints, growable: true);
     modifier(copy);
     copy.sort((a, b) => a.timestamp.compareTo(b.timestamp));
-    widget.leg.trackedPoints = copy;
+    setState(() {
+      widget.leg.trackedPoints = copy;
+    });
     _onEdit();
   }
 
@@ -120,6 +116,12 @@ class _LegEditViewState extends State<LegEditView> {
       var trackedPoint = widget.leg.trackedPoints[i];
       if (trackedPoint.latitude == point.latitude &&
           trackedPoint.longitude == point.longitude) {
+        if (widget.leg.trackedPoints.length <= 2) {
+          PopUpUtils.showPopUp(context, "Fehler",
+              "Es müssen immer mindestens zwei Punkte existieren");
+          return;
+        }
+
         _currentDate = widget.leg.trackedPoints[i].timestamp;
         _mapController.removeMarker(_toGeoPoint(trackedPoint));
         _modifyPoints((points) => points.removeAt(i));
