@@ -9,6 +9,7 @@ import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/picker/date_picker_row.dart';
+import 'package:trekko_frontend/components/pop_up_utils.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
 import 'package:trekko_frontend/screens/journal/entry/selectable_position_collection_entry.dart';
 import 'package:trekko_frontend/screens/journal/journal_edit_bar.dart';
@@ -259,19 +260,6 @@ class JournalScreenState extends State<StatefulWidget>
     setState(() {
       isLoading = false;
     });
-    showCupertinoDialog(
-        context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-              title: Text(error ? 'Fehler' : 'Abgeschlossen'),
-              content: Text(message),
-              actions: [
-                CupertinoDialogAction(
-                  child: const Text("Schließen"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              ],
-            ));
+    PopUpUtils.showPopUp(context, error ? "Fehler" : "Abgeschlossen", message);
   }
 }

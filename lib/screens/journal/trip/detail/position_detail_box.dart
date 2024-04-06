@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:intl/intl.dart';
 import 'package:trekko_backend/model/trip/position_collection.dart';
-import 'package:trekko_frontend/screens/journal/entry/components/vehicle_types_wrap.dart';
 
 class PositionDetailBox extends StatelessWidget {
   final double defaultDividerMargin = 2;

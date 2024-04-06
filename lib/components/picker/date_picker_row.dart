@@ -43,6 +43,7 @@ class _DateCarouselState extends State<DateCarousel> {
                   padding: const EdgeInsets.all(2.0),
                   child: DatePicker(
                     time: date,
+                    mode: CupertinoDatePickerMode.date,
                     onDateChanged: (newDate) {
                       setState(() {
                         _currentDate = newDate;
