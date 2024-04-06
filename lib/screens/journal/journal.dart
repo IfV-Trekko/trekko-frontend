@@ -1,6 +1,7 @@
 import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_builder.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
@@ -145,9 +146,12 @@ class JournalScreenState extends State<StatefulWidget>
                                     selectionMode: selectionMode,
                                     onTap: () => handleSelectionChange(trip),
                                     onEdit: () {
-                                      Navigator.of(context).push(CupertinoPageRoute(
-                                          builder: (context) => TripEditView(
-                                              trekko: trekko, tripId: trip.id)));
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  TripEditView(
+                                                      trekko: trekko,
+                                                      tripId: trip.id)));
                                     },
                                     onDelete: () {
                                       trekko.deleteTrip(TripQuery(trekko)
@@ -275,6 +279,8 @@ class JournalScreenState extends State<StatefulWidget>
       showPopupMessage('Sie haben $count Wege zusammengefügt', false);
     } catch (e) {
       showPopupMessage("Fehler beim Vereinigen der Wege", true);
+      // Log
+      Logger().f("Error while merging trips", error: e);
     }
   }
 
@@ -285,8 +291,8 @@ class JournalScreenState extends State<StatefulWidget>
       showPopupMessage(
           'Sie haben ihre Spende über $count Wege zurückgezogen', false);
     } catch (e) {
-      showPopupMessage(
-          "Fehler beim Zurückziehen der Wege", true); // Handle the error here
+      showPopupMessage("Fehler beim Zurückziehen der Wege", true);
+      Logger().f("Error while revoking trips", error: e);
     }
   }
 

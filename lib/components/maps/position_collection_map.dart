@@ -48,6 +48,7 @@ class PositionCollectionMapState extends State<PositionCollectionMap>
             // karlsruhe location
             initPosition: PositionCollectionMap.karlsruhe);
     widget.collections.listen((event) {
+      // TODO: Fix, not working
       collections = event;
       if (!mapReady) return;
       _drawRoads(event);
@@ -106,7 +107,7 @@ class PositionCollectionMapState extends State<PositionCollectionMap>
       if (zoomedToBoundingBox) return;
       controller.zoomToBoundingBox(
           BoundingBox.fromGeoPoints(
-            collections!
+            collections
                 .expand((element) => element.getLegs())
                 .expand((element) => element.trackedPoints)
                 .map(_toGeoPoint)
