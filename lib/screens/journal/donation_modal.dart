@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
+import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
@@ -108,13 +109,14 @@ class DonationModalState extends State<DonationModal>
               ),
               itemCount: trips.length,
               itemBuilder: (context, index) {
+                Trip trip = trips[index];
                 return SelectablePositionCollectionEntry(
-                  key: ValueKey(trips[index].id),
+                  key: ValueKey(trip.id),
                   trekko: widget.trekko,
-                  data: trips[index],
-                  selected: selectedTrips.contains(trips[index].id),
+                  data: trip,
+                  selected: selectedTrips.contains(trip.id),
                   selectionMode: true,
-                  onTap: (Trip trip) {
+                  onTap: () {
                     setState(() {
                       if (!selectedTrips.contains(trip.id)) {
                         selectedTrips.add(trip.id);

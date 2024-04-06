@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
+import 'package:trekko_backend/model/trip/leg.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/components/rounded_scrollable_sheet.dart';
 import 'package:trekko_frontend/components/stream_wrapper.dart';
 import 'package:trekko_frontend/screens/journal/entry/position_collection_entry.dart';
+import 'package:trekko_frontend/screens/journal/entry/selectable_position_collection_entry.dart';
 import 'package:trekko_frontend/screens/journal/trip/detail/editable_position_details.dart';
 import 'package:trekko_frontend/screens/journal/trip/detail/position_detail_box.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
@@ -57,30 +59,47 @@ class _TripEditViewState extends State<TripEditView> {
                         },
                       ),
                       const SizedBox(height: 10),
-                      Button(title: "Zurück", onPressed: () {
-                        Navigator.of(context).pop();
-                      }),
+                      Button(
+                          title: "Zurück",
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
                       const SizedBox(height: 10),
                       Text("Teilwege", style: AppThemeTextStyles.largeTitle),
                       const SizedBox(height: 10),
-                      ...trip.legs.map((leg) {
-                        return PositionCollectionEntry(
-                          trekko: trekko,
-                          data: leg,
-                          onTap: (a) {
-                            Navigator.of(context).push(
-                              CupertinoPageRoute(
-                                builder: (context) => LegEditView(
-                                  leg: leg,
-                                  onEditComplete: () {
-                                    trekko.saveTrip(trip);
-                                  },
+                      for (int i = 0; i < trip.legs.length; i++)
+                        SelectablePositionCollectionEntry(
+                            trekko: trekko,
+                            data: trip.legs[i],
+                            key: ValueKey(i),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute(
+                                  builder: (context) => LegEditView(
+                                    leg: trip.legs[i],
+                                    onEditComplete: () {
+                                      trekko.saveTrip(trip);
+                                    },
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        );
-                      }).toList(),
+                              );
+                            },
+                            onEdit: () {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute(
+                                  builder: (context) => LegEditView(
+                                    leg: trip.legs[i],
+                                    onEditComplete: () {
+                                      trekko.saveTrip(trip);
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                            onDelete: () {
+                              trip.legs.removeAt(i);
+                              trekko.saveTrip(trip);
+                            }),
                     ],
                   ),
                 ),

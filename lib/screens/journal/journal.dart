@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_builder.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
+import 'package:trekko_backend/model/trip/donation_state.dart';
+import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
@@ -11,6 +13,7 @@ import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/picker/date_carousel.dart';
 import 'package:trekko_frontend/components/pop_up_utils.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
+import 'package:trekko_frontend/screens/journal/entry/collection_entry_context_menu.dart';
 import 'package:trekko_frontend/screens/journal/entry/selectable_position_collection_entry.dart';
 import 'package:trekko_frontend/screens/journal/journal_edit_bar.dart';
 import 'package:trekko_frontend/screens/journal/trip/trip_edit_view.dart';
@@ -133,14 +136,46 @@ class JournalScreenState extends State<StatefulWidget>
                                 ),
                                 itemCount: trips.length,
                                 itemBuilder: (context, index) {
+                                  Trip trip = trips[index];
                                   return SelectablePositionCollectionEntry(
-                                    key: ValueKey(trips[index].id),
+                                    key: ValueKey(trip.id),
                                     trekko: trekko,
-                                    data: trips[index],
-                                    selected:
-                                        selectedTrips.contains(trips[index].id),
+                                    data: trip,
+                                    selected: selectedTrips.contains(trip.id),
                                     selectionMode: selectionMode,
-                                    onTap: handleSelectionChange,
+                                    onTap: () => handleSelectionChange(trip),
+                                    onEdit: () {
+                                      Navigator.of(context).push(CupertinoPageRoute(
+                                          builder: (context) => TripEditView(
+                                              trekko: trekko, tripId: trip.id)));
+                                    },
+                                    onDelete: () {
+                                      trekko.deleteTrip(TripQuery(trekko)
+                                          .andId(trip.id)
+                                          .build());
+                                    },
+                                    actions: [
+                                      if (trip.donationState ==
+                                          DonationState.donated)
+                                        EntryAction(
+                                            title: "Zurückziehen",
+                                            icon: CupertinoIcons.xmark,
+                                            onClick: () {
+                                              trekko.revoke(TripQuery(trekko)
+                                                  .andId(trip.id)
+                                                  .build());
+                                            }),
+                                      if (trip.donationState !=
+                                          DonationState.donated)
+                                        EntryAction(
+                                            title: "Spenden",
+                                            icon: CupertinoIcons.heart,
+                                            onClick: () {
+                                              trekko.donate(TripQuery(trekko)
+                                                  .andId(trip.id)
+                                                  .build());
+                                            }),
+                                    ],
                                   );
                                 },
                               );
@@ -199,7 +234,8 @@ class JournalScreenState extends State<StatefulWidget>
     });
   }
 
-  void handleSelectionChange(Trip trip) {
+  void handleSelectionChange(PositionCollection coll) {
+    Trip trip = coll as Trip;
     if (!selectionMode) {
       Navigator.of(context).push(CupertinoPageRoute(
           builder: (context) => TripEditView(

@@ -1,29 +1,35 @@
 import 'package:flutter/cupertino.dart';
-import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/model/trip/trip.dart';
+import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_frontend/app_theme.dart';
-import 'package:trekko_frontend/screens/journal/entry/journal_entry_context_menu.dart';
+import 'package:trekko_frontend/screens/journal/entry/collection_entry_context_menu.dart';
 import 'package:trekko_frontend/screens/journal/entry/position_collection_entry.dart';
-import 'package:trekko_frontend/screens/journal/trip/trip_edit_view.dart';
 
 class SelectablePositionCollectionEntry extends StatelessWidget {
   final Trekko trekko;
-  final Trip data;
+  final PositionCollection data;
   final bool selectionMode;
   final bool selected;
-  final Function(Trip)? onTap;
+  final Function()? onTap;
+  final List<EntryAction> actions;
+  final Function()? onEdit;
+  final Function()? onDelete;
 
   const SelectablePositionCollectionEntry(
       {required this.trekko,
       required this.data,
+      this.actions = const [],
       this.selected = false,
       this.selectionMode = false,
       this.onTap,
+      this.onEdit,
+      this.onDelete,
       required super.key}); // TODO: this key thingy
 
   @override
   Widget build(BuildContext context) {
+    Widget entry = PositionCollectionEntry(
+        trekko: trekko, data: data, onTap: (a) => onTap?.call());
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(
@@ -38,44 +44,23 @@ class SelectablePositionCollectionEntry extends StatelessWidget {
                       activeColor: AppThemeColors.blue,
                       value: selected,
                       onChanged: (value) {
-                        onTap?.call(data);
+                        onTap?.call();
                       },
                     )),
               ),
             if (selectionMode) const SizedBox(width: 16.0),
             Expanded(
               child: selectionMode
-                  ? PositionCollectionEntry(
-                      trekko: trekko,
-                      data: data,
-                      onTap: (a) => onTap?.call(data))
-                  : JournalEntryContextMenu(
+                  ? entry
+                  : CollectionEntryContextMenu(
                       trip: data,
-                      onDonate: () async {
-                        trekko.donate(createQuery().build());
-                      },
-                      onRevoke: () async {
-                        trekko.revoke(createQuery().build());
-                      },
-                      onDelete: () async {
-                        trekko.deleteTrip(createQuery().build());
-                      },
-                      onEdit: () {
-                        Navigator.of(context).push(CupertinoPageRoute(
-                            builder: (context) =>
-                                TripEditView(trekko: trekko, tripId: data.id)));
-                      },
-                      buildEntry: () => PositionCollectionEntry(
-                          trekko: trekko,
-                          data: data,
-                          onTap: (p) => onTap?.call(data)),
+                      actions: actions,
+                      onEdit: onEdit ?? () {},
+                      onDelete: onDelete ?? () {},
+                      child: entry,
                     ),
             ),
           ],
         ));
-  }
-
-  QueryBuilder<Trip, Trip, QAfterFilterCondition> createQuery() {
-    return trekko.getTripQuery().filter().idEqualTo(data.id);
   }
 }
