@@ -122,7 +122,7 @@ class _LegEditViewState extends State<LegEditView> {
           return;
         }
 
-        _currentDate = widget.leg.trackedPoints[i].timestamp;
+        _changeDate(trackedPoint.timestamp);
         _mapController.removeMarker(_toGeoPoint(trackedPoint));
         _modifyPoints((points) => points.removeAt(i));
         _onEdit();
