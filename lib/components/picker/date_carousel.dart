@@ -49,6 +49,7 @@ class _DateCarouselState extends State<DateCarousel> {
                     onDateChanged: (newDate) {
                       setState(() {
                         _currentDate = newDate;
+                        _pageController.jumpToPage(crazyHighNumberSoWeCanScroll);
                       });
                     },
                   ),
