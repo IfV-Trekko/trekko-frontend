@@ -42,13 +42,13 @@ class PositionDetailBox extends StatelessWidget {
           title: _buildTitleRow("Startzeit", HeroIcons.chevronRight),
           padding: TileDimensions.listTilePadding,
           trailing: Text(
-              DateFormat('dd.MM.yyyy HH:mm').format(data.calculateStartTime())),
+              DateFormat('HH:mm').format(data.calculateStartTime())),
         ),
         CupertinoListTile.notched(
           title: _buildTitleRow("Endzeit", HeroIcons.chevronLeft),
           padding: TileDimensions.listTilePadding,
           trailing: Text(
-              DateFormat('dd.MM.yyyy HH:mm').format(data.calculateEndTime())),
+              DateFormat('HH:mm').format(data.calculateEndTime())),
         ),
         CupertinoListTile.notched(
           title: _buildTitleRow("Geschwindigkeit", HeroIcons.arrowTrendingUp),

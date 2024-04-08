@@ -67,13 +67,6 @@ class _TripEditViewState extends State<TripEditView> {
                           trekko.saveTrip(trip);
                         },
                       ),
-                      const SizedBox(height: 10),
-                      Button(
-                          title: "Zurück",
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          }),
-                      const SizedBox(height: 10),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -111,7 +104,6 @@ class _TripEditViewState extends State<TripEditView> {
                                   );
                                 })
                           ]),
-                      const SizedBox(height: 10),
                       for (int i = 0; i < trip.legs.length; i++)
                         SelectablePositionCollectionEntry(
                             trekko: trekko,
@@ -150,6 +142,12 @@ class _TripEditViewState extends State<TripEditView> {
                                 _editLegs((p0) => p0.removeAt(i), trip);
                               }
                             }),
+                      const SizedBox(height: 10),
+                      Button(
+                          title: "Zurück",
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
                     ],
                   ),
                 ),
