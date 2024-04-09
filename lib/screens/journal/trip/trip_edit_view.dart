@@ -1,13 +1,11 @@
-import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/controller/utils/trip_builder.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/leg.dart';
-import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
+import 'package:trekko_frontend/components/constants/trip_constants.dart';
 import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/components/rounded_scrollable_sheet.dart';
 import 'package:trekko_frontend/components/stream_wrapper.dart';
@@ -89,12 +87,10 @@ class _TripEditViewState extends State<TripEditView> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Leg newLeg = Leg.withData(
-                                      TransportType.by_foot,
-                                      TripBuilder()
-                                          .move_r(const Duration(minutes: 1),
-                                              100.meters)
-                                          .collect());
+                                  Leg newLeg = TripConstants.createDefaultLeg(
+                                      trip
+                                          .calculateEndTime()
+                                          .add(const Duration(minutes: 5)));
                                   _editLegs((p0) => p0.add(newLeg), trip);
                                   Navigator.of(context).push(
                                     CupertinoPageRoute(

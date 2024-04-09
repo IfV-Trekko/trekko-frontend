@@ -1,9 +1,6 @@
-import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/controller/utils/trip_builder.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
 import 'package:trekko_backend/model/trip/position_collection.dart';
@@ -11,6 +8,7 @@ import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
+import 'package:trekko_frontend/components/constants/trip_constants.dart';
 import 'package:trekko_frontend/components/picker/date_carousel.dart';
 import 'package:trekko_frontend/components/pop_up_utils.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
@@ -84,9 +82,8 @@ class JournalScreenState extends State<StatefulWidget>
                     if (!selectionMode)
                       GestureDetector(
                         onTap: () {
-                          Trip newTrip = TripBuilder()
-                              .move_r(const Duration(minutes: 5), 100.meters)
-                              .build();
+                          Trip newTrip =
+                              TripConstants.createDefaultTrip(DateTime.now());
                           trekko.saveTrip(newTrip).then((value) => {
                                 Navigator.of(context).push(CupertinoPageRoute(
                                     builder: (context) => TripEditView(
