@@ -3,7 +3,6 @@ import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
-import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
@@ -11,8 +10,6 @@ import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/constants/button_style.dart';
 import 'package:trekko_frontend/screens/journal/entry/selectable_position_collection_entry.dart';
 
-//this Screen renders the donationModal, it shows after pressing the "Spenden" Button in the Journal,
-// it shows all Journal Entries without a donation state
 class DonationModal extends StatefulWidget {
   final Trekko trekko;
 

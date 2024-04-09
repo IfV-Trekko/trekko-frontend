@@ -20,7 +20,6 @@ import 'package:trekko_frontend/screens/journal/journal_edit_bar.dart';
 import 'package:trekko_frontend/screens/journal/trip/trip_edit_view.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
 
-//This renders the basic journal screen showing all journal entries
 class JournalScreen extends StatefulWidget {
   const JournalScreen({super.key});
 

@@ -4,7 +4,6 @@ import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
 
-//renders the vehicle box in the journal entry card
 class VehicleBox extends StatelessWidget {
   final String _title;
   final Color _color;

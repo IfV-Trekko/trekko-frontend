@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:trekko_frontend/app_theme.dart';
 
-//renders the purpose box in the journal entry card
 class PurposeBox extends StatelessWidget {
   final String _title;
 
