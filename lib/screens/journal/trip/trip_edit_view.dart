@@ -39,20 +39,24 @@ class _TripEditViewState extends State<TripEditView> {
   @override
   Widget build(BuildContext context) {
     Trekko trekko = TrekkoProvider.of(context);
-    return StreamWrapper(
-        stream: TripQuery(trekko)
-            .andId(widget.tripId)
-            .stream()
-            .map((event) => event.first),
-        builder: (context, trip) {
-          return CupertinoPageScaffold(
-            child: Stack(
-              children: <Widget>[
-                PositionCollectionMap(collections: Stream.value([trip])),
-                RoundedScrollableSheet(
-                  title: "Details",
-                  initialChildSize: 0.15,
-                  child: Column(
+    return CupertinoPageScaffold(
+      child: Stack(
+        children: <Widget>[
+          PositionCollectionMap(
+              collections: TripQuery(trekko)
+                  .andId(widget.tripId)
+                  .stream()
+                  .map((event) => [event.first])),
+          RoundedScrollableSheet(
+            title: "Details",
+            initialChildSize: 0.15,
+            child: StreamWrapper(
+                stream: TripQuery(trekko)
+                    .andId(widget.tripId)
+                    .stream()
+                    .map((event) => event.first),
+                builder: (context, trip) {
+                  return Column(
                     children: [
                       PositionDetailBox(data: trip),
                       EditableTripDetails(
@@ -149,11 +153,11 @@ class _TripEditViewState extends State<TripEditView> {
                             Navigator.of(context).pop();
                           }),
                     ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
+                  );
+                }),
+          ),
+        ],
+      ),
+    );
   }
 }

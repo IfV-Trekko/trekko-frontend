@@ -48,7 +48,6 @@ class PositionCollectionMapState extends State<PositionCollectionMap>
             // karlsruhe location
             initPosition: PositionCollectionMap.karlsruhe);
     widget.collections.listen((event) {
-      // TODO: Fix, not working
       collections = event;
       if (!mapReady) return;
       _drawRoads(event);
