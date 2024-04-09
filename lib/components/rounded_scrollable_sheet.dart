@@ -26,6 +26,8 @@ class RoundedScrollableSheet extends StatelessWidget {
               child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   controller: scrollController,
+                  padding: const EdgeInsets.only(top: 8),
+                  clipBehavior: Clip.none,
                   child: Column(children: <Widget>[
                     const PullTab(),
                     const SizedBox(height: 8),
