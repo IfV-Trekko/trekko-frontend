@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
-import 'package:trekko_frontend/components/constants/tile_dimensions.dart';
+import 'package:trekko_frontend/components/tile_utils.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
 import 'package:trekko_frontend/components/responses/select_view.dart';
 import 'package:trekko_frontend/screens/journal/entry/components/vehicle_box.dart';
@@ -14,21 +14,11 @@ class EditableVehicleTypeBox extends StatelessWidget {
   const EditableVehicleTypeBox(
       {super.key, required this.type, required this.onSavedVehicle});
 
-  Widget _buildTitleRow(String title, HeroIcons icon) {
-    return Row(
-      children: [
-        HeroIcon(icon),
-        const SizedBox(width: 8),
-        Text(title),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoListTile.notched(
-      padding: TileDimensions.listTilePadding,
-      title: _buildTitleRow('Verkehrsmittel', HeroIcons.bolt),
+      padding: TileUtils.listTilePadding,
+      title: TileUtils.buildTitleRow('Verkehrsmittel', HeroIcons.bolt),
       trailing: const CupertinoListTileChevron(),
       additionalInfo: VehicleBox(type, showText: false),
       onTap: () {
