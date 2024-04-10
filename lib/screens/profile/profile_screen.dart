@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/profile/battery_usage_setting.dart';
 import 'package:trekko_backend/model/profile/profile.dart';
@@ -121,108 +123,120 @@ class ProfileScreenState extends State<ProfileScreen>
 
     return CupertinoPageScaffold(
       backgroundColor: AppThemeColors.contrast100,
-      child: CustomScrollView(
-        slivers: [
-          const CupertinoSliverNavigationBar(
-            largeTitle: Text('Profil'),
-          ),
-          SliverFillRemaining(
-              hasScrollBody: true,
-              child: StreamBuilder<Profile>(
-                stream: widget.trekko.getProfile(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    Profile profile = snapshot.data!;
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: const CupertinoSliverNavigationBar(
+                largeTitle: Text('Profil'),
+              ),
+            ),
+          ];
+        },
+        body: Builder(builder: (BuildContext context) {
+          return StreamBuilder<Profile>(
+            stream: widget.trekko.getProfile(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                Profile profile = snapshot.data!;
 
-                    return Column(
+                return CustomScrollView(
+                  slivers: [
+                    SliverOverlapInjector(
+                      // This is the flip side of the SliverOverlapAbsorber
+                      // above.
+                      handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
+                      margin: firstListSectionMargin
+                          .subtract(const EdgeInsets.only(bottom: 16)),
+                      additionalDividerMargin: defaultDividerMargin,
                       children: [
-                        CupertinoListSection.insetGrouped(
-                          margin: firstListSectionMargin
-                              .subtract(const EdgeInsets.only(bottom: 16)),
-                          additionalDividerMargin: defaultDividerMargin,
-                          children: [
-                            CupertinoListTile.notched(
-                              padding: listTilePadding,
-                              title: Text('E-Mail',
-                                  style: AppThemeTextStyles.normal),
-                              additionalInfo: Text(profile.email,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.end),
-                            ),
-                            CupertinoListTile.notched(
-                              padding: listTilePadding,
-                              title: Text('Projekt-URL',
-                                  style: AppThemeTextStyles.normal),
-                              additionalInfo: Text(profile.projectUrl,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.end),
-                            ),
-                          ],
+                        CupertinoListTile.notched(
+                          padding: listTilePadding,
+                          title:
+                              Text('E-Mail', style: AppThemeTextStyles.normal),
+                          additionalInfo: Text(profile.email,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.end),
                         ),
-                        QuestionTilesSection(trekko: widget.trekko),
-                        CupertinoListSection.insetGrouped(
-                          margin: listSectionMargin,
-                          additionalDividerMargin: defaultDividerMargin,
-                          children: [
-                            CupertinoListTile.notched(
-                              padding: listTilePadding,
-                              title: Text('Akkunutzung',
-                                  style: AppThemeTextStyles.normal),
-                              additionalInfo: Text(
-                                  profile.preferences.batteryUsageSetting.name),
-                              onTap: () async {
-                                BatteryUsageSetting previousSetting =
-                                    profile.preferences.batteryUsageSetting;
-                                BatteryUsageSetting? newSetting =
-                                    await showBatteryUsageSettingPicker(
-                                        context, profile);
-                                if (newSetting != null &&
-                                    newSetting != previousSetting &&
-                                    context.mounted) {
-                                  _updateDialog(context, profile,
-                                      previousSetting, newSetting);
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                        CupertinoListSection.insetGrouped(
-                            margin: listSectionMargin,
-                            additionalDividerMargin: defaultDividerMargin,
-                            children: [
-                              CupertinoListTile.notched(
-                                  padding: listTilePadding,
-                                  title: Text('Abmelden',
-                                      style: AppThemeTextStyles.normal.copyWith(
-                                        color: AppThemeColors.blue,
-                                      )),
-                                  onTap: () async {
-                                    await widget.trekko.signOut();
-                                    runLoginApp();
-                                  }),
-                            ]),
-                        CupertinoListSection.insetGrouped(
-                          margin: listSectionMargin,
-                          additionalDividerMargin: defaultDividerMargin,
-                          children: [
-                            CupertinoListTile.notched(
-                                padding: listTilePadding,
-                                title: Text('Profil & Daten löschen',
-                                    style: AppThemeTextStyles.normal.copyWith(
-                                      color: AppThemeColors.red,
-                                    )),
-                                onTap: () async {
-                                  _askForPermission(context);
-                                }),
-                          ],
+                        CupertinoListTile.notched(
+                          padding: listTilePadding,
+                          title: Text('Projekt-URL',
+                              style: AppThemeTextStyles.normal),
+                          additionalInfo: Text(profile.projectUrl,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.end),
                         ),
                       ],
-                    );
-                  }
-                  return const CupertinoActivityIndicator();
-                },
-              )),
-        ],
+                    )),
+                    SliverToBoxAdapter(child: QuestionTilesSection(trekko: widget.trekko)),
+                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
+                      margin: listSectionMargin,
+                      additionalDividerMargin: defaultDividerMargin,
+                      children: [
+                        CupertinoListTile.notched(
+                          padding: listTilePadding,
+                          title: Text('Akkunutzung',
+                              style: AppThemeTextStyles.normal),
+                          additionalInfo: Text(
+                              profile.preferences.batteryUsageSetting.name),
+                          onTap: () async {
+                            BatteryUsageSetting previousSetting =
+                                profile.preferences.batteryUsageSetting;
+                            BatteryUsageSetting? newSetting =
+                                await showBatteryUsageSettingPicker(
+                                    context, profile);
+                            if (newSetting != null &&
+                                newSetting != previousSetting &&
+                                context.mounted) {
+                              _updateDialog(context, profile, previousSetting,
+                                  newSetting);
+                            }
+                          },
+                        ),
+                      ],
+                    )),
+                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
+                        margin: listSectionMargin,
+                        additionalDividerMargin: defaultDividerMargin,
+                        children: [
+                          CupertinoListTile.notched(
+                              padding: listTilePadding,
+                              title: Text('Abmelden',
+                                  style: AppThemeTextStyles.normal.copyWith(
+                                    color: AppThemeColors.blue,
+                                  )),
+                              onTap: () async {
+                                await widget.trekko.signOut();
+                                runLoginApp();
+                              }),
+                        ])),
+                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
+                      margin: listSectionMargin,
+                      additionalDividerMargin: defaultDividerMargin,
+                      children: [
+                        CupertinoListTile.notched(
+                            padding: listTilePadding,
+                            title: Text('Profil & Daten löschen',
+                                style: AppThemeTextStyles.normal.copyWith(
+                                  color: AppThemeColors.red,
+                                )),
+                            onTap: () async {
+                              _askForPermission(context);
+                            }),
+                      ],
+                    )),
+                  ],
+                );
+              }
+              return const CupertinoActivityIndicator();
+            },
+          );
+        }),
       ),
     );
   }
