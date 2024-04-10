@@ -24,7 +24,7 @@ class TextQuestionTile extends StatelessWidget {
         padding: padding,
         title: Text(question.title, style: AppThemeTextStyles.normal, overflow: TextOverflow.ellipsis),
         additionalInfo:Text(
-                answer == null ? "Nicht beantwort" : answer.toString(),
+                answer == null ? "Nicht beantwortet" : answer.toString(),
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.end),
         trailing: const CupertinoListTileChevron(),
