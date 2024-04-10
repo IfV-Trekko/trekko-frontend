@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 import 'package:trekko_backend/controller/builder/build_exception.dart';
 import 'package:trekko_backend/controller/builder/registration_builder.dart';
 import 'package:trekko_backend/controller/builder/registration_result.dart';
@@ -65,6 +66,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         RegistrationResult.failedPasswordRepeat) {
                       reason = 'Passwörter stimmen nicht überein.';
                     }
+                  } else {
+                    Logger().e(e);
                   }
                   if (context.mounted) {
                     showCupertinoDialog(

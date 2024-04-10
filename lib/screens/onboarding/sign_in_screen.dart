@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 import 'package:trekko_backend/controller/builder/build_exception.dart';
 import 'package:trekko_backend/controller/builder/login_builder.dart';
 import 'package:trekko_backend/controller/builder/login_result.dart';
@@ -50,21 +51,23 @@ class _SignInScreenState extends State<SignInScreen> {
               } else if (e.reason == LoginResult.failedSessionExpired) {
                 reason = 'Sitzung abgelaufen, bitte loggen Sie sich erneut ein';
               }
+            } else {
+              Logger().e(e);
             }
             if (context.mounted) {
               showCupertinoDialog(
-                context: context,
-                builder: (context) => CupertinoAlertDialog(
-                      title: Text(reason),
-                      actions: [
-                        CupertinoDialogAction(
-                          child: const Text('Ok'),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
-                    ));
+                  context: context,
+                  builder: (context) => CupertinoAlertDialog(
+                        title: Text(reason),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text('Ok'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ));
             }
           }
         },
