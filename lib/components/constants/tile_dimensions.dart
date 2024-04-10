@@ -5,5 +5,5 @@ class TileDimensions {
   static const EdgeInsetsGeometry listTilePadding =
       EdgeInsets.only(left: 16, right: 16);
   static const EdgeInsetsGeometry listSectionMargin =
-      EdgeInsets.fromLTRB(16, 0, 16, 16);
+      EdgeInsets.fromLTRB(16, 16, 16, 16);
 }
