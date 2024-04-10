@@ -19,8 +19,7 @@ class DatePicker extends StatelessWidget {
         ? DateFormat('dd.MM.yyyy')
         : DateFormat('HH:mm');
     return CupertinoButton(
-      child:
-          SizedBox(width: 100, child: Center(child: Text(format.format(time)))),
+      child: Center(child: Text(format.format(time))),
       onPressed: () => PickerUtil.showDialog(
         context,
         height: 210,

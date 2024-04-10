@@ -22,13 +22,11 @@ class TextQuestionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoListTile.notched(
         padding: padding,
-        title: Text(question.title, style: AppThemeTextStyles.normal),
-        additionalInfo: SizedBox(
-            width: 250,
-            child: Text(
+        title: Text(question.title, style: AppThemeTextStyles.normal, overflow: TextOverflow.ellipsis),
+        additionalInfo:Text(
                 answer == null ? "Nicht beantwortet" : answer.toString(),
                 overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.end)),
+                textAlign: TextAlign.end),
         trailing: const CupertinoListTileChevron(),
         onTap: () {
           Navigator.of(context).push(CupertinoPageRoute(

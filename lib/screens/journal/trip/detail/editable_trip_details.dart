@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:trekko_frontend/components/constants/text_response_keyboard_type.dart';
-import 'package:trekko_frontend/components/constants/tile_dimensions.dart';
+import 'package:trekko_frontend/components/tile_utils.dart';
 import 'package:trekko_frontend/components/responses/text_response.dart';
 
 class EditableTripDetails extends StatelessWidget {
@@ -18,36 +18,23 @@ class EditableTripDetails extends StatelessWidget {
       required this.onSavedComment,
       super.key});
 
-  Widget _buildTitleRow(String title, HeroIcons icon) {
-    return Row(
-      children: [
-        HeroIcon(icon),
-        const SizedBox(width: 8),
-        Text(title),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       CupertinoListSection.insetGrouped(
-        margin: TileDimensions.listSectionMargin,
-        additionalDividerMargin: TileDimensions.defaultDividerMargin,
+        margin: TileUtils.listSectionMargin,
+        additionalDividerMargin: TileUtils.defaultDividerMargin,
         children: [
           CupertinoListTile(
-            title: _buildTitleRow('Anlass / Zweck', HeroIcons.lightBulb),
+            title:
+                TileUtils.buildTitleRow('Anlass / Zweck', HeroIcons.lightBulb),
             trailing: const CupertinoListTileChevron(),
-            padding: TileDimensions.listTilePadding,
+            padding: TileUtils.listTilePadding,
             additionalInfo: purpose == null || purpose!.isEmpty
                 ? const Text('Arbeit, Freizeit, etc.')
-                : SizedBox(
-                    width: 100,
-                    child: Text(
-                      purpose!,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.end,
-                    ),
+                : Text(
+                    purpose!,
+                    textAlign: TextAlign.end,
                   ),
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(
@@ -63,18 +50,14 @@ class EditableTripDetails extends StatelessWidget {
             },
           ),
           CupertinoListTile(
-            title: _buildTitleRow('Kommentar', HeroIcons.bookOpen),
+            title: TileUtils.buildTitleRow('Kommentar', HeroIcons.bookOpen),
             trailing: const CupertinoListTileChevron(),
-            padding: TileDimensions.listTilePadding,
+            padding: TileUtils.listTilePadding,
             additionalInfo: comment == null || comment!.isEmpty
                 ? const Text('Anmerkung, etc.')
-                : SizedBox(
-                    width: 100,
-                    child: Text(
-                      comment!,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.end,
-                    ),
+                : Text(
+                    comment!,
+                    textAlign: TextAlign.end,
                   ),
             onTap: () {
               Navigator.of(context).push(CupertinoPageRoute(

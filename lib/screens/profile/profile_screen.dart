@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/profile/battery_usage_setting.dart';
 import 'package:trekko_backend/model/profile/profile.dart';
@@ -121,50 +123,58 @@ class ProfileScreenState extends State<ProfileScreen>
 
     return CupertinoPageScaffold(
       backgroundColor: AppThemeColors.contrast100,
-      child: CustomScrollView(
-        slivers: [
-          const CupertinoSliverNavigationBar(
-            largeTitle: Text('Profil'),
-          ),
-          SliverFillRemaining(
-              child: StreamBuilder<Profile>(
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: const CupertinoSliverNavigationBar(
+                largeTitle: Text('Profil'),
+              ),
+            ),
+          ];
+        },
+        body: Builder(builder: (BuildContext context) {
+          return StreamBuilder<Profile>(
             stream: widget.trekko.getProfile(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 Profile profile = snapshot.data!;
 
-                return Column(
-                  children: [
-                    CupertinoListSection.insetGrouped(
-                      margin: firstListSectionMargin,
+                return CustomScrollView(
+                  slivers: [
+                    SliverOverlapInjector(
+                      // This is the flip side of the SliverOverlapAbsorber
+                      // above.
+                      handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
+                      margin: firstListSectionMargin
+                          .subtract(const EdgeInsets.only(bottom: 16)),
                       additionalDividerMargin: defaultDividerMargin,
                       children: [
                         CupertinoListTile.notched(
                           padding: listTilePadding,
                           title:
                               Text('E-Mail', style: AppThemeTextStyles.normal),
-                          additionalInfo: SizedBox(
-                            width: 250,
-                            child: Text(profile.email,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.end),
-                          ),
+                          additionalInfo: Text(profile.email,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.end),
                         ),
                         CupertinoListTile.notched(
                           padding: listTilePadding,
                           title: Text('Projekt-URL',
                               style: AppThemeTextStyles.normal),
-                          additionalInfo: SizedBox(
-                            width: 250,
-                            child: Text(profile.projectUrl,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.end),
-                          ),
+                          additionalInfo: Text(profile.projectUrl,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.end),
                         ),
                       ],
-                    ),
-                    QuestionTilesSection(trekko: widget.trekko),
-                    CupertinoListSection.insetGrouped(
+                    )),
+                    SliverToBoxAdapter(child: QuestionTilesSection(trekko: widget.trekko)),
+                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
                       margin: listSectionMargin,
                       additionalDividerMargin: defaultDividerMargin,
                       children: [
@@ -189,8 +199,8 @@ class ProfileScreenState extends State<ProfileScreen>
                           },
                         ),
                       ],
-                    ),
-                    CupertinoListSection.insetGrouped(
+                    )),
+                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
                         margin: listSectionMargin,
                         additionalDividerMargin: defaultDividerMargin,
                         children: [
@@ -204,8 +214,8 @@ class ProfileScreenState extends State<ProfileScreen>
                                 await widget.trekko.signOut();
                                 runLoginApp();
                               }),
-                        ]),
-                    CupertinoListSection.insetGrouped(
+                        ])),
+                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
                       margin: listSectionMargin,
                       additionalDividerMargin: defaultDividerMargin,
                       children: [
@@ -219,14 +229,14 @@ class ProfileScreenState extends State<ProfileScreen>
                               _askForPermission(context);
                             }),
                       ],
-                    ),
+                    )),
                   ],
                 );
               }
               return const CupertinoActivityIndicator();
             },
-          )),
-        ],
+          );
+        }),
       ),
     );
   }
