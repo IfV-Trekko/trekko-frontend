@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:trekko_backend/controller/analysis/average.dart';
 import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/controller/utils/analyze_util.dart';
+import 'package:trekko_backend/controller/utils/trip_util.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_frontend/app_theme.dart';

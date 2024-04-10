@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/analysis/reductions.dart';
 import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/controller/utils/analyze_util.dart';
+import 'package:trekko_backend/controller/utils/trip_util.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
