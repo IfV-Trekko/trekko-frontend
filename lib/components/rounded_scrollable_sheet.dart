@@ -14,7 +14,7 @@ class RoundedScrollableSheet extends StatelessWidget {
     return DraggableScrollableSheet(
         snap: true,
         minChildSize: 0.03,
-        snapSizes: [0.03, initialChildSize, 0.5, 0.9],
+        snapSizes: [0.042, initialChildSize, 0.5, 0.9],
         initialChildSize: initialChildSize,
         builder: (context, scrollController) {
           return Container(
