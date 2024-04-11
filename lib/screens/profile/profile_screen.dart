@@ -101,7 +101,7 @@ class ProfileScreenState extends State<ProfileScreen>
               onPressed: () async {
                 if (newSetting != null) {
                   profile.preferences.batteryUsageSetting = newSetting;
-                  widget.trekko.savePreferences(profile.preferences);
+                  await widget.trekko.savePreferences(profile.preferences);
                   await widget.trekko.setTrackingState(TrackingState.paused);
                   await widget.trekko.setTrackingState(TrackingState.running);
                 }
