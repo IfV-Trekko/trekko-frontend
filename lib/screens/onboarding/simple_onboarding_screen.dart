@@ -8,6 +8,7 @@ class SimpleOnboardingScreen extends StatefulWidget {
   final String? buttonTitle;
   final Future<void> Function()? onButtonPress;
   final EdgeInsetsGeometry? padding;
+  final List<Widget> additionalButtons;
 
   const SimpleOnboardingScreen(
       {super.key,
@@ -15,6 +16,7 @@ class SimpleOnboardingScreen extends StatefulWidget {
       required this.title,
       required this.buttonTitle,
       required this.onButtonPress,
+      this.additionalButtons = const [],
       this.padding});
 
   @override
@@ -58,23 +60,31 @@ class _SimpleOnboardingScreenState extends State<SimpleOnboardingScreen> {
                   ),
                 ),
               ),
-              if (widget.buttonTitle != null)
-                Padding(
+              Padding(
                   padding:
                       const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                  child: Button(
-                    title: widget.buttonTitle!,
-                    stretch: true,
-                    loading: _isLoading,
-                    onPressed: () async {
-                      setLoading(true);
-                      if (widget.onButtonPress != null) {
-                        await widget.onButtonPress!();
-                      }
-                      setLoading(false);
-                    },
-                  ),
-                ),
+                  child: Column(
+                    children: [
+                      for (Widget button in widget.additionalButtons)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: button,
+                        ),
+                      if (widget.buttonTitle != null)
+                        Button(
+                          title: widget.buttonTitle!,
+                          stretch: true,
+                          loading: _isLoading,
+                          onPressed: () async {
+                            setLoading(true);
+                            if (widget.onButtonPress != null) {
+                              await widget.onButtonPress!();
+                            }
+                            setLoading(false);
+                          },
+                        ),
+                    ],
+                  )),
             ],
           )),
     )));

@@ -24,7 +24,8 @@ class LoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<String, Widget Function(BuildContext)> routes = {
       WelcomeScreen.route: (b) => const WelcomeScreen(),
-      JoinProjectScreen.route: (b) => const JoinProjectScreen(),
+      JoinProjectScreen.route: (b) =>
+          JoinProjectScreen(callback: trekkoCallBack),
       ChooseLoginProcessScreen.route: (b) => const ChooseLoginProcessScreen(),
       SignInScreen.route: (b) => SignInScreen(trekkoCallBack),
       SignUpScreen.route: (b) => const SignUpScreen(),
@@ -37,9 +38,7 @@ class LoginApp extends StatelessWidget {
           text: OnboardingTextType.whatText,
           title: "Was wollen\nwir?",
           nextPage: QuestionnaireScreen.route),
-      QuestionnaireScreen.route: (b) => QuestionnaireScreen(
-            trekkoCallBack,
-          ),
+      QuestionnaireScreen.route: (b) => QuestionnaireScreen(trekkoCallBack),
     };
 
     return CupertinoApp(

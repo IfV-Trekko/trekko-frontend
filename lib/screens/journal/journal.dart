@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/controller/trekko_state.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
 import 'package:trekko_backend/model/trip/position_collection.dart';
@@ -69,7 +70,8 @@ class JournalScreenState extends State<StatefulWidget>
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (!selectionMode)
+                    if (!selectionMode &&
+                        trekko.getState() == TrekkoState.online)
                       Button(
                         title: "Spenden",
                         stretch: false,
@@ -154,28 +156,33 @@ class JournalScreenState extends State<StatefulWidget>
                                           .andId(trip.id)
                                           .build());
                                     },
-                                    actions: [
-                                      if (trip.donationState ==
-                                          DonationState.donated)
-                                        EntryAction(
-                                            title: "Zurückziehen",
-                                            icon: CupertinoIcons.xmark,
-                                            onClick: () {
-                                              trekko.revoke(TripQuery(trekko)
-                                                  .andId(trip.id)
-                                                  .build());
-                                            }),
-                                      if (trip.donationState !=
-                                          DonationState.donated)
-                                        EntryAction(
-                                            title: "Spenden",
-                                            icon: CupertinoIcons.heart,
-                                            onClick: () {
-                                              trekko.donate(TripQuery(trekko)
-                                                  .andId(trip.id)
-                                                  .build());
-                                            }),
-                                    ],
+                                    actions: trekko.getState() !=
+                                            TrekkoState.online
+                                        ? []
+                                        : [
+                                            if (trip.donationState ==
+                                                DonationState.donated)
+                                              EntryAction(
+                                                  title: "Zurückziehen",
+                                                  icon: CupertinoIcons.xmark,
+                                                  onClick: () {
+                                                    trekko.revoke(
+                                                        TripQuery(trekko)
+                                                            .andId(trip.id)
+                                                            .build());
+                                                  }),
+                                            if (trip.donationState !=
+                                                DonationState.donated)
+                                              EntryAction(
+                                                  title: "Spenden",
+                                                  icon: CupertinoIcons.heart,
+                                                  onClick: () {
+                                                    trekko.donate(
+                                                        TripQuery(trekko)
+                                                            .andId(trip.id)
+                                                            .build());
+                                                  }),
+                                          ],
                                   );
                                 },
                               );
@@ -198,22 +205,27 @@ class JournalScreenState extends State<StatefulWidget>
               ),
             )
           else if (selectionMode)
-            JournalEditBar(onRevoke: () async {
-              await revoke(trekko);
-              setState(() {
-                selectionMode = false;
-              });
-            }, onMerge: () async {
-              await merge(trekko);
-              setState(() {
-                selectionMode = false;
-              });
-            }, onDelete: () async {
-              await delete(trekko);
-              setState(() {
-                selectionMode = false;
-              });
-            })
+            JournalEditBar(
+                onRevoke: trekko.getState() != TrekkoState.online
+                    ? null
+                    : () async {
+                        await revoke(trekko);
+                        setState(() {
+                          selectionMode = false;
+                        });
+                      },
+                onMerge: () async {
+                  await merge(trekko);
+                  setState(() {
+                    selectionMode = false;
+                  });
+                },
+                onDelete: () async {
+                  await delete(trekko);
+                  setState(() {
+                    selectionMode = false;
+                  });
+                })
         ],
       ),
     ));
