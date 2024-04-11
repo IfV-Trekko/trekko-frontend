@@ -10,7 +10,7 @@ import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/constants/trip_constants.dart';
-import 'package:trekko_frontend/components/picker/date_carousel.dart';
+import 'package:trekko_frontend/components/picker/date_picker.dart';
 import 'package:trekko_frontend/components/pop_up_utils.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
 import 'package:trekko_frontend/screens/journal/entry/collection_entry_context_menu.dart';
@@ -28,15 +28,188 @@ class JournalScreen extends StatefulWidget {
 
 class JournalScreenState extends State<StatefulWidget>
     with AutomaticKeepAliveClientMixin {
+  static const int crazyHighNumberSoWeCanScroll = 30000;
+
   bool selectionMode = false;
   bool isLoading = false;
   List<int> selectedTrips = [];
+  late DateTime currentDate;
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    currentDate = _startOfDay(DateTime.now());
+    _pageController = PageController(initialPage: crazyHighNumberSoWeCanScroll);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   bool get wantKeepAlive => true;
 
   _startOfDay(DateTime date) {
     return DateTime(date.year, date.month, date.day);
+  }
+
+  DateTime _getCurrentDate(int index) {
+    return currentDate.add(Duration(days: index - _pageController.initialPage));
+  }
+
+  Widget buildSliverNavbar(Trekko trekko) {
+    return CupertinoSliverNavigationBar(
+      largeTitle: const Text("Tagebuch"),
+      leading: GestureDetector(
+        onTap: () {
+          setState(() {
+            selectionMode = !selectionMode;
+          });
+        },
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          Text(
+            selectionMode ? "Fertig" : "Bearbeiten",
+            style:
+                AppThemeTextStyles.normal.copyWith(color: AppThemeColors.blue),
+          )
+        ]),
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (!selectionMode && trekko.getState() == TrekkoState.online)
+            Button(
+              title: "Spenden",
+              stretch: false,
+              size: ButtonSize.small,
+              onPressed: () async {
+                showDonationModal(context);
+              },
+            ),
+          const SizedBox(width: 20.0),
+          if (!selectionMode)
+            GestureDetector(
+              onTap: () {
+                DateTime now = DateTime.now();
+                DateTime current =
+                    _getCurrentDate(_pageController.page!.round());
+                DateTime start = DateTime(current.year, current.month,
+                    current.day, now.hour, now.minute, now.second);
+                Trip newTrip = TripConstants.createDefaultTrip(start);
+                trekko.saveTrip(newTrip).then((value) => {
+                      Navigator.of(context).push(CupertinoPageRoute(
+                          builder: (context) => TripEditView(
+                              trekko: TrekkoProvider.of(context),
+                              tripId: value)))
+                    });
+              },
+              child: const Icon(CupertinoIcons.add, color: AppThemeColors.blue),
+            ),
+        ],
+      ),
+      backgroundColor: AppThemeColors.contrast0,
+    );
+  }
+
+  Widget buildEntry(Trekko trekko, Trip trip) {
+    return SelectablePositionCollectionEntry(
+      key: ValueKey(trip.id),
+      trekko: trekko,
+      data: trip,
+      selected: selectedTrips.contains(trip.id),
+      selectionMode: selectionMode,
+      onTap: () => handleSelectionChange(trip),
+      onEdit: () {
+        Navigator.of(context).push(CupertinoPageRoute(
+            builder: (context) =>
+                TripEditView(trekko: trekko, tripId: trip.id)));
+      },
+      onDelete: () {
+        trekko.deleteTrip(TripQuery(trekko).andId(trip.id).build());
+      },
+      actions: trekko.getState() != TrekkoState.online
+          ? []
+          : [
+              if (trip.donationState == DonationState.donated)
+                EntryAction(
+                    title: "Zurückziehen",
+                    icon: CupertinoIcons.xmark,
+                    onClick: () {
+                      trekko.revoke(TripQuery(trekko).andId(trip.id).build());
+                    }),
+              if (trip.donationState != DonationState.donated)
+                EntryAction(
+                    title: "Spenden",
+                    icon: CupertinoIcons.heart,
+                    onClick: () {
+                      trekko.donate(TripQuery(trekko).andId(trip.id).build());
+                    }),
+            ],
+    );
+  }
+
+  Widget buildJournal(Trekko trekko, DateTime time) {
+    return StreamBuilder(
+        stream: TripQuery(trekko)
+            .andTimeBetween(time, time.add(const Duration(days: 1)))
+            .stream(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (snapshot.connectionState == ConnectionState.waiting &&
+              snapshot.data == null) {
+            return const Center(
+                child: CupertinoActivityIndicator(
+                    radius: 20, color: AppThemeColors.contrast500));
+          } else {
+            final trips = snapshot.data ?? [];
+            double height = MediaQuery.of(context).size.height;
+            return CustomScrollView(
+              slivers: <Widget>[
+                SliverOverlapInjector(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                ),
+                SliverToBoxAdapter(
+                  child: DatePicker(
+                    time: time,
+                    mode: CupertinoDatePickerMode.date,
+                    onDateChanged: (newDate) {
+                      setState(() {
+                        currentDate = newDate;
+                        _pageController
+                            .jumpToPage(crazyHighNumberSoWeCanScroll);
+                      });
+                    },
+                  ),
+                ),
+                if (trips.isNotEmpty)
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => Padding(
+                          padding: const EdgeInsets.only(left: 16, right: 16),
+                          child: buildEntry(trekko, trips[index])),
+                      childCount: trips.length,
+                    ),
+                  ),
+                if (trips.isEmpty)
+                  SliverToBoxAdapter(
+                      child: Padding(
+                    padding: EdgeInsets.only(top: height * 0.3),
+                    child: Center(
+                      child: Text(
+                        'Keine Wege an diesem Tag',
+                        style: AppThemeTextStyles.title,
+                      ),
+                    ),
+                  )),
+              ],
+            );
+          }
+        });
   }
 
   @override
@@ -48,150 +221,38 @@ class JournalScreenState extends State<StatefulWidget>
       bottom: true,
       child: Stack(
         children: <Widget>[
-          CustomScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            slivers: <Widget>[
-              CupertinoSliverNavigationBar(
-                largeTitle: const Text("Tagebuch"),
-                leading: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectionMode = !selectionMode;
-                    });
-                  },
-                  child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Text(
-                      selectionMode ? "Fertig" : "Bearbeiten",
-                      style: AppThemeTextStyles.normal
-                          .copyWith(color: AppThemeColors.blue),
-                    )
-                  ]),
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (!selectionMode &&
-                        trekko.getState() == TrekkoState.online)
-                      Button(
-                        title: "Spenden",
-                        stretch: false,
-                        size: ButtonSize.small,
-                        onPressed: () async {
-                          showDonationModal(context);
-                        },
-                      ),
-                    const SizedBox(width: 20.0),
-                    if (!selectionMode)
-                      GestureDetector(
-                        onTap: () {
-                          Trip newTrip =
-                              TripConstants.createDefaultTrip(DateTime.now());
-                          trekko.saveTrip(newTrip).then((value) => {
-                                Navigator.of(context).push(CupertinoPageRoute(
-                                    builder: (context) => TripEditView(
-                                        trekko: TrekkoProvider.of(context),
-                                        tripId: value)))
-                              });
-                        },
-                        child: const Icon(CupertinoIcons.add,
-                            color: AppThemeColors.blue),
-                      ),
-                  ],
-                ),
-                backgroundColor: AppThemeColors.contrast0,
-              ),
-              DateCarousel(
-                  initialTime: _startOfDay(DateTime.now()),
-                  childBuilder: (DateTime time) {
-                    return StreamBuilder(
-                        stream: TripQuery(trekko)
-                            .andTimeBetween(
-                                time, time.add(const Duration(days: 1)))
-                            .stream(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else if (snapshot.connectionState ==
-                                  ConnectionState.waiting &&
-                              snapshot.data == null) {
-                            return const Center(
-                                child: CupertinoActivityIndicator(
-                                    radius: 20,
-                                    color: AppThemeColors.contrast500));
-                          } else {
-                            final trips = snapshot.data ?? [];
-                            if (trips.isEmpty) {
-                              return Center(
-                                  child: Text(
-                                'Noch keine Wege verfügbar',
-                                style: AppThemeTextStyles.title,
-                              ));
-                            } else {
-                              return ListView.builder(
-                                padding: const EdgeInsets.only(
-                                  left: 16.0,
-                                  right: 16.0,
-                                  bottom: 64.0,
-                                ),
-                                itemCount: trips.length,
-                                itemBuilder: (context, index) {
-                                  Trip trip = trips[index];
-                                  return SelectablePositionCollectionEntry(
-                                    key: ValueKey(trip.id),
-                                    trekko: trekko,
-                                    data: trip,
-                                    selected: selectedTrips.contains(trip.id),
-                                    selectionMode: selectionMode,
-                                    onTap: () => handleSelectionChange(trip),
-                                    onEdit: () {
-                                      Navigator.of(context).push(
-                                          CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  TripEditView(
-                                                      trekko: trekko,
-                                                      tripId: trip.id)));
-                                    },
-                                    onDelete: () {
-                                      trekko.deleteTrip(TripQuery(trekko)
-                                          .andId(trip.id)
-                                          .build());
-                                    },
-                                    actions: trekko.getState() !=
-                                            TrekkoState.online
-                                        ? []
-                                        : [
-                                            if (trip.donationState ==
-                                                DonationState.donated)
-                                              EntryAction(
-                                                  title: "Zurückziehen",
-                                                  icon: CupertinoIcons.xmark,
-                                                  onClick: () {
-                                                    trekko.revoke(
-                                                        TripQuery(trekko)
-                                                            .andId(trip.id)
-                                                            .build());
-                                                  }),
-                                            if (trip.donationState !=
-                                                DonationState.donated)
-                                              EntryAction(
-                                                  title: "Spenden",
-                                                  icon: CupertinoIcons.heart,
-                                                  onClick: () {
-                                                    trekko.donate(
-                                                        TripQuery(trekko)
-                                                            .andId(trip.id)
-                                                            .build());
-                                                  }),
-                                          ],
-                                  );
-                                },
-                              );
-                            }
-                          }
-                        });
-                  }),
-              const SliverToBoxAdapter(child: SizedBox(height: 48)),
-            ],
+          NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                SliverOverlapAbsorber(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                    sliver: buildSliverNavbar(trekko)),
+              ];
+            },
+            body: Builder(
+              builder: (BuildContext context) {
+                double height = MediaQuery.of(context).size.height;
+                return SizedBox(
+                  height: height * 0.8,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    allowImplicitScrolling: false,
+                    itemBuilder: (context, index) {
+                      DateTime date = _getCurrentDate(index);
+                      return Column(
+                        children: [
+                          Expanded(
+                            child: buildJournal(trekko, date),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
           ),
           if (isLoading)
             Positioned.fill(
