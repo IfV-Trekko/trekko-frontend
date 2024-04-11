@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:trekko_frontend/app_theme.dart';
 
 class JournalEditBar extends StatelessWidget {
-  final Function onRevoke;
+  final Function? onRevoke;
   final Function onMerge;
   final Function onDelete;
 
@@ -42,16 +42,17 @@ class JournalEditBar extends StatelessWidget {
                       .copyWith(color: AppThemeColors.blue),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  onRevoke();
-                },
-                child: Text(
-                  "Zurückziehen",
-                  style: AppThemeTextStyles.normal
-                      .copyWith(color: AppThemeColors.blue),
+              if (onRevoke != null)
+                GestureDetector(
+                  onTap: () {
+                    onRevoke!();
+                  },
+                  child: Text(
+                    "Zurückziehen",
+                    style: AppThemeTextStyles.normal
+                        .copyWith(color: AppThemeColors.blue),
+                  ),
                 ),
-              ),
               GestureDetector(
                 onTap: () {
                   onDelete();

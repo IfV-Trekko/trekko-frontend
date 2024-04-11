@@ -159,7 +159,7 @@ class ProfileScreenState extends State<ProfileScreen>
                           padding: listTilePadding,
                           title:
                               Text('E-Mail', style: AppThemeTextStyles.normal),
-                          additionalInfo: Text(profile.email,
+                          additionalInfo: Text(profile.isOnline() ? profile.email : "Keine E-Mail",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end),
                         ),
@@ -167,7 +167,7 @@ class ProfileScreenState extends State<ProfileScreen>
                           padding: listTilePadding,
                           title: Text('Projekt-URL',
                               style: AppThemeTextStyles.normal),
-                          additionalInfo: Text(profile.projectUrl,
+                          additionalInfo: Text(profile.isOnline() ? profile.projectUrl : "Keine Projekt-URL",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end),
                         ),

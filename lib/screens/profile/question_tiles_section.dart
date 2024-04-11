@@ -86,7 +86,7 @@ class QuestionTilesSection extends StatelessWidget {
       questionTiles.add(CupertinoListTile.notched(
         padding: TileUtils.listTilePadding,
         title:
-            Text('Keine Fragen beantwortet', style: AppThemeTextStyles.normal),
+            Text('Keine Fragen verfügbar', style: AppThemeTextStyles.normal),
       ));
     }
 
