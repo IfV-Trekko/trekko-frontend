@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/profile/battery_usage_setting.dart';
 import 'package:trekko_backend/model/profile/profile.dart';
@@ -135,7 +136,7 @@ class ProfileScreenState extends State<ProfileScreen>
                   children: [
                     if (kDebugMode)
                       CupertinoButton(
-                        child: const Text('Debug'),
+                        child: const HeroIcon(HeroIcons.bugAnt),
                         onPressed: () {
                           Navigator.push(
                             context,

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:trekko_backend/controller/utils/logging.dart';
 import 'package:trekko_backend/model/log/log_entry.dart';
 import 'package:trekko_backend/model/log/log_level.dart';
@@ -19,7 +20,7 @@ class DebugScreen extends StatelessWidget {
               sliver: CupertinoSliverNavigationBar(
                   largeTitle: const Text('Logs'),
                   trailing: CupertinoButton(
-                    child: const Text('Clear'),
+                    child: const HeroIcon(HeroIcons.trash),
                     onPressed: () async {
                       await Logging.clear();
                     },
