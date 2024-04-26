@@ -53,25 +53,24 @@ class DebugScreen extends StatelessWidget {
                                   Text(
                                     entry.message,
                                     style: TextStyle(
-                                        color: entry.level ==
-                                                LogLevel.error
+                                        color: entry.level == LogLevel.error
                                             ? CupertinoColors.systemRed
-                                            : entry.level ==
-                                                    LogLevel.warning
+                                            : entry.level == LogLevel.warning
                                                 ? CupertinoColors.systemYellow
                                                 : CupertinoColors.black),
                                   ),
                                 ]),
-                                subtitle: Text(
-                                    entry.timestamp.toString()),
+                                subtitle: Text(entry.timestamp.toString()),
                                 onTap: () async {
                                   // Show dialog with full log entry
                                   showCupertinoDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return CupertinoAlertDialog(
-                                        title: Text("[${entry.level}]: ${entry.message}"),
-                                        content: Text(entry.timestamp.toString()),
+                                        title: Text(
+                                            "[${entry.level}]: ${entry.message}"),
+                                        content:
+                                            Text(entry.timestamp.toString()),
                                         actions: <Widget>[
                                           CupertinoDialogAction(
                                             child: const Text('OK'),
