@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/profile/battery_usage_setting.dart';
 import 'package:trekko_backend/model/profile/profile.dart';
@@ -6,6 +7,7 @@ import 'package:trekko_backend/model/tracking_state.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/picker/setting_picker.dart';
 import 'package:trekko_frontend/main.dart';
+import 'package:trekko_frontend/screens/debug/debug_screen.dart';
 import 'package:trekko_frontend/screens/profile/question_tiles_section.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -126,8 +128,25 @@ class ProfileScreenState extends State<ProfileScreen>
           return <Widget>[
             SliverOverlapAbsorber(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              sliver: const CupertinoSliverNavigationBar(
-                largeTitle: Text('Profil'),
+              sliver: CupertinoSliverNavigationBar(
+                largeTitle: const Text('Profil'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (kDebugMode)
+                      CupertinoButton(
+                        child: const Text('Debug'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => const DebugScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                  ],
+                ),
               ),
             ),
           ];
@@ -144,11 +163,11 @@ class ProfileScreenState extends State<ProfileScreen>
                     SliverOverlapInjector(
                       // This is the flip side of the SliverOverlapAbsorber
                       // above.
-                      handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                           context),
                     ),
-                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
+                    SliverToBoxAdapter(
+                        child: CupertinoListSection.insetGrouped(
                       margin: firstListSectionMargin
                           .subtract(const EdgeInsets.only(bottom: 16)),
                       additionalDividerMargin: defaultDividerMargin,
@@ -157,7 +176,10 @@ class ProfileScreenState extends State<ProfileScreen>
                           padding: listTilePadding,
                           title:
                               Text('E-Mail', style: AppThemeTextStyles.normal),
-                          additionalInfo: Text(profile.isOnline() ? profile.email : "Keine E-Mail",
+                          additionalInfo: Text(
+                              profile.isOnline()
+                                  ? profile.email
+                                  : "Keine E-Mail",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end),
                         ),
@@ -165,14 +187,19 @@ class ProfileScreenState extends State<ProfileScreen>
                           padding: listTilePadding,
                           title: Text('Projekt-URL',
                               style: AppThemeTextStyles.normal),
-                          additionalInfo: Text(profile.isOnline() ? profile.projectUrl : "Keine Projekt-URL",
+                          additionalInfo: Text(
+                              profile.isOnline()
+                                  ? profile.projectUrl
+                                  : "Keine Projekt-URL",
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end),
                         ),
                       ],
                     )),
-                    SliverToBoxAdapter(child: QuestionTilesSection(trekko: widget.trekko)),
-                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
+                    SliverToBoxAdapter(
+                        child: QuestionTilesSection(trekko: widget.trekko)),
+                    SliverToBoxAdapter(
+                        child: CupertinoListSection.insetGrouped(
                       margin: listSectionMargin,
                       additionalDividerMargin: defaultDividerMargin,
                       children: [
@@ -198,10 +225,11 @@ class ProfileScreenState extends State<ProfileScreen>
                         ),
                       ],
                     )),
-                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
-                        margin: listSectionMargin,
-                        additionalDividerMargin: defaultDividerMargin,
-                        children: [
+                    SliverToBoxAdapter(
+                        child: CupertinoListSection.insetGrouped(
+                            margin: listSectionMargin,
+                            additionalDividerMargin: defaultDividerMargin,
+                            children: [
                           CupertinoListTile.notched(
                               padding: listTilePadding,
                               title: Text('Abmelden',
@@ -213,7 +241,8 @@ class ProfileScreenState extends State<ProfileScreen>
                                 runLoginApp();
                               }),
                         ])),
-                    SliverToBoxAdapter(child: CupertinoListSection.insetGrouped(
+                    SliverToBoxAdapter(
+                        child: CupertinoListSection.insetGrouped(
                       margin: listSectionMargin,
                       additionalDividerMargin: defaultDividerMargin,
                       children: [
