@@ -987,7 +987,7 @@ packages:
       path: "../trekko-backend"
       relative: true
     source: path
-    version: "2.1.0+1"
+    version: "2.2.0+1"
   typed_data:
     dependency: transitive
     description:
