@@ -2,11 +2,9 @@ import 'package:async/async.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:fling_units/fling_units.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/analysis/reductions.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_util.dart';
-import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
@@ -24,8 +22,9 @@ class PieChartWidget extends StatefulWidget {
 class PieChartWidgetState extends State<PieChartWidget> {
   Stream<double?> getData(TransportType vehicle) {
     return widget.trekko.analyze(
-        TripQuery(widget.trekko).andTransportType(vehicle).build(),
-        TripUtil(vehicle).build((leg) => leg.calculateDistance().as(kilo.meters)),
+        widget.trekko.getTripQuery().andTransportType(vehicle),
+        TripUtil(vehicle)
+            .build((leg) => leg.calculateDistance().as(kilo.meters)),
         DoubleReduction.SUM);
   }
 
@@ -124,7 +123,7 @@ class PieChartWidgetState extends State<PieChartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var stream = widget.trekko.analyze(widget.trekko.getTripQuery().build(),
+    var stream = widget.trekko.analyze(widget.trekko.getTripQuery(),
         (t) => [t.calculateDistance().as(kilo.meters)], DoubleReduction.SUM);
     return StreamBuilder(
         stream: stream,

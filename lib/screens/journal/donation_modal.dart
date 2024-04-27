@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:isar/isar.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
@@ -77,10 +76,8 @@ class DonationModalState extends State<DonationModal>
     return StreamBuilder<List<Trip>>(
       stream: widget.trekko
           .getTripQuery()
-          .filter()
-          .donationStateEqualTo(DonationState.undefined)
-          .build()
-          .watch(fireImmediately: true),
+          .andDonationState(DonationState.undefined)
+          .stream(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -140,38 +137,29 @@ class DonationModalState extends State<DonationModal>
       return;
     }
     int donatedTrips = 0;
-    var allTrips = await TripQuery(widget.trekko)
-        .get()
-        .and()
-        .donationStateEqualTo(DonationState.undefined)
-        .findAll();
+    var allTrips = await widget.trekko
+        .getTripQuery()
+        .andDonationState(DonationState.undefined)
+        .collect();
     for (var trip in allTrips) {
-      if (selectedTrips.contains(trip.id)) {
-        try {
-          await widget.trekko.donate(
-              widget.trekko.getTripQuery().filter().idEqualTo(trip.id).build());
-          donatedTrips++;
-        } catch (error) {
-          if (mounted) Navigator.pop(context);
-          setState(() {
-            isLoading = false;
-          });
-          finishedAction(
-              'Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten',
-              true);
-          return;
-        }
-      } else {
+      if (!selectedTrips.contains(trip.id)) {
         trip.donationState = DonationState.notDonated;
         widget.trekko.saveTrip(trip);
       }
     }
-    if (mounted) Navigator.pop(context);
-    setState(() {
-      isLoading = false;
-    });
-    finishedAction('Sie haben $donatedTrips Wege übermittelt', false);
-    selectedTrips.clear();
+
+    try {
+      TripQuery query = widget.trekko.getTripQuery().andAnyId(selectedTrips);
+      await widget.trekko.donate(query);
+      if (mounted) Navigator.pop(context);
+      finishedAction(
+          'Sie haben ${await query.count()} Wege übermittelt', false);
+    } catch (error) {
+      if (mounted) Navigator.pop(context);
+      finishedAction(
+          'Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten',
+          true);
+    }
   }
 
   void finishedAction(String message, bool error) {

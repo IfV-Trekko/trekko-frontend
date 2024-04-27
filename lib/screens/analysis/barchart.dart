@@ -5,7 +5,6 @@ import 'package:heroicons/heroicons.dart';
 import 'package:trekko_backend/controller/analysis/average.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_util.dart';
-import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
@@ -29,7 +28,7 @@ class BarChartWidget extends StatefulWidget {
 class BarChartWidgetState extends State<BarChartWidget> {
   Stream<double?> getData(TransportType vehicle) {
     return widget.trekko.analyze(
-        TripQuery(widget.trekko).andTransportType(vehicle).build(),
+        widget.trekko.getTripQuery().andTransportType(vehicle),
         TripUtil(vehicle)
             .build((leg) => leg.calculateDuration().inMinutes.toDouble()),
         AverageCalculation());

@@ -6,7 +6,6 @@ import 'package:trekko_backend/controller/analysis/calculation.dart';
 import 'package:trekko_backend/controller/analysis/reductions.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/trip_util.dart';
-import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
@@ -21,7 +20,7 @@ class VehicleData extends StatelessWidget {
 
   Stream<T?> getData<T>(Iterable<T> Function(Trip) apply, Calculation<T> calc) {
     return trekko.analyze(
-        TripQuery(trekko).andTransportType(vehicle).build(), apply, calc);
+        trekko.getTripQuery().andTransportType(vehicle), apply, calc);
   }
 
   Widget getDataFormatted<T>(Iterable<T> Function(Trip) apply,
