@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/leg.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
@@ -41,7 +40,8 @@ class _TripEditViewState extends State<TripEditView> {
       child: Stack(
         children: <Widget>[
           PositionCollectionMap(
-              collections: TripQuery(trekko)
+              collections: trekko
+                  .getTripQuery()
                   .andId(widget.tripId)
                   .stream()
                   .map((event) => [event.first])),
@@ -49,7 +49,8 @@ class _TripEditViewState extends State<TripEditView> {
             title: "Details",
             initialChildSize: 0.15,
             child: StreamWrapper(
-                stream: TripQuery(trekko)
+                stream: trekko
+                    .getTripQuery()
                     .andId(widget.tripId)
                     .stream()
                     .map((event) => event.first),
@@ -136,7 +137,7 @@ class _TripEditViewState extends State<TripEditView> {
                             onDelete: () {
                               if (trip.legs.length == 1) {
                                 trekko.deleteTrip(
-                                    TripQuery(trekko).andId(trip.id).build());
+                                    trekko.getTripQuery().andId(trip.id));
                                 Navigator.of(context).pop();
                               } else {
                                 _editLegs((p0) => p0.removeAt(i), trip);

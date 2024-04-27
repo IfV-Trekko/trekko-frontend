@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/trekko_state.dart';
-import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
 import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
@@ -128,7 +127,7 @@ class JournalScreenState extends State<StatefulWidget>
                 TripEditView(trekko: trekko, tripId: trip.id)));
       },
       onDelete: () {
-        trekko.deleteTrip(TripQuery(trekko).andId(trip.id).build());
+        trekko.deleteTrip(trekko.getTripQuery().andId(trip.id));
       },
       actions: trekko.getState() != TrekkoState.online
           ? []
@@ -138,14 +137,14 @@ class JournalScreenState extends State<StatefulWidget>
                     title: "Zurückziehen",
                     icon: CupertinoIcons.xmark,
                     onClick: () {
-                      trekko.revoke(TripQuery(trekko).andId(trip.id).build());
+                      trekko.revoke(trekko.getTripQuery().andId(trip.id));
                     }),
               if (trip.donationState != DonationState.donated)
                 EntryAction(
                     title: "Spenden",
                     icon: CupertinoIcons.heart,
                     onClick: () {
-                      trekko.donate(TripQuery(trekko).andId(trip.id).build());
+                      trekko.donate(trekko.getTripQuery().andId(trip.id));
                     }),
             ],
     );
@@ -153,7 +152,8 @@ class JournalScreenState extends State<StatefulWidget>
 
   Widget buildJournal(Trekko trekko, DateTime time) {
     return StreamBuilder(
-        stream: TripQuery(trekko)
+        stream: trekko
+            .getTripQuery()
             .andTimeBetween(time, time.add(const Duration(days: 1)))
             .stream(),
         builder: (context, snapshot) {
@@ -329,8 +329,8 @@ class JournalScreenState extends State<StatefulWidget>
       setState(() {
         isLoading = true;
       });
-      var query = TripQuery(trekko).andAnyId(selectedTrips);
-      int deletedTrips = await trekko.deleteTrip(query.build());
+      var query = trekko.getTripQuery().andAnyId(selectedTrips);
+      int deletedTrips = await trekko.deleteTrip(query);
       showPopupMessage('Sie haben $deletedTrips Wege gelöscht', false);
     } catch (e) {
       showPopupMessage("Fehler beim Löschen der Wege", true);
@@ -343,8 +343,8 @@ class JournalScreenState extends State<StatefulWidget>
         isLoading = true;
       });
       int count = selectedTrips.length;
-      var query = TripQuery(trekko).andAnyId(selectedTrips);
-      await trekko.mergeTrips(query.build());
+      var query = trekko.getTripQuery().andAnyId(selectedTrips);
+      await trekko.mergeTrips(query);
       showPopupMessage('Sie haben $count Wege zusammengefügt', false);
     } catch (e) {
       showPopupMessage(
@@ -357,8 +357,8 @@ class JournalScreenState extends State<StatefulWidget>
 
   Future<void> revoke(Trekko trekko) async {
     try {
-      var query = TripQuery(trekko).andAnyId(selectedTrips);
-      int count = await trekko.revoke(query.build());
+      var query = trekko.getTripQuery().andAnyId(selectedTrips);
+      int count = await trekko.revoke(query);
       showPopupMessage(
           'Sie haben ihre Spende über $count Wege zurückgezogen', false);
     } catch (e) {

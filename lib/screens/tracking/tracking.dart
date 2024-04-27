@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/screens/tracking/map_option_sheet.dart';
 
@@ -29,7 +28,7 @@ class _TrackingScreenState extends State<TrackingScreen>
       child: Stack(
         children: <Widget>[
           PositionCollectionMap(
-            collections: TripQuery(widget.trekko).andTimeAbove(start).stream(),
+            collections: widget.trekko.getTripQuery().andTimeAbove(start).stream(),
           ),
           MapOptionSheet(
             trekko: widget.trekko,
