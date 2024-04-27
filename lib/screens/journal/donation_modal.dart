@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
@@ -148,19 +149,13 @@ class DonationModalState extends State<DonationModal>
     }
 
     try {
-      await widget.trekko
-          .donate(widget.trekko.getTripQuery().andAnyId(selectedTrips));
+      TripQuery query = widget.trekko.getTripQuery().andAnyId(selectedTrips);
+      await widget.trekko.donate(query);
       if (mounted) Navigator.pop(context);
-      setState(() {
-        isLoading = false;
-      });
-      finishedAction('Sie haben $donatedTrips Wege übermittelt', false);
-      selectedTrips.clear();
+      finishedAction(
+          'Sie haben ${await query.count()} Wege übermittelt', false);
     } catch (error) {
       if (mounted) Navigator.pop(context);
-      setState(() {
-        isLoading = false;
-      });
       finishedAction(
           'Bei der Spende des $donatedTrips. Weges ist ein Fehler aufgetreten',
           true);
