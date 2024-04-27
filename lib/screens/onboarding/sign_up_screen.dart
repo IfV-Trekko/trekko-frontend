@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:logger/logger.dart';
 import 'package:trekko_backend/controller/builder/build_exception.dart';
 import 'package:trekko_backend/controller/builder/registration_builder.dart';
 import 'package:trekko_backend/controller/builder/registration_result.dart';
@@ -48,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       arguments: trekko);
                   }
                 } catch (e) {
-                  String reason = "Unbekannter Fehler";
+                  String? reason;
                   if (e is BuildException) {
                     if (e.reason ==
                         RegistrationResult.failedInvalidCredentials) {
@@ -66,14 +65,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         RegistrationResult.failedPasswordRepeat) {
                       reason = 'Passwörter stimmen nicht überein.';
                     }
-                  } else {
-                    Logger().e(e);
                   }
                   if (context.mounted) {
                     showCupertinoDialog(
                       context: context,
                       builder: (context) => CupertinoAlertDialog(
-                            title: Text(reason),
+                            title: Text(reason ?? "Unbekannter Fehler"),
                             actions: [
                               CupertinoDialogAction(
                                 child: const Text('Ok'),
@@ -83,6 +80,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               )
                             ],
                           ));
+                  }
+                  if (reason == null) {
+                    rethrow;
                   }
                 }
               }

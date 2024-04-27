@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:logger/logger.dart';
 import 'package:trekko_backend/controller/builder/build_exception.dart';
 import 'package:trekko_backend/controller/builder/login_builder.dart';
 import 'package:trekko_backend/controller/builder/login_result.dart';
@@ -38,7 +37,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 .build();
             widget.callback.call(trekko);
           } catch (e) {
-            String reason = "Fehler Unbekannt";
+            String? reason;
             if (e is BuildException) {
               if (e.reason == LoginResult.failedInvalidCredentials) {
                 reason = 'E-Mail oder Passwort falsch';
@@ -51,14 +50,12 @@ class _SignInScreenState extends State<SignInScreen> {
               } else if (e.reason == LoginResult.failedSessionExpired) {
                 reason = 'Sitzung abgelaufen, bitte loggen Sie sich erneut ein';
               }
-            } else {
-              Logger().e(e);
             }
             if (context.mounted) {
               showCupertinoDialog(
                   context: context,
                   builder: (context) => CupertinoAlertDialog(
-                        title: Text(reason),
+                        title: Text(reason ?? "Fehler Unbekannt"),
                         actions: [
                           CupertinoDialogAction(
                             child: const Text('Ok'),
@@ -68,6 +65,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           )
                         ],
                       ));
+            }
+            if (reason == null) {
+              rethrow;
             }
           }
         },

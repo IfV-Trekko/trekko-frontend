@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:logger/logger.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/trekko_state.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
@@ -350,8 +349,7 @@ class JournalScreenState extends State<StatefulWidget>
       showPopupMessage(
           "Diese Wege konnten nicht zusammengeführt werden. Bitte stelle sicher, dass sie sich nicht überschneiden.",
           true);
-      // Log
-      Logger().f("Error while merging trips", error: e);
+      rethrow;
     }
   }
 
@@ -363,7 +361,7 @@ class JournalScreenState extends State<StatefulWidget>
           'Sie haben ihre Spende über $count Wege zurückgezogen', false);
     } catch (e) {
       showPopupMessage("Fehler beim Zurückziehen der Wege", true);
-      Logger().f("Error while revoking trips", error: e);
+      rethrow;
     }
   }
 
