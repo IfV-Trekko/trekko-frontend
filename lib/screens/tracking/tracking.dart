@@ -23,6 +23,7 @@ class _TrackingScreenState extends State<TrackingScreen>
   Widget build(BuildContext context) {
     super.build(context);
 
+    // TODO: Timer for refreshing the map and the start time
     DateTime start = DateTime.now().subtract(const Duration(days: 1));
     return CupertinoPageScaffold(
       child: Stack(
