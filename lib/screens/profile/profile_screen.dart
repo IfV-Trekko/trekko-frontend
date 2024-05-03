@@ -33,6 +33,12 @@ class ProfileScreenState extends State<ProfileScreen>
   final EdgeInsetsGeometry listSectionMargin =
       const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
+  Future _saveBatterySetting(
+      Profile profile, BatteryUsageSetting setting) async {
+    profile.preferences.batteryUsageSetting = setting;
+    await widget.trekko.savePreferences(profile.preferences);
+  }
+
   Future<BatteryUsageSetting?> showBatteryUsageSettingPicker(
       BuildContext context, Profile profile) async {
     BatteryUsageSetting? temporarySelection;
@@ -103,8 +109,7 @@ class ProfileScreenState extends State<ProfileScreen>
               child: const Text('Ok'),
               onPressed: () async {
                 if (newSetting != null) {
-                  profile.preferences.batteryUsageSetting = newSetting;
-                  await widget.trekko.savePreferences(profile.preferences);
+                  await _saveBatterySetting(profile, newSetting);
                   await widget.trekko.setTrackingState(TrackingState.paused);
                   await widget.trekko.setTrackingState(TrackingState.running);
                 }
@@ -216,9 +221,12 @@ class ProfileScreenState extends State<ProfileScreen>
                             BatteryUsageSetting? newSetting =
                                 await showBatteryUsageSettingPicker(
                                     context, profile);
-                            if (newSetting != null &&
-                                newSetting != previousSetting &&
-                                context.mounted) {
+                            if (newSetting == null ||
+                                newSetting == previousSetting) return;
+                            if (await widget.trekko.getTrackingState().first ==
+                                TrackingState.paused) {
+                              _saveBatterySetting(profile, newSetting);
+                            } else if (context.mounted) {
                               _updateDialog(context, profile, previousSetting,
                                   newSetting);
                             }
