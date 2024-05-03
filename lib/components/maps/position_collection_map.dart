@@ -14,6 +14,7 @@ class PositionCollectionMap extends StatefulWidget {
   final Function(GeoPoint)? onMarkerClick;
   final Function(Leg)? onRoadClick;
   final Function()? onMapReady;
+  final bool onlyZoomOnce;
 
   const PositionCollectionMap(
       {required this.collections,
@@ -21,6 +22,7 @@ class PositionCollectionMap extends StatefulWidget {
       this.onMarkerClick,
       this.onRoadClick,
       this.onMapReady,
+      this.onlyZoomOnce = true,
       Key? key})
       : super(key: key);
 
@@ -103,7 +105,7 @@ class PositionCollectionMapState extends State<PositionCollectionMap>
           }
         });
       }
-      if (zoomedToBoundingBox) return;
+      if (zoomedToBoundingBox && widget.onlyZoomOnce) return;
       controller.zoomToBoundingBox(
           BoundingBox.fromGeoPoints(
             collections

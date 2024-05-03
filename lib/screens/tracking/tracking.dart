@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
+import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/screens/tracking/map_option_sheet.dart';
 
@@ -16,6 +19,25 @@ class TrackingScreen extends StatefulWidget {
 
 class _TrackingScreenState extends State<TrackingScreen>
     with AutomaticKeepAliveClientMixin {
+  late Timer timer;
+
+  // Set timer on initState which will refresh the map
+  @override
+  void initState() {
+    timer = Timer.periodic(const Duration(minutes: 5), (timer) {
+      setState(() {
+        // Refresh the map
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -23,13 +45,14 @@ class _TrackingScreenState extends State<TrackingScreen>
   Widget build(BuildContext context) {
     super.build(context);
 
-    // TODO: Timer for refreshing the map and the start time
     DateTime start = DateTime.now().subtract(const Duration(days: 1));
+    TripQuery query = widget.trekko.getTripQuery().andTimeAbove(start);
     return CupertinoPageScaffold(
       child: Stack(
         children: <Widget>[
           PositionCollectionMap(
-            collections: widget.trekko.getTripQuery().andTimeAbove(start).stream(),
+            collections: query.completeStream(),
+            onlyZoomOnce: false,
           ),
           MapOptionSheet(
             trekko: widget.trekko,
