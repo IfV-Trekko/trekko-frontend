@@ -58,9 +58,7 @@ class _LegEditViewState extends State<LegEditView> {
   }
 
   void _changeDate(DateTime newDate) {
-    setState(() {
-      _currentDate = newDate;
-    });
+    _currentDate = newDate;
   }
 
   void _onMapReady() {

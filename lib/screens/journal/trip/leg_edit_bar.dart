@@ -56,7 +56,7 @@ class LegEditBar extends StatelessWidget {
               child: DatePicker(
                   time: time,
                   mode: CupertinoDatePickerMode.time,
-                  onDateChanged: onDateChanged),
+                  onDateChanged: onTimeChanged),
             ),
           ],
         ),
