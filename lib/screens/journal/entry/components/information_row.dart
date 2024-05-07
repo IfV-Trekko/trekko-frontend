@@ -32,7 +32,7 @@ class InformationRow extends StatelessWidget {
                 Text(hours > 0 ? "$hours h $minutes min" : "$minutes min",
                     style: TextStyle(
                         color: TransportDesign.getColor(
-                            data.calculateTransportTypes().first))),
+                            data.calculateMostUsedType()))),
                 const SizedBox(width: 4.0),
                 Text(
                   "- ${data.calculateDistance().as(kilo.meters).toStringAsFixed(1)} km",
