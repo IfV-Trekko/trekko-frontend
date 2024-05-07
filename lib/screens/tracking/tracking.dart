@@ -106,9 +106,9 @@ class _TrackingScreenState extends State<TrackingScreen>
                   thumbColor: CupertinoColors.white,
                   groupValue: timeFrame,
                   children: {
-                    const Duration(days: 1): Text("1 Tag"),
-                    const Duration(days: 7): Text("1 Woche"),
-                    const Duration(days: 30): Text("1 Monat"),
+                    const Duration(days: 1): const Text("1 Tag"),
+                    const Duration(days: 7): const Text("1 Woche"),
+                    const Duration(days: 30): const Text("1 Monat"),
                   },
                   onValueChanged: (value) async {
                     setState(() {
