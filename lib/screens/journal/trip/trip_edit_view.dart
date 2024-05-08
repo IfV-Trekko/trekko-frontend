@@ -16,26 +16,26 @@ import 'package:trekko_frontend/trekko_provider.dart';
 import 'leg_edit_view.dart';
 
 class TripEditView extends StatefulWidget {
-  final Trekko trekko;
   final int tripId;
 
-  const TripEditView({required this.trekko, required this.tripId, super.key});
+  const TripEditView({required this.tripId, super.key});
 
   @override
   State<TripEditView> createState() => _TripEditViewState();
 }
 
 class _TripEditViewState extends State<TripEditView> {
-  void _editLegs(Function(List<Leg>) editFunc, Trip trip) {
+  void _editLegs(Trekko trekko, Function(List<Leg>) editFunc, Trip trip) {
     List<Leg> newLegs = List.from(trip.legs);
     editFunc(newLegs);
     trip.legs = newLegs;
-    widget.trekko.saveTrip(trip);
+    trekko.saveTrip(trip);
   }
 
   @override
   Widget build(BuildContext context) {
     Trekko trekko = TrekkoProvider.of(context);
+
     return CupertinoPageScaffold(
       child: Stack(
         children: <Widget>[
@@ -92,7 +92,8 @@ class _TripEditViewState extends State<TripEditView> {
                                       trip
                                           .calculateEndTime()
                                           .add(const Duration(minutes: 5)));
-                                  _editLegs((p0) => p0.add(newLeg), trip);
+                                  _editLegs(
+                                      trekko, (p0) => p0.add(newLeg), trip);
                                   Navigator.of(context).push(
                                     CupertinoPageRoute(
                                       builder: (context) => LegEditView(
@@ -140,7 +141,7 @@ class _TripEditViewState extends State<TripEditView> {
                                     trekko.getTripQuery().andId(trip.id));
                                 Navigator.of(context).pop();
                               } else {
-                                _editLegs((p0) => p0.removeAt(i), trip);
+                                _editLegs(trekko, (p0) => p0.removeAt(i), trip);
                               }
                             }),
                       const SizedBox(height: 10),

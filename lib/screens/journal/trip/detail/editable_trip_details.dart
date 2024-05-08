@@ -36,17 +36,21 @@ class EditableTripDetails extends StatelessWidget {
                     purpose!,
                     textAlign: TextAlign.end,
                   ),
-            onTap: () {
-              Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) => TextResponse(
-                      suffix: '',
-                      maxLines: 1,
-                      keyboardType: TextResponseKeyboardType.text,
-                      maxLength: 350,
-                      onSaved: onSavedPurpose,
-                      title: 'Anlass / Zweck',
-                      placeholder: 'Arbeit, Freizeit, etc.',
-                      initialValue: purpose ?? '')));
+            onTap: () async {
+              String? chosen = await Navigator.of(context).push(
+                  CupertinoPageRoute(
+                      builder: (context) => TextResponse(
+                          suffix: '',
+                          maxLines: 1,
+                          keyboardType: TextResponseKeyboardType.text,
+                          maxLength: 350,
+                          onSaved: onSavedPurpose,
+                          title: 'Anlass / Zweck',
+                          placeholder: 'Arbeit, Freizeit, etc.',
+                          initialValue: purpose ?? '')));
+              if (chosen != null) {
+                onSavedPurpose.call(chosen.isEmpty ? null : chosen);
+              }
             },
           ),
           CupertinoListTile(
@@ -59,17 +63,21 @@ class EditableTripDetails extends StatelessWidget {
                     comment!,
                     textAlign: TextAlign.end,
                   ),
-            onTap: () {
-              Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) => TextResponse(
-                      suffix: '',
-                      maxLines: 6,
-                      keyboardType: TextResponseKeyboardType.text,
-                      maxLength: 700,
-                      onSaved: onSavedComment,
-                      title: 'Kommentar',
-                      placeholder: 'Anmerkung, Fehler, etc.',
-                      initialValue: comment ?? '')));
+            onTap: () async {
+              String? chosen = await Navigator.of(context).push(
+                  CupertinoPageRoute(
+                      builder: (context) => TextResponse(
+                          suffix: '',
+                          maxLines: 6,
+                          keyboardType: TextResponseKeyboardType.text,
+                          maxLength: 700,
+                          onSaved: onSavedComment,
+                          title: 'Kommentar',
+                          placeholder: 'Anmerkung, Fehler, etc.',
+                          initialValue: comment ?? '')));
+              if (chosen != null) {
+                onSavedComment.call(chosen.isEmpty ? null : chosen);
+              }
             },
           ),
         ],

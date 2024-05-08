@@ -11,11 +11,10 @@ import 'package:trekko_frontend/components/picker/setting_picker.dart';
 import 'package:trekko_frontend/main.dart';
 import 'package:trekko_frontend/screens/debug/debug_screen.dart';
 import 'package:trekko_frontend/screens/profile/question_tiles_section.dart';
+import 'package:trekko_frontend/trekko_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final Trekko trekko;
-
-  const ProfileScreen(this.trekko, {Key? key}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   ProfileScreenState createState() => ProfileScreenState();
@@ -35,9 +34,9 @@ class ProfileScreenState extends State<ProfileScreen>
       const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
   Future _saveBatterySetting(
-      Profile profile, BatteryUsageSetting setting) async {
+      Trekko trekko, Profile profile, BatteryUsageSetting setting) async {
     profile.preferences.batteryUsageSetting = setting;
-    await widget.trekko.savePreferences(profile.preferences);
+    await trekko.savePreferences(profile.preferences);
   }
 
   Future<BatteryUsageSetting?> showBatteryUsageSettingPicker(
@@ -78,7 +77,7 @@ class ProfileScreenState extends State<ProfileScreen>
                 CupertinoDialogAction(
                   child: const Text('Löschen'),
                   onPressed: () async {
-                    await widget.trekko.signOut(delete: true);
+                    await TrekkoProvider.of(context).signOut(delete: true);
                     runLoginApp();
 
                     if (context.mounted) {
@@ -90,7 +89,7 @@ class ProfileScreenState extends State<ProfileScreen>
             ));
   }
 
-  void _updateDialog(BuildContext context, Profile profile,
+  void _updateDialog(Trekko trekko, BuildContext context, Profile profile,
       BatteryUsageSetting previousSetting, BatteryUsageSetting? newSetting) {
     showCupertinoDialog(
       context: context,
@@ -110,9 +109,9 @@ class ProfileScreenState extends State<ProfileScreen>
               child: const Text('Ok'),
               onPressed: () async {
                 if (newSetting != null) {
-                  await _saveBatterySetting(profile, newSetting);
-                  await widget.trekko.setTrackingState(TrackingState.paused);
-                  await widget.trekko.setTrackingState(TrackingState.running);
+                  await _saveBatterySetting(trekko, profile, newSetting);
+                  await trekko.setTrackingState(TrackingState.paused);
+                  await trekko.setTrackingState(TrackingState.running);
                 }
                 if (!context.mounted) return;
                 Navigator.of(context).pop();
@@ -127,7 +126,7 @@ class ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
+    Trekko trekko = TrekkoProvider.of(context);
     return CupertinoPageScaffold(
       backgroundColor: AppThemeColors.contrast100,
       child: NestedScrollView(
@@ -160,7 +159,7 @@ class ProfileScreenState extends State<ProfileScreen>
         },
         body: Builder(builder: (BuildContext context) {
           return StreamBuilder<Profile>(
-            stream: widget.trekko.getProfile(),
+            stream: trekko.getProfile(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 Profile profile = snapshot.data!;
@@ -204,7 +203,7 @@ class ProfileScreenState extends State<ProfileScreen>
                       ],
                     )),
                     SliverToBoxAdapter(
-                        child: QuestionTilesSection(trekko: widget.trekko)),
+                        child: QuestionTilesSection(trekko: trekko)),
                     SliverToBoxAdapter(
                         child: CupertinoListSection.insetGrouped(
                       margin: listSectionMargin,
@@ -224,12 +223,12 @@ class ProfileScreenState extends State<ProfileScreen>
                                     context, profile);
                             if (newSetting == null ||
                                 newSetting == previousSetting) return;
-                            if (await widget.trekko.getTrackingState().first ==
+                            if (await trekko.getTrackingState().first ==
                                 TrackingState.paused) {
-                              _saveBatterySetting(profile, newSetting);
+                              _saveBatterySetting(trekko, profile, newSetting);
                             } else if (context.mounted) {
-                              _updateDialog(context, profile, previousSetting,
-                                  newSetting);
+                              _updateDialog(trekko, context, profile,
+                                  previousSetting, newSetting);
                             }
                           },
                         ),
@@ -247,7 +246,7 @@ class ProfileScreenState extends State<ProfileScreen>
                                     color: AppThemeColors.blue,
                                   )),
                               onTap: () async {
-                                await widget.trekko.signOut();
+                                await trekko.signOut();
                                 runLoginApp();
                               }),
                         ])),

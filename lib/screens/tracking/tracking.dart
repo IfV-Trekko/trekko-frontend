@@ -5,11 +5,10 @@ import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/screens/tracking/map_option_sheet.dart';
+import 'package:trekko_frontend/trekko_provider.dart';
 
 class TrackingScreen extends StatefulWidget {
-  final Trekko trekko;
-
-  const TrackingScreen({super.key, required this.trekko});
+  const TrackingScreen({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -50,13 +49,13 @@ class _TrackingScreenState extends State<TrackingScreen>
     refreshController.add(collections);
   }
 
-  void _subscribe() {
+  void _subscribe(Trekko trekko) {
     if (subscription != null) {
       subscription!.cancel();
     }
 
     DateTime start = DateTime.now().subtract(timeFrame);
-    subscription = widget.trekko
+    subscription = trekko
         .getTripQuery()
         .andTimeAbove(start)
         .completeStream()
@@ -70,9 +69,6 @@ class _TrackingScreenState extends State<TrackingScreen>
     refreshController.onListen = () {
       refreshController.add(collections);
     };
-
-    _subscribe();
-    timer = Timer.periodic(const Duration(minutes: 5), (timer) => _subscribe());
     super.initState();
   }
 
@@ -89,6 +85,10 @@ class _TrackingScreenState extends State<TrackingScreen>
   Widget build(BuildContext context) {
     super.build(context);
 
+    Trekko trekko = TrekkoProvider.of(context);
+    _subscribe(trekko);
+    timer = Timer.periodic(
+        const Duration(minutes: 5), (timer) => _subscribe(trekko));
     return CupertinoPageScaffold(
       child: Stack(
         children: <Widget>[
@@ -114,15 +114,13 @@ class _TrackingScreenState extends State<TrackingScreen>
                     setState(() {
                       timeFrame = value as Duration;
                     });
-                    _subscribe();
+                    _subscribe(trekko);
                   },
                 ),
               ])),
             ],
           ),
-          MapOptionSheet(
-            trekko: widget.trekko,
-          )
+          MapOptionSheet(trekko: trekko)
         ],
       ),
     );

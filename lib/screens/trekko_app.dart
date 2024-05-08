@@ -11,7 +11,7 @@ import 'package:trekko_frontend/trekko_provider.dart';
 class Screen {
   final String title;
   final HeroIcons icon;
-  final Widget screen;
+  final Widget Function(BuildContext) screen;
 
   Screen(this.title, this.icon, this.screen);
 }
@@ -36,12 +36,11 @@ class TrekkoAppState extends State<TrekkoApp> {
   void initState() {
     super.initState();
     screens = [
-      Screen('Erhebung', HeroIcons.play,
-          TrackingScreen(trekko: super.widget.trekko)),
-      Screen('Tagebuch', HeroIcons.queueList, const JournalScreen()),
-      Screen('Statistik', HeroIcons.chartPie, Analysis(super.widget.trekko)),
+      Screen('Erhebung', HeroIcons.play, (c) => const TrackingScreen()),
       Screen(
-          'Profil', HeroIcons.userCircle, ProfileScreen(super.widget.trekko)),
+          'Tagebuch', HeroIcons.queueList, (c) => JournalScreen(tabContext: c)),
+      Screen('Statistik', HeroIcons.chartPie, (c) => const Analysis()),
+      Screen('Profil', HeroIcons.userCircle, (c) => const ProfileScreen()),
     ];
   }
 
@@ -79,7 +78,7 @@ class TrekkoAppState extends State<TrekkoApp> {
                 children: screens
                     .map((e) => CupertinoTabView(
                           builder: (context) {
-                            return e.screen;
+                            return e.screen(context);
                           },
                         ))
                     .toList(),

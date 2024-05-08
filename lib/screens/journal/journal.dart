@@ -18,13 +18,15 @@ import 'package:trekko_frontend/screens/journal/trip/trip_edit_view.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
 
 class JournalScreen extends StatefulWidget {
-  const JournalScreen({super.key});
+  final BuildContext tabContext;
+
+  const JournalScreen({super.key, required this.tabContext});
 
   @override
-  JournalScreenState createState() => JournalScreenState();
+  State<JournalScreen> createState() => JournalScreenState();
 }
 
-class JournalScreenState extends State<StatefulWidget>
+class JournalScreenState extends State<JournalScreen>
     with AutomaticKeepAliveClientMixin {
   static const int crazyHighNumberSoWeCanScroll = 30000;
 
@@ -98,10 +100,8 @@ class JournalScreenState extends State<StatefulWidget>
                     current.day, now.hour, now.minute, now.second);
                 Trip newTrip = TripConstants.createDefaultTrip(start);
                 trekko.saveTrip(newTrip).then((value) => {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                          builder: (context) => TripEditView(
-                              trekko: TrekkoProvider.of(context),
-                              tripId: value)))
+                      Navigator.of(widget.tabContext).push(CupertinoPageRoute(
+                          builder: (context) => TripEditView(tripId: value)))
                     });
               },
               child: const Icon(CupertinoIcons.add, color: AppThemeColors.blue),
@@ -121,9 +121,8 @@ class JournalScreenState extends State<StatefulWidget>
       selectionMode: selectionMode,
       onTap: () => handleSelectionChange(trip),
       onEdit: () {
-        Navigator.of(context).push(CupertinoPageRoute(
-            builder: (context) =>
-                TripEditView(trekko: trekko, tripId: trip.id)));
+        Navigator.of(widget.tabContext).push(CupertinoPageRoute(
+            builder: (context) => TripEditView(tripId: trip.id)));
       },
       onDelete: () {
         trekko.deleteTrip(trekko.getTripQuery().andId(trip.id));
@@ -309,9 +308,8 @@ class JournalScreenState extends State<StatefulWidget>
   void handleSelectionChange(PositionCollection coll) {
     Trip trip = coll as Trip;
     if (!selectionMode) {
-      Navigator.of(context).push(CupertinoPageRoute(
-          builder: (context) => TripEditView(
-              trekko: TrekkoProvider.of(context), tripId: trip.id)));
+      Navigator.of(widget.tabContext).push(CupertinoPageRoute(
+          builder: (context) => TripEditView(tripId: trip.id)));
     } else {
       setState(() {
         if (!selectedTrips.contains(trip.id)) {

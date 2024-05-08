@@ -7,24 +7,23 @@ import 'package:trekko_frontend/screens/analysis/barchart.dart';
 import 'package:trekko_frontend/screens/analysis/basic_chart.dart';
 import 'package:trekko_frontend/screens/analysis/piechart.dart';
 import 'package:trekko_frontend/screens/analysis/vehicle_data.dart';
+import 'package:trekko_frontend/trekko_provider.dart';
 
 class Analysis extends StatefulWidget {
-  final Trekko trekko;
-
-  const Analysis(this.trekko, {Key? key}) : super(key: key);
+  const Analysis({Key? key}) : super(key: key);
 
   @override
   AnalysisState createState() => AnalysisState();
 }
 
-class AnalysisState extends State<Analysis>
-    with AutomaticKeepAliveClientMixin {
+class AnalysisState extends State<Analysis> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    Trekko trekko = TrekkoProvider.of(context);
     return CupertinoPageScaffold(
         backgroundColor: AppThemeColors.contrast100,
         child: CustomScrollView(
@@ -35,7 +34,7 @@ class AnalysisState extends State<Analysis>
             SliverToBoxAdapter(
               child: CustomPageControl(
                 pages: TransportType.values
-                    .map((e) => VehicleData(vehicle: e, trekko: widget.trekko))
+                    .map((e) => VehicleData(vehicle: e, trekko: trekko))
                     .toList(),
                 pageHeights: 288,
               ),
@@ -43,9 +42,9 @@ class AnalysisState extends State<Analysis>
             SliverToBoxAdapter(
               child: CustomPageControl(
                 pages: [
-                  PieChartWidget(trekko: widget.trekko),
-                  BarChartWidget(trekko: widget.trekko),
-                  BasicChart(trekko: widget.trekko),
+                  PieChartWidget(trekko: trekko),
+                  BarChartWidget(trekko: trekko),
+                  BasicChart(trekko: trekko),
                 ],
                 pageHeights: 440,
               ),

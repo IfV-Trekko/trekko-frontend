@@ -42,18 +42,17 @@ class _TextResponseState extends State<TextResponse> {
         TextPosition(offset: _controller.text.length));
   }
 
-  void saveValue() {
-    if (_newResponse.isEmpty) {
-      widget.onSaved(null);
-    } else if (widget.keyboardType == TextResponseKeyboardType.dezimal) {
+  String? _parseValue() {
+    if (_newResponse.isNotEmpty &&
+        widget.keyboardType == TextResponseKeyboardType.dezimal) {
       final parsedValue = double.tryParse(_newResponse.replaceAll(',', '.'));
       final updatedValue = parsedValue != null && parsedValue > 0
           ? parsedValue
           : double.parse(widget.initialValue);
-      widget.onSaved(updatedValue.toString());
-    } else {
-      widget.onSaved(_newResponse);
+      return updatedValue.toString();
     }
+
+    return _newResponse;
   }
 
   @override
@@ -72,7 +71,7 @@ class _TextResponseState extends State<TextResponse> {
           child: CupertinoNavigationBarBackButton(
             previousPageTitle: 'Zurück',
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(null);
             },
           ),
         ),
@@ -82,8 +81,7 @@ class _TextResponseState extends State<TextResponse> {
           size: ButtonSize.small,
           stretch: false,
           onPressed: () {
-            saveValue();
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(_parseValue());
           },
         ),
       ),
@@ -97,7 +95,7 @@ class _TextResponseState extends State<TextResponse> {
                 height: 20 + ((widget.maxLines - 1) * 22) + 24,
                 child: CupertinoTextField(
                   onEditingComplete: () {
-                    saveValue();
+                    _parseValue();
                   },
                   suffix: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
