@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/profile/battery_usage_setting.dart';
 import 'package:trekko_backend/model/profile/profile.dart';
@@ -266,6 +267,25 @@ class ProfileScreenState extends State<ProfileScreen>
                             }),
                       ],
                     )),
+                    SliverToBoxAdapter(
+                      child: FutureBuilder<PackageInfo>(
+                        future: PackageInfo.fromPlatform(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Padding(
+                                padding: listTilePadding,
+                                child: Text(
+                                    'Version ${snapshot.data!.version}+${snapshot.data!.buildNumber}',
+                                    textAlign: TextAlign.center,
+                                    style: AppThemeTextStyles.normal.copyWith(
+                                      color: AppThemeColors.contrast700,
+                                      fontSize: 12,
+                                    )));
+                          }
+                          return const CupertinoActivityIndicator();
+                        },
+                      ),
+                    )
                   ],
                 );
               }
