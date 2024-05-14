@@ -8,6 +8,7 @@ import 'package:trekko_backend/model/position.dart';
 import 'package:trekko_backend/model/position_accuracy.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
+import 'package:trekko_frontend/components/pop_up_utils.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
 
 class ManualTrackingSheet extends StatefulWidget {
@@ -46,8 +47,15 @@ class _ManualTrackingSheetState extends State<ManualTrackingSheet> {
                   for (TransportType type in TransportType.values)
                     GestureDetector(
                         onLongPress: () async {
-                          Position pos = await PositionUtils.getPosition(
-                              PositionAccuracy.best);
+                          Position? pos = await PositionUtils.getPosition(
+                              PositionAccuracy.best,
+                              checkPermissions: true);
+                          if (pos == null) {
+                            PopUpUtils.showPopUp(context, "Fehler",
+                                "Konnte Position nicht bestimmen. Stellen Sie bitte sicher, dass alle nötigen Berechtigungen erteilt wurden.");
+                            return;
+                          }
+
                           if (manual.getTransportType() == type) {
                             manual.triggerEndOnLegEnd();
                           } else {
