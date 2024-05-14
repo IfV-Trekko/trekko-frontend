@@ -7,6 +7,7 @@ import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_style.dart';
 import 'package:trekko_frontend/components/pop_up_utils.dart';
 import 'package:trekko_frontend/components/rounded_scrollable_sheet.dart';
+import 'package:trekko_frontend/screens/tracking/manual_tracking_sheet.dart';
 
 class MapOptionSheet extends StatefulWidget {
   final Trekko trekko;
@@ -104,7 +105,13 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
                   }
                 }
                 return const CupertinoActivityIndicator();
-              })
+              }),
+          const SizedBox(height: 20),
+          const ManualTrackingSheet(),
+          const SizedBox(height: 4),
+          Text(
+              "Gedrückt halten zum Wechseln des Transportmittels oder Beenden des manuellen Weges",
+              style: AppThemeTextStyles.tabBarLabel)
         ]));
   }
 }
