@@ -108,10 +108,6 @@ class _MapOptionSheetState extends State<MapOptionSheet> {
               }),
           const SizedBox(height: 20),
           const ManualTrackingSheet(),
-          const SizedBox(height: 4),
-          Text(
-              "Gedrückt halten zum Wechseln des Transportmittels oder Beenden des manuellen Weges",
-              style: AppThemeTextStyles.tabBarLabel)
         ]));
   }
 }
