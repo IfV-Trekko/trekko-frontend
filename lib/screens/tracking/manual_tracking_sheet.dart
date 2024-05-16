@@ -23,15 +23,14 @@ class _ManualTrackingSheetState extends State<ManualTrackingSheet> {
   bool loading = false;
 
   Widget buildTransportTypeIcon(TransportType type, bool selected) {
+    Color color =
+        loading ? AppThemeColors.contrast400 : TransportDesign.getColor(type);
     return Container(
         decoration: BoxDecoration(
-            color: selected
-                ? TransportDesign.getColor(type).withOpacity(0.2)
-                : null,
+            color: selected ? color.withOpacity(0.2) : null,
             borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: TransportDesign.getColor(type))),
-        child: HeroIcon(TransportDesign.getIcon(type),
-            color: TransportDesign.getColor(type), size: 60));
+            border: Border.all(color: color)),
+        child: HeroIcon(TransportDesign.getIcon(type), color: color, size: 60));
   }
 
   Widget buildHint() {
