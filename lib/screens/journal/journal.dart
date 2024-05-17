@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/trekko_state.dart';
+import 'package:trekko_backend/controller/utils/trip_query.dart';
 import 'package:trekko_backend/model/trip/donation_state.dart';
 import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
@@ -113,6 +114,35 @@ class JournalScreenState extends State<JournalScreen>
   }
 
   Widget buildEntry(Trekko trekko, Trip trip) {
+    TripQuery query = trekko.getTripQuery().andId(trip.id);
+    List<EntryAction> actions = [
+      EntryAction(
+          title: "Daten exportieren",
+          icon: CupertinoIcons.square_arrow_down,
+          onClick: () async {
+            await trekko.export(query);
+            PopUpUtils.showPopUp(context, 'Export erfolgreich',
+                'Der Trip wurde erfolgreich in die Zwischenablage kopiert.');
+          }),
+    ];
+    if (trekko.getState() == TrekkoState.online) {
+      actions.addAll([
+        if (trip.donationState == DonationState.donated)
+          EntryAction(
+              title: "Zurückziehen",
+              icon: CupertinoIcons.xmark,
+              onClick: () {
+                trekko.revoke(query);
+              }),
+        if (trip.donationState != DonationState.donated)
+          EntryAction(
+              title: "Spenden",
+              icon: CupertinoIcons.heart,
+              onClick: () {
+                trekko.donate(query);
+              }),
+      ]);
+    }
     return SelectablePositionCollectionEntry(
       key: ValueKey(trip.id),
       trekko: trekko,
@@ -127,24 +157,7 @@ class JournalScreenState extends State<JournalScreen>
       onDelete: () {
         trekko.deleteTrip(trekko.getTripQuery().andId(trip.id));
       },
-      actions: trekko.getState() != TrekkoState.online
-          ? []
-          : [
-              if (trip.donationState == DonationState.donated)
-                EntryAction(
-                    title: "Zurückziehen",
-                    icon: CupertinoIcons.xmark,
-                    onClick: () {
-                      trekko.revoke(trekko.getTripQuery().andId(trip.id));
-                    }),
-              if (trip.donationState != DonationState.donated)
-                EntryAction(
-                    title: "Spenden",
-                    icon: CupertinoIcons.heart,
-                    onClick: () {
-                      trekko.donate(trekko.getTripQuery().andId(trip.id));
-                    }),
-            ],
+      actions: actions,
     );
   }
 

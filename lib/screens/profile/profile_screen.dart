@@ -3,14 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:trekko_backend/controller/trekko.dart';
-import 'package:trekko_backend/model/profile/battery_usage_setting.dart';
 import 'package:trekko_backend/model/profile/profile.dart';
-import 'package:trekko_backend/model/tracking_state.dart';
 import 'package:trekko_frontend/app_theme.dart';
-import 'package:trekko_frontend/components/picker/setting_picker.dart';
 import 'package:trekko_frontend/main.dart';
 import 'package:trekko_frontend/screens/debug/debug_screen.dart';
 import 'package:trekko_frontend/screens/profile/question_tiles_section.dart';
+import 'package:trekko_frontend/screens/profile/settings/settings_screen.dart';
 import 'package:trekko_frontend/trekko_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -27,43 +25,17 @@ class ProfileScreenState extends State<ProfileScreen>
 
   final double defaultDividerMargin = 2;
   final EdgeInsetsGeometry listTilePadding =
-      const EdgeInsets.only(left: 16, right: 16);
+  const EdgeInsets.only(left: 16, right: 16);
   final EdgeInsetsGeometry firstListSectionMargin =
-      const EdgeInsets.fromLTRB(16, 16, 16, 16);
+  const EdgeInsets.fromLTRB(16, 16, 16, 16);
   final EdgeInsetsGeometry listSectionMargin =
-      const EdgeInsets.fromLTRB(16, 0, 16, 16);
-
-  Future _saveBatterySetting(
-      Trekko trekko, Profile profile, BatteryUsageSetting setting) async {
-    profile.preferences.batteryUsageSetting = setting;
-    await trekko.savePreferences(profile.preferences);
-  }
-
-  Future<BatteryUsageSetting?> showBatteryUsageSettingPicker(
-      BuildContext context, Profile profile) async {
-    BatteryUsageSetting? temporarySelection;
-
-    await showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return SettingsPicker(
-          onSettingSelected: (int selectedIndex) {
-            temporarySelection = BatteryUsageSetting.values[selectedIndex];
-          },
-          children: BatteryUsageSetting.values
-              .map((setting) => Center(child: Text(setting.name)))
-              .toList(),
-        );
-      },
-    );
-
-    return temporarySelection;
-  }
+  const EdgeInsets.fromLTRB(16, 0, 16, 16);
 
   void _askForPermission(BuildContext context) {
     showCupertinoModalPopup<void>(
         context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
+        builder: (BuildContext context) =>
+            CupertinoAlertDialog(
               title: const Text('Unwiderruflich Löschen?'),
               content: const Text(
                   'Möchten Sie ihr Profil mit deinen Daten wirklich unwiderruflich löschen? Dieser Schritt kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie fortfahren möchten?'),
@@ -87,40 +59,6 @@ class ProfileScreenState extends State<ProfileScreen>
                 ),
               ],
             ));
-  }
-
-  void _updateDialog(Trekko trekko, BuildContext context, Profile profile,
-      BatteryUsageSetting previousSetting, BatteryUsageSetting? newSetting) {
-    showCupertinoDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CupertinoAlertDialog(
-          title: const Text('Akkunutzungseinstellung geändert'),
-          content: const Text(
-              'Damit Ihre Änderung wirksam wird, muss die Erhebung neu gestartet werden.'),
-          actions: <CupertinoDialogAction>[
-            CupertinoDialogAction(
-              child: const Text('Abbrechen'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            CupertinoDialogAction(
-              child: const Text('Ok'),
-              onPressed: () async {
-                if (newSetting != null) {
-                  await _saveBatterySetting(trekko, profile, newSetting);
-                  await trekko.setTrackingState(TrackingState.paused);
-                  await trekko.setTrackingState(TrackingState.running);
-                }
-                if (!context.mounted) return;
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -174,98 +112,91 @@ class ProfileScreenState extends State<ProfileScreen>
                     ),
                     SliverToBoxAdapter(
                         child: CupertinoListSection.insetGrouped(
-                      margin: firstListSectionMargin
-                          .subtract(const EdgeInsets.only(bottom: 16)),
-                      additionalDividerMargin: defaultDividerMargin,
-                      children: [
-                        CupertinoListTile.notched(
-                          padding: listTilePadding,
-                          title:
+                          margin: firstListSectionMargin
+                              .subtract(const EdgeInsets.only(bottom: 16)),
+                          additionalDividerMargin: defaultDividerMargin,
+                          children: [
+                            CupertinoListTile.notched(
+                              padding: listTilePadding,
+                              title:
                               Text('E-Mail', style: AppThemeTextStyles.normal),
-                          additionalInfo: Text(
-                              profile.isOnline()
-                                  ? profile.email
-                                  : "Keine E-Mail",
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.end),
-                        ),
-                        CupertinoListTile.notched(
-                          padding: listTilePadding,
-                          title: Text('Projekt-URL',
-                              style: AppThemeTextStyles.normal),
-                          additionalInfo: Text(
-                              profile.isOnline()
-                                  ? profile.projectUrl
-                                  : "Keine Projekt-URL",
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.end),
-                        ),
-                      ],
-                    )),
+                              additionalInfo: Text(
+                                  profile.isOnline()
+                                      ? profile.email
+                                      : "Keine E-Mail",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.end),
+                            ),
+                            CupertinoListTile.notched(
+                              padding: listTilePadding,
+                              title: Text('Projekt-URL',
+                                  style: AppThemeTextStyles.normal),
+                              additionalInfo: Text(
+                                  profile.isOnline()
+                                      ? profile.projectUrl
+                                      : "Keine Projekt-URL",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.end),
+                            ),
+                          ],
+                        )),
                     SliverToBoxAdapter(
                         child: QuestionTilesSection(trekko: trekko)),
                     SliverToBoxAdapter(
                         child: CupertinoListSection.insetGrouped(
-                      margin: listSectionMargin,
-                      additionalDividerMargin: defaultDividerMargin,
-                      children: [
-                        CupertinoListTile.notched(
-                          padding: listTilePadding,
-                          title: Text('Akkunutzung',
-                              style: AppThemeTextStyles.normal),
-                          additionalInfo: Text(
-                              profile.preferences.batteryUsageSetting.name),
-                          onTap: () async {
-                            BatteryUsageSetting previousSetting =
-                                profile.preferences.batteryUsageSetting;
-                            BatteryUsageSetting? newSetting =
-                                await showBatteryUsageSettingPicker(
-                                    context, profile);
-                            if (newSetting == null ||
-                                newSetting == previousSetting) return;
-                            if (await trekko.getTrackingState().first ==
-                                TrackingState.paused) {
-                              _saveBatterySetting(trekko, profile, newSetting);
-                            } else if (context.mounted) {
-                              _updateDialog(trekko, context, profile,
-                                  previousSetting, newSetting);
-                            }
-                          },
-                        ),
-                      ],
-                    )),
+                          margin: listSectionMargin,
+                          additionalDividerMargin: defaultDividerMargin,
+                          children: [
+                            CupertinoListTile.notched(
+                              padding: listTilePadding,
+                              title: Text('Einstellungen',
+                                  style: AppThemeTextStyles.normal),
+                              // Icon that indicates that the user can navigate to the settings
+                              additionalInfo: const HeroIcon(
+                                  HeroIcons.chevronRight,
+                              color: AppThemeColors.contrast400),
+                              onTap: () async {
+                                Navigator.of(context).push(
+                                  CupertinoPageRoute(
+                                      builder: (
+                                          context) => const SettingsScreen()),
+                                );
+                              },
+                            ),
+                          ],
+                        )),
                     SliverToBoxAdapter(
                         child: CupertinoListSection.insetGrouped(
                             margin: listSectionMargin,
                             additionalDividerMargin: defaultDividerMargin,
                             children: [
-                          CupertinoListTile.notched(
-                              padding: listTilePadding,
-                              title: Text('Abmelden',
-                                  style: AppThemeTextStyles.normal.copyWith(
-                                    color: AppThemeColors.blue,
-                                  )),
-                              onTap: () async {
-                                await trekko.signOut();
-                                runLoginApp();
-                              }),
-                        ])),
+                              CupertinoListTile.notched(
+                                  padding: listTilePadding,
+                                  title: Text('Abmelden',
+                                      style: AppThemeTextStyles.normal.copyWith(
+                                        color: AppThemeColors.blue,
+                                      )),
+                                  onTap: () async {
+                                    await trekko.signOut();
+                                    runLoginApp();
+                                  }),
+                            ])),
                     SliverToBoxAdapter(
                         child: CupertinoListSection.insetGrouped(
-                      margin: listSectionMargin,
-                      additionalDividerMargin: defaultDividerMargin,
-                      children: [
-                        CupertinoListTile.notched(
-                            padding: listTilePadding,
-                            title: Text('Profil & Daten löschen',
-                                style: AppThemeTextStyles.normal.copyWith(
-                                  color: AppThemeColors.red,
-                                )),
-                            onTap: () async {
-                              _askForPermission(context);
-                            }),
-                      ],
-                    )),
+                          margin: listSectionMargin,
+                          additionalDividerMargin: defaultDividerMargin,
+                          children: [
+                            CupertinoListTile.notched(
+                                padding: listTilePadding,
+                                title: Text('Profil & Daten löschen',
+                                    style: AppThemeTextStyles.normal.copyWith(
+                                      color: AppThemeColors.red,
+                                    )),
+                                onTap: () async {
+                                  _askForPermission(context);
+                                }),
+                          ],
+                        )),
                     SliverToBoxAdapter(
                       child: FutureBuilder<PackageInfo>(
                         future: PackageInfo.fromPlatform(),
@@ -274,7 +205,9 @@ class ProfileScreenState extends State<ProfileScreen>
                             return Padding(
                                 padding: listTilePadding,
                                 child: Text(
-                                    'Version ${snapshot.data!.version}+${snapshot.data!.buildNumber}',
+                                    'Version ${snapshot.data!
+                                        .version}+${snapshot.data!
+                                        .buildNumber}',
                                     textAlign: TextAlign.center,
                                     style: AppThemeTextStyles.normal.copyWith(
                                       color: AppThemeColors.contrast700,
