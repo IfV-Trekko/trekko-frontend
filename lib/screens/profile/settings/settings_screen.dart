@@ -95,9 +95,16 @@ class SettingsScreen extends StatelessWidget {
                     title: Text('Alle Wegedaten exportieren',
                         style: AppThemeTextStyles.normal),
                     onTap: () async {
-                      await trekko.export(trekko.getTripQuery());
-                      PopUpUtils.showPopUp(context, 'Export erfolgreich',
-                          'Ihre Daten wurden erfolgreich exportiert.');
+                      try {
+                        int exported =
+                            await trekko.export(trekko.getTripQuery());
+                        PopUpUtils.showPopUp(context, 'Export erfolgreich',
+                            '$exported Datenpunkte wurden erfolgreich exportiert.');
+                      } catch (e) {
+                        PopUpUtils.showPopUp(context, 'Fehler beim Exportieren',
+                            'Beim Exportieren der Daten ist ein Fehler aufgetreten.');
+                        rethrow;
+                      }
                     },
                   ),
                   CupertinoListTile.notched(
@@ -105,9 +112,15 @@ class SettingsScreen extends StatelessWidget {
                     title: Text('Wegedaten importieren',
                         style: AppThemeTextStyles.normal),
                     onTap: () async {
-                      trekko.import();
-                      PopUpUtils.showPopUp(context, 'Import erfolgreich',
-                          'Ihre Daten wurden erfolgreich importiert.');
+                      try {
+                        List<int> importedIds = await trekko.import();
+                        PopUpUtils.showPopUp(context, 'Import erfolgreich',
+                            '${importedIds.length} Datenpunkte wurden erfolgreich importiert.');
+                      } catch (e) {
+                        PopUpUtils.showPopUp(context, 'Fehler beim Importieren',
+                            'Beim Importieren der Daten ist ein Fehler aufgetreten. Stellen Sie sicher, dass die Daten in der Zwischenablage im richtigen Format vorliegen.');
+                        rethrow;
+                      }
                     },
                   )
                 ],
