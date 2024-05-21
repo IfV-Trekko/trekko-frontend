@@ -154,7 +154,7 @@ class ProfileScreenState extends State<ProfileScreen>
                               // Icon that indicates that the user can navigate to the settings
                               additionalInfo: const HeroIcon(
                                   HeroIcons.chevronRight,
-                              color: AppThemeColors.contrast400),
+                              color: AppThemeColors.blue),
                               onTap: () async {
                                 Navigator.of(context).push(
                                   CupertinoPageRoute(
