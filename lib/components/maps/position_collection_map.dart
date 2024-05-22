@@ -37,6 +37,21 @@ class PositionCollectionMapState extends State<PositionCollectionMap>
   bool zoomedToBoundingBox = false;
   bool mapReady = false;
 
+  bool _compareCollections(
+      List<PositionCollection> data1, List<PositionCollection> data2) {
+    if (data1.length != data2.length) {
+      return false;
+    }
+
+    for (int i = 0; i < data1.length; i++) {
+      if (!data1[i].deepEquals(data2[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   GeoPoint _toGeoPoint(TrackedPoint trackedPoint) {
     return GeoPoint(
         latitude: trackedPoint.latitude, longitude: trackedPoint.longitude);
@@ -49,7 +64,7 @@ class PositionCollectionMapState extends State<PositionCollectionMap>
         : MapController.withPosition(
             // karlsruhe location
             initPosition: PositionCollectionMap.karlsruhe);
-    widget.collections.listen((event) {
+    widget.collections.distinct(_compareCollections).listen((event) {
       collections = event;
       if (!mapReady) return;
       _drawRoads(event);
