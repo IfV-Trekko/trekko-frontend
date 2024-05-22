@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/trekko_state.dart';
 import 'package:trekko_backend/controller/utils/trip_query.dart';
@@ -9,6 +10,7 @@ import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/constants/trip_constants.dart';
+import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/components/picker/date_picker.dart';
 import 'package:trekko_frontend/components/pop_up_utils.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
@@ -91,6 +93,26 @@ class JournalScreenState extends State<JournalScreen>
               },
             ),
           const SizedBox(width: 20.0),
+          if (!selectionMode)
+            GestureDetector(
+              onTap: () {
+                DateTime start = _getCurrentDate(_pageController.page!.round());
+                DateTime end = start.add(const Duration(days: 1));
+                Navigator.of(widget.tabContext).push(CupertinoPageRoute(
+                    builder: (context) => CupertinoPageScaffold(
+                        navigationBar: CupertinoNavigationBar(
+                          middle:
+                              Text('${start.day}.${start.month}.${start.year}'),
+                          backgroundColor: AppThemeColors.contrast0,
+                        ),
+                        child: PositionCollectionMap(
+                            collections: trekko
+                                .getTripQuery()
+                                .andTimeBetween(start, end)
+                                .completeStream()))));
+              },
+              child: const HeroIcon(HeroIcons.map, color: AppThemeColors.blue),
+            ),
           if (!selectionMode)
             GestureDetector(
               onTap: () {
