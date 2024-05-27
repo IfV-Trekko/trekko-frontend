@@ -48,7 +48,7 @@ class _AddStopScreenState extends State<AddStopScreen> {
             if (initPosition != null) {
               controller.zoomToBoundingBox(
                   BoundingBox.fromGeoPoints([initPosition!]),
-                  paddinInPixel: 1000);
+                  paddinInPixel: 100000);
             }
           },
           controller: controller,

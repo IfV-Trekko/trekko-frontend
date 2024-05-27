@@ -98,7 +98,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
                   context: context,
                   builder: (context) => AddStopScreen(
                       initialPosition:
-                          _positions.isNotEmpty ? _positions.first : null));
+                          _positions.isNotEmpty ? _positions.last : null));
               if (pos != null) {
                 setState(() {
                   _positions.add(pos);
@@ -127,7 +127,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   for (int i = 0; i < _positions.length; i++) ... [
-                    if (i % 2 != 0) buildWayIndicator(i - 1),
+                    if (i != 0) buildWayIndicator(i - 1),
                       buildPosBox(_positions[i], i),
                   ],
                   const SizedBox(height: 20),
@@ -139,7 +139,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
                         stretch: true,
                         onPressed: () {
                           List<Leg> legs = [];
-                          for (int i = 0; i < _positions.length; i += 2) {
+                          for (int i = 0; i < _positions.length - 1; i++) {
                             TransportType type = getType(i);
                             TrackedPoint start =
                                 TrackedPoint.fromPosition(_positions[i]);
