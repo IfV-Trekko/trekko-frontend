@@ -32,40 +32,50 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
 
   Widget buildWayIndicator(int index) {
     TransportType type = getType(index);
-    return Row(children: [
-      const Column(children: [
-        SizedBox(height: 10),
-        Icon(Icons.fiber_manual_record, color: Colors.grey, size: 18),
-        SizedBox(height: 5),
-        Icon(Icons.fiber_manual_record, color: Colors.grey, size: 18),
-        SizedBox(height: 5),
-        Icon(Icons.fiber_manual_record, color: Colors.grey, size: 18),
-        SizedBox(height: 10),
-      ]),
-      const SizedBox(width: 10),
-      GestureDetector(
-          onTap: () async {
-            List<TransportType>? types =
-                await Navigator.of(context).push(CupertinoPageRoute(
-                    builder: (context) => SelectView<TransportType>(
-                          singleSelect: true,
-                          getName: TransportDesign.getName,
-                          title: 'Verkehrsmittel',
-                          responses: TransportType.values,
-                          initialResponses: [type],
-                        )));
-            setState(() {
-              transportTypes[index] = types!.first;
-            });
-          },
-          child: Container(
-              height: 45,
-              width: 45,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  border: Border.all(color: TransportDesign.getColor(type))),
-              child: HeroIcon(TransportDesign.getIcon(type),
-                  size: 30, color: TransportDesign.getColor(type))))
+    return Stack(children: [
+      const Align(
+          alignment: Alignment.center,
+          child: Column(children: [
+            SizedBox(height: 10),
+            Icon(Icons.fiber_manual_record, color: Colors.grey, size: 18),
+            SizedBox(height: 5),
+            Icon(Icons.fiber_manual_record, color: Colors.grey, size: 18),
+            SizedBox(height: 5),
+            Icon(Icons.fiber_manual_record, color: Colors.grey, size: 18),
+            SizedBox(height: 10),
+          ])),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(width: 80),
+          GestureDetector(
+              onTap: () async {
+                List<TransportType>? types =
+                    await Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => SelectView<TransportType>(
+                              singleSelect: true,
+                              getName: TransportDesign.getName,
+                              title: 'Verkehrsmittel',
+                              responses: TransportType.values,
+                              initialResponses: [type],
+                            )));
+                setState(() {
+                  transportTypes[index] = types!.first;
+                });
+              },
+              child: Container(
+                  height: 45,
+                  width: 45,
+                  margin: const EdgeInsets.only(top: 18),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      border:
+                          Border.all(color: TransportDesign.getColor(type))),
+                  child: HeroIcon(TransportDesign.getIcon(type),
+                      size: 30, color: TransportDesign.getColor(type))))
+        ],
+      )
     ]);
   }
 
@@ -74,6 +84,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: AppThemeColors.blue)),
+      padding: const EdgeInsets.all(7),
       child: GestureDetector(
         onTap: () async {
           Position? pos = await showCupertinoDialog(
@@ -92,7 +103,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return SizedBox(
-                      width: 100,
+                      width: 110,
                       child: Text(snapshot.data!.first.street!,
                           overflow: TextOverflow.clip));
                 }
