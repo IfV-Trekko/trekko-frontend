@@ -9,6 +9,7 @@ import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
+import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
 import 'package:trekko_frontend/components/picker/date_picker.dart';
 import 'package:trekko_frontend/components/responses/select_view.dart';
@@ -141,8 +142,39 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         child: CustomScrollView(slivers: [
-      const CupertinoSliverNavigationBar(
-        largeTitle: Text('Neuer Weg'),
+      CupertinoSliverNavigationBar(
+        backgroundColor: AppThemeColors.contrast100,
+        border: const Border.fromBorderSide(BorderSide.none),
+        largeTitle: const Text('Neuer Weg'),
+        leading: Transform.translate(
+          offset: const Offset(-16, 0),
+          child: CupertinoNavigationBarBackButton(
+            previousPageTitle: 'Zurück',
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        trailing: _positions.length < 2
+            ? null
+            : Button(
+                title: 'Speichern',
+                size: ButtonSize.small,
+                stretch: false,
+                onPressed: () {
+                  List<Leg> legs = [];
+                  for (int i = 0; i < _positions.length - 1; i++) {
+                    TransportType type = getType(i);
+                    TrackedPoint start =
+                        TrackedPoint.fromPosition(_positions[i]);
+                    TrackedPoint end =
+                        TrackedPoint.fromPosition(_positions[i + 1]);
+
+                    legs.add(Leg.withData(type, [start, end]));
+                  }
+                  Navigator.of(context).pop(Trip.withData(legs));
+                },
+              ),
       ),
       SliverToBoxAdapter(
           child: Padding(
@@ -156,25 +188,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
                     buildPosBox(_positions[i], i),
                   ],
                   const SizedBox(height: 20),
-                  buildLatestRow(),
-                  const SizedBox(height: 20),
-                  if (_positions.length >= 2)
-                    Button(
-                        title: "Fertig",
-                        stretch: true,
-                        onPressed: () {
-                          List<Leg> legs = [];
-                          for (int i = 0; i < _positions.length - 1; i++) {
-                            TransportType type = getType(i);
-                            TrackedPoint start =
-                                TrackedPoint.fromPosition(_positions[i]);
-                            TrackedPoint end =
-                                TrackedPoint.fromPosition(_positions[i + 1]);
-
-                            legs.add(Leg.withData(type, [start, end]));
-                          }
-                          Navigator.of(context).pop(Trip.withData(legs));
-                        })
+                  buildLatestRow()
                 ],
               )))
     ]));
