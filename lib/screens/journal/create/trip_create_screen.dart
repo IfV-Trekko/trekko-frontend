@@ -11,6 +11,7 @@ import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
 import 'package:trekko_frontend/components/picker/date_picker.dart';
+import 'package:trekko_frontend/components/responses/select_view.dart';
 import 'package:trekko_frontend/screens/journal/create/add_stop_screen.dart';
 
 class TripCreateScreen extends StatefulWidget {
@@ -29,6 +30,7 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
   }
 
   Widget buildWayIndicator(int index) {
+    TransportType type = getType(index);
     return Row(children: [
       const Column(children: [
         SizedBox(height: 10),
@@ -39,7 +41,30 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
         Icon(Icons.fiber_manual_record, color: Colors.grey, size: 18),
         SizedBox(height: 10),
       ]),
-      HeroIcon(TransportDesign.getIcon(getType(index)), size: 30)
+      const SizedBox(width: 10),
+      GestureDetector(
+          onTap: () async {
+            List<TransportType>? types =
+                await Navigator.of(context).push(CupertinoPageRoute(
+                    builder: (context) => SelectView<TransportType>(
+                          singleSelect: true,
+                          getName: TransportDesign.getName,
+                          title: 'Verkehrsmittel',
+                          responses: TransportType.values,
+                          initialResponses: [type],
+                        )));
+            setState(() {
+              transportTypes[index] = types!.first;
+            });
+          },
+          child: Container(
+              height: 45,
+              width: 45,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  border: Border.all(color: TransportDesign.getColor(type))),
+              child: HeroIcon(TransportDesign.getIcon(type),
+                  size: 30, color: TransportDesign.getColor(type))))
     ]);
   }
 
@@ -126,9 +151,9 @@ class _TripCreateScreenState extends State<TripCreateScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (int i = 0; i < _positions.length; i++) ... [
+                  for (int i = 0; i < _positions.length; i++) ...[
                     if (i != 0) buildWayIndicator(i - 1),
-                      buildPosBox(_positions[i], i),
+                    buildPosBox(_positions[i], i),
                   ],
                   const SizedBox(height: 20),
                   buildLatestRow(),
