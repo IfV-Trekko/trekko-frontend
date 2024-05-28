@@ -3,7 +3,6 @@ import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/model/trip/leg.dart';
 import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
-import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/trip_constants.dart';
 import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/components/rounded_scrollable_sheet.dart';
@@ -32,11 +31,35 @@ class _TripEditViewState extends State<TripEditView> {
     trekko.saveTrip(trip);
   }
 
+  Future _openEditLegView(BuildContext context, Leg leg, Trip trip) async {
+    Trekko trekko = TrekkoProvider.of(context);
+    Leg? edited = await Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (context) => LegEditView(leg: leg),
+      ),
+    );
+
+    if (edited != null) {
+      _editLegs(trekko, (p0) => p0.map((e) => e == leg ? edited : e), trip);
+      await trekko.saveTrip(trip);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Trekko trekko = TrekkoProvider.of(context);
-
     return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        leading: Transform.translate(
+            offset: const Offset(-16, 0),
+            child: CupertinoNavigationBarBackButton(
+              previousPageTitle: 'Zurück',
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )),
+        middle: const Text("Weg bearbeiten"),
+      ),
       child: Stack(
         children: <Widget>[
           PositionCollectionMap(
@@ -94,16 +117,7 @@ class _TripEditViewState extends State<TripEditView> {
                                           .add(const Duration(minutes: 5)));
                                   _editLegs(
                                       trekko, (p0) => p0.add(newLeg), trip);
-                                  Navigator.of(context).push(
-                                    CupertinoPageRoute(
-                                      builder: (context) => LegEditView(
-                                        leg: newLeg,
-                                        onEditComplete: () {
-                                          trekko.saveTrip(trip);
-                                        },
-                                      ),
-                                    ),
-                                  );
+                                  _openEditLegView(context, newLeg, trip);
                                 })
                           ]),
                       for (int i = 0; i < trip.legs.length; i++)
@@ -112,28 +126,10 @@ class _TripEditViewState extends State<TripEditView> {
                             data: trip.legs[i],
                             key: ValueKey(i),
                             onTap: () {
-                              Navigator.of(context).push(
-                                CupertinoPageRoute(
-                                  builder: (context) => LegEditView(
-                                    leg: trip.legs[i],
-                                    onEditComplete: () {
-                                      trekko.saveTrip(trip);
-                                    },
-                                  ),
-                                ),
-                              );
+                              _openEditLegView(context, trip.legs[i], trip);
                             },
                             onEdit: () {
-                              Navigator.of(context).push(
-                                CupertinoPageRoute(
-                                  builder: (context) => LegEditView(
-                                    leg: trip.legs[i],
-                                    onEditComplete: () {
-                                      trekko.saveTrip(trip);
-                                    },
-                                  ),
-                                ),
-                              );
+                              _openEditLegView(context, trip.legs[i], trip);
                             },
                             onDelete: () {
                               if (trip.legs.length == 1) {
@@ -144,12 +140,6 @@ class _TripEditViewState extends State<TripEditView> {
                                 _editLegs(trekko, (p0) => p0.removeAt(i), trip);
                               }
                             }),
-                      const SizedBox(height: 10),
-                      Button(
-                          title: "Zurück",
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          }),
                     ],
                   );
                 }),
