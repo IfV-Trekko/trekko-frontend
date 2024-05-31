@@ -8,6 +8,7 @@ import 'package:trekko_backend/model/trip/leg.dart';
 import 'package:trekko_backend/model/trip/position_collection.dart';
 import 'package:trekko_backend/model/trip/tracked_point.dart';
 import 'package:trekko_frontend/components/button.dart';
+import 'package:trekko_frontend/components/constants/button_size.dart';
 import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/components/pop_up_utils.dart';
 import 'package:trekko_frontend/components/rounded_scrollable_sheet.dart';
@@ -17,10 +18,8 @@ import 'package:trekko_frontend/screens/journal/trip/detail/position_detail_box.
 
 class LegEditView extends StatefulWidget {
   final Leg leg;
-  final Function() onEditComplete;
 
-  const LegEditView(
-      {required this.leg, required this.onEditComplete, super.key});
+  const LegEditView({required this.leg, super.key});
 
   @override
   State<LegEditView> createState() => _LegEditViewState();
@@ -68,11 +67,6 @@ class _LegEditViewState extends State<LegEditView> {
         _mapController.addMarker(_toGeoPoint(point));
       }
     }
-  }
-
-  void _onEditComplete() {
-    widget.onEditComplete();
-    Navigator.of(context).pop();
   }
 
   void _onEdit() {
@@ -132,6 +126,25 @@ class _LegEditViewState extends State<LegEditView> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        leading: Transform.translate(
+            offset: const Offset(-16, 0),
+            child: CupertinoNavigationBarBackButton(
+              previousPageTitle: 'Zurück',
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )),
+        middle: const Text("Teilweg bearbeiten"),
+        trailing: Button(
+          title: 'Speichern',
+          size: ButtonSize.small,
+          stretch: false,
+          onPressed: () {
+            Navigator.of(context).pop(widget.leg);
+          },
+        ),
+      ),
       child: Stack(
         children: <Widget>[
           Stack(
@@ -191,8 +204,7 @@ class _LegEditViewState extends State<LegEditView> {
                       },
                     ),
                   ],
-                ),
-                Button(title: "Speichern", onPressed: _onEditComplete),
+                )
               ],
             ),
           ),
