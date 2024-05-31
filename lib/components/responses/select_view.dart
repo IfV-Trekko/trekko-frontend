@@ -6,7 +6,7 @@ import 'package:trekko_frontend/components/constants/button_size.dart';
 
 class SelectView<T> extends StatefulWidget {
   final String title;
-  final Function(List<T>) onSaved;
+  final Function(List<T>)? onSaved;
   final List<T> initialResponses;
   final List<T> responses;
   final String Function(T) getName;
@@ -15,7 +15,7 @@ class SelectView<T> extends StatefulWidget {
   const SelectView(
       {required this.responses,
       required this.title,
-      required this.onSaved,
+      this.onSaved,
       required this.initialResponses,
       required this.getName,
       this.singleSelect = false,
@@ -55,8 +55,8 @@ class _SelectViewState<T> extends State<SelectView<T>> {
             size: ButtonSize.small,
             stretch: false,
             onPressed: () {
-              widget.onSaved(_newResponses);
-              Navigator.of(context).pop();
+              if (widget.onSaved != null) widget.onSaved!(_newResponses);
+              Navigator.of(context).pop(_newResponses);
             },
           ),
         ),

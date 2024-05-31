@@ -9,10 +9,10 @@ import 'package:trekko_backend/model/trip/trip.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/constants/button_size.dart';
-import 'package:trekko_frontend/components/constants/trip_constants.dart';
 import 'package:trekko_frontend/components/maps/position_collection_map.dart';
 import 'package:trekko_frontend/components/picker/date_picker.dart';
 import 'package:trekko_frontend/components/pop_up_utils.dart';
+import 'package:trekko_frontend/screens/journal/create/trip_create_screen.dart';
 import 'package:trekko_frontend/screens/journal/donation_modal.dart';
 import 'package:trekko_frontend/screens/journal/entry/collection_entry_context_menu.dart';
 import 'package:trekko_frontend/screens/journal/entry/selectable_position_collection_entry.dart';
@@ -115,17 +115,11 @@ class JournalScreenState extends State<JournalScreen>
             ),
           if (!selectionMode)
             GestureDetector(
-              onTap: () {
-                DateTime now = DateTime.now();
-                DateTime current =
-                    _getCurrentDate(_pageController.page!.round());
-                DateTime start = DateTime(current.year, current.month,
-                    current.day, now.hour, now.minute, now.second);
-                Trip newTrip = TripConstants.createDefaultTrip(start);
-                trekko.saveTrip(newTrip).then((value) => {
-                      Navigator.of(widget.tabContext).push(CupertinoPageRoute(
-                          builder: (context) => TripEditView(tripId: value)))
-                    });
+              onTap: () async {
+                Trip? newTrip = await Navigator.of(widget.tabContext).push(
+                    CupertinoPageRoute(
+                        builder: (context) => const TripCreateScreen()));
+                if (newTrip != null) trekko.saveTrip(newTrip);
               },
               child: const Icon(CupertinoIcons.add, color: AppThemeColors.blue),
             ),
