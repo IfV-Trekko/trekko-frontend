@@ -3,9 +3,9 @@ import 'package:heroicons/heroicons.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/position_utils.dart';
 import 'package:trekko_backend/controller/wrapper/manual/manual_trip_wrapper.dart';
-import 'package:trekko_backend/model/cache/wrapper_type.dart';
-import 'package:trekko_backend/model/position.dart';
 import 'package:trekko_backend/model/position_accuracy.dart';
+import 'package:trekko_backend/model/tracking/analyzer/wrapper_type.dart';
+import 'package:trekko_backend/model/tracking/position.dart';
 import 'package:trekko_backend/model/trip/transport_type.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/constants/transport_design.dart';
@@ -72,7 +72,7 @@ class _ManualTrackingSheetState extends State<ManualTrackingSheet> {
                       manual.triggerStartLeg(type);
                     });
                   }
-                  await trekko.sendPosition(pos, [WrapperType.MANUAL]);
+                  await trekko.sendData(pos, [WrapperType.MANUAL]);
                   setState(() {
                     loading = false;
                   });

@@ -27,7 +27,7 @@
         </activity>
         <service
             android:name="com.pravera.flutter_foreground_task.service.ForegroundService"
-            android:foregroundServiceType="location"
+            android:foregroundServiceType="dataSync|location"
             android:exported="false" />
     </application>
 
