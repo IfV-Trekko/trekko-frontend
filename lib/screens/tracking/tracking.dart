@@ -69,6 +69,7 @@ class _TrackingScreenState extends State<TrackingScreen>
                     timer!.refresh();
                   },
                 ),
+                const SizedBox(width: 10),
               ])),
             ],
           ),
