@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:trekko_backend/controller/trekko.dart';
 import 'package:trekko_backend/controller/utils/logging.dart';
 import 'package:trekko_backend/controller/wrapper/data_wrapper.dart';
@@ -42,7 +43,11 @@ class DebugScreen extends StatelessWidget {
                             await app.getWrapper(WrapperType.BLACK_HOLE)!.first;
                         Map<String, dynamic> jsonMap = w.save();
                         String json = jsonEncode(jsonMap);
-                        await Clipboard.setData(ClipboardData(text: json));
+
+                        Uint8List jsonList = utf8.encode(json);
+                        final file = XFile.fromData(jsonList);
+
+                        await Share.shareXFiles([file], text: 'Share export');
                         PopUpUtils.showPopUp(context, "Success",
                             "Data has been copied to clipboard.");
                       },
