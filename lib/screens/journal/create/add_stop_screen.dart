@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:trekko_backend/model/position.dart';
+import 'package:trekko_backend/model/tracking/position.dart';
 import 'package:trekko_frontend/app_theme.dart';
 import 'package:trekko_frontend/components/button.dart';
 import 'package:trekko_frontend/components/picker/date_picker.dart';
@@ -93,10 +93,11 @@ class _AddStopScreenState extends State<AddStopScreen> {
                       stretch: true,
                       onPressed: () async {
                         GeoPoint p = await controller.centerMap;
-                        Navigator.of(context).pop(Position.min(
+                        Navigator.of(context).pop(Position(
                             latitude: p.latitude,
                             longitude: p.longitude,
-                            timestamp: time));
+                            timestamp: time,
+                            accuracy: 0));
                       }),
                 ],
               )))

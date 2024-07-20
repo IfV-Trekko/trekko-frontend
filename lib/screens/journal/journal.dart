@@ -201,6 +201,23 @@ class JournalScreenState extends State<JournalScreen>
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 ),
                 SliverToBoxAdapter(
+                    child: StreamBuilder(
+                        stream: trekko.isProcessingLocationData(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data == true) {
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 8),
+                              child: Center(
+                                child: CupertinoActivityIndicator(
+                                  radius: 20,
+                                ),
+                              ),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        })),
+                SliverToBoxAdapter(
                   child: DatePicker(
                     time: time,
                     mode: CupertinoDatePickerMode.date,
