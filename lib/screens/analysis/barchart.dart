@@ -150,7 +150,6 @@ class BarChartWidgetState extends State<BarChartWidget> {
                           maxY: maxDuration,
                           barTouchData: BarTouchData(
                             touchTooltipData: BarTouchTooltipData(
-                              tooltipBgColor: AppThemeColors.contrast150,
                               getTooltipItem:
                                   (group, groupIndex, rod, rodIndex) {
                                 return BarTooltipItem(

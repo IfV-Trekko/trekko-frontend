@@ -30,20 +30,20 @@ environment:
 dependencies:
   trekko_backend:
     path: ../trekko-backend
-  flutter_osm_plugin: ^0.70.2
+  flutter_osm_plugin: ^1.2.0
   flutter:
     sdk: flutter
   heroicons:
     git:
       url: https://github.com/KIT-PSE-2023-24/heroiconsPSE.git
       ref: master
-  google_fonts: 6.1.0
-  intl: ^0.18.1
+  google_fonts: ^6.2.1
+  intl: ^0.19.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  geocoding: ^2.1.1
+  geocoding: ^3.0.0
   cupertino_icons: ^1.0.2
-  fl_chart: ^0.66.1
+  fl_chart: ^0.68.0
   async: ^2.11.0
   fling_units: ^2.2.6
   url_launcher: ^6.0.9
@@ -66,7 +66,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 flutter_icons:
   android: true
