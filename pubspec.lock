@@ -263,10 +263,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_foreground_task
-      sha256: "34b7a910d3b9959f3cd27765d5b09edf8c3f574cea85aca419c26de1ff787d2c"
+      sha256: bd01a61896c1190a8f203fb5cfc136c884ae9f28c037e7a6f9a441853180f9c0
       url: "https://pub.dev"
     source: hosted
-    version: "7.5.0"
+    version: "7.5.2"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -1051,7 +1051,7 @@ packages:
       path: "../trekko-backend"
       relative: true
     source: path
-    version: "2.5.0+1"
+    version: "3.0.0+1"
   typed_data:
     dependency: transitive
     description:
@@ -1120,10 +1120,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_windows
-      sha256: ecf9725510600aa2bb6d7ddabe16357691b6d2805f66216a97d1b881e21beff7
+      sha256: "49c10f879746271804767cb45551ec5592cdab00ee105c06dddde1a98f73b185"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.1"
+    version: "3.1.2"
   uuid:
     dependency: transitive
     description:
