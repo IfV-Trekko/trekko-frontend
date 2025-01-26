@@ -51,7 +51,7 @@ class BarChartWidgetState extends State<BarChartWidget> {
   Widget getTitles(double value, TitleMeta meta) {
     var type = TransportType.values[value.toInt()];
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       space: 6,
       child: HeroIcon(TransportDesign.getIcon(type),
           size: 17, color: TransportDesign.getColor(type)),
